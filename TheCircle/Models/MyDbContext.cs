@@ -8,7 +8,7 @@ namespace TheCircle
         public virtual DbSet<Cargo> Cargos { get; set; }
         public virtual DbSet<Remision> Remisiones { get; set; }
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
-
+        public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
         /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
