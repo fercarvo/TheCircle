@@ -6,6 +6,8 @@ namespace TheCircle
     public class MyDbContext : DbContext
     {
         public virtual DbSet<Cargo> Cargos { get; set; }
+        public virtual DbSet<Remision> Remisiones { get; set; }
+        public virtual DbSet<Apadrinado> Apadrinados { get; set; }
 
         /*
         protected override void OnModelCreating(ModelBuilder modelBuilder)

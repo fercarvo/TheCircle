@@ -27,28 +27,13 @@ namespace TheCircle.Controllers
         [HttpGet]
         public IEnumerable<Cargo> Get()
         {
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            Console.WriteLine("holaaaaaa");
-            using (var context = _context)
             //using (var command = context.Database.GetDbConnection().CreateCommand())
             {
-                var data = context.Cargos.FromSql("EXEC dbo.select_Cargo").ToList();
-                
+                var data = _context.Cargos.FromSql("EXEC dbo.select_Cargo").ToList();
                     return data;
-                
             }
         }
-        /*
-        public IEnumerable<Diagnostico> Get()
-        {
-            return new Diagnostico[] { new Diagnostico("abc", 12312), new Diagnostico("bcgd", 324234234)};
-        }
-        */
+
 
         // GET: api/Diagnostico/5
         [HttpGet("{id}")]
