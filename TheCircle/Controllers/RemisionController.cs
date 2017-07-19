@@ -16,7 +16,7 @@ namespace TheCircle.Controllers
         [HttpGet]
         public IEnumerable <Remision> Get()
         {
-            return new Remision[] { new Remision(123,123123,123123,"dasda", 1213.1, 342, 2342), new Remision(123, 123123, 123123, "dasda", 1213.1, 342, 2343) };
+            return new Remision[] {  };
         }
 
         // GET: api/Remision/5
