@@ -11,7 +11,7 @@ using System.Data;
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Diagnostico")]
+    [Route("api/Cargo")]
     public class CargoController : Controller
     {
 
@@ -23,7 +23,7 @@ namespace TheCircle.Controllers
 
 
 
-        // GET: api/Diagnostico
+        // GET: api/Cargo
         [HttpGet]
         public IEnumerable<Cargo> Get()
         {
@@ -35,7 +35,7 @@ namespace TheCircle.Controllers
         }
 
 
-        // GET: api/Diagnostico/5
+        // GET: api/Cargo/5
         [HttpGet("{id}")]
         public async Task<string> Get(int id)
         {
@@ -44,14 +44,14 @@ namespace TheCircle.Controllers
             return "das";
         }
 
-        // POST: api/Diagnostico
+        // POST: api/Cargo
         [HttpPost]
         public void Post([FromBody]string value)
         {
 
         }
-        
-        // PUT: api/Diagnostico/5
+
+        // PUT: api/Cargo/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
         {

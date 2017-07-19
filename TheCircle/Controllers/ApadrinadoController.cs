@@ -29,10 +29,15 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/Apadrinado/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
+        [HttpGet("{cod}", Name = "Get")]
+        public IEnumerable<Apadrinado> Get(int cod)
         {
-            return "value";
+            //using (var command = context.Database.GetDbConnection().CreateCommand())
+            {
+                string query = "EXEC dbo.select_Apadrinado2 @cod=" + cod;
+                var data = _context.Apadrinados.FromSql(query).ToList();
+                return data;
+            }
         }
         
         // POST: api/Apadrinado
