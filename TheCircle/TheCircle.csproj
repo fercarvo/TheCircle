@@ -16,16 +16,12 @@
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
     <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
     <Content Include="wwwroot\html\anulaciones\index.html" />
-    <Content Include="wwwroot\html\anulaciones\primera.html" />
     <Content Include="wwwroot\html\atencionMedica.html" />
     <Content Include="wwwroot\html\atencionM\atencion.html" />
-    <Content Include="wwwroot\html\atencionM\atencion.prueba.html" />
     <Content Include="wwwroot\html\atencionM\atencion.remision.html" />
-    <Content Include="wwwroot\html\atencionM\index.html" />
-    <Content Include="wwwroot\html\atencionM\prueba.html" />
     <Content Include="wwwroot\html\atencionM\atencion.receta.html" />
     <Content Include="wwwroot\html\atencionM\atencion.registro.html" />
-    <Content Include="wwwroot\html\atencionM\remision.html" />
+    <Content Include="wwwroot\html\atencionM\index.html" />
     <Content Include="wwwroot\html\estadisticas\index.html" />
     <Content Include="wwwroot\html\prueba.html" />
     <Content Include="wwwroot\images\wiseboard\avatar1.png" />

@@ -3,7 +3,7 @@
         $stateProvider
             .state('atencionM', {
                 //url: '/pacientes',
-                templateUrl: 'html/atencionM/atencion.html',
+                templateUrl: 'html/atencionM/index.html',
                 controller: 'ctrAtencionM'
             })
                 .state('atencionM.registro', {
@@ -33,7 +33,7 @@
             });
         $urlRouterProvider.otherwise(function ($injector) {
             var $state = $injector.get('$state');
-            $state.go('atencionM.registro');
+            $state.go('atencionM');
         });
     })
     .controller('ctrAtencionM', ["$scope", "$state", "$http", function ($scope, $state, $http) {
