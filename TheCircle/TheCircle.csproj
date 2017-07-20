@@ -23,7 +23,6 @@
     <Content Include="wwwroot\html\atencionM\atencion.registro.html" />
     <Content Include="wwwroot\html\atencionM\index.html" />
     <Content Include="wwwroot\html\estadisticas\index.html" />
-    <Content Include="wwwroot\html\prueba.html" />
     <Content Include="wwwroot\images\wiseboard\avatar1.png" />
     <Content Include="wwwroot\images\wiseboard\avatar2.png" />
     <Content Include="wwwroot\images\wiseboard\avatar3.png" />

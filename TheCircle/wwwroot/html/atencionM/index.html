@@ -33,7 +33,7 @@
                             <div class="form-group m-bottom-30">
                                 <label for="inputEmailExample2" class="control-label col-sm-3">Codigo Apadrinado</label>
                                 <div class="col-sm-7">
-                                    <input type="text" class="form-control" placeholder="codigo" id="inputEmailExample2">
+                                    <input type="text" class="form-control" placeholder="codigo" id="inputEmailExample2" required>
                                 </div>
                                 <button type="submit" class="btn btn-info">Aceptar</button>
                             </div><!-- /.form-group -->
@@ -60,18 +60,29 @@
                                 </div>
                             </div><!-- /.form-group -->
                             <div class="form-group m-bottom-30">
-                                <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades Asociadas</label>
+                                <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades Asociadas 1</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" placeholder="Cod" id="inputEmailExample2" required>
+                                </div>
+                            </div><!-- /.form-group -->
+                            <div class="form-group m-bottom-30">
+                                <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades Asociadas 2</label>
                                 <div class="col-sm-1">
                                     <input type="text" class="form-control" placeholder="Cod" id="inputEmailExample2">
                                 </div>
                             </div><!-- /.form-group -->
                             <div class="form-group m-bottom-30">
-                                <label for="inputEmailExample2" class="control-label col-sm-3" style="margin-right: 15px;"></label>
+                                <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades Asociadas 3</label>
+                                <div class="col-sm-1">
+                                    <input type="text" class="form-control" placeholder="Cod" id="inputEmailExample2">
+                                </div>
+                            </div><!-- /.form-group -->
+                            <div class="form-group m-bottom-30">
+                                <!--<label for="inputEmailExample2" class="control-label col-sm-3" style="margin-right: 15px;"></label>
                                 <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AA</span>
                                 <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AB</span>
                                 <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AC</span>
-                                <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AD</span>
-                                <!--<label for="inputEmailExample2" class="control-label col-sm-1">AD</label> /.intento de label -->
+                                <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AD</span>-->
                             </div><!-- /.form-group -->
 
 
@@ -188,7 +199,7 @@
                     <div class="panel-body">
                         <form class="form-horizontal">
 
-                            <div class="panel panel-default-light border-default col-sm-12">
+                            <div class="panel panel-default-light border-default col-sm-6" style="width:49%;margin-right: 5px;">
                                 <div class="panel-heading">
                                     <div class="panel-title">
                                         <i class="fa fa-table m-right-5"></i> Tabla Medicinas
@@ -229,7 +240,50 @@
                                         </tbody>
                                     </table>
                                 </div><!-- /.panel-body -->
-                            </div><!-- /.form-group -->
+                            </div><!-- /.form-group TABLE 1-->
+                            
+                            <div class="panel panel-default-light border-default col-sm-6" style="width:49%;margin-left: 5px;">
+                                <div class="panel-heading">
+                                    <div class="panel-title">
+                                        <i class="fa fa-table m-right-5"></i> Tabla Remisiones
+                                    </div><!-- /.panel-title -->
+                                </div><!-- /.panel-heading -->
+
+                                <div class="panel-body">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>Remision</th>
+                                                <th>Asunto</th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>Remision 1</td>
+                                                <td>Comentario 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>Remision 2</td>
+                                                <td>Comentario 2</td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>Remision 3</td>
+                                                <td>Comentario 3</td>
+                                            </tr>
+                                            <tr>
+                                                <td>4</td>
+                                                <td>Remision 4</td>
+                                                <td>10</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div><!-- /.panel-body -->
+                            </div><!-- /.form-group TABLE 2-->
 
                             <div class="form-group m-bottom-30">
                                 <label for="inputEmailExample2" class="control-label col-sm-3">Receta</label>
