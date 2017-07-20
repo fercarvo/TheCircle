@@ -20,6 +20,7 @@
     <link href="~/css/wiseboard/theme-default.min.css" rel="stylesheet" type="text/css">
     <script src="~/js/angular.min.js"></script>
     <script src="~/js/appMedico.js"></script>
+    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
 </head>
 <body class="page-dashboard" ng-app="appMedico">
     <!-- TOP NAVIGATION STARTS -->
@@ -241,22 +242,23 @@
     <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
     <div class="content-wrapper">
         <!-- SIDEBAR STARTS -->
+
         <div class="sidebar" style="min-height: 0px;">
             <ul class="sidebar-nav">
-                <li class="dropdown open active">
-                    <a href="" data-click="prevent">
+                <li class="dropdown open" ui-sref="atencionM" ui-sref-active="active">
+                    <a >
                         <i class="fa fa-home"></i>
                         <span>Atención Médica</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
-                <li class="dropdown open">
-                    <a href="" data-click="prevent">
+                <li class="dropdown open" ui-sref="anulaciones" ui-sref-active="active">
+                    <a  >
                         <i class="fa fa-home"></i>
                         <span>Anulaciones</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
-                <li class="dropdown open">
-                    <a href="" data-click="prevent">
+                <li class="dropdown open" ui-sref="estadisticas" ui-sref-active="active">
+                    <a >
                         <i class="fa fa-home"></i>
                         <span>Estadisticas</span>
                     </a>
@@ -266,6 +268,7 @@
         <!-- SIDEBAR ENDS -->
 
         <!-- CONTENT STARTS -->
+        <ui-view></ui-view>
         <!-- CONTENT ENDS -->
 
 

@@ -1,0 +1,28 @@
+﻿<div class="content" style="min-height: 440px;">
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <i class="fa fa-cog m-right-5"></i> Atención Médica
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+
+        <div class="panel-body">
+            <ul class="nav nav-tabs">
+                <li ui-sref="atencionM.registro" ui-sref-active="active">
+                    <a data-toggle="tab" aria-expanded="false">Registro</a>
+                </li>
+                <li ui-sref="atencionM.remision" ui-sref-active="active">
+                    <a data-toggle="tab" aria-expanded="false">Remision</a>
+                </li>
+                <li ui-sref="atencionM.receta" ui-sref-active="active">
+                    <a data-toggle="tab" aria-expanded="false">Recetas medicas</a>
+                </li>
+
+            </ul>
+
+            <div class="tab-content">
+                <ui-view></ui-view>
+            </div><!-- /.tab-content -->
+        </div><!-- /.panel-body -->
+    </div>
+</div>

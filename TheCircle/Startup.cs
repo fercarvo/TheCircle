@@ -43,14 +43,16 @@ namespace TheCircle
             loggerFactory.AddDebug();
 
             //app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions()
+            app.UseStaticFiles(
+                /*new StaticFileOptions()
             {
                 OnPrepareResponse = ctx =>
                 {
-                    int cache = 60 * 10; //60sg * n minutes
+                    int cache = 60 * 0; //60sg * n minutes
                     ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age="+cache);
                 }
-            });
+            }
+            */);
 
             app.UseMvc(routes =>
             {
