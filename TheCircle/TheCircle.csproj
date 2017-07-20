@@ -8,11 +8,27 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\wiseboard\admin.min.css" />
+    <Content Include="wwwroot\css\wiseboard\bootstrap-switch.min.css" />
+    <Content Include="wwwroot\css\wiseboard\bootstrap.min.css" />
+    <Content Include="wwwroot\css\wiseboard\css.css" />
+    <Content Include="wwwroot\css\wiseboard\font-awesome.min.css" />
+    <Content Include="wwwroot\css\wiseboard\main.min.css" />
+    <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
+    <Content Include="wwwroot\html\prueba.html" />
+    <Content Include="wwwroot\images\wiseboard\avatar1.png" />
+    <Content Include="wwwroot\images\wiseboard\avatar2.png" />
+    <Content Include="wwwroot\images\wiseboard\avatar3.png" />
+    <Content Include="wwwroot\images\wiseboard\avatar4.png" />
+    <Content Include="wwwroot\images\wiseboard\logo.svg" />
+    <Content Include="wwwroot\images\wiseboard\profile-lg.png" />
+    <Content Include="wwwroot\images\wiseboard\profile-sm.png" />
     <Content Include="wwwroot\js\angular.min.js" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\css\" />
+    <Content Include="wwwroot\js\wiseboard\admin.min.js" />
+    <Content Include="wwwroot\js\wiseboard\admin.min.js.descarga" />
+    <Content Include="wwwroot\js\wiseboard\bootstrap.min.js.descarga" />
+    <Content Include="wwwroot\js\wiseboard\jquery.min.js.descarga" />
+    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js.descarga" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />

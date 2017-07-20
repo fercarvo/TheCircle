@@ -1,0 +1,566 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>WiseBoard : Dashboard</title>
+    <!-- REQUIRED STYLES -->
+    <link href="~/css/wiseboard/css.css" rel="stylesheet" type="text/css">
+    <link href="~/css/wiseboard/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <!-- REQUIRED PLUGINS -->
+    <link href="~/css/wiseboard/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="~/css/wiseboard/bootstrap-switch.min.css" rel="stylesheet" type="text/css">
+    <!-- main.min.css - WISEBOARD CORE CSS -->
+    <link href="~/css/wiseboard/main.min.css" rel="stylesheet" type="text/css">
+    <!-- admin.min.css - ADMIN LAYOUT -->
+    <link href="~/css/wiseboard/admin.min.css" rel="stylesheet" type="text/css">
+    <!-- theme-default.min.css - DEFAULT THEME -->
+    <link href="~/css/wiseboard/theme-default.min.css" rel="stylesheet" type="text/css">
+</head>
+<body class="page-dashboard">
+    <!-- TOP NAVIGATION STARTS -->
+    <nav class="navbar navbar-fixed-top navbar-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html">
+                    <img src="~/images/wiseboard/logo.svg" alt="logo">
+                </a>
+                <button type="button" class="sidebar-toggle">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div><!-- /.navbar-header -->
+
+            <form class="navbar-form navbar-left" autocomplete="off">
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control" placeholder="Search">
+                </div><!-- /input-group -->
+            </form><!-- /.navbar-form -->
+
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-bell"></i>
+                        <span class="label circle">4</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">
+                            You have 3 <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-profile.html">notifications.</a>
+                        </li><!-- /.dropdown-header -->
+
+                        <li>
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 259px;">
+                                <ul class="list-dropdown-content list-dropdown-notifications" style="overflow: hidden; width: 193px; height: 259px;">
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-success circle">
+                                                        <i class="fa fa-power-off"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">1 min</i> Servers restarted successfully.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-info circle">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">2 min</i> New user registered.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-danger circle">
+                                                        <i class="fa fa-undo"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">4 min</i> Backup error.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-primary circle">
+                                                        <i class="fa fa-gear"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">7 min</i> Settings updated.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-warning circle">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">9 min</i> Application is not responding.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul><!-- /.dropdown-menu -->
+                </li><!-- /.dropdown -->
+
+                <li class="dropdown">
+                    <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" class="dropdown-toggle" data-toggle="dropdown">
+                        <i class="fa fa-envelope"></i>
+                        <span class="label circle">3</span>
+                    </a>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-header">
+                            You have 3 new <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-inbox.html">messages.</a>
+                        </li><!-- /.dropdown-header -->
+
+                        <li>
+                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 230px;">
+                                <ul class="list-dropdown-content list-dropdown-messages" style="overflow: hidden; width: 193px; height: 230px;">
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <img src="~/images/wiseboard/avatar3.png" alt="avatar" class="media-object img-circle">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">
+                                                        <i class="pull-right">1 min</i>
+                                                        <strong class="text-primary">Nancy Allen</strong>
+                                                    </h6>
+                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <img src="~/images/wiseboard/avatar2.png" alt="avatar" class="media-object img-circle">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">
+                                                        <i class="pull-right">2 min</i>
+                                                        <strong class="text-primary">Michael Spencer</strong>
+                                                    </h6>
+                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+
+
+
+                                </ul>
+                            </div>
+                        </li>
+                    </ul>
+                </li><!-- /.dropdown -->
+
+
+
+                <li class="dropdown">
+                    <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img src="~/images/wiseboard/profile-sm.png" alt="avatar" class="img-circle">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-profile">
+                        <li class="dropdown-header">Account Details</li>
+                        <li>
+                            <div class="media">
+                                <div class="media-left">
+                                    <img src="~/images/wiseboard/profile-lg.png" alt="avatar" class="media-object img-circle">
+                                </div>
+                                <div class="media-body">
+                                    <h5 class="media-heading">Sandra Baker</h5>
+                                    <p>sandrabaker@gmail.com</p>
+                                    <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-profile.html" class="btn btn-primary btn-xs">View profile</a>
+                                </div>
+                            </div><!-- /.media -->
+                        </li>
+
+                        <li>
+                            <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-inbox.html">
+                                <i class="fa fa-paper-plane-o"></i> Inbox
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-timeline.html">
+                                <i class="fa fa-history"></i> Timeline
+                            </a>
+                        </li>
+                        <li>
+                            <a href="http://thenextheme.net/wiseboard/templates/admin4-light/plugin-fullcalendar.html">
+                                <i class="fa fa-calendar-check-o"></i> Calendar
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="http://thenextheme.net/wiseboard/templates/admin4-light/page-login1.html">
+                                <i class="fa fa-sign-out"></i> Sign Out
+                            </a>
+                        </li>
+                    </ul>
+                </li><!-- /.dropdown -->
+
+
+            </ul><!-- /.navbar-nav -->
+        </div>
+    </nav>
+    <!-- TOP NAVIGATION ENDS -->
+    <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+    <div class="content-wrapper">
+        <!-- SIDEBAR STARTS -->
+        <div class="sidebar" style="min-height: 0px;">
+            <ul class="sidebar-nav">
+                <li class="dropdown open active">
+                    <a href="http://thenextheme.net/wiseboard/templates/admin4-light/dashboard1.html#" data-click="prevent">
+                        <i class="fa fa-home"></i>
+                        <span>Médico</span>
+                    </a>
+                    <ul class="inner-nav">
+                        <li class="active">
+                            <a href="">
+                                <i class="fa fa-bar-chart"></i>
+                                <span>Atención Médica</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-line-chart"></i>
+                                <span>Anulaciones</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-area-chart"></i>
+                                <span>Estadisticas</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+        <!-- SIDEBAR ENDS -->
+        <!-- CONTENT STARTS -->
+        <div class="content" style="min-height: 440px;">
+            <div class="panel panel-default-light border-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <i class="fa fa-cog m-right-5"></i> Atención Médica
+                    </div><!-- /.panel-title -->
+                </div><!-- /.panel-heading -->
+
+                <div class="panel-body">
+                    <ul class="nav nav-tabs">
+                        <li class="active">
+                            <a href="#tab-registro1" data-toggle="tab" aria-expanded="true">Registro</a>
+                        </li>
+                        <li class="">
+                            <a href="#tab-remision1" data-toggle="tab" aria-expanded="false">Remision</a>
+                        </li>
+                        <li class="">
+                            <a href="#tab-farmacia1" data-toggle="tab" aria-expanded="false">Farmacia</a>
+                        </li>
+
+                    </ul>
+
+                    <div class="tab-content">
+                        <div class="tab-pane fade active in" id="tab-registro1">
+
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Formulario de Registro
+                                </div><!-- /.panel-title -->
+                            </div><!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Codigo Apadrinado</label>
+                                        <div class="col-sm-7">
+                                            <input type="text" class="form-control" placeholder="codigo" id="inputEmailExample2">
+                                        </div>
+                                        <button type="submit" class="btn btn-info">Aceptar</button>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Nombres</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="nombres" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Edad</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="edad" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Atencion Medica</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option value="Curativa">Curativa</option>
+                                                <option value="Seguimiento">Seguimiento</option>
+                                                <option value="Control">Control</option>
+                                            </select>
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades Asociadas</label>
+                                        <div class="col-sm-1">
+                                            <input type="text" class="form-control" placeholder="Cod" id="inputEmailExample2">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3" style="margin-right: 15px;"></label>
+                                        <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AA</span>
+                                        <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AB</span>
+                                        <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AC</span>
+                                        <span class="label label-default col-sm-1" Style="BORDER-COLOR: #ddd;margin-right: 10px;">AD</span>
+                                        <!--<label for="inputEmailExample2" class="control-label col-sm-1">AD</label> /.intento de label -->
+                                    </div><!-- /.form-group -->
+
+
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="textareaExample2" class="control-label col-sm-3">Comentarios</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" placeholder="....." rows="3" id="textareaExample2"></textarea>
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="text-center m-bottom-30">
+                                        <button type="submit" class="btn btn-info">Submit</button>
+                                        <button type="button" class="btn btn-default">Cancel</button>
+                                    </div><!-- /.form-group -->
+                                </form>
+                            </div><!-- /.panel-body -->
+
+                        </div><!-- /.tab-pane 1 -->
+
+
+
+
+                        <div class="tab-pane fade" id="tab-remision1">
+
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Formulario de Remision
+                                </div><!-- /.panel-title -->
+                            </div><!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Codigo</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="Codigo" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Nombres</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" class="form-control" placeholder="Nombres" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Info. Socioeconomico</label>
+                                        <div class="col-sm-9">
+                                            <input type="email" class="form-control" placeholder="Info. socioeconomico" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Establecimiento</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option value="Establecimiento 1">Establecimiento 1</option>
+                                                <option value="Establecimiento 2">Establecimiento 2</option>
+                                                <option value="Establecimiento 3">Establecimiento 3</option>
+                                            </select>
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Especialidades</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option value="Especialidad 1">Especialidad 1</option>
+                                                <option value="Especialidad 2">Especialidad 2</option>
+                                                <option value="Especialidad 3">Especialidad 3</option>
+                                            </select>
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedades</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option value="Enfermedad 1">Enfermedad 1</option>
+                                                <option value="Enfermedad 2">Enfermedad 2</option>
+                                                <option value="Enfermedad 3">Enfermedad 3</option>
+                                            </select>
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Monto</label>
+                                        <div class="col-sm-1">
+                                            <input type="text" class="form-control" placeholder="" id="inputEmailExample2">
+                                        </div>
+                                        <label for="inputEmailExample2" class="control-label">%</label>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="textareaExample2" class="control-label col-sm-3">Comentarios</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" placeholder="....." rows="3" id="textareaExample2"></textarea>
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="text-center m-bottom-30">
+                                        <button type="submit" class="btn btn-info">Submit</button>
+                                        <button type="button" class="btn btn-default">Cancel</button>
+                                    </div><!-- /.form-group -->
+                                </form>
+                            </div><!-- /.panel-body -->
+
+                        </div><!-- /.tab-pane 2 -->
+
+                        <div class="tab-pane fade" id="tab-farmacia1">
+
+                            <div class="panel-heading">
+                                <div class="panel-title">
+                                    Formulario de Farmacia
+                                </div><!-- /.panel-title -->
+                            </div><!-- /.panel-heading -->
+                            <div class="panel-body">
+                                <form class="form-horizontal">
+
+                                    <div class="panel panel-default-light border-default col-sm-12">
+                                        <div class="panel-heading">
+                                            <div class="panel-title">
+                                                <i class="fa fa-table m-right-5"></i> Tabla Medicinas
+                                            </div><!-- /.panel-title -->
+                                        </div><!-- /.panel-heading -->
+
+                                        <div class="panel-body">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Medicina</th>
+                                                        <th>Retencion</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                    <tr>
+                                                        <td>1</td>
+                                                        <td>Medicina 1</td>
+                                                        <td>15</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>2</td>
+                                                        <td>Medicina 2</td>
+                                                        <td>25</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>3</td>
+                                                        <td>Medicina 3</td>
+                                                        <td>30</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>4</td>
+                                                        <td>Medicina 4</td>
+                                                        <td>10</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div><!-- /.panel-body -->
+                                    </div><!-- /.form-group -->
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Receta</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="Receta" id="inputEmailExample2" readonly="">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Cantidad</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control" placeholder="cantidad" id="inputEmailExample2">
+                                        </div>
+                                    </div><!-- /.form-group -->
+                                    <div class="form-group m-bottom-30">
+                                        <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedad</label>
+                                        <div class="col-sm-9">
+                                            <select class="form-control">
+                                                <option value="Enfermedad 1">Enfermedad 1</option>
+                                                <option value="Enfermedad 2">Enfermedad 2</option>
+                                                <option value="Enfermedad 3">Enfermedad 3</option>
+                                            </select>
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="form-group m-bottom-30">
+                                        <label for="textareaExample2" class="control-label col-sm-3">Comentarios</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control" placeholder="....." rows="3" id="textareaExample2"></textarea>
+                                        </div>
+                                    </div><!-- /.form-group -->
+
+                                    <div class="text-center m-bottom-30">
+                                        <button type="submit" class="btn btn-info">Submit</button>
+                                        <button type="button" class="btn btn-default">Cancel</button>
+                                    </div><!-- /.form-group -->
+
+
+                                </form>
+                            </div><!-- /.panel-body -->
+
+                        </div><!-- /.tab-pane 3 -->
+
+
+
+
+                    </div><!-- /.tab-content -->
+                </div><!-- /.panel-body -->
+            </div>
+        </div>
+        <!-- CONTENT ENDS -->
+    </div>
+    <!-- CONTENT WRAPPER ENDS -->
+    <!-- REQUIRED SCRIPTS -->
+    <script src="~/js/wiseboard/jquery.min.js"></script>
+    <script src="~/js/wiseboard/bootstrap.min.js"></script>
+    <!-- REQUIRED NOTIFICATION SCROLL -->
+    <script src="~/js/wiseboard/jquery.slimscroll.min.js"></script>
+    <!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES SIDE SCROLLBAR -->
+    <script src="~/js/wiseboard/admin.min.js"></script>
+</body>
+</html>

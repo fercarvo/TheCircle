@@ -47,11 +47,17 @@ namespace TheCircle
             {
                 OnPrepareResponse = ctx =>
                 {
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age=60"); //cache for 60 sec
+                    int cache = 60 * 10; //60sg * n minutes
+                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age="+cache);
                 }
             });
 
-            app.UseMvc();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=TheCircle}/{action=Index}/{id?}");
+            });
         }
     }
 }
