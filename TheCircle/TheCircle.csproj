@@ -15,6 +15,7 @@
     <Content Include="wwwroot\css\wiseboard\font-awesome.min.css" />
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
     <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
+    <Content Include="wwwroot\html\atencionMedica.html" />
     <Content Include="wwwroot\html\prueba.html" />
     <Content Include="wwwroot\images\wiseboard\avatar1.png" />
     <Content Include="wwwroot\images\wiseboard\avatar2.png" />
@@ -25,6 +26,9 @@
     <Content Include="wwwroot\images\wiseboard\profile-sm.png" />
     <Content Include="wwwroot\js\angular.min.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js" />
+    <Content Include="wwwroot\js\wiseboard\bootstrap.min.js" />
+    <Content Include="wwwroot\js\wiseboard\jquery.min.js" />
+    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js.descarga" />
     <Content Include="wwwroot\js\wiseboard\bootstrap.min.js.descarga" />
     <Content Include="wwwroot\js\wiseboard\jquery.min.js.descarga" />
