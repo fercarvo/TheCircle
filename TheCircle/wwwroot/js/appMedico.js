@@ -7,17 +7,17 @@ angular.module('appMedico', ['ui.router'])
                 controller: 'atencion'
             })
                 .state('atencionM.registro', {
-                    //url: '/registro',
+                    url: '/registro',
                     templateUrl: 'html/atencionM/atencion.registro.html',
                     controller: 'atencion.registro'
                 })
                 .state('atencionM.receta', {
-                    //url: '/receta',
+                    url: '/receta',
                     templateUrl: 'html/atencionM/atencion.receta.html',
                     controller: 'atencion.receta'
                 })
                 .state('atencionM.remision', {
-                    //url: '/remision',
+                    url: '/remision',
                     templateUrl: 'html/atencionM/atencion.remision.html',
                     controller: 'atencion.remision'
                 })
