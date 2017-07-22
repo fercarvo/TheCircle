@@ -23,7 +23,7 @@ namespace TheCircle.Controllers
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
             {
-                var data = _context.Apadrinados.FromSql("EXEC dbo.select_Apadrinado").ToList();
+                var data = _context.Apadrinados.FromSql("EXEC dbo.select_Apadrinado3").ToList();
                 return data;
             }
         }
@@ -34,7 +34,7 @@ namespace TheCircle.Controllers
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
             {
-                string query = "EXEC dbo.select_Apadrinado2 @cod=" + cod;
+                string query = "EXEC dbo.select_ApadrinadoByCod @cod=" + cod;
                 var data = _context.Apadrinados.FromSql(query).ToList();
                 return data;
             }
