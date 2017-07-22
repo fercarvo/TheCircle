@@ -25,6 +25,7 @@
     <Content Include="wwwroot\images\wiseboard\avatar2.png" />
     <Content Include="wwwroot\images\wiseboard\avatar3.png" />
     <Content Include="wwwroot\images\wiseboard\avatar4.png" />
+    <Content Include="wwwroot\images\wiseboard\icon_cancel.png" />
     <Content Include="wwwroot\images\wiseboard\logo.svg" />
     <Content Include="wwwroot\images\wiseboard\profile-lg.png" />
     <Content Include="wwwroot\images\wiseboard\profile-sm.png" />
