@@ -51,7 +51,10 @@ angular.module('appMedico', ['ui.router'])
 
         $scope.apadrinado = {};
         $scope.apadrinado.cod = "";
-        
+
+        $scope.url = "/images/ci.png";
+
+
 
         $scope.buscarApadrinado = function () {
             $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
@@ -59,7 +62,11 @@ angular.module('appMedico', ['ui.router'])
 
                     if (res.data.length == 0) {
                         $scope.apadrinado = {};
+                        $scope.url = "/images/ci.png";
                     } else {
+
+                        $scope.url = "/api/Foto/" + $scope.apadrinado.cod;
+
                         $scope.apadrinado.nombres = res.data[0].nombres;
                         $scope.apadrinado.apellidos = res.data[0].apellidos;
                         $scope.apadrinado.sector = res.data[0].sector;

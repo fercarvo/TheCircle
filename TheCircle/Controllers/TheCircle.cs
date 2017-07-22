@@ -12,5 +12,12 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        // GET: /TheCircle/AsistenteSalud
+        // GET: /AsistenteSalud
+        public IActionResult AsistenteSalud()
+        {
+            return View();
+        }
     }
 }

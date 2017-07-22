@@ -3,6 +3,8 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace TheCircle.Controllers
 {
@@ -39,13 +41,8 @@ namespace TheCircle.Controllers
                 return data;
             }
         }
-        
-        // POST: api/Apadrinado
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
+
+
         // PUT: api/Apadrinado/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody]string value)
