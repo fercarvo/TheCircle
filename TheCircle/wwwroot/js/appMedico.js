@@ -47,6 +47,17 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $state.go('atencion.registro');
         });
     })
+    .factory('dataFactory', ['$http', function ($http) {
+        var fac = {};
+
+        fac.enfermedades = function () {
+            return $http.get("/api/enfermedad");
+        };
+
+        
+
+        return fac;
+    }])
     .controller('atencion', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
         $scope.apadrinado = {};
@@ -81,21 +92,19 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         };
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
+
+        $scope.enfermedades = [];
 
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
-        $scope.itemArray = [
-            { id: 1, name: 'first' },
-            { id: 2, name: 'second' },
-            { id: 3, name: 'third' },
-            { id: 4, name: 'fourth' },
-            { id: 5, name: 'fifth' },
-        ];
-
-        $scope.selected = { value: $scope.itemArray[0] };
+        dataFactory.enfermedades().then(function success(res) {
+            $scope.enfermedades = res.data;
+        }, function error(err) {
+            console.log(err);
+        })
 
 
     }])
