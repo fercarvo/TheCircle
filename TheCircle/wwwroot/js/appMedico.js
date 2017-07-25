@@ -95,6 +95,8 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
 
         $scope.enfermedades = [];
+        $scope.tipos = ["curativo", "seguimiento", "control"];
+
 
         $scope.activar = function () {
             $(".myselect").select2();
@@ -105,6 +107,24 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         }, function error(err) {
             console.log(err);
         })
+
+        $scope.reset = function () {
+            $scope.atencion.tipo = {};
+            $scope.atencion.diagp = {};
+            $scope.atencion.diag1 = {};
+            $scope.atencion.diag2 = {};
+        };
+
+        $scope.enviar = function () {
+            var data = {
+                tipo: $scope.atencion.tipo,
+                diagnostico1: $scope.atencion.diagp,
+                diagnostico2: $scope.atencion.diag1,
+                diagnostico3: $scope.atencion.diag2
+            }
+
+            //$http.post("/api/atencion", )
+        }
 
 
     }])

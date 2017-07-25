@@ -1,45 +1,47 @@
 <div >
     <div class="panel-body" style="padding:0px 20px 20px 20px;">
-        <form class="form-horizontal">
+        <form class="form-horizontal" ng-init="activar()">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
                 <div class="form-group">
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;">Atencion Medica</label>
                     <div class="col-sm-9">
-                        <select class="form-control" required>
-                            <option value="">Selecciona un tipo de atencion</option>
-                            <option value="Curativa">Curativa</option>
-                            <option value="Seguimiento">Seguimiento</option>
-                            <option value="Control">Control</option>
+                        <select class="form-control myselect" ng-model="atencion.tipo" ng-options="tipo as tipo for tipo in tipos" required>
+                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Atencion Medica</option>
                         </select>
                     </div>
                 </div><!-- /.form-group -->
-                <div class="form-group" ng-init="activar()">
+                <div class="form-group">
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;">Diagnostico Principal</label>
                     <div class="col-sm-9">
-                        <select class="form-control myselect" ng-model="diagnostico.p" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades">
+                        <select class="form-control myselect" ng-model="atencion.diagp" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" required>
+                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Principal</option>
                         </select>
                     </div>
                 </div><!-- /.form-group -->
-                <div class="form-group" ng-init="activar()">
+
+                <div class="form-group">
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;">Diagnostico Relacionado 1</label>
                     <div class="col-sm-9">
-                        <select class=" myselect form-control" ng-model="diagnostico.dos">
-                            <option ng-repeat="enfermedad in enfermedades" value="{{enfermedad.codigo}}"> {{enfermedad.codigo}} {{enfermedad.nombre}}</option>
+                        <select class="form-control myselect" ng-model="atencion.diag1" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
+                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 1</option>
                         </select>
                     </div>
                 </div><!-- /.form-group -->
-                <div class="form-group" ng-init="activar()">
+
+                <div class="form-group">
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;">Diagnostico Relacionado 2</label>
                     <div class="col-sm-9">
-                        <select class=" myselect form-control" ng-model="diagnostico.tres">
-                            <option ng-repeat="enfermedad in enfermedades" value="{{enfermedad.codigo}}"> {{enfermedad.codigo}} {{enfermedad.nombre}}</option>
+                        <select class="form-control myselect" ng-model="atencion.diag2" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
+                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 2</option>
                         </select>
                     </div>
                 </div><!-- /.form-group -->
-                
+                   <div>
+                       {{atencion}}
+                   </div>       
                 <div class="text-center">
-                    <button type="submit" class="btn btn-info">Aceptar</button>
-                    <button type="button" class="btn btn-default">Cancelar</button>
+                    <button type="submit" class="btn btn-info" ng-click="send()">Aceptar</button>
+                    <button type="button" class="btn btn-default" ng-click="reset()()">Cancelar</button>
                 </div><!-- /.form-group -->
 </form>
     </div><!-- /.panel-body -->
