@@ -23,6 +23,15 @@
     <Content Include="wwwroot\html\atencion\atencion.receta.html" />
     <Content Include="wwwroot\html\atencion\atencion.registro.html" />
     <Content Include="wwwroot\html\atencion\atencion.remision.html" />
+    <Content Include="wwwroot\html\medico\anulaciones.html" />
+    <Content Include="wwwroot\html\medico\atencion.html" />
+    <Content Include="wwwroot\html\medico\atencion.receta.html" />
+    <Content Include="wwwroot\html\medico\atencion.registro.html" />
+    <Content Include="wwwroot\html\medico\atencion.remision.html" />
+    <Content Include="wwwroot\html\medico\estadistica.1.html" />
+    <Content Include="wwwroot\html\medico\estadistica.2.html" />
+    <Content Include="wwwroot\html\medico\estadistica.html" />
+    <Content Include="wwwroot\html\medico\index.html" />
     <Content Include="wwwroot\images\ci.png" />
     <Content Include="wwwroot\images\wiseboard\avatar1.png" />
     <Content Include="wwwroot\images\wiseboard\avatar2.png" />

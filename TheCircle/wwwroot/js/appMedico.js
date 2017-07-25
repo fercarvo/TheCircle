@@ -3,42 +3,42 @@ angular.module('appMedico', ['ui.router'])
         $stateProvider
             .state('atencion', {
                 //url: '/atencion',
-                templateUrl: 'html/atencion/atencion.html',
+                templateUrl: 'html/medico/atencion.html',
                 controller: 'atencion'
             })
             .state('atencion.registro', {
                 //url: '/registro',
-                templateUrl: 'html/atencion/atencion.registro.html',
+                templateUrl: 'html/medico/atencion.registro.html',
                 controller: 'atencion.registro'
             })
             .state('atencion.receta', {
                 //url: '/receta',
-                templateUrl: 'html/atencion/atencion.receta.html',
+                templateUrl: 'html/medico/atencion.receta.html',
                 controller: 'atencion.receta'
             })
             .state('atencion.remision', {
                 //url: '/remision',
-                templateUrl: 'html/atencion/atencion.remision.html',
+                templateUrl: 'html/medico/atencion.remision.html',
                 controller: 'atencion.remision'
             })
             .state('anulaciones', {
                 //url: '/anulaciones',
-                templateUrl: 'html/anulaciones/index.html',
+                templateUrl: 'html/medico/anulaciones.html',
                 controller: 'anulaciones'
             })
             .state('estadisticas', {
                 //url: '/estadisticas',
-                templateUrl: 'html/estadisticas/estadistica.html',
+                templateUrl: 'html/medico/estadistica.html',
                 controller: 'estadisticas'
             })
             .state('estadisticas.1', {
                 //url: '/1',
-                templateUrl: 'html/estadisticas/estadistica.1.html',
+                templateUrl: 'html/medico/estadistica.1.html',
                 controller: 'estadisticas.1'
             })
             .state('estadisticas.2', {
                 //url: '/2',
-                templateUrl: 'html/estadisticas/estadistica.2.html',
+                templateUrl: 'html/medico/estadistica.2.html',
                 controller: 'estadisticas.2'
             });
         //$urlRouterProvider.otherwise("/atencion/registro");
@@ -53,14 +53,12 @@ angular.module('appMedico', ['ui.router'])
         $scope.apadrinado.cod = "";
 
         $scope.url = "/images/ci.png";
-
-
-
+        
         $scope.buscarApadrinado = function () {
             $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
                 .then(function success(res) {
 
-                    if (res.data.length == 0) {
+                    if (res.data.length === 0) {
                         $scope.apadrinado = {};
                         $scope.url = "/images/ci.png";
                     } else {
@@ -84,47 +82,36 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.nuevo_paciente = {};
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
+
+        $scope.activar = function () {
+            $(".myselect").select2();
+        }
 
 
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.nuevo_paciente = {};
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
+
 
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.nuevo_paciente = {};
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
+
 
 
     }])
     .controller('anulaciones', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
-        $scope.centros = {};
+
 
     }])
     .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
-        $scope.centros = {};
+
 
     }])
     .controller('estadisticas.1', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
-        $scope.centros = {};
+
 
     }])
     .controller('estadisticas.2', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
-        $scope.centros = {};
+
 
     }])
