@@ -1,4 +1,4 @@
-angular.module('appMedico', ['ui.router'])
+angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
@@ -86,6 +86,16 @@ angular.module('appMedico', ['ui.router'])
         $scope.activar = function () {
             $(".myselect").select2();
         }
+
+        $scope.itemArray = [
+            { id: 1, name: 'first' },
+            { id: 2, name: 'second' },
+            { id: 3, name: 'third' },
+            { id: 4, name: 'fourth' },
+            { id: 5, name: 'fifth' },
+        ];
+
+        $scope.selected = { value: $scope.itemArray[0] };
 
 
     }])
