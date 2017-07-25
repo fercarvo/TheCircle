@@ -8,6 +8,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\html\anulaciones\**" />
+    <Compile Remove="wwwroot\html\atencion\**" />
+    <Content Remove="wwwroot\html\anulaciones\**" />
+    <Content Remove="wwwroot\html\atencion\**" />
+    <EmbeddedResource Remove="wwwroot\html\anulaciones\**" />
+    <EmbeddedResource Remove="wwwroot\html\atencion\**" />
+    <None Remove="wwwroot\html\anulaciones\**" />
+    <None Remove="wwwroot\html\atencion\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\css\wiseboard\admin.min.css" />
     <Content Include="wwwroot\css\wiseboard\bootstrap-switch.min.css" />
     <Content Include="wwwroot\css\wiseboard\bootstrap.min.css" />
@@ -15,14 +26,9 @@
     <Content Include="wwwroot\css\wiseboard\font-awesome.min.css" />
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
     <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
-    <Content Include="wwwroot\html\anulaciones\index.html" />
     <Content Include="wwwroot\html\asistente\despachar.html" />
     <Content Include="wwwroot\html\asistente\historial.html" />
     <Content Include="wwwroot\html\asistente\stock.html" />
-    <Content Include="wwwroot\html\atencion\atencion.html" />
-    <Content Include="wwwroot\html\atencion\atencion.receta.html" />
-    <Content Include="wwwroot\html\atencion\atencion.registro.html" />
-    <Content Include="wwwroot\html\atencion\atencion.remision.html" />
     <Content Include="wwwroot\html\medico\anulaciones.html" />
     <Content Include="wwwroot\html\medico\atencion.html" />
     <Content Include="wwwroot\html\medico\atencion.receta.html" />
@@ -31,7 +37,6 @@
     <Content Include="wwwroot\html\medico\estadistica.1.html" />
     <Content Include="wwwroot\html\medico\estadistica.2.html" />
     <Content Include="wwwroot\html\medico\estadistica.html" />
-    <Content Include="wwwroot\html\medico\index.html" />
     <Content Include="wwwroot\images\ci.png" />
     <Content Include="wwwroot\images\wiseboard\avatar1.png" />
     <Content Include="wwwroot\images\wiseboard\avatar2.png" />
