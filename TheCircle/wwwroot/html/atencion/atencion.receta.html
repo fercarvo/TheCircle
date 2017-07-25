@@ -3,8 +3,16 @@
         <form class="form-horizontal">
             <div class="form-group ">
                 <!--"m-bottom-30" para poner margen vertical de 30px-->
-
-                    <div class="panel panel-default-light border-default col-sm-6" style="width:49%;margin-right: 5px;">
+                <div class="form-group col-sm-6">
+                    <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedad</label>
+                    <div class="col-sm-9" style="padding-bottom:5px;">
+                        <select class="form-control">
+                            <option value="Enfermedad 1">Enfermedad 1</option>
+                            <option value="Enfermedad 2">Enfermedad 2</option>
+                            <option value="Enfermedad 3">Enfermedad 3</option>
+                        </select>
+                    </div>
+                    <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
                         <div class="panel-heading">
                             <div class="panel-title">
                                 Tabla Medicinas
@@ -12,117 +20,99 @@
                         </div><!-- /.panel-heading -->
 
                         <div class="panel-body">
-                            <table class="table table-striped">
+                            <table class="table table-striped" style="text-align:center;">
                                 <thead>
                                     <tr>
-                                        <th>#</th>
-                                        <th>Medicina</th>
-                                        <th>Retencion</th>
-                                        <th align="center" style="padding:0px 0px 0px 0px;width:20px;"></th>
+                                        <th style="text-align:center;">Stock</th>
+                                        <th style="text-align:center;">Insumos</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <tr>
-                                        <td>1</td>
+                                        <td>125</td>
                                         <td>Medicina 1</td>
-                                        <td>20</td>
-                                        <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
                                     </tr>
                                     <tr>
-                                        <td>2</td>
+                                        <td>233</td>
                                         <td>Medicina 2</td>
-                                        <td>25</td>
-                                        <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
                                     </tr>
                                     <tr>
-                                        <td>3</td>
+                                        <td>311</td>
                                         <td>Medicina 3</td>
-                                        <td>30</td>
-                                        <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
                                     </tr>
                                     <tr>
-                                        <td>4</td>
+                                        <td>405</td>
                                         <td>Medicina 4</td>
-                                        <td>10</td>
-                                        <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
                                     </tr>
                                     <tr>
-                                        <td>5</td>
+                                        <td>500</td>
                                         <td>Medicina 5</td>
-                                        <td>16</td>
-                                        <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div><!-- /.panel-body -->
                     </div><!-- /.form-group TABLE 1-->
+                </div><!-- /.form-group TABLE 1 and labels-->
 
-                    <div class="form-group ">
-                        
-                            <label for="inputEmailExample2" class="control-label col-sm-1">Cantidad</label>
-                            <div class="col-sm-5" style="padding-bottom:5px;">
-                                <input type="text" class="form-control" placeholder="cantidad" id="inputEmailExample2">
-                            </div>
+                    <div class="form-group col-sm-6">
 
-                            <label for="inputEmailExample2" class="control-label col-sm-1">Enfermedad</label>
-                            <div class="col-sm-5" style="padding-bottom:5px;">
-                                <select class="form-control">
-                                    <option value="Enfermedad 1">Enfermedad 1</option>
-                                    <option value="Enfermedad 2">Enfermedad 2</option>
-                                    <option value="Enfermedad 3">Enfermedad 3</option>
-                                </select>
-                            </div>
-                            <label for="inputEmailExample2" class="control-label col-sm-6" style="align-content:flex-end;">Receta</label>
-                            <div class="panel panel-default-light border-default col-sm-6" style="width:49%;margin-left: 5px;">
-                                <div class="panel-heading">
-                                    <div class="panel-title">
-                                        Tabla Remisiones
-                                    </div><!-- /.panel-title -->
-                                </div><!-- /.panel-heading -->
+                        <label for="inputEmailExample2" class="control-label col-sm-3">Cantidad</label>
+                        <div class="col-sm-9" style="padding-bottom:5px;">
+                            <input type="text" class="form-control" placeholder="cantidad" id="inputEmailExample2">
+                        </div>
+                        <label for="textareaExample2" class="control-label col-sm-3">Posologia</label>
+                        <div class="col-sm-9">
+                            <textarea class="form-control" placeholder="....." rows="2" id="textareaExample2"></textarea>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
+                        </div>
+                        <div class="panel panel-default-light border-default col-sm-12" style="margin-left: 5px;">
+                            <label for="inputEmailExample2" style="float:right;margin-bottom:0px;">Receta</label>
+                            <div class="panel-heading">
+                                <div class="panel-title" style="padding-top:0px;">
+                                    Tabla Remisiones
+                                </div><!-- /.panel-title -->
+                            </div><!-- /.panel-heading -->
 
-                                <div class="panel-body">
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Remision</th>
-                                                <th>Asunto</th>
-                                            </tr>
-                                        </thead>
+                            <div class="panel-body">
+                                <table class="table table-striped" style="text-align:center;">
+                                    <thead>
+                                        <tr>
+                                            <th style="text-align:center;">#</th>
+                                            <th style="text-align:center;">Remision</th>
+                                            <th align="center" style="padding:0px 0px 0px 0px;width:20px;">Edicion</th>
+                                        </tr>
+                                    </thead>
 
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>Remision 1</td>
-                                                <td>Comentario 1</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>Remision 2</td>
-                                                <td>Comentario 2</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>Remision 3</td>
-                                                <td>Comentario 3</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div><!-- /.panel-body -->
-                            </div><!-- /.form-group TABLE 2 -->
-                        </div><!-- /.form-group TABLE 2 and labels-->
-                </div>     
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Remision 1</td>
+                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>Remision 2</td>
+                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>Remision 3</td>
+                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!-- /.panel-body -->
+                        </div><!-- /.form-group TABLE 2 -->
+                    </div><!-- /.form-group TABLE 2 and labels-->
 
-                <div class="form-group ">
-                    <label for="textareaExample2" class="control-label col-sm-3">Posologia</label>
-                    <div class="col-sm-9">
-                        <textarea class="form-control" placeholder="....." rows="2" id="textareaExample2"></textarea>
-                    </div>
-                </div><!-- /.form-group -->
+
+                </div> <!-- /.form-group TODO -->    
 
                 <div class="text-center ">
-                    <button type="submit" class="btn btn-info">Aceptar</button>
+                    <button type="submit" class="btn btn-info">Guardad</button>
                     <button type="button" class="btn btn-default">Cancelar</button>
                 </div><!-- /.form-group -->
 

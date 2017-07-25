@@ -17,8 +17,9 @@
                 </div>
             </form><!-- /.form-group -->
 
-            <div class="form-group col-sm-2">  
+            <div class="form-group col-sm-2" style="position: relative;">
                     <img style="height:120px;width:120px;" ng-src="{{url}}">
+                    <label align="center" style="position:absolute;bottom: -5px;left: 15px;width:120px;background-color:#fd6969;" hidden>No Aprobado</label><!-- /.solo mostrar cuando no haya foto -->
             </div>
 
             <div class="form-group">
@@ -31,9 +32,6 @@
                 <label  class="control-label" style="text-align:left;width:12.5%;">Edad:</label>
                 <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.edad}}</label>
 
-                <div>
-
-                </div>
                 <label  class="control-label" style="text-align:left;width:12.5%;">Niño vive con:</label>
                 <label  class="control-label" style="text-align:left;width:25%;">###</label>
                 <label  class="control-label" style="text-align:left;width:12.5%;">Numero de Personas:</label>
