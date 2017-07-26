@@ -54,6 +54,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             return $http.get("/api/enfermedad");
         };
 
+        fac.instituciones = function () {
+            return $http.get("/api/institucion");
+        };
 
 
         return fac;
@@ -62,27 +65,31 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         var disable = {};
 
         disable.atencion = false;
+        disable.remision = false;
 
         return disable;
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
-        atencion.doctor = "21321321";
+        atencion.doctor = "705565656";
         atencion.apadrinado = {};
         atencion.apadrinado.foto = "/images/ci.png";
         atencion.atencion = {};
+        atencion.remision = {};
 
         return atencion;
     }])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
         $scope.disable = disable.atencion;
+        //$scope.disable.bar = true;
         $scope.apadrinado = atencionFactory.apadrinado;
         //$scope.apadrinado.cod = atencionFactory.apadrinado.cod;
 
         //recibe el evento de desactivar
         $scope.$on('disable', function (event, data) {
             $scope.disable = disable.atencion;
+            //$scope.disable.bar = false; 
         });
 
         $scope.buscarApadrinado = function () {
@@ -168,7 +175,27 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
 
     }])
-    .controller('atencion.remision', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
+
+        $scope.disable = disable.remision;
+        $scope.remision = dataFactory.remision;
+        $scope.instituciones = [];
+        $scope.enfermedades = [
+            atencionFactory.atencion.diagp,
+            atencionFactory.atencion.diag1,
+            atencionFactory.atencion.diag2]
+
+
+        $scope.activar = function () {
+            $(".myselect").select2();
+        }
+
+        dataFactory.instituciones().then(function success(res) {
+            $scope.instituciones = res.data;
+        }, function error(err) {
+            console.log(err);
+        })
+
 
 
 

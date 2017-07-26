@@ -11,7 +11,7 @@ using System.Data;
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/atencion")]
+    //[Route("api/atencion")]
     public class AtencionController : Controller
     {
         private readonly MyDbContext _context;
@@ -21,8 +21,8 @@ namespace TheCircle.Controllers
         }
 
         // POST: api/Enfermedad
-        [HttpPost]
-        public JsonResult Post([FromBody] AtencionNueva atencion)
+        [HttpPost ("api/atencion")]
+        public JsonResult PostAtencion([FromBody] AtencionNueva atencion)
         {
           if (atencion != null) {
                 /*string query = "EXEC dbo.insert_Atencion @apadrinado=" + atencion.apadrinado +
@@ -53,6 +53,13 @@ namespace TheCircle.Controllers
             });
         }
 
-
+        [HttpGet("api/institucion")]
+        public IEnumerable<Institucion> GetInstituciones()
+        {
+            {
+                var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToList();
+                return data;
+            }
+        }
     }
 }
