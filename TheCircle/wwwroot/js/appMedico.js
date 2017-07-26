@@ -60,7 +60,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .factory('atencionFactory', ['$http', function ($http) {
         var atencion = {};
-        atencion.doctor = 12312;
+        atencion.doctor = "21321321";
         atencion.apadrinado = {};
 
         atencion.setApadrinado = function (id) {
@@ -112,7 +112,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         };
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
 
         $scope.enfermedades = [];
         $scope.tipos = ["curativo", "seguimiento", "control"];
@@ -135,14 +135,14 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $scope.atencion.diag2 = {};
         };
 
-        $scope.enviar = function () {
+        $scope.send = function () {
             var data = {
-                doctor: dataFactory.doctor,
-                apadrinado: dataFactory.apadrinado,
+                doctor: atencionFactory.doctor,
+                apadrinado: atencionFactory.apadrinado,
                 tipo: $scope.atencion.tipo,
-                diagnosticop: $scope.atencion.diagp,
-                diagnostico1: $scope.atencion.diag1,
-                diagnostico2: $scope.atencion.diag2
+                diagp: $scope.atencion.diagp,
+                diag1: $scope.atencion.diag1,
+                diag2: $scope.atencion.diag2
             }
 
             $http.post("/api/atencion", data).then(function success(data){

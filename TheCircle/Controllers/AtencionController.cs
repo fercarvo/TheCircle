@@ -25,25 +25,27 @@ namespace TheCircle.Controllers
         public JsonResult Post([FromBody] AtencionNueva atencion)
         {
           if (atencion != null) {
-            string query = "EXEC dbo.insert_Atencion @apadrinado=" + atencion.apadrinado +
-              " @doctor=" + atencion.doctor +
-              " @tipo=" + atencion.tipo +
-              " @diagnosticop=" + atencion.diagnosticop +
-              " @diagnostico1=" + atencion.diagnostico1 +
-              " @diagnostico2=" + atencion.diagnostico2;
-
-            var data = _context.Database.ExecuteSqlCommand("dbo.insert_Atencion @apadrinado, @doctor, @tipo, @diagnosticop, @diagnostico1, @diagnostico2",
-                  parameters: new[] {
+                /*string query = "EXEC dbo.insert_Atencion @apadrinado=" + atencion.apadrinado +
+                  " @doctor=" + atencion.doctor +
+                  " @tipo=" + atencion.tipo +
+                  " @diagnosticop=" + atencion.diagp +
+                  " @diagnostico1=" + atencion.diag1 +
+                  " @diagnostico2=" + atencion.diag2;
+                  */
+                /*
+                var data = _context.Database.ExecuteSqlCommand("EXEC dbo.insert_AtencionM @apadrinado, @doctor, @tipo, @diagp, @diag1, @diag2",
+                  parameters: new object[] {
                     atencion.apadrinado,
                     atencion.doctor,
                     atencion.tipo,
-                    atencion.diagnosticop,
-                    atencion.diagnostico1,
-                    atencion.diagnostico2
+                    atencion.diagp,
+                    atencion.diag1,
+                    atencion.diag2
                   }
                 );
+                */
                 
-            return Json( new {data: data });;
+            return Json( atencion);;
           }
           return Json(new {
                 state = 0,
