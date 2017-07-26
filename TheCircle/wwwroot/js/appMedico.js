@@ -54,17 +54,34 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             return $http.get("/api/enfermedad");
         };
 
-        
+
 
         return fac;
     }])
-    .controller('atencion', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .factory('atencionFactory', ['$http', function ($http) {
+        var atencion = {};
+        atencion.doctor = 12312;
+        atencion.apadrinado = {};
+
+        atencion.setApadrinado = function (id) {
+            atencion.apadrinado = id;
+        };
+
+        atencion.setDoctor = function (id) {
+          atencion.doctor = id;
+        }
+
+
+
+        return atencion;
+    }])
+    .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
 
         $scope.apadrinado = {};
         $scope.apadrinado.cod = "";
 
         $scope.url = "/images/ci.png";
-        
+
         $scope.buscarApadrinado = function () {
             $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
                 .then(function success(res) {
@@ -72,6 +89,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                     if (res.data.length === 0) {
                         $scope.apadrinado = {};
                         $scope.url = "/images/ci.png";
+                        atencionFactory.setApadrinado($scope.apadrinado.cod);
                     } else {
 
                         $scope.url = "/api/Foto/" + $scope.apadrinado.cod;
@@ -84,7 +102,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         $scope.apadrinado.income = res.data[0].income;
                         $scope.apadrinado.numBeds = res.data[0].numBeds;
                         $scope.apadrinado.edad = res.data[0].edad;
-                    }                 
+
+                        atencionFactory.setApadrinado($scope.apadrinado.cod);
+                    }
 
                 }, function error() {
                     console.log("error de conexion");
@@ -117,13 +137,19 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
         $scope.enviar = function () {
             var data = {
+                doctor: dataFactory.doctor,
+                apadrinado: dataFactory.apadrinado,
                 tipo: $scope.atencion.tipo,
-                diagnostico1: $scope.atencion.diagp,
-                diagnostico2: $scope.atencion.diag1,
-                diagnostico3: $scope.atencion.diag2
+                diagnosticop: $scope.atencion.diagp,
+                diagnostico1: $scope.atencion.diag1,
+                diagnostico2: $scope.atencion.diag2
             }
 
-            //$http.post("/api/atencion", )
+            $http.post("/api/atencion", data).then(function success(data){
+              console.log("Atencion creada con exito");
+            }, function (err){
+              console.log(err);
+            });
         }
 
 
