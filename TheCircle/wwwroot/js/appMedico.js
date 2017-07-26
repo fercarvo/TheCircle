@@ -58,29 +58,32 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
         return fac;
     }])
-    .factory('atencionFactory', ['$http', function ($http) {
+    .factory('disable', [function () {
+        var disable = {};
+
+        disable.atencion = false;
+
+        return disable;
+    }])
+    .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
         atencion.doctor = "21321321";
         atencion.apadrinado = {};
-
-        atencion.setApadrinado = function (id) {
-            atencion.apadrinado = id;
-        };
-
-        atencion.setDoctor = function (id) {
-          atencion.doctor = id;
-        }
-
-
+        atencion.apadrinado.foto = "/images/ci.png";
+        atencion.atencion = {};
 
         return atencion;
     }])
-    .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
+    .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
-        $scope.apadrinado = {};
-        $scope.apadrinado.cod = "";
+        $scope.disable = disable.atencion;
+        $scope.apadrinado = atencionFactory.apadrinado;
+        //$scope.apadrinado.cod = atencionFactory.apadrinado.cod;
 
-        $scope.url = "/images/ci.png";
+        //recibe el evento de desactivar
+        $scope.$on('disable', function (event, data) {
+            $scope.disable = disable.atencion;
+        });
 
         $scope.buscarApadrinado = function () {
             $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
@@ -88,11 +91,11 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
                     if (res.data.length === 0) {
                         $scope.apadrinado = {};
-                        $scope.url = "/images/ci.png";
+                        $scope.apadrinado.foto = "/images/ci.png";
                         atencionFactory.setApadrinado($scope.apadrinado.cod);
                     } else {
 
-                        $scope.url = "/api/Foto/" + $scope.apadrinado.cod;
+                        $scope.apadrinado.foto = "/api/Foto/" + $scope.apadrinado.cod;
 
                         $scope.apadrinado.nombres = res.data[0].nombres;
                         $scope.apadrinado.apellidos = res.data[0].apellidos;
@@ -103,7 +106,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         $scope.apadrinado.numBeds = res.data[0].numBeds;
                         $scope.apadrinado.edad = res.data[0].edad;
 
-                        atencionFactory.setApadrinado($scope.apadrinado.cod);
+                        atencionFactory.apadrinado = $scope.apadrinado;
+
+                        //atencionFactory.setApadrinadoId($scope.apadrinado.cod);
                     }
 
                 }, function error() {
@@ -112,10 +117,12 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         };
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
+        $scope.disable = disable.atencion;
         $scope.enfermedades = [];
         $scope.tipos = ["curativo", "seguimiento", "control"];
+        $scope.atencion = atencionFactory.atencion;
 
 
         $scope.activar = function () {
@@ -138,7 +145,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         $scope.send = function () {
             var data = {
                 doctor: atencionFactory.doctor,
-                apadrinado: atencionFactory.apadrinado,
+                apadrinado: atencionFactory.apadrinado.cod,
                 tipo: $scope.atencion.tipo,
                 diagp: $scope.atencion.diagp,
                 diag1: $scope.atencion.diag1,
@@ -146,7 +153,14 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             }
 
             $http.post("/api/atencion", data).then(function success(data){
-              console.log("Atencion creada con exito");
+
+                console.log("Atencion creada con exito");
+
+                disable.atencion = true;
+                atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
+                $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
+                $scope.$emit('disable', {}); //evento para desactivar atencion.html
+
             }, function (err){
               console.log(err);
             });
