@@ -25,9 +25,19 @@ namespace TheCircle.Controllers
         public JsonResult PostAtencion([FromBody] AtencionNueva atencion)
         {
           if (atencion != null) {
+                if (atencion.diag1 == null)
+                {
+                    atencion.diag1 = "null";
+                }
+
+                if (atencion.diag2 == null)
+                {
+                    atencion.diag2 = "null";
+                }
+
                 string query = "DECLARE @id int "+
-                    "EXEC dbo.insert_AtencionM @apadrinado="+atencion.apadrinado+
-                  ", @doctor="+ 705565656 +
+                    "EXEC dbo.insert_AtencionM @apadrinado=" +atencion.apadrinado+
+                  ", @doctor="+ atencion.doctor +
                   ", @tipo=" + atencion.tipo +
                   ", @diagp=" + atencion.diagp +
                   ", @diag1=" + atencion.diag1 +
@@ -35,10 +45,10 @@ namespace TheCircle.Controllers
                   ", @id = @id OUTPUT";
                 
                 
-                var data = _context.Database.ExecuteSqlCommand(query);
+                var data = _context.Database.ExecuteSqlCommand(query); //manejar errores para que no se caiga
                 
                 
-            return Json( atencion);;
+            return Json( data);;
           }
           return Json(new {
                 state = 0,
