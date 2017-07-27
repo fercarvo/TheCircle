@@ -22,6 +22,7 @@ namespace TheCircle.Controllers
 
         // GET: api/Enfermedad
         [HttpGet]
+        [ResponseCache(Duration = 60 * 120)] //1*120 minutos
         public IEnumerable<Enfermedad> Get()
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())

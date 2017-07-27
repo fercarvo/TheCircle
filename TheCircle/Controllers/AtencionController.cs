@@ -80,6 +80,7 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("api/institucion")]
+        [ResponseCache(Duration = 60*60)] //1*60 minutos
         public IEnumerable<Institucion> GetInstituciones()
         {
             {

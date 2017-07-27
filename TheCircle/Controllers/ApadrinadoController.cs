@@ -32,6 +32,7 @@ namespace TheCircle.Controllers
 
         // GET: api/Apadrinado/5
         [HttpGet("{cod}", Name = "Get")]
+        [ResponseCache(Duration = 60)] //60 segundos
         public IEnumerable<Apadrinado> Get(int cod)
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())

@@ -49,15 +49,24 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     })
     .factory('dataFactory', ['$http', function ($http) {
         var fac = {};
+        fac.enfermedades = {};
+        fac.instituciones = {};
 
-        fac.enfermedades = function () {
-            return $http.get("/api/enfermedad");
-        };
+        fac.init = function () {
+            if (!fac.enfermedades) {
+                $http.get("/api/enfermedad").then(function success(res) {
+                    fac.enfermedades = res.data;
+                }, function (err) {
 
-        fac.instituciones = function () {
-            return $http.get("/api/institucion");
-        };
+                    });
+            } else if (!fac.instituciones) {
+                $http.get("/api/institucion").then(function success(res) {
+                    fac.instituciones = res.data;
+                }, function (err) {
 
+                });
+            }           
+        }
 
         return fac;
     }])
@@ -136,8 +145,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
+        dataFactory.init();
         $scope.disable = disable.atencion;
-        $scope.enfermedades = [];
+        $scope.enfermedades = dataFactory.enfermedades;
         $scope.tipos = ["curativo", "seguimiento", "control"];
         $scope.atencion = atencionFactory.atencion;
 
@@ -146,11 +156,13 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $(".myselect").select2();
         }
 
+        /*
         dataFactory.enfermedades().then(function success(res) {
             $scope.enfermedades = res.data;
         }, function error(err) {
             console.log(err);
         })
+        */
 
         $scope.reset = function () {
             $scope.atencion.tipo = {};
@@ -192,7 +204,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
-        $scope.instituciones = [];
+        $scope.instituciones = dataFactory.instituciones;
         $scope.diagnosticos = [
             atencionFactory.atencion.diagp,
             atencionFactory.atencion.diag1,
@@ -203,11 +215,13 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $(".myselect").select2();
         }
 
+        /*
         dataFactory.instituciones().then(function success(res) {
             $scope.instituciones = res.data;
         }, function error(err) {
             console.log("error al cargar instituciones", err);
         })
+        */
 
         $scope.send = function () {
             var data = {

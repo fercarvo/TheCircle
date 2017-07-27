@@ -17,6 +17,7 @@ namespace TheCircle.Controllers
 
         // GET: api/Foto/{{id}}
         [HttpGet("{cod}")]
+        [ResponseCache(Duration = 60*5)]
         public IActionResult Get(int cod)
         {
             string query = "EXEC dbo.ApadrinadoFotoByCod @cod=" + cod;
