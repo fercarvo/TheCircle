@@ -7,6 +7,7 @@ namespace TheCircle.Models
     {
         [Key]
         public string id { get; set; }
+        public string status { get; set; }
         public string nombres { get; set; }
         public string apellidos { get; set; }
         public Int16 income { get; set; }

@@ -82,7 +82,6 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
         $scope.disable = disable.atencion;
-        //$scope.disable.bar = true;
         $scope.apadrinado = atencionFactory.apadrinado;
         //$scope.apadrinado.cod = atencionFactory.apadrinado.cod;
 
@@ -103,6 +102,15 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         $scope.apadrinado.foto = "/images/ci.png";
                         atencionFactory.setApadrinado($scope.apadrinado.cod);
                     } else {
+
+                        if (res.data[0].status != "A") {
+                            $scope.apadrinado.status = false;
+                        }
+
+                        $scope.apadrinado.status = true;
+
+
+                        console.log($scope.apadrinado.status);
 
                         $scope.apadrinado.foto = "/api/Foto/" + $scope.apadrinado.cod;
 
