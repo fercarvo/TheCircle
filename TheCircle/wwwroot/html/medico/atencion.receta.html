@@ -1,78 +1,70 @@
 <div>
     <div class="panel-body">
-        <form class="form-horizontal">
             <div class="form-group ">
                 <!--"m-bottom-30" para poner margen vertical de 30px-->
                 <div class="form-group col-sm-6">
-                    <label for="inputEmailExample2" class="control-label col-sm-3">Enfermedad</label>
+                    <label class="control-label col-sm-3">Enfermedad</label>
                     <div class="col-sm-9" style="padding-bottom:5px;">
-                        <select class="form-control">
-                            <option value="Enfermedad 1">Enfermedad 1</option>
-                            <option value="Enfermedad 2">Enfermedad 2</option>
-                            <option value="Enfermedad 3">Enfermedad 3</option>
+                        <select required class="form-control" ng-model="receta.diagnostico" ng-options="d as d for d in diagnosticos">
+                            <option></option>
                         </select>
                     </div>
                     <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
                         <div class="panel-heading">
                             <div class="panel-title">
-                                Tabla Medicinas
-                            </div><!-- /.panel-title -->
-                        </div><!-- /.panel-heading -->
+                                Stock de farmacia
+                            </div>
+                        </div>
 
                         <div class="panel-body">
                             <table class="table table-striped" style="text-align:center;">
                                 <thead>
                                     <tr>
                                         <th style="text-align:center;">Stock</th>
-                                        <th style="text-align:center;">Insumos</th>
+                                        <th style="text-align:center;">Nombre</th>
+                                        <th style="text-align:center;">Compuesto</th>
+                                        <th>Seleccionar</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td>125</td>
-                                        <td>Medicina 1</td>
-                                    </tr>
-                                    <tr>
-                                        <td>233</td>
-                                        <td>Medicina 2</td>
-                                    </tr>
-                                    <tr>
-                                        <td>311</td>
-                                        <td>Medicina 3</td>
-                                    </tr>
-                                    <tr>
-                                        <td>405</td>
-                                        <td>Medicina 4</td>
-                                    </tr>
-                                    <tr>
-                                        <td>500</td>
-                                        <td>Medicina 5</td>
+                                    <tr ng-repeat="item in items">
+                                        <td>{{item.stock}}</td>
+                                        <td>{{item.nombre}}</td>
+                                        <td>{{item.compuesto}}</td>
+                                        <td ng-click="receta.item($item)"></td>
                                     </tr>
                                 </tbody>
                             </table>
-                        </div><!-- /.panel-body -->
-                    </div><!-- /.form-group TABLE 1-->
-                </div><!-- /.form-group TABLE 1 and labels-->
+                        </div>
+                    </div>
+                </div>
 
                     <div class="form-group col-sm-6">
-
-                        <label for="inputEmailExample2" class="control-label col-sm-3">Cantidad</label>
-                        <div class="col-sm-9" style="padding-bottom:5px;">
-                            <input type="text" class="form-control" placeholder="cantidad" id="inputEmailExample2">
-                        </div>
-                        <label for="textareaExample2" class="control-label col-sm-3">Posologia</label>
-                        <div class="col-sm-9">
-                            <textarea class="form-control" placeholder="....." rows="2" id="textareaExample2"></textarea>
-                        </div>
-                        <div class="text-right">
-                            <button type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
-                        </div>
+                        <form ng-submit="agregar()">
+                            <label class="control-label col-sm-3">Enfermedad</label>
+                            <div class="col-sm-9" style="padding-bottom:5px;">
+                                <input disabled type="text" class="form-control" ng-model="receta.diagnostico" placeholder="cantidad">
+                            </div>
+                            <label class="control-label col-sm-3">Cantidad</label>
+                            <div class="col-sm-9" style="padding-bottom:5px;">
+                                <input required type="text" class="form-control" ng-model="receta.cantidad" placeholder="cantidad">
+                            </div>
+                            <label class="control-label col-sm-3">Posologia</label>
+                            <div class="col-sm-9">
+                                <textarea required ng-model="receta.posologia" class="form-control" placeholder="....." rows="2"></textarea>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
+                                <button type="reset" class="btn btn-info" style="margin-top:5px;">Cancelar</button>
+                            </div>
+                        </form>
+                        
                         <div class="panel panel-default-light border-default col-sm-12" style="margin-left: 5px;">
-                            <label for="inputEmailExample2" style="float:right;margin-bottom:0px;">Receta</label>
+                            <label style="float:right;margin-bottom:0px;">Receta</label>
                             <div class="panel-heading">
                                 <div class="panel-title" style="padding-top:0px;">
-                                    Tabla Remisiones
+                                    Recetado
                                 </div><!-- /.panel-title -->
                             </div><!-- /.panel-heading -->
 
@@ -81,26 +73,16 @@
                                     <thead>
                                         <tr>
                                             <th style="text-align:center;">#</th>
-                                            <th style="text-align:center;">Remision</th>
-                                            <th align="center" style="padding:0px 0px 0px 0px;width:20px;">Edicion</th>
+                                            <th style="text-align:center;">Nombre</th>
+                                            <th align="center" style="padding:0px 0px 0px 0px;width:20px;">Posologia</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Remision 1</td>
-                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Remision 2</td>
-                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
-                                        </tr>
-                                        <tr>
-                                            <td>3</td>
-                                            <td>Remision 3</td>
-                                            <td align="center" style="padding:0px 0px 0px 0px;width:20px;"><img width="16px" height="16px" src="../../images/wiseboard/icon_cancel.png" /></td>
+                                        <tr ng-repeat="item in recetado">
+                                            <td>{{item.cantidad}}</td>
+                                            <td>{{item.nombre}}</td>
+                                            <td>{{item.posologia}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -112,12 +94,10 @@
                 </div> <!-- /.form-group TODO -->    
 
                 <div class="text-center ">
-                    <button type="submit" class="btn btn-info">Guardad</button>
+                    <button type="submit" class="btn btn-info">Generar receta</button>
                     <button type="button" class="btn btn-default">Cancelar</button>
                 </div><!-- /.form-group -->
 
-
-</form>
     </div><!-- /.panel-body -->
 
 </div><!-- /.tab-pane 3 -->

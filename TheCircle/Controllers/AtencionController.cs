@@ -40,12 +40,12 @@ namespace TheCircle.Controllers
                   ", @diag2=" + atencion.diag2 +
                   ", @id = @id OUTPUT";
 
-                try {
+                //try {
                     var data = _context.Atenciones.FromSql(query); //manejar errores para que no se caiga
                     return data;
-                } catch (Exception e) {
-                    return new Stack<Atencion>();
-                }          
+                //} catch (Exception e) {
+                    //return new Stack<Atencion>();
+                //}          
           }
             return new Stack<Atencion>();
         }

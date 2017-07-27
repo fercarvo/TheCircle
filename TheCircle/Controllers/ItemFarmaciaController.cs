@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
 {
-    [Route("api/ItemFarmacia")]
+    
     public class ItemFarmaciaController : Controller
     {
         private readonly MyDbContext _context;
@@ -18,12 +18,12 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/ItemFarmacia
-        [HttpGet]
-        public IEnumerable<ItemFarmacia> Get()
+        [HttpGet("api/itemfarmacia/{{localidad}}")]
+        public IEnumerable<ItemFarmacia> GetItems(string localidad)
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
             {
-                string query = "EXEC dbo.select_ItemFarmacia @localidad=" + 1;
+                string query = "EXEC dbo.select_ItemFarmacia @localidad=" + localidad;
                 var data = _context.ItemFarmacias.FromSql(query).ToList();
                 return data;
             }

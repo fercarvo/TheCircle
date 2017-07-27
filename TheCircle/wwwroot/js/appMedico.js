@@ -50,21 +50,16 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .factory('dataFactory', ['$http', function ($http) {
         var fac = {};
 
-        fac.init = function () {
+        fac.getInstituciones = function () {
+            return $http.get("/api/institucion");
+        }
 
-            if (!fac.enfermedades) {
-                $http.get("/api/enfermedad").then(function success(res) {
-                    fac.enfermedades = res.data;
-                }, function (err) {
+        fac.getEnfermedades = function () {
+            return $http.get("/api/enfermedad");
+        }
 
-                });
-            } else if (!fac.instituciones) {
-                $http.get("/api/institucion").then(function success(res) {
-                    fac.instituciones = res.data;
-                }, function (err) {
-
-                });
-            }           
+        fac.getStock = function (localidad) {
+            return $http.get("/api/itemfarmacia/" + localidad);
         }
 
         return fac;
@@ -80,10 +75,12 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
         atencion.doctor = "705565656";
+        atencion.localidad = "CC2";
         atencion.apadrinado = {};
         atencion.apadrinado.foto = "/images/ci.png";
         atencion.atencion = {};
         atencion.remision = {};
+        atencion.recetado = [];
 
         return atencion;
     }])
@@ -91,12 +88,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
         $scope.disable = disable.atencion;
         $scope.apadrinado = atencionFactory.apadrinado;
-        //$scope.apadrinado.cod = atencionFactory.apadrinado.cod;
 
-        //recibe el evento de desactivar
         $scope.$on('disable', function (event, data) {
             $scope.disable = disable.atencion;
-            //$scope.disable.bar = false; 
         });
 
         $scope.buscarApadrinado = function () {
@@ -108,18 +102,17 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                     if (res.data.length === 0) {
                         $scope.apadrinado = {};
                         $scope.apadrinado.foto = "/images/ci.png";
-                        atencionFactory.setApadrinado($scope.apadrinado.cod);
+                        $scope.apadrinado.status = false;
+                        atencionFactory.apadrinado.cod = $scope.apadrinado.cod;
                     } else {
 
-                        if (res.data[0].status != "A") {
+                        if (res.data[0].status == "D" || res.data[0].status == "E") {
                             $scope.apadrinado.status = false;
+                        } else {
+                            $scope.apadrinado.status = true;
                         }
 
-                        $scope.apadrinado.status = true;
-
-
                         console.log($scope.apadrinado.status);
-
                         $scope.apadrinado.foto = "/api/apadrinado/foto/" + $scope.apadrinado.cod;
 
                         $scope.apadrinado.nombres = res.data[0].nombres;
@@ -132,8 +125,6 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         $scope.apadrinado.edad = res.data[0].edad;
 
                         atencionFactory.apadrinado = $scope.apadrinado;
-
-                        //atencionFactory.setApadrinadoId($scope.apadrinado.cod);
                     }
 
                 }, function error(err, status) {
@@ -144,7 +135,6 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
-        dataFactory.init();
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
         $scope.tipos = ["curativo", "seguimiento", "control"];
@@ -155,13 +145,16 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $(".myselect").select2();
         }
 
-        /*
-        dataFactory.enfermedades().then(function success(res) {
-            $scope.enfermedades = res.data;
-        }, function error(err) {
-            console.log(err);
-        })
-        */
+        if (!dataFactory.enfermedades) {
+            dataFactory.getEnfermedades().then(function success(res) {
+                dataFactory.enfermedades = res.data;
+                $scope.enfermedades = dataFactory.enfermedades;
+            }, function error(err) {
+                console.log(err);
+            })
+        }
+        
+        
 
         $scope.reset = function () {
             $scope.atencion.tipo = {};
@@ -214,13 +207,16 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $(".myselect").select2();
         }
 
-        /*
-        dataFactory.instituciones().then(function success(res) {
-            $scope.instituciones = res.data;
-        }, function error(err) {
-            console.log("error al cargar instituciones", err);
-        })
-        */
+        if (!dataFactory.instituciones) {
+            dataFactory.getInstituciones().then(function success(res) {
+                dataFactory.instituciones = res.data;
+                $scope.instituciones = dataFactory.instituciones;
+            }, function error(err) {
+                console.log("error al cargar instituciones", err);
+            })
+        }
+
+        
 
         $scope.send = function () {
             var data = {
@@ -232,12 +228,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $http.post("/api/remision", data).then(function success(res) {
 
                 console.log("se creo", res);
-
                 disable.remision = true;
                 atencionFactory.remision = $scope.remision; //Se guarda la data ingresada en la factory
-
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
-
                 console.log("atencionFactory after remision", atencionFactory);
 
             }, function (err, status) {
@@ -248,8 +241,31 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
 
     }])
-    .controller('atencion.receta', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
 
+        $scope.stock = dataFactory.stock;
+        $scope.recetado = atencionFactory.recetado;
+        $scope.receta = {};
+
+        $scope.diagnosticos = [
+            atencionFactory.atencion.diagp,
+            atencionFactory.atencion.diag1,
+            atencionFactory.atencion.diag2
+        ]
+
+        if (!dataFactory.stock) {
+            dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
+                dataFactory.stock = res.data;
+                $scope.stock = dataFactory.stock;
+            }, function error(err) {
+                console.log(err);
+            })
+        }
+
+        $scope.agregar = function () {
+            atencionFactory.recetado.push($scope.receta);
+            $scope.recetado.push($scope.receta);
+        }
 
 
     }])

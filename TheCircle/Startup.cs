@@ -37,6 +37,7 @@ namespace TheCircle
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
+            /*
             env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment())
             {
@@ -45,7 +46,7 @@ namespace TheCircle
             else
             {
                 app.UseExceptionHandler("/error");
-            }
+            }*/
 
             //app.UseStaticFiles();
             app.UseStaticFiles(
