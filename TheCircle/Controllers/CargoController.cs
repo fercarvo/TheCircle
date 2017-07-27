@@ -1,17 +1,15 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
+
 
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Cargo")]
+    [Route("api/cargo")]
     public class CargoController : Controller
     {
 

@@ -3,13 +3,11 @@ using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Apadrinado")]
+    [Route("api/apadrinado")]
     public class ApadrinadoController : Controller
     {
 
@@ -19,7 +17,7 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-        // GET: api/Apadrinado
+
         [HttpGet]
         public IEnumerable<Apadrinado> Get()
         {
@@ -30,10 +28,10 @@ namespace TheCircle.Controllers
             }
         }
 
-        // GET: api/Apadrinado/5
-        [HttpGet("{cod}", Name = "Get")]
+
+        [HttpGet("{cod}")]
         [ResponseCache(Duration = 60)] //60 segundos
-        public IEnumerable<Apadrinado> Get(int cod)
+        public IEnumerable<Apadrinado> GetApadrinado(int cod)
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
             {
@@ -44,16 +42,24 @@ namespace TheCircle.Controllers
         }
 
 
-        // PUT: api/Apadrinado/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        [HttpGet("foto/{cod}")]
+        [ResponseCache(Duration = 60 * 5)]
+        public IActionResult GetApadrinadoFoto(int cod)
         {
+            string query = "EXEC dbo.ApadrinadoFotoByCod @cod=" + cod;
+
+            var data = _context.Fotos.FromSql(query).ToList();
+            //string ruta = "C:\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name;
+
+            if (data.Count == 0)
+            {
+                var image2 = System.IO.File.OpenRead("..\\wwwroot\\images\\ci.png");
+                return File(image2, "image/jpeg");
+            }
+            var image = System.IO.File.OpenRead("\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name);
+            return File(image, "image/jpeg");
         }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+
+
     }
 }

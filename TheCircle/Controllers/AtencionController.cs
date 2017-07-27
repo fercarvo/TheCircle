@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Data;
 
 namespace TheCircle.Controllers
 {
@@ -19,9 +16,9 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-        // POST: api/Enfermedad
+        //Crea una atencion medica
         [HttpPost ("api/atencion")]
-        public IEnumerable<AtencionId> PostAtencion([FromBody] AtencionNueva atencion)
+        public IEnumerable<Atencion> PostAtencion([FromBody] AtencionNueva atencion)
         {
           if (atencion != null) {
                 if (atencion.diag1 == null)
@@ -47,13 +44,13 @@ namespace TheCircle.Controllers
                     var data = _context.Atenciones.FromSql(query); //manejar errores para que no se caiga
                     return data;
                 } catch (Exception e) {
-                    return new Stack<AtencionId>();
+                    return new Stack<Atencion>();
                 }          
           }
-            return new Stack<AtencionId>();
+            return new Stack<Atencion>();
         }
 
-
+        //Crea una remision medica
         [HttpPost ("api/remision", Name = "PostRemision")]
         public IEnumerable<Remision> PostRemision([FromBody] RemisionNueva remision)
         {

@@ -12,7 +12,7 @@ namespace TheCircle
         public virtual DbSet<Foto> Fotos { get; set; }
         public virtual DbSet<Enfermedad> Enfermedades { get; set; }
         public virtual DbSet<Institucion> Instituciones { get; set; }
-        public virtual DbSet<AtencionId> Atenciones { get; set; }
+        public virtual DbSet<Atencion> Atenciones { get; set; }
 
         /*
 protected override void OnModelCreating(ModelBuilder modelBuilder)

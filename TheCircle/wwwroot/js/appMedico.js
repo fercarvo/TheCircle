@@ -49,16 +49,15 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     })
     .factory('dataFactory', ['$http', function ($http) {
         var fac = {};
-        fac.enfermedades = {};
-        fac.instituciones = {};
 
         fac.init = function () {
+
             if (!fac.enfermedades) {
                 $http.get("/api/enfermedad").then(function success(res) {
                     fac.enfermedades = res.data;
                 }, function (err) {
 
-                    });
+                });
             } else if (!fac.instituciones) {
                 $http.get("/api/institucion").then(function success(res) {
                     fac.instituciones = res.data;
@@ -121,7 +120,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
                         console.log($scope.apadrinado.status);
 
-                        $scope.apadrinado.foto = "/api/Foto/" + $scope.apadrinado.cod;
+                        $scope.apadrinado.foto = "/api/apadrinado/foto/" + $scope.apadrinado.cod;
 
                         $scope.apadrinado.nombres = res.data[0].nombres;
                         $scope.apadrinado.apellidos = res.data[0].apellidos;
@@ -183,7 +182,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
             $http.post("/api/atencion", data).then(function success(res){
 
-                console.log("se creo", res);
+                console.log("se creo", res.data);
 
                 disable.atencion = true;
                 atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
