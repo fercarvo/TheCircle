@@ -96,6 +96,8 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
                 .then(function success(res) {
 
+                    console.log(res.data)
+
                     if (res.data.length === 0) {
                         $scope.apadrinado = {};
                         $scope.apadrinado.foto = "/images/ci.png";
@@ -118,8 +120,8 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         //atencionFactory.setApadrinadoId($scope.apadrinado.cod);
                     }
 
-                }, function error() {
-                    console.log("error de conexion");
+                }, function error(err, status) {
+                    console.log(err, status);
                 });
         };
 
@@ -159,17 +161,18 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                 diag2: $scope.atencion.diag2
             }
 
-            $http.post("/api/atencion", data).then(function success(data){
+            $http.post("/api/atencion", data).then(function success(res){
 
-                console.log("Atencion creada con exito");
+                console.log("se creo", res);
 
                 disable.atencion = true;
                 atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
+                atencionFactory.atencion.id = res.data[0].id
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
 
-            }, function (err){
-              console.log(err);
+            }, function (err, status){
+              console.log("error", err, status);
             });
         }
 
@@ -177,10 +180,12 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
 
+        console.log("atencionFactory", atencionFactory);
+
         $scope.disable = disable.remision;
-        $scope.remision = dataFactory.remision;
+        $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
         $scope.instituciones = [];
-        $scope.enfermedades = [
+        $scope.diagnosticos = [
             atencionFactory.atencion.diagp,
             atencionFactory.atencion.diag1,
             atencionFactory.atencion.diag2]
@@ -193,9 +198,31 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         dataFactory.instituciones().then(function success(res) {
             $scope.instituciones = res.data;
         }, function error(err) {
-            console.log(err);
+            console.log("error al cargar instituciones", err);
         })
 
+        $scope.send = function () {
+            var data = {
+                atencionM: atencionFactory.atencion.id,
+                institucion: $scope.remision.institucion,
+                monto: $scope.remision.monto
+            }
+
+            $http.post("/api/remision", data).then(function success(res) {
+
+                console.log("se creo", res);
+
+                disable.remision = true;
+                atencionFactory.remision = $scope.remision; //Se guarda la data ingresada en la factory
+
+                $scope.disable = disable.remision; //Se desactiva atencion.remision.html
+
+                console.log("atencionFactory after remision", atencionFactory);
+
+            }, function (err, status) {
+                console.log("error", err, status);
+            });
+        }
 
 
 

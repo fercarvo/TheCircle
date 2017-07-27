@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/Remision")]
+    //[Route("api/Remision")]
     public class RemisionController : Controller
     {
 
@@ -21,7 +21,7 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/Remision
-        [HttpGet]
+        [HttpGet ("api/remision")]
         public IEnumerable<Remision> Get()
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
@@ -31,29 +31,5 @@ namespace TheCircle.Controllers
             }
         }
 
-        // GET: api/Remision/5
-        [HttpGet("{id}")]
-        public int Get(int id)
-        {
-            return id;
-        }
-        
-        // POST: api/Remision
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
-        // PUT: api/Remision/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

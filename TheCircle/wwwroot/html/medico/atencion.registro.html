@@ -1,6 +1,6 @@
 <div >
     <div class="panel-body" style="padding:0px 20px 20px 20px;">
-        <form class="form-horizontal" ng-init="activar()">
+        <form class="form-horizontal" ng-submit="send()" ng-init="activar()">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
                 <div class="form-group">
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;">Atencion Medica</label>
@@ -37,8 +37,8 @@
                     </div>
                 </div><!-- /.form-group -->
                 <div class="text-center">
-                    <button type="submit" class="btn btn-info" ng-click="send()" ng-disabled="disable">Aceptar</button>
-                    <button type="button" class="btn btn-default" ng-click="reset()" ng-disabled="disable">Cancelar</button>
+                    <button type="submit" class="btn btn-info" ng-disabled="disable">Aceptar</button>
+                    <button type="reset" class="btn btn-default" ng-click="reset()" ng-disabled="disable">Cancelar</button>
                 </div><!-- /.form-group -->
 </form>
     </div><!-- /.panel-body -->

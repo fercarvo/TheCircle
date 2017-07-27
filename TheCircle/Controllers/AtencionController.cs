@@ -11,7 +11,6 @@ using System.Data;
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    //[Route("api/atencion")]
     public class AtencionController : Controller
     {
         private readonly MyDbContext _context;
@@ -22,7 +21,7 @@ namespace TheCircle.Controllers
 
         // POST: api/Enfermedad
         [HttpPost ("api/atencion")]
-        public JsonResult PostAtencion([FromBody] AtencionNueva atencion)
+        public IEnumerable<AtencionId> PostAtencion([FromBody] AtencionNueva atencion)
         {
           if (atencion != null) {
                 if (atencion.diag1 == null)
@@ -43,25 +42,53 @@ namespace TheCircle.Controllers
                   ", @diag1=" + atencion.diag1 +
                   ", @diag2=" + atencion.diag2 +
                   ", @id = @id OUTPUT";
-                
-                
-                var data = _context.Database.ExecuteSqlCommand(query); //manejar errores para que no se caiga
-                
-                
-            return Json( data);;
+
+                try {
+                    var data = _context.Atenciones.FromSql(query); //manejar errores para que no se caiga
+                    return data;
+                } catch (Exception e) {
+                    return new Stack<AtencionId>();
+                }          
           }
-          return Json(new {
-                state = 0,
-                msg = string.Empty
-            });
+            return new Stack<AtencionId>();
         }
+
+
+        [HttpPost ("api/remision", Name = "PostRemision")]
+        public IEnumerable<Remision> PostRemision([FromBody] RemisionNueva remision)
+        {
+            if (remision != null)
+            {
+                string query = "DECLARE @id int" + 
+                  " EXEC dbo.insert_Remision @atencionM=" + remision.atencionM +
+                  ", @institucion=" + remision.institucion +
+                  ", @monto=" + remision.monto +
+                  ", @id = @id OUTPUT";
+
+                //try
+                {
+                    var data = _context.Remisiones.FromSql(query); //manejar errores para que no se caiga
+                    return data;
+                }
+                //catch (Exception e)
+                {
+                    //return new Stack<Remision>();
+                }
+            }
+            return new Stack<Remision>();
+        }
+
 
         [HttpGet("api/institucion")]
         public IEnumerable<Institucion> GetInstituciones()
         {
             {
-                var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToList();
-                return data;
+                try {
+                    var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToList();
+                    return data;
+                } catch (Exception e) {
+                    return new Stack<Institucion>();
+                }          
             }
         }
     }

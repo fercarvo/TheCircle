@@ -12,9 +12,9 @@ namespace TheCircle.Models
         public int id { get; set; }
         public int atencionM { get; set; }
         public int doctor { get; set; }
-        public string IdInstitucion { get; set; }
+        public Int32 IdInstitucion { get; set; }
         public string nombreInstitucion { get; set; }
-        public double monto { get; set; }
+        public Int32 monto { get; set; }
         public DateTime fecha { get; set; }
         public DateTime fCaducidad { get; set; }
 
