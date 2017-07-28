@@ -6,7 +6,6 @@
                     <label class="control-label col-sm-3">Enfermedad</label>
                     <div class="col-sm-9" style="padding-bottom:5px;">
                         <select required class="form-control" ng-model="receta.diagnostico" ng-options="d as d for d in diagnosticos">
-                            <option></option>
                         </select>
                     </div>
                     <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
@@ -23,16 +22,14 @@
                                         <th style="text-align:center;">Stock</th>
                                         <th style="text-align:center;">Nombre</th>
                                         <th style="text-align:center;">Compuesto</th>
-                                        <th>Seleccionar</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
-                                    <tr ng-repeat="item in items">
+                                    <tr ng-repeat="item in stock" ng-click="add(item)">
                                         <td>{{item.stock}}</td>
                                         <td>{{item.nombre}}</td>
                                         <td>{{item.compuesto}}</td>
-                                        <td ng-click="receta.item($item)"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -42,9 +39,9 @@
 
                     <div class="form-group col-sm-6">
                         <form ng-submit="agregar()">
-                            <label class="control-label col-sm-3">Enfermedad</label>
+                            <label class="control-label col-sm-3">Item</label>
                             <div class="col-sm-9" style="padding-bottom:5px;">
-                                <input disabled type="text" class="form-control" ng-model="receta.diagnostico" placeholder="cantidad">
+                                <input disabled type="text" class="form-control" ng-model="receta.item.nombre">
                             </div>
                             <label class="control-label col-sm-3">Cantidad</label>
                             <div class="col-sm-9" style="padding-bottom:5px;">
@@ -56,15 +53,18 @@
                             </div>
                             <div class="text-right">
                                 <button type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
-                                <button type="reset" class="btn btn-info" style="margin-top:5px;">Cancelar</button>
+                                <button type="reset" class="btn btn-info" style="margin-top:5px;">Limpiar seleccion</button>
                             </div>
                         </form>
                         
                         <div class="panel panel-default-light border-default col-sm-12" style="margin-left: 5px;">
-                            <label style="float:right;margin-bottom:0px;">Receta</label>
+                            
                             <div class="panel-heading">
                                 <div class="panel-title" style="padding-top:0px;">
-                                    Recetado
+                                    Receta Médica
+                                </div><!-- /.panel-title -->
+                                <div class="panel-title" style="padding-top:0px;">
+                                    Codigo ##
                                 </div><!-- /.panel-title -->
                             </div><!-- /.panel-heading -->
 
@@ -79,10 +79,10 @@
                                     </thead>
 
                                     <tbody>
-                                        <tr ng-repeat="item in recetado">
-                                            <td>{{item.cantidad}}</td>
-                                            <td>{{item.nombre}}</td>
-                                            <td>{{item.posologia}}</td>
+                                        <tr ng-repeat="r in recetado">
+                                            <td>{{r.cantidad}}</td>
+                                            <td>{{r.item.nombre}}</td>
+                                            <td>{{r.posologia}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -94,7 +94,7 @@
                 </div> <!-- /.form-group TODO -->    
 
                 <div class="text-center ">
-                    <button type="submit" class="btn btn-info">Generar receta</button>
+                    <button type="submit" class="btn btn-info">Guardar receta médica</button>
                     <button type="button" class="btn btn-default">Cancelar</button>
                 </div><!-- /.form-group -->
 

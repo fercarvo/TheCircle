@@ -81,6 +81,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         atencion.atencion = {};
         atencion.remision = {};
         atencion.recetado = [];
+        atencion.apadrinado.status = true; 
 
         return atencion;
     }])
@@ -103,11 +104,13 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                         $scope.apadrinado = {};
                         $scope.apadrinado.foto = "/images/ci.png";
                         $scope.apadrinado.status = false;
+                        atencionFactory.apadrinado.status = false;
                         atencionFactory.apadrinado.cod = $scope.apadrinado.cod;
                     } else {
 
                         if (res.data[0].status == "D" || res.data[0].status == "E") {
                             $scope.apadrinado.status = false;
+                            atencionFactory.apadrinado.status = false;
                         } else {
                             $scope.apadrinado.status = true;
                         }
@@ -182,6 +185,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                 atencionFactory.atencion.id = res.data[0].id
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
+                $state.go('atencion.remision');
 
             }, function (err, status){
               console.log("error", err, status);
@@ -263,8 +267,12 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         }
 
         $scope.agregar = function () {
-            atencionFactory.recetado.push($scope.receta);
+            //atencionFactory.recetado.push($scope.receta);
             $scope.recetado.push($scope.receta);
+        }
+
+        $scope.add = function(item) {
+            $scope.receta.item = item;
         }
 
 

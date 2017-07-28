@@ -18,7 +18,7 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/ItemFarmacia
-        [HttpGet("api/itemfarmacia/{{localidad}}")]
+        [HttpGet("api/itemfarmacia/{localidad}")]
         public IEnumerable<ItemFarmacia> GetItems(string localidad)
         {
             //using (var command = context.Database.GetDbConnection().CreateCommand())
