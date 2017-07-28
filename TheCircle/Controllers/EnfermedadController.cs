@@ -25,30 +25,8 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60 * 120)] //1*120 minutos
         public IEnumerable<Enfermedad> Get()
         {
-            //using (var command = context.Database.GetDbConnection().CreateCommand())
-            {
-                var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
-                return data;
-            }
-        }
-
-      
-        // POST: api/Enfermedad
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
-        // PUT: api/Enfermedad/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
+            return data;
         }
     }
 }

@@ -1,4 +1,4 @@
-angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
+angular.module('appMedico', ['ui.router', "ui.select"])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
@@ -80,8 +80,9 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         atencion.apadrinado.foto = "/images/ci.png";
         atencion.atencion = {};
         atencion.remision = {};
-        atencion.recetado = [];
-        atencion.apadrinado.status = true; 
+        atencion.receta = [];
+        atencion.receta.id = {};
+        atencion.apadrinado.status = true;
 
         return atencion;
     }])
@@ -136,7 +137,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         };
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
+    .controller('atencion.registro', ["$scope", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $http, dataFactory, atencionFactory, disable) {
 
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
@@ -156,8 +157,8 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                 console.log(err);
             })
         }
-        
-        
+
+
 
         $scope.reset = function () {
             $scope.atencion.tipo = {};
@@ -196,7 +197,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
 
-        console.log("atencionFactory", atencionFactory);
+        //console.log("atencionFactory", atencionFactory);
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
@@ -220,7 +221,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             })
         }
 
-        
+
 
         $scope.send = function () {
             var data = {
@@ -248,8 +249,8 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
 
         $scope.stock = dataFactory.stock;
-        $scope.recetado = atencionFactory.recetado;
-        $scope.receta = {};
+        $scope.receta = atencionFactory.receta;
+        $scope.itemReceta = {};
 
         $scope.diagnosticos = [
             atencionFactory.atencion.diagp,
@@ -266,13 +267,45 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
             })
         }
 
-        $scope.agregar = function () {
-            //atencionFactory.recetado.push($scope.receta);
-            $scope.recetado.push($scope.receta);
+        $scope.creatReceta = function () {
+            var data = {idDoctor: atencionFactory.doctor, idApadrinado: atencionFactory.apadrinado.cod};
+
+            $http.post("/api/receta", data).then(function success(res) {
+                console.log("Se creo receta", res.data[0]);
+                atencionFactory.receta.id = res.data[0].id;
+                $scope.receta.id = atencionFactory.receta.id;
+            }, function err(err){
+                console.log("No se pudo crear receta", err);
+            });
+
         }
 
-        $scope.add = function(item) {
-            $scope.receta.item = item;
+        $scope.addItenReceta = function () {
+            $scope.editarItem = true;
+            atencionFactory.receta.push($scope.itemReceta);
+            $scope.receta = atencionFactory.receta;
+        }
+
+        $scope.eliminarItem = function (array, index){
+            array.splice(index, 1);
+            atencionFactory.splice(index, 1);
+        }
+
+        $scope.select = function (item) {
+            $scope.editarItem = false;;
+            $scope.itemReceta.id = item.id;
+            $scope.itemReceta.nombre = item.nombre;
+        }
+
+        $scope.guardarReceta = function () {
+            var data = {idReceta: atencionFactory.receta.id, items: atencionFactory.receta};
+            console.log("data a enviar", data);
+
+            $http.post("/api/itemsreceta", data).then(function success(res) {
+                console.log("Se crearon los items", res.data);
+            }, function err(err){
+                console.log("No se pudieron crear los items", err);
+            });
         }
 
 

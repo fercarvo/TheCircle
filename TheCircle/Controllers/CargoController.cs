@@ -19,8 +19,6 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-
-
         // GET: api/Cargo
         [HttpGet]
         public IEnumerable<Cargo> Get()
@@ -30,35 +28,6 @@ namespace TheCircle.Controllers
                 var data = _context.Cargos.FromSql("EXEC dbo.select_Cargo").ToList();
                     return data;
             }
-        }
-
-
-        // GET: api/Cargo/5
-        [HttpGet("{id}")]
-        public async Task<string> Get(int id)
-        {
-            await _context.Database.ExecuteSqlCommandAsync("insert_Cargo @tipo",
-        parameters: new[] { "hello"});
-            return "das";
-        }
-
-        // POST: api/Cargo
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-
-        }
-
-        // PUT: api/Cargo/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

@@ -20,18 +20,15 @@ namespace TheCircle.Controllers
 
 
         [HttpGet]
-        public IEnumerable<Apadrinado> Get()
+        public IEnumerable<Apadrinado> GerApadrinados()
         {
-            //using (var command = context.Database.GetDbConnection().CreateCommand())
-            {
-                var data = _context.Apadrinados.FromSql("EXEC dbo.select_Apadrinado3").ToList();
-                return data;
-            }
+            var data = _context.Apadrinados.FromSql("EXEC dbo.select_Apadrinado3").ToList();
+            return data;
         }
 
 
         [HttpGet("{cod}")]
-        [ResponseCache(Duration = 60)] //60 segundos
+        [ResponseCache(Duration = 60)] //cache de 60 segundos
         public IEnumerable<Apadrinado> GetApadrinado(int cod)
         {
             try {
@@ -41,8 +38,6 @@ namespace TheCircle.Controllers
             } catch (Exception e) {
                 return new Stack<Apadrinado>();
             }
-            
-
         }
 
 
@@ -54,25 +49,17 @@ namespace TheCircle.Controllers
 
             try {
                 var data = _context.Fotos.FromSql(query).ToList();
-                if (data.Count == 0)
-                {
+                if (data.Count == 0) {
                     var image2 = System.IO.File.OpenRead("..\\TheCircle\\wwwroot\\images\\ci.png");
-
+                    return File(image2, "image/jpeg");
+                } else {
+                    var image = System.IO.File.OpenRead("\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name);
+                    return File(image, "image/jpeg");
                 }
-                var image = System.IO.File.OpenRead("\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name);
-                return File(image, "image/jpeg");
-
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 var image2 = System.IO.File.OpenRead("..\\TheCircle\\wwwroot\\images\\ci.png");
                 return File(image2, "image/jpeg");
             }
-            
-            //string ruta = "C:\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name;
-
-
         }
-
-
     }
 }
