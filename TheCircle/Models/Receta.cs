@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 
@@ -10,8 +11,8 @@ namespace TheCircle.Models
         public int id { get; set; }
         public DateTime fecha { get; set; }
         public DateTime fCaducidad { get; set; }
-        public int despachada { get; set; }
-        public int eliminada { get; set; }
+        public int? despachada { get; set; }
+        public int? eliminada { get; set; }
         public int idDoctor { get; set; }
         public int idApadrinado { get; set; }
 
@@ -24,22 +25,23 @@ namespace TheCircle.Models
         [Key]
         public int id { get; set; }
         public int idItemFarmacia { get; set; }
-        public string diagnostico { get; set; }
+        public Int32 diagnostico { get; set; }
         public int cantidad { get; set; }
-        public int idReceta { get; set; }
+        public int receta { get; set; }
         public DateTime fecha { get; set; }
         public string posologia { get; set; }
-        public int funciono { get; set; }
+        public int? funciono { get; set; }
 
         public ItemReceta() { }
     }
 
     public class ItemRecetaNuevo
     {
-        public int idItemFarmacia { get; set; }
-        public int idDiagnostico { get; set; }
+        [Key]
+        public int itemFarmacia { get; set; }
+        public string diagnostico { get; set; }
         public int cantidad { get; set; }
-        public int posologia { get; set; }
+        public string posologia { get; set; }
 
         public ItemRecetaNuevo() { }
     }

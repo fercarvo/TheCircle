@@ -1,6 +1,6 @@
 <div ng-init="activar()">
     <div class="panel-body" style="padding:0px 20px 20px 20px;">
-        <form class="form-horizontal" ng-submit="send()">
+        <form class="form-horizontal" ng-submit="send(remision)">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
 
             <div class="form-group">
@@ -15,7 +15,7 @@
             <div class="form-group" style="padding:0px 0px 10px 0px;">
                 <label class="control-label col-sm-2" style="text-align:left;width:12%;">Diagnostico probable</label>
                 <div class="col-sm-3">
-                    <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.diagnostico" ng-options="d as d for d in diagnosticos">
+                    <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.diagnostico" ng-options="d as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
                         <option style="display:none;" selected disabled value="">Digite y Seleccione la enfermedad</option>
                     </select>
                 </div>
@@ -33,9 +33,6 @@
                     <textarea required ng-disabled="disable" ng-model="remision.sintomas" class="form-control" placeholder="....." rows="2"></textarea>
                 </div>
             </div><!-- /.form-group -->
-            <div>
-                {{remision}}
-            </div>
             <div class="text-center" style="padding:5px;">
                 <button ng-disabled="disable" type="submit" class="btn btn-info">Aceptar</button>
                 <button ng-disabled="disable" type="reset" class="btn btn-default">Cancelar</button>

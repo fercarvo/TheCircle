@@ -81,7 +81,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
         atencion.atencion = {};
         atencion.remision = {};
         atencion.receta = [];
-        atencion.receta.id = {};
+        atencion.receta.id = null;
         atencion.apadrinado.status = true;
 
         return atencion;
@@ -179,11 +179,10 @@ angular.module('appMedico', ['ui.router', "ui.select"])
 
             $http.post("/api/atencion", data).then(function success(res){
 
-                console.log("se creo", res.data);
+                console.log("se creo atencion", res.data);
 
                 disable.atencion = true;
-                atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
-                atencionFactory.atencion.id = res.data[0].id
+                atencionFactory.atencion = res.data; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
                 $state.go('atencion.remision');
@@ -202,10 +201,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
         $scope.instituciones = dataFactory.instituciones;
-        $scope.diagnosticos = [
-            atencionFactory.atencion.diagp,
-            atencionFactory.atencion.diag1,
-            atencionFactory.atencion.diag2]
+        $scope.diagnosticos = atencionFactory.atencion.diagnosticos
 
 
         $scope.activar = function () {
@@ -223,23 +219,22 @@ angular.module('appMedico', ['ui.router', "ui.select"])
 
 
 
-        $scope.send = function () {
+        $scope.send = function (remision) {
             var data = {
-                atencionM: atencionFactory.atencion.id,
-                institucion: $scope.remision.institucion,
-                monto: $scope.remision.monto
+                atencionM: atencionFactory.atencion.atencion.id,
+                institucion: remision.institucion,
+                monto: remision.monto
             }
 
             $http.post("/api/remision", data).then(function success(res) {
 
-                console.log("se creo", res);
+                console.log("se creo remision", res);
                 disable.remision = true;
                 atencionFactory.remision = $scope.remision; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
-                console.log("atencionFactory after remision", atencionFactory);
 
             }, function (err, status) {
-                console.log("error", err, status);
+                console.log("error crear remision", err, status);
             });
         }
 
@@ -251,12 +246,8 @@ angular.module('appMedico', ['ui.router', "ui.select"])
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
         $scope.itemReceta = {};
-
-        $scope.diagnosticos = [
-            atencionFactory.atencion.diagp,
-            atencionFactory.atencion.diag1,
-            atencionFactory.atencion.diag2
-        ]
+        $scope.editarItem = true;
+        $scope.diagnosticos = atencionFactory.atencion.diagnosticos;
 
         if (!dataFactory.stock) {
             dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
@@ -267,28 +258,30 @@ angular.module('appMedico', ['ui.router', "ui.select"])
             })
         }
 
-        $scope.creatReceta = function () {
-            var data = {idDoctor: atencionFactory.doctor, idApadrinado: atencionFactory.apadrinado.cod};
+        if (!atencionFactory.receta.id) {
+            $scope.creatReceta = function () {
+                var data = { idDoctor: atencionFactory.doctor, idApadrinado: atencionFactory.apadrinado.cod };
 
-            $http.post("/api/receta", data).then(function success(res) {
-                console.log("Se creo receta", res.data[0]);
-                atencionFactory.receta.id = res.data[0].id;
-                $scope.receta.id = atencionFactory.receta.id;
-            }, function err(err){
-                console.log("No se pudo crear receta", err);
-            });
-
+                $http.post("/api/receta", data).then(function success(res) {
+                    console.log("Se creo receta", res.data[0]);
+                    atencionFactory.receta.id = res.data[0].id;
+                    $scope.receta.id = atencionFactory.receta.id;
+                }, function err(err) {
+                    console.log("No se pudo crear receta", err);
+                });
+            }
         }
 
-        $scope.addItenReceta = function () {
+        $scope.addItenReceta = function (item) {
+            var obj = { itemFarmacia: item.id, diagnostico: item.diagnostico, cantidad: item.cantidad, posologia: item.posologia}
             $scope.editarItem = true;
-            atencionFactory.receta.push($scope.itemReceta);
+            atencionFactory.receta.push(obj);
             $scope.receta = atencionFactory.receta;
         }
 
         $scope.eliminarItem = function (array, index){
             array.splice(index, 1);
-            atencionFactory.splice(index, 1);
+            atencionFactory.receta.splice(index, 1);
         }
 
         $scope.select = function (item) {
@@ -298,10 +291,11 @@ angular.module('appMedico', ['ui.router', "ui.select"])
         }
 
         $scope.guardarReceta = function () {
-            var data = {idReceta: atencionFactory.receta.id, items: atencionFactory.receta};
-            console.log("data a enviar", data);
+            var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta };
+            
+            console.log("data a enviar", JSON.parse(angular.toJson(data)));
 
-            $http.post("/api/itemsreceta", data).then(function success(res) {
+            $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
             }, function err(err){
                 console.log("No se pudieron crear los items", err);
