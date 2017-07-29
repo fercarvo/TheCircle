@@ -18,27 +18,17 @@ namespace TheCircle.Controllers
 
         //Crea una atencion medica
         [HttpPost ("api/atencion")]
-        public Atencion2 PostAtencion([FromBody] AtencionNueva atencion)
+        public IActionResult PostAtencion([FromBody] AtencionNueva atencion)
         {
-            Atencion2 a = new Atencion2();
+            AtencionDiagnostico a = new AtencionDiagnostico();
 
             if (atencion != null) {
-                if (atencion.diag1 == null) {
-                    atencion.diag1 = "null";
-                }
-                if (atencion.diag2 == null) {
-                    atencion.diag2 = "null";
-                }
 
                 string query = "DECLARE @id int "+
                     "EXEC dbo.insert_AtencionM @apadrinado=" +atencion.apadrinado+
                     ", @doctor="+ atencion.doctor +
                     ", @tipo=" + atencion.tipo +
-                    ", @diagp=" + atencion.diagp +
-                    ", @diag1=" + atencion.diag1 +
-                    ", @diag2=" + atencion.diag2 +
                     ", @id = @id OUTPUT";
-
                 
                 try {
                     var atencionesDB = _context.Atenciones.FromSql(query); //Retorna la AtencionM creada
@@ -49,12 +39,17 @@ namespace TheCircle.Controllers
 
                     a.diagnosticos = diagnosticosDB.Select(s => new Diagnostico (s.id, s.enfermedadCod, s.enfermedadNombre)).ToList();
 
-                    return a;
+                    if (atencionesDB.Count() == 0)
+                    {
+                        return NotFound();
+                    }
+                    return Ok(a);
+
                 } catch (Exception e) {
-                    return new Atencion2();
+                    return BadRequest(atencion); 
                 }
             } else {
-                return new Atencion2();
+                return BadRequest(atencion);
             }
         }
 
@@ -70,12 +65,12 @@ namespace TheCircle.Controllers
                   ", @monto=" + remision.monto +
                   ", @id = @id OUTPUT";
 
-                //try {
+                try {
                     var data = _context.Remisiones.FromSql(query); //manejar errores para que no se caiga
                     return data;
-                //} catch (Exception e) {
-                    //return new Stack<Remision>();
-                //}
+                } catch (Exception e) {
+                    return new Stack<Remision>();
+                }
             }
             return new Stack<Remision>();
         }

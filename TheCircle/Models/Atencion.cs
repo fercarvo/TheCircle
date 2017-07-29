@@ -19,27 +19,23 @@ namespace TheCircle.Models
         public Atencion () { }
     }
 
-    public class Atencion2
+    public class AtencionNueva
+    {
+        public int doctor { get; set; }
+        public int apadrinado { get; set; }
+        public string tipo { get; set; }
+        public string[] diagnosticos { get; set; }
+
+        public AtencionNueva() { }
+    }
+
+    public class AtencionDiagnostico
     {
         public Atencion atencion { get; set; }
         public List<Diagnostico> diagnosticos { get; set; }
 
-        public Atencion2() { }
+        public AtencionDiagnostico() { }
     }
 
-    public class Diagnostico
-    {
-        public int id { get; set; }
-        public string enfermedadCod { get; set; }
-        public string enfermedadNombre { get; set; }
 
-        public Diagnostico() { }
-
-        public Diagnostico(int id, string enfermedadCod, string enfermedadNombre)
-        {
-            this.id = id;
-            this.enfermedadCod = enfermedadCod;
-            this.enfermedadNombre = enfermedadNombre;
-        }
-    }
 }
