@@ -38,7 +38,6 @@ namespace TheCircle.Models
                         Diagnostico.insert(diagnostico, this.id, _context);
                     }
                 }
-
             } else {
               this = null;
             }
@@ -54,14 +53,6 @@ namespace TheCircle.Models
         public string[] diagnosticos { get; set; }
 
         public AtencionNueva() { }
-    }
-
-    public class AtencionDiagnostico
-    {
-        public Atencion atencion { get; set; }
-        public List<Diagnostico> diagnosticos { get; set; }
-
-        public AtencionDiagnostico() { }
     }
 
     public class AtencionResponse

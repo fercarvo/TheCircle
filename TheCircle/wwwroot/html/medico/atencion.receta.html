@@ -1,13 +1,9 @@
-<div ng-init="creatReceta()">
+<div >
     <div class="panel-body">
             <div class="form-group ">
                 <!--"m-bottom-30" para poner margen vertical de 30px-->
                 <div class="form-group col-sm-6">
-                    <label class="control-label col-sm-3">Enfermedad<a style="color:red;">(*)</a></label>
-                    <div class="col-sm-9" style="padding-bottom:5px;">
-                        <select required class="form-control" ng-model="itemReceta.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
-                        </select>
-                    </div>
+
                     <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
                         <div class="panel-heading">
                             <div class="panel-title">
@@ -39,18 +35,23 @@
 
                     <div class="form-group col-sm-6">
                         <div>
-                          <form ng-submit="addItenReceta(itemReceta)">
+                          <form ng-submit="addItenReceta(ItemRecetaNuevo)">
                               <label class="control-label col-sm-3">Item</label>
                               <div class="col-sm-9" style="padding-bottom:5px;">
-                                  <input disabled type="text" class="form-control" value="{{itemReceta.id}} {{itemReceta.nombre}}">
+                                  <input disabled type="text" class="form-control" value="{{ItemRecetaNuevo.itemFarmacia.nombre}} {{ItemRecetaNuevo.itemFarmacia.compuesto}}">
                               </div>
-                              <label class="control-label col-sm-3">Cantidad<a style="color:red;">(*)</a></label>
+                              <label class="control-label col-sm-3">Enfermedad <a style="color:red;">(*)</a></label>
                               <div class="col-sm-9" style="padding-bottom:5px;">
-                                  <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="itemReceta.cantidad" placeholder="cantidad">
+                                  <select required class="form-control" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
+                                  </select>
                               </div>
-                              <label class="control-label col-sm-3">Posologia<a style="color:red;">(*)</a></label>
+                              <label class="control-label col-sm-3">Cantidad <a style="color:red;">(*)</a></label>
+                              <div class="col-sm-9" style="padding-bottom:5px;">
+                                  <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
+                              </div>
+                              <label class="control-label col-sm-3">Posologia <a style="color:red;">(*)</a></label>
                               <div class="col-sm-9">
-                                  <textarea ng-disabled="editarItem" required ng-model="itemReceta.posologia" class="form-control" placeholder="....." rows="2"></textarea>
+                                  <textarea ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia" class="form-control" placeholder="....." rows="2"></textarea>
                               </div>
                               <div>
                                   <a style="color:red;">(*) campo obligatorio.</a>

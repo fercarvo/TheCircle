@@ -81,19 +81,12 @@ namespace TheCircle.Controllers
         [HttpPost ("api/remision")]
         public IActionResult PostRemision([FromBody] RemisionNueva remision)
         {
-            if (remision != null) {
-                string query = "DECLARE @id int" +
-                  " EXEC dbo.insert_Remision @atencionM=" + remision.atencionM +
-                  ", @institucion=" + remision.institucion +
-                  ", @monto=" + remision.monto +
-                  ", @id = @id OUTPUT";
-
-                try {
-                    var data = _context.Remisiones.FromSql(query); //manejar errores para que no se caiga
-                    //return data;
-                    return Ok(data.First());
-                } catch (Exception e) {
-                    return BadRequest("Somethig broke");
+            if (remision) {
+                Remision r = new Remision(remision, _context);
+                if (r) {
+                    return Ok(r);
+                } else {
+                    BadRequest("Something Broke");
                 }
             }
             return BadRequest("Incorrect Data");
@@ -101,50 +94,42 @@ namespace TheCircle.Controllers
 
         //Crea una receta de farmacia
         [HttpPost ("api/receta")]
-        public IActionResult PostReceta([FromBody] RecetaNueva receta)
+        public IActionResult PostReceta([FromBody] RecetaNueva request)
         {
-            if (receta != null)
+            if (request)
             {
-                string query = "DECLARE @id int" +
-                  " EXEC dbo.insert_Receta @idDoctor=" + receta.idDoctor +
-                  ", @idApadrinado=" + receta.idApadrinado +
-                  ", @id = @id OUTPUT";
-
                 try {
-                    var data = _context.Recetas.FromSql(query); //manejar errores para que no se caiga
-                    return Ok(data.First());
+                    Receta receta = new Receta(request, _context);
+                    return Ok(receta);
                 } catch (Exception e) {
-                    return BadRequest("Somethig broke");
+                    BadRequest(e);
                 }
+
+                /*if (receta) {
+                    return Ok(receta);
+                } else {
+                    BadRequest("Something Broke");
+                }*/
             }
             return BadRequest("Incorrect Data");
         }
 
         //Crea una receta de farmacia
         [HttpPost ("api/itemsreceta")]
-        public IEnumerable<ItemReceta> PostItemsReceta([FromBody] RecetaNuevaItems receta)
+        public IActionResult PostItemsReceta([FromBody] RecetaNuevaItems receta)
         {
-            if (receta != null)
-            {
-                List<ItemReceta> Items = new List<ItemReceta>();
+            if (receta) {
                 foreach (ItemRecetaNuevo item in receta.items) {
-
-                    string query = "DECLARE @id int" +
-                      " EXEC dbo.insert_ItemReceta @idItemFarmacia=" + item.itemFarmacia +
-                      ", @idDiagnostico=" + item.diagnostico +
-                      ", @cantidad=" + item.cantidad +
-                      ", @receta=" + receta.idReceta +
-                      ", @posologia='" + item.posologia +
-                      "', @id = @id OUTPUT";
-
-                    //try {
-                        var data = _context.Database.ExecuteSqlCommand(query); //manejar errores para que no se caiga
-                    //} catch (Exception e) {
-                    //}
+                    ItemReceta.insert(receta.idReceta, item, _context);
                 }
-                return _context.ItemsReceta.FromSql("EXEC dbo.select_ItemRecetaByReceta @receta=" + receta.idReceta);
+
+                ItemReceta[] data = ItemReceta.getAllByReceta(receta.idReceta, _context);
+                if (data) {
+                    return Ok(data);
+                }
+                return BadRequest("Somethig broke");
             }
-            return new Stack<ItemReceta>();
+            return BadRequest("Invalid Data");
         }
 
         [HttpGet("api/institucion")]
@@ -154,7 +139,7 @@ namespace TheCircle.Controllers
         {
             Institucion[] instituciones = Institucion.getAll(_context);
             if (instituciones) {
-                Ok(instituciones);
+                return Ok(instituciones);
             }
             return BadRequest("Somethig broke");
             /*try {

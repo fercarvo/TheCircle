@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
 {
-    
+
     public class ItemFarmaciaController : Controller
     {
         private readonly MyDbContext _context;
@@ -19,15 +19,14 @@ namespace TheCircle.Controllers
 
         // GET: api/ItemFarmacia
         [HttpGet("api/itemfarmacia/{localidad}")]
-        public IEnumerable<ItemFarmacia> GetItems(string localidad)
+        public IActionResult GetItems(string localidad)
         {
-            //using (var command = context.Database.GetDbConnection().CreateCommand())
-            {
-                string query = "EXEC dbo.select_ItemFarmacia @localidad=" + localidad;
-                var data = _context.ItemFarmacias.FromSql(query).ToList();
-                return data;
+            ItemFarmacia[] stock = ItemFarmacia.getAllByLocalidad(localidad, _context);
+            if (stock) {
+                Ok(stock);
             }
+            return BadRequest("Somethig broke");
         }
-        
+
     }
 }

@@ -29,15 +29,17 @@ namespace TheCircle.Controllers
 
         [HttpGet("{cod}")]
         [ResponseCache(Duration = 60)] //cache de 60 segundos
-        public IEnumerable<Apadrinado> GetApadrinado(int cod)
+        public IActionResult GetApadrinado(int cod)
         {
-            try {
-                string query = "EXEC dbo.select_ApadrinadoByCod @cod=" + cod;
-                var data = _context.Apadrinados.FromSql(query).ToList();
-                return data;
-            } catch (Exception e) {
-                return new Stack<Apadrinado>();
+            if (cod) {
+                Apadrinado apadrinado = new Apadrinado(cod, _context);
+                if (apadrinado) {
+                    return Ok(apadrinado);
+                } else {
+                    return NotFound();
+                }
             }
+            return BadRequest("Incorrect Data");
         }
 
 

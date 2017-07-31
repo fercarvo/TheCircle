@@ -16,34 +16,21 @@ namespace TheCircle.Models
         public int idDoctor { get; set; }
         public int idApadrinado { get; set; }
 
+        public Receta () { }
 
-        public Receta() { }
-    }
+        public Receta (RecetaNueva receta, MyDbContext _context) {
+            string query = "DECLARE @id int" +
+              " EXEC dbo.insert_Receta @idDoctor=" + receta.idDoctor +
+              ", @idApadrinado=" + receta.idApadrinado +
+              ", @id = @id OUTPUT";
 
-    public class ItemReceta
-    {
-        [Key]
-        public int id { get; set; }
-        public int idItemFarmacia { get; set; }
-        public Int32 diagnostico { get; set; }
-        public int cantidad { get; set; }
-        public int receta { get; set; }
-        public DateTime fecha { get; set; }
-        public string posologia { get; set; }
-        public int? funciono { get; set; }
-
-        public ItemReceta() { }
-    }
-
-    public class ItemRecetaNuevo
-    {
-        [Key]
-        public int itemFarmacia { get; set; }
-        public string diagnostico { get; set; }
-        public int cantidad { get; set; }
-        public string posologia { get; set; }
-
-        public ItemRecetaNuevo() { }
+            try {
+                var data = _context.Recetas.FromSql(query); //manejar errores para que no se caiga
+                this = data.First();
+            } catch (Exception e) {
+                throw e;
+            }
+        }
     }
 
     public class RecetaNueva
@@ -52,13 +39,5 @@ namespace TheCircle.Models
         public int idApadrinado { get; set; }
 
         public RecetaNueva() { }
-    }
-
-    public class RecetaNuevaItems
-    {
-        public int idReceta { get; set; }
-        public ItemRecetaNuevo[] items { get; set; }
-
-        public RecetaNuevaItems() { }
     }
 }

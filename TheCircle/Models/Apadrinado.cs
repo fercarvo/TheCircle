@@ -18,5 +18,15 @@ namespace TheCircle.Models
         public string posesionHogar { get; set; }
 
         public Apadrinado() { }
+
+        public Apadrinado(int codigo, MyDbContext _context) {
+            try {
+                string query = "EXEC dbo.select_ApadrinadoByCod @cod=" + codigo;
+                var data = _context.Apadrinados.FromSql(query);
+                this = data.First(); //Atencion creada
+            } catch (Exception e) {
+                this = null;
+            }
+        }
     }
 }

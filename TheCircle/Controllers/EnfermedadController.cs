@@ -23,10 +23,15 @@ namespace TheCircle.Controllers
         // GET: api/Enfermedad
         [HttpGet]
         [ResponseCache(Duration = 60 * 120)] //1*120 minutos
-        public IEnumerable<Enfermedad> Get()
+        public IActionResult GetEnfermedades()
         {
-            var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
-            return data;
+            try {
+                var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
+                return Ok(data);
+            } catch (Exception e) {
+                return BadRequest("Something Broke");
+            }
+
         }
     }
 }
