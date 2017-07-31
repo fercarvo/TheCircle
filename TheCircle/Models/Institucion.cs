@@ -15,5 +15,15 @@ namespace TheCircle.Models
         public int edadFinal { get; set; }
 
         public Institucion() { }
+
+        public Institucion[] getAll (MyDbContext _context)
+        {
+            try {
+                var institucionesDB = _context.Instituciones.FromSql("EXEC dbo.select_Institucion");
+                return institucionesDB.ToArray();
+            } catch (Exception e) {
+                return null;
+            }
+        }
     }
 }

@@ -1,0 +1,6 @@
+{
+  doctor: 12312,
+  apadrinado: 123123123,
+  tipo: "curativo",
+  diagnosticos: ["A01", "A02", "A03"]
+}

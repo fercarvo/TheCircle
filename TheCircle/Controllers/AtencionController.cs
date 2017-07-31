@@ -20,6 +20,8 @@ namespace TheCircle.Controllers
         [HttpPost ("api/atencion")]
         public IActionResult PostAtencion([FromBody] AtencionNueva atencion)
         {
+
+
             AtencionDiagnostico a = new AtencionDiagnostico();
 
             if (atencion != null) {
@@ -29,7 +31,7 @@ namespace TheCircle.Controllers
                     ", @doctor="+ atencion.doctor +
                     ", @tipo=" + atencion.tipo +
                     ", @id = @id OUTPUT";
-                
+
                 try {
                     var atencionesDB = _context.Atenciones.FromSql(query); //Retorna la AtencionM creada
                     a.atencion = atencionesDB.First(); //Atencion creada
@@ -46,19 +48,40 @@ namespace TheCircle.Controllers
                     return Ok(a);
 
                 } catch (Exception e) {
-                    return BadRequest(atencion); 
+                    return BadRequest(atencion);
                 }
             } else {
                 return BadRequest(atencion);
             }
         }
 
+        //Crea una atencion medica
+        [HttpPost ("api/atencion2")]
+        public IActionResult PostAtencion([FromBody] AtencionNueva atencionN)
+        {
+            AtencionResponse ar = new AtencionResponse();
+            if (atencionN) {
+              Atencion atencion = new Atencion(atencionN, _context);
+              ar.atencion;
+
+              if (atencion) {
+                  Diagnostico[] diagnosticos = Diagnostico.getAllByAtencion(atencion.id, _context);
+                  ar.diagnosticos;
+                  //return Ok(ar);
+                  return Ok(atencion, diagnosticos);
+              } else {
+                  return BadRequest("Somethig broke");
+              }
+            } else {
+                return BadRequest("Incorrect Data");
+            }
+        }
+
         //Crea una remision medica
         [HttpPost ("api/remision")]
-        public IEnumerable<Remision> PostRemision([FromBody] RemisionNueva remision)
+        public IActionResult PostRemision([FromBody] RemisionNueva remision)
         {
-            if (remision != null)
-            {
+            if (remision != null) {
                 string query = "DECLARE @id int" +
                   " EXEC dbo.insert_Remision @atencionM=" + remision.atencionM +
                   ", @institucion=" + remision.institucion +
@@ -67,17 +90,18 @@ namespace TheCircle.Controllers
 
                 try {
                     var data = _context.Remisiones.FromSql(query); //manejar errores para que no se caiga
-                    return data;
+                    //return data;
+                    return Ok(data.First());
                 } catch (Exception e) {
-                    return new Stack<Remision>();
+                    return BadRequest("Somethig broke");
                 }
             }
-            return new Stack<Remision>();
+            return BadRequest("Incorrect Data");
         }
 
         //Crea una receta de farmacia
         [HttpPost ("api/receta")]
-        public IEnumerable<Receta> PostReceta([FromBody] RecetaNueva receta)
+        public IActionResult PostReceta([FromBody] RecetaNueva receta)
         {
             if (receta != null)
             {
@@ -88,12 +112,12 @@ namespace TheCircle.Controllers
 
                 try {
                     var data = _context.Recetas.FromSql(query); //manejar errores para que no se caiga
-                    return data;
+                    return Ok(data.First());
                 } catch (Exception e) {
-                    return new Stack<Receta>();
+                    return BadRequest("Somethig broke");
                 }
             }
-            return new Stack<Receta>();
+            return BadRequest("Incorrect Data");
         }
 
         //Crea una receta de farmacia
@@ -104,7 +128,7 @@ namespace TheCircle.Controllers
             {
                 List<ItemReceta> Items = new List<ItemReceta>();
                 foreach (ItemRecetaNuevo item in receta.items) {
-                    
+
                     string query = "DECLARE @id int" +
                       " EXEC dbo.insert_ItemReceta @idItemFarmacia=" + item.itemFarmacia +
                       ", @idDiagnostico=" + item.diagnostico +
@@ -125,14 +149,22 @@ namespace TheCircle.Controllers
 
         [HttpGet("api/institucion")]
         [ResponseCache(Duration = 60*60)] //1*60 minutos
-        public IEnumerable<Institucion> GetInstituciones()
+        public IActionResult GetInstituciones()
+        //public IEnumerable<Institucion> GetInstituciones()
         {
-            try {
+            Institucion[] instituciones = Institucion.getAll(_context);
+            if (instituciones) {
+                Ok(instituciones);
+            }
+            return BadRequest("Somethig broke");
+            /*try {
                 var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToList();
                 return data;
+                //return Ok(data);
             } catch (Exception e) {
                 return new Stack<Institucion>();
-            }
+                //return BadRequest("Somethig broke");
+            }*/
         }
     }
 }
