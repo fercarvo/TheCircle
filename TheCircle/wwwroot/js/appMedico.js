@@ -161,7 +161,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
 
             $http.post("/api/atencion", data).then(function success(data){
 
-                console.log("Atencion creada con exito");
+                console.log(data);
 
                 disable.atencion = true;
                 atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
@@ -169,7 +169,7 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
 
             }, function (err){
-              console.log(err);
+                console.log(err);
             });
         }
 

@@ -43,12 +43,20 @@ namespace TheCircle.Controllers
                   ", @diag1=" + atencion.diag1 +
                   ", @diag2=" + atencion.diag2 +
                   ", @id = @id OUTPUT";
+
+                try
+                {
+                    var data = _context.Database.ExecuteSqlCommand(query); //manejar errores para que no se caiga
+                    return Json(data);
+                }
+                catch(Exception e)
+                {
+                    return Json(e);
+                }
                 
                 
-                var data = _context.Database.ExecuteSqlCommand(query); //manejar errores para que no se caiga
                 
-                
-            return Json( data);;
+            
           }
           return Json(new {
                 state = 0,
