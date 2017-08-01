@@ -1,4 +1,4 @@
-angular.module('appMedico', ['ui.router', "ui.select"])
+angular.module('appMedico', ['ui.router'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
@@ -86,10 +86,13 @@ angular.module('appMedico', ['ui.router', "ui.select"])
         atencion.foto = "/images/ci.png";
         atencion.codigo = {};
         atencion.atencion = {};
+        atencion.atencion.diag1 = null;
+        atencion.atencion.diag2 = null;
+        atencion.atencion.diagp = null;
         atencion.remision = {};
         atencion.receta = [];
         atencion.receta.id = null;
-        atencion.status = true;
+        atencion.status = false;
 
         return atencion;
     }])
@@ -97,6 +100,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
 
         $scope.disable = disable.atencion;
         $scope.apadrinado = atencionFactory.apadrinado;
+        $scope.foto = atencionFactory.foto;
 
         $scope.$on('disable', function (event, data) {
             $scope.disable = disable.atencion;
@@ -116,6 +120,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
                         $scope.foto = "/api/apadrinado/foto/" + codigo;
                         atencionFactory.apadrinado = res.data;
                         $scope.apadrinado = atencionFactory.apadrinado;
+                        atencionFactory.codigo = codigo;
 
                     } else {
                         atencionFactory.apadrinado = {};
@@ -183,8 +188,6 @@ angular.module('appMedico', ['ui.router', "ui.select"])
                   atencionFactory.atencion.diag2]
             }
 
-            console.log("AtencionNueva", AtencionNueva);
-
             $http.post("/api/atencion", AtencionNueva).then(function success(res){
 
                 console.log("se creo atencion", res.data);
@@ -196,7 +199,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
                 $state.go('atencion.remision');
 
             }, function (err, status){
-              console.log("error", err, status);
+              console.log("error atencion", err, status);
             });
         }
 
@@ -228,7 +231,7 @@ angular.module('appMedico', ['ui.router', "ui.select"])
             var RemisionNueva = {
                 atencionM: atencionFactory.atencion.atencion.id,
                 institucion: remision.institucion,
-                monto: remision.monto
+                monto: remision.monto,
                 sintomas: remision.sintomas
             }
 

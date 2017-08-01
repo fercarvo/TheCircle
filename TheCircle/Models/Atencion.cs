@@ -1,10 +1,11 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 
 namespace TheCircle.Models
 {
-    public class Atencion :
+    public class Atencion 
     {
         public int id { get; set; }
         public string idApadrinado { get; set; }
@@ -18,28 +19,35 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
-        public Atencion (AtencionNueva a, MyDbContext _context) {
-            if (a) {
-                string query = "DECLARE @id int " +
-                    "EXEC dbo.insert_AtencionM @apadrinado=" + a.apadrinado+
-                    ", @doctor="+ a.doctor +
-                    ", @tipo=" + a.tipo +
-                    ", @id = @id OUTPUT";
-                try {
-                    var atencionesDB = _context.Atenciones.FromSql(query); //Retorna la AtencionM creada
-                    this = atencionesDB.First(); //Atencion creada
+        public Atencion crear(AtencionNueva request, MyDbContext _context) 
+        {
+            Atencion atencion;
 
+            if (request != null) {
+                string query = "DECLARE @id int " +
+                    "EXEC dbo.insert_Atencion2 @apadrinado=" + request.apadrinado+
+                    ", @doctor="+ request.doctor +
+                    ", @tipo=" + request.tipo +
+                    ", @id = @id OUTPUT";
+
+                try {
+                    atencion = _context.Atenciones.FromSql(query).First(); //Retorna la AtencionM creada
                 } catch (Exception e) {
-                    this = null;
+                    return null;
                 }
 
-                if (this) {
-                    foreach (string diagnostico in a.diagnosticos) {
-                        Diagnostico.insert(diagnostico, this.id, _context);
+                if (atencion != null) {
+                    Diagnostico d = new Diagnostico();
+
+                    foreach (string diagnostico in request.diagnosticos) {
+                        d.insert(diagnostico, atencion.id, _context);
                     }
+                    return atencion;
+                } else {
+                    return null;
                 }
             } else {
-              this = null;
+                return null;
             }
         }
 

@@ -17,12 +17,10 @@ namespace TheCircle.Controllers
         }
 
         //Crea una atencion medica
-        [HttpPost ("api/atencion")]
+        [HttpPost ("api/atencion2")]
         public IActionResult PostAtencion([FromBody] AtencionNueva atencion)
         {
-
-
-            AtencionDiagnostico a = new AtencionDiagnostico();
+            AtencionResponse a = new AtencionResponse();
 
             if (atencion != null) {
 
@@ -39,12 +37,8 @@ namespace TheCircle.Controllers
                     string query2 = "EXEC dbo.select_DiagnosticoByAtencion @atencion=" + a.atencion.id;
                     var diagnosticosDB = _context.Diagnosticos.FromSql(query2); //Retorna los diagnosticos de esa AtencionM
 
-                    a.diagnosticos = diagnosticosDB.Select(s => new Diagnostico (s.id, s.enfermedadCod, s.enfermedadNombre)).ToList();
+                    a.diagnosticos = diagnosticosDB.ToArray();
 
-                    if (atencionesDB.Count() == 0)
-                    {
-                        return NotFound();
-                    }
                     return Ok(a);
 
                 } catch (Exception e) {
@@ -56,22 +50,24 @@ namespace TheCircle.Controllers
         }
 
         //Crea una atencion medica
-        [HttpPost ("api/atencion2")]
-        public IActionResult PostAtencion([FromBody] AtencionNueva atencionN)
+        [HttpPost ("api/atencion")]
+        public IActionResult PostAtencion2([FromBody] AtencionNueva request)
         {
-            AtencionResponse ar = new AtencionResponse();
-            if (atencionN) {
-              Atencion atencion = new Atencion(atencionN, _context);
-              ar.atencion;
+            AtencionResponse response = new AtencionResponse(); 
+            Diagnostico temp = new Diagnostico();
+            Atencion atencion = new Atencion(); //atencion creada
 
-              if (atencion) {
-                  Diagnostico[] diagnosticos = Diagnostico.getAllByAtencion(atencion.id, _context);
-                  ar.diagnosticos;
-                  //return Ok(ar);
-                  return Ok(atencion, diagnosticos);
-              } else {
-                  return BadRequest("Somethig broke");
-              }
+            if (request != null) {
+              
+                atencion = atencion.crear(request, _context);
+                if (atencion != null) {
+                    Diagnostico[] diagnosticos = temp.getAllByAtencion(atencion.id, _context);
+                    response.atencion = atencion;
+                    response.diagnosticos = diagnosticos;
+                    return Ok(response);
+                } else {
+                    return BadRequest("Somethig broke");
+                }
             } else {
                 return BadRequest("Incorrect Data");
             }
@@ -79,12 +75,13 @@ namespace TheCircle.Controllers
 
         //Crea una remision medica
         [HttpPost ("api/remision")]
-        public IActionResult PostRemision([FromBody] RemisionNueva remision)
+        public IActionResult PostRemision([FromBody] RemisionNueva request)
         {
-            if (remision) {
-                Remision r = new Remision(remision, _context);
-                if (r) {
-                    return Ok(r);
+            Remision remision = new Remision();
+            if (request != null) {
+                remision = remision.crear(request, _context);
+                if (remision != null) {
+                    return Ok(remision);
                 } else {
                     BadRequest("Something Broke");
                 }
@@ -96,35 +93,32 @@ namespace TheCircle.Controllers
         [HttpPost ("api/receta")]
         public IActionResult PostReceta([FromBody] RecetaNueva request)
         {
-            if (request)
-            {
+            if (request != null) {
+                Receta receta = new Receta();
                 try {
-                    Receta receta = new Receta(request, _context);
+                    receta = receta.crear(request, _context);
                     return Ok(receta);
                 } catch (Exception e) {
                     BadRequest(e);
                 }
-
-                /*if (receta) {
-                    return Ok(receta);
-                } else {
-                    BadRequest("Something Broke");
-                }*/
             }
             return BadRequest("Incorrect Data");
         }
+
 
         //Crea una receta de farmacia
         [HttpPost ("api/itemsreceta")]
         public IActionResult PostItemsReceta([FromBody] RecetaNuevaItems receta)
         {
-            if (receta) {
-                foreach (ItemRecetaNuevo item in receta.items) {
-                    ItemReceta.insert(receta.idReceta, item, _context);
+            ItemReceta itemReceta = new ItemReceta();
+
+            if (receta != null) {
+                foreach (ItemRecetaNuevo item in receta.items) { //se insertan en la base de datos todos los items
+                    itemReceta.insert(receta.idReceta, item, _context);
                 }
 
-                ItemReceta[] data = ItemReceta.getAllByReceta(receta.idReceta, _context);
-                if (data) {
+                ItemReceta[] data = itemReceta.getAllByReceta(receta.idReceta, _context);
+                if (data != null) {
                     return Ok(data);
                 }
                 return BadRequest("Somethig broke");
@@ -135,21 +129,13 @@ namespace TheCircle.Controllers
         [HttpGet("api/institucion")]
         [ResponseCache(Duration = 60*60)] //1*60 minutos
         public IActionResult GetInstituciones()
-        //public IEnumerable<Institucion> GetInstituciones()
         {
-            Institucion[] instituciones = Institucion.getAll(_context);
-            if (instituciones) {
+            Institucion institucion = new Institucion();
+            Institucion[] instituciones = institucion.getAll(_context);
+            if (instituciones != null) {
                 return Ok(instituciones);
             }
             return BadRequest("Somethig broke");
-            /*try {
-                var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToList();
-                return data;
-                //return Ok(data);
-            } catch (Exception e) {
-                return new Stack<Institucion>();
-                //return BadRequest("Somethig broke");
-            }*/
         }
     }
 }

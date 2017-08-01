@@ -1,4 +1,8 @@
 ﻿
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Linq;
+
 namespace TheCircle.Models
 {
     public class Diagnostico
@@ -19,11 +23,9 @@ namespace TheCircle.Models
         public void insert (string enfermedadCod, int atencion, MyDbContext _context)
         {
             try {
-                string q = "EXEC dbo.insert_Diagnostico @enfermedadCod=" + enfermedadCod +
-                    " @atencion=" + atencion;
+                string q = "EXEC dbo.insert_Diagnostico @enfermedad=" + enfermedadCod + ", @atencion=" + atencion;
                 _context.Database.ExecuteSqlCommand(q); //Se inserta en la BD el diagnostico
             } catch (Exception e) {
-
             }
         }
 
@@ -33,10 +35,10 @@ namespace TheCircle.Models
 
             try {
                 var diagnosticosDB = _context.Diagnosticos.FromSql(q); //Retorna los diagnosticos de esa AtencionM
-                //return diagnosticosDB.ToArray();
-                return diagnosticosDB.Select(s => new Diagnostico (s.id, s.enfermedadCod, s.enfermedadNombre)).ToArray();
+                return diagnosticosDB.ToArray();
+                //return diagnosticosDB.Select(s => new Diagnostico (s.id, s.enfermedadCod, s.enfermedadNombre)).ToArray();
             } catch (Exception e) {
-                return [];
+                return null;
             }
         }
 

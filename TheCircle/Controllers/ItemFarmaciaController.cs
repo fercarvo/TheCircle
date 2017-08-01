@@ -21,8 +21,9 @@ namespace TheCircle.Controllers
         [HttpGet("api/itemfarmacia/{localidad}")]
         public IActionResult GetItems(string localidad)
         {
-            ItemFarmacia[] stock = ItemFarmacia.getAllByLocalidad(localidad, _context);
-            if (stock) {
+            ItemFarmacia item = new ItemFarmacia();
+            ItemFarmacia[] stock = item.getAllByLocalidad(localidad, _context);
+            if (stock != null) {
                 Ok(stock);
             }
             return BadRequest("Somethig broke");

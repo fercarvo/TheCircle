@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace TheCircle.Models
 {
@@ -19,13 +21,20 @@ namespace TheCircle.Models
 
         public Apadrinado() { }
 
-        public Apadrinado(int codigo, MyDbContext _context) {
+        public Apadrinado get (int codigo, MyDbContext _context) {
+            Apadrinado apadrinado;
             try {
                 string query = "EXEC dbo.select_ApadrinadoByCod @cod=" + codigo;
-                var data = _context.Apadrinados.FromSql(query);
-                this = data.First(); //Atencion creada
+                var data = _context.Apadrinados.FromSql(query).ToArray();
+
+                if (data == null || data.Length == 0) {
+                    return null;
+                } else {
+                    apadrinado = data.First(); //Atencion creada
+                    return apadrinado;
+                }                
             } catch (Exception e) {
-                this = null;
+                return null;
             }
         }
     }

@@ -1,7 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.Linq;
 
 namespace TheCircle.Models
 {
@@ -32,7 +33,7 @@ namespace TheCircle.Models
               }
         }
 
-        public ItemReceta[] getAllByReceta(string receta, MyDbContext _context) {
+        public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {
             try {
                 var data = _context.ItemsReceta.FromSql("EXEC dbo.select_ItemRecetaByReceta @receta=" + receta);
                 return data.ToArray();

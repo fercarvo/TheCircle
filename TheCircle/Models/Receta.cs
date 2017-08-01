@@ -1,7 +1,7 @@
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-
+using System.Linq;
 
 namespace TheCircle.Models
 {
@@ -18,17 +18,25 @@ namespace TheCircle.Models
 
         public Receta () { }
 
-        public Receta (RecetaNueva receta, MyDbContext _context) {
+        public Receta crear (RecetaNueva request, MyDbContext _context) {
+
+            Receta receta;
             string query = "DECLARE @id int" +
-              " EXEC dbo.insert_Receta @idDoctor=" + receta.idDoctor +
-              ", @idApadrinado=" + receta.idApadrinado +
+              " EXEC dbo.insert_Receta @idDoctor=" + request.idDoctor +
+              ", @idApadrinado=" + request.idApadrinado +
               ", @id = @id OUTPUT";
 
             try {
-                var data = _context.Recetas.FromSql(query); //manejar errores para que no se caiga
-                this = data.First();
+                var data = _context.Recetas.FromSql(query).ToArray();
+
+                if (data == null || data.Length == 0) {
+                    return null;
+                } else {
+                    receta = data.First(); //Receta creada
+                    return receta;
+                }
             } catch (Exception e) {
-                throw e;
+                return null;
             }
         }
     }

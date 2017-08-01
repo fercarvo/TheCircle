@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace TheCircle.Models
 {
@@ -15,24 +14,28 @@ namespace TheCircle.Models
         public Int32 IdInstitucion { get; set; }
         public string nombreInstitucion { get; set; }
         public Int32 monto { get; set; }
+        public string sintomas { get; set; }
         public DateTime fecha { get; set; }
         public DateTime fCaducidad { get; set; }
 
         public Remision() { }
 
-        public Remision(RemisionNueva remision, MyDbContext _context) {
+        public Remision crear(RemisionNueva request, MyDbContext _context) {
+
+            Remision remision;
             try {
                 string query = "DECLARE @id int" +
-                  " EXEC dbo.insert_Remision @atencionM=" + remision.atencionM +
-                  ", @institucion=" + remision.institucion +
-                  ", @monto=" + remision.monto +
-                  ", @sintomas=" + remision.sintomas +
+                  " EXEC dbo.insert_Remision @atencionM=" + request.atencionM +
+                  ", @institucion=" + request.institucion +
+                  ", @monto=" + request.monto +
+                  ", @sintomas=" + request.sintomas +
                   ", @id = @id OUTPUT";
 
-                var data = _context.Apadrinados.FromSql(query);
-                this = data.First(); //Remision creada
+                remision = _context.Remisiones.FromSql(query).First();
+                //remision = data.First(); //Remision creada
+                return remision;
             } catch (Exception e) {
-                this = null;
+                return null;
             }
         }
     }

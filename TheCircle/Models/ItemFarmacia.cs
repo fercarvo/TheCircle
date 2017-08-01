@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
-
+using System.Linq;
 
 namespace TheCircle.Models
 {
@@ -18,6 +19,7 @@ namespace TheCircle.Models
         public ItemFarmacia() { }
 
         public ItemFarmacia[] getAllByLocalidad (string localidad, MyDbContext _context) {
+
             try {
                 string query = "EXEC dbo.select_ItemFarmacia @localidad=" + localidad;
                 return _context.ItemFarmacias.FromSql(query).ToArray();
