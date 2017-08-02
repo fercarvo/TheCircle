@@ -5,7 +5,7 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Asistente de salud</title>
+    <title>TheCircle - Medico</title>
     <!-- REQUIRED STYLES -->
     <link href="~/css/wiseboard/css.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -18,18 +18,18 @@
     <link href="~/css/wiseboard/admin.min.css" rel="stylesheet" type="text/css">
     <!-- theme-default.min.css - DEFAULT THEME -->
     <link href="~/css/wiseboard/theme-default.min.css" rel="stylesheet" type="text/css">
-    <script src="~/js/angular.min.js"></script>
-    <script src="~/js/appAsistenteSalud.js"></script>
-    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+
 </head>
-<body class="page-dashboard" ng-app="appAsistenteSalud">
+<body class="page-dashboard" ng-app="appMedico">
     <!-- TOP NAVIGATION STARTS -->
-    <nav class="navbar navbar-fixed-top navbar-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="">
+    <nav class="navbar navbar-fixed-top navbar-top" style="color:#901F61">
+        <div class="container-fluid" style="color:#901F61">
+            <div class="navbar-header" style="color:#901F61">
+                <a class="navbar-brand" href="" style="color:#901F61">
                     <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
-                    <span style="color:#fff">Asistente de salud</span>
+                    <span style="color:#fff">TheCircle</span>
                 </a>
                 <button type="button" class="sidebar-toggle">
                     <span class="icon-bar"></span>
@@ -39,7 +39,7 @@
             </div><!-- /.navbar-header -->
 
 
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" >
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">
                         <i class="fa fa-bell"></i>
@@ -67,7 +67,62 @@
                                             </div><!-- /.media -->
                                         </a>
                                     </li>
-
+                                    <li>
+                                        <a href="" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-info circle">
+                                                        <i class="fa fa-user"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">2 min</i> New user registered.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-danger circle">
+                                                        <i class="fa fa-undo"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">4 min</i> Backup error.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-primary circle">
+                                                        <i class="fa fa-gear"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">7 min</i> Settings updated.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <span class="label label-warning circle">
+                                                        <i class="fa fa-exclamation"></i>
+                                                    </span>
+                                                </div>
+                                                <div class="media-body">
+                                                    <i class="pull-right">9 min</i> Application is not responding.
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
 
                                 </ul>
                             </div>
@@ -104,6 +159,24 @@
                                             </div><!-- /.media -->
                                         </a>
                                     </li>
+                                    <li>
+                                        <a href="" data-click="prevent">
+                                            <div class="media">
+                                                <div class="media-left">
+                                                    <img src="~/images/wiseboard/avatar2.png" alt="avatar" class="media-object img-circle">
+                                                </div>
+                                                <div class="media-body">
+                                                    <h6 class="media-heading">
+                                                        <i class="pull-right">2 min</i>
+                                                        <strong class="text-primary">Michael Spencer</strong>
+                                                    </h6>
+                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
+                                                </div>
+                                            </div><!-- /.media -->
+                                        </a>
+                                    </li>
+
+
 
                                 </ul>
                             </div>
@@ -137,6 +210,16 @@
                                 <i class="fa fa-paper-plane-o"></i> Inbox
                             </a>
                         </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-history"></i> Timeline
+                            </a>
+                        </li>
+                        <li>
+                            <a href="">
+                                <i class="fa fa-calendar-check-o"></i> Calendar
+                            </a>
+                        </li>
                         <li class="divider"></li>
                         <li>
                             <a href="">
@@ -158,29 +241,30 @@
         <div class="sidebar" style="min-height: 0px;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="despachar" ui-sref-active="active">
-                    <a>
-
-                        <span>Despachar receta</span>
+                <li class=" open" ui-sref="atencion" ui-sref-active="active">
+                    <a >
+                        
+                        <span>Atención Médica</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="historial" ui-sref-active="active">
-                    <a>
-
-                        <span>Historial despacho</span>
+                <li class=" open" ui-sref="anulaciones" ui-sref-active="active">
+                    <a  >
+                        
+                        <span>Anulaciones</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="stock" ui-sref-active="active">
-                    <a>
-
-                        <span>Stock de farmacia</span>
+                <li class=" open" ui-sref="estadisticas" ui-sref-active="active">
+                    <a >
+                        
+                        <span>Estadisticas</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 3 -->
             </ul>
         </div>
         <!-- SIDEBAR ENDS -->
+
         <!-- CONTENT STARTS -->
         <ui-view></ui-view>
         <!-- CONTENT ENDS -->
@@ -191,9 +275,14 @@
     <!-- REQUIRED SCRIPTS -->
     <script src="~/js/wiseboard/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <!-- REQUIRED NOTIFICATION SCROLL -->
     <script src="~/js/wiseboard/jquery.slimscroll.min.js"></script>
     <!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES SIDE SCROLLBAR -->
     <script src="~/js/wiseboard/admin.min.js"></script>
+
+    <script src="~/js/angular.min.js"></script>
+    <script src="~/js/appMedico.js"></script>
+    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
 </body>
 </html>

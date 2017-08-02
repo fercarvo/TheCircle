@@ -22,32 +22,16 @@ namespace TheCircle.Controllers
 
         // GET: api/Enfermedad
         [HttpGet]
-        public IEnumerable<Enfermedad> Get()
+        [ResponseCache(Duration = 60 * 120)] //1*120 minutos
+        public IActionResult GetEnfermedades()
         {
-            //using (var command = context.Database.GetDbConnection().CreateCommand())
-            {
+            try {
                 var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
-                return data;
+                return Ok(data);
+            } catch (Exception e) {
+                return BadRequest("Something Broke");
             }
-        }
 
-      
-        // POST: api/Enfermedad
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-        
-        // PUT: api/Enfermedad/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

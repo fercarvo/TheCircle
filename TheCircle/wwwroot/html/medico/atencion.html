@@ -9,17 +9,17 @@
 
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label  class="control-label col-sm-2" style="text-align:left;width:12%;">Codigo Apadrinado</label>
+                    <label  class="control-label col-sm-2" style="text-align:left;width:12%;">Codigo Apadrinado <a style="color:red;">(*)</a></label>
                     <div class="col-sm-3">
-                        <input ng-disabled="disable" type="text" pattern="[0-9]{6,10}" title="Solo numeros, maximo 10" class="form-control" placeholder="codigo" ng-model="apadrinado.cod" required>
+                        <input ng-disabled="disable" type="text" pattern="[0-9]{5,11}" title="Solo numeros, minimo 5, maximo 11" class="form-control" placeholder="codigo" ng-model="codigo" required>
                     </div>
-                    <button ng-disabled="disable" type="submit" class="btn btn-info" ng-click="buscarApadrinado()">Buscar</button>
+                    <button ng-disabled="disable" type="submit" class="btn btn-info" ng-click="buscarApadrinado(codigo)">Buscar</button>
                 </div>
             </form><!-- /.form-group -->
 
             <div class="form-group col-sm-2" style="position: relative;">
-                    <img style="height:120px;width:auto;" ng-src="{{apadrinado.foto}}">
-                    <label align="center" style="position:absolute;bottom: -5px;left: 15px;width:120px;background-color:#fd6969;" hidden>No Aprobado</label><!-- /.solo mostrar cuando no haya foto -->
+                    <img style="width: auto;height:120px;" ng-src="{{foto}}">
+                    <label ng-hide="status" align="center" style="position:absolute;bottom: -5px;left: 15px;width:120px;background-color:#fd6969;">Cancelado</label>
             </div>
 
             <div class="form-group">
@@ -28,7 +28,7 @@
                 <label  class="control-label" style="text-align:left;width:12.5%;">PI:</label>
                 <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.sector}}</label>
                 <label  class="control-label" style="text-align:left;width:12.5%;">Posesion del Hogar:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.hogar}}</label>
+                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.posesionHogar}}</label>
                 <label  class="control-label" style="text-align:left;width:12.5%;">Edad:</label>
                 <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.edad}}</label>
 

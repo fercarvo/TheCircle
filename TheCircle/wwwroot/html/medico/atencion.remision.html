@@ -1,41 +1,43 @@
 <div ng-init="activar()">
     <div class="panel-body" style="padding:0px 20px 20px 20px;">
-        <form class="form-horizontal">
+        <form class="form-horizontal" ng-submit="send(remision)">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
 
             <div class="form-group">
-                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Institucion - Especialidad</label>
+                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Institucion - Especialidad <a style="color:red;">(*)</a></label>
                 <div class="col-sm-9">
-                    <select ng-disabled="disable" class="form-control myselect" ng-model="remision.institucion" ng-options="i.id as i.nombre + ' - ' + i.especialidad for i in instituciones">
+                    <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.institucion" ng-options="i.id as i.nombre + ' - ' + i.especialidad for i in instituciones">
                         <option style="display:none;" selected disabled value="">Digite y Seleccione por establecimiento o especialidad</option>
                     </select>
                 </div>
             </div><!-- /.form-group -->
 
             <div class="form-group" style="padding:0px 0px 10px 0px;">
-                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Enfermedades</label>
+                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Diagnostico probable <a style="color:red;">(*)</a></label>
                 <div class="col-sm-3">
-                    <select ng-disabled="disable" class="form-control myselect" ng-model="remision.enfermedad" ng-options="e as e for e in enfermedades">
+                    <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.diagnostico" ng-options="d as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
                         <option style="display:none;" selected disabled value="">Digite y Seleccione la enfermedad</option>
                     </select>
                 </div>
-                <label class="control-label col-sm-2" style="text-align:left;width:10%;">Monto USD</label>
-                <div class="col-sm-1"style="padding:0px;">
-                    <input ng-disabled="disable" ng-model="remision.monto" type="text" class="form-control" placeholder="" >
+                <label class="control-label col-sm-2" style="text-align:right">Monto USD <a style="color:red;">(*)</a></label>
+                <div class="col-sm-2">
+                    <input required ng-disabled="disable" ng-model="remision.monto" type="number" title="Solo numeros" class="form-control">
                 </div>
             </div><!-- /.form-group -->
 
 
             <div class="form-group" style="padding:5px;">
-                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Sintomas</label>
+                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Sintomas <a style="color:red;">(*)</a></label>
                 <div class="col-sm-9">
-                    <textarea ng-disabled="disable" ng-model="remision.sintomas" class="form-control" placeholder="....." rows="2"></textarea>
+                    <textarea required ng-disabled="disable" ng-model="remision.sintomas" class="form-control" placeholder="....." rows="2"></textarea>
                 </div>
             </div><!-- /.form-group -->
-
+            <div>
+                <a style="color:red;">(*) campo obligatorio.</a>
+            </div>
             <div class="text-center" style="padding:5px;">
                 <button ng-disabled="disable" type="submit" class="btn btn-info">Aceptar</button>
-                <button ng-disabled="disable" type="button" class="btn btn-default">Cancelar</button>
+                <button ng-disabled="disable" type="reset" class="btn btn-default">Cancelar</button>
             </div><!-- /.form-group -->
         </form>
     </div><!-- /.panel-body -->

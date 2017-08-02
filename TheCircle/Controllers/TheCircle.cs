@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace TheCircle.Controllers.views
 {
     public class TheCircle : Controller
     {
         // GET: /TheCircle/
         // GET: /
+        //[HttpGet ("medico")]
         public IActionResult Index()
         {
             return View();
@@ -15,7 +14,14 @@ namespace TheCircle.Controllers.views
 
         // GET: /TheCircle/AsistenteSalud
         // GET: /AsistenteSalud
+        //[HttpGet ("asistente")]
         public IActionResult AsistenteSalud()
+        {
+            return View();
+        }
+
+        //[HttpGet ("asistente")]
+        public IActionResult Medico()
         {
             return View();
         }

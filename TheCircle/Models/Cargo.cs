@@ -11,8 +11,5 @@ namespace TheCircle.Models
 
         public Cargo() {
         }
-
-       
-        //public int atencionM;
     }
 }

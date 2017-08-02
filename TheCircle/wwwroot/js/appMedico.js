@@ -1,4 +1,4 @@
-angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
+angular.module('appMedico', ['ui.router'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
@@ -48,18 +48,27 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
         });
     })
     .factory('dataFactory', ['$http', function ($http) {
-        var fac = {};
+        var dataFactory = {};
 
-        fac.enfermedades = function () {
-            return $http.get("/api/enfermedad");
-        };
+        dataFactory.enfermedades = null;
+        dataFactory.instituciones = null;
+        dataFactory.stock = null;
 
-        fac.instituciones = function () {
+        dataFactory.tipos = ["curativo", "seguimiento", "control"];
+
+        dataFactory.getInstituciones = function () {
             return $http.get("/api/institucion");
-        };
+        }
 
+        dataFactory.getEnfermedades = function () {
+            return $http.get("/api/enfermedad");
+        }
 
-        return fac;
+        dataFactory.getStock = function (localidad) {
+            return $http.get("/api/itemfarmacia/" + localidad);
+        }
+
+        return dataFactory;
     }])
     .factory('disable', [function () {
         var disable = {};
@@ -71,137 +80,230 @@ angular.module('appMedico', ['ui.router', "ngSanitize", "ui.select"])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
-        atencion.doctor = "705565656";
+        atencion.doctor = 705565656;
+        atencion.localidad = "CC2";
         atencion.apadrinado = {};
-        atencion.apadrinado.foto = "/images/ci.png";
-        atencion.atencion = {};
-        atencion.remision = {};
+        atencion.foto = "/images/ci.png";
+        atencion.codigo = null;
+        atencion.atencion = null;
+        atencion.diagnosticos = null;
+        atencion.remision = null;
+        atencion.receta = [];
+        atencion.receta.id = null;
+        atencion.status = true;
 
         return atencion;
     }])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
+        console.log("atencionFactory atencion", atencionFactory);
         $scope.disable = disable.atencion;
-        //$scope.disable.bar = true;
         $scope.apadrinado = atencionFactory.apadrinado;
-        //$scope.apadrinado.cod = atencionFactory.apadrinado.cod;
+        $scope.foto = atencionFactory.foto;
+        $scope.status = atencionFactory.status;
 
-        //recibe el evento de desactivar
         $scope.$on('disable', function (event, data) {
             $scope.disable = disable.atencion;
-            //$scope.disable.bar = false; 
         });
 
-        $scope.buscarApadrinado = function () {
-            $http.get("/api/apadrinado/" + $scope.apadrinado.cod)
-                .then(function success(res) {
+        $scope.buscarApadrinado = function (codigo) {
+            $http.get("/api/apadrinado/" + codigo).then(function success(res) {
 
-                    if (res.data.length === 0) {
-                        $scope.apadrinado = {};
-                        $scope.apadrinado.foto = "/images/ci.png";
-                        atencionFactory.setApadrinado($scope.apadrinado.cod);
-                    } else {
+                if (res.data.status == "D" || res.data.status == "E") {
+                    $scope.status = false;
+                    atencionFactory.status = false;
+                } else {
+                    $scope.status = true;
+                }
+                $scope.foto = "/api/apadrinado/foto/" + codigo;
+                atencionFactory.apadrinado = res.data;
+                $scope.apadrinado = atencionFactory.apadrinado;
+                atencionFactory.codigo = codigo;
 
-                        $scope.apadrinado.foto = "/api/Foto/" + $scope.apadrinado.cod;
+            }, function error(err, status) {
 
-                        $scope.apadrinado.nombres = res.data[0].nombres;
-                        $scope.apadrinado.apellidos = res.data[0].apellidos;
-                        $scope.apadrinado.sector = res.data[0].sector;
-                        $scope.apadrinado.hogar = res.data[0].posesionHogar;
-                        $scope.apadrinado.numPer = res.data[0].numPer;
-                        $scope.apadrinado.income = res.data[0].income;
-                        $scope.apadrinado.numBeds = res.data[0].numBeds;
-                        $scope.apadrinado.edad = res.data[0].edad;
-
-                        atencionFactory.apadrinado = $scope.apadrinado;
-
-                        //atencionFactory.setApadrinadoId($scope.apadrinado.cod);
-                    }
-
-                }, function error() {
-                    console.log("error de conexion");
-                });
+                console.log(err, status);
+                atencionFactory.apadrinado = {};
+                $scope.apadrinado = atencionFactory.apadrinado;
+                atencionFactory.foto = "/images/ci.png";
+                $scope.foto = atencionFactory.foto;
+                atencionFactory.status = true;
+                $scope.status = atencionFactory.status;
+                atencionFactory.codigo = {};
+                $scope.codigo = atencionFactory.codigo;
+            });
         };
 
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
-        $scope.disable = disable.atencion;
-        $scope.enfermedades = [];
-        $scope.tipos = ["curativo", "seguimiento", "control"];
-        $scope.atencion = atencionFactory.atencion;
+        console.log("atencionFactory registro", atencionFactory);
 
+        $scope.disable = disable.atencion;
+        $scope.enfermedades = dataFactory.enfermedades;
+        $scope.tipos = dataFactory.tipos;
+        $scope.atencion = atencionFactory.atencion;
 
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
-        dataFactory.enfermedades().then(function success(res) {
-            $scope.enfermedades = res.data;
-        }, function error(err) {
-            console.log(err);
-        })
+
+        if (dataFactory.enfermedades == null) {
+            dataFactory.getEnfermedades().then(function success(res) {
+                dataFactory.enfermedades = res.data;
+                $scope.enfermedades = dataFactory.enfermedades;
+            }, function error(err) {
+                console.log("error cargar enfermedades", err);
+            })
+        }
+
 
         $scope.reset = function () {
-            $scope.atencion.tipo = {};
-            $scope.atencion.diagp = {};
-            $scope.atencion.diag1 = {};
-            $scope.atencion.diag2 = {};
+            $scope.atencion = {};
         };
 
+        $scope.$watch('atencion', function() {
+            atencionFactory.atencion = $scope.atencion;
+        });
+
         $scope.send = function () {
-            var data = {
+            var AtencionNueva = {
                 doctor: atencionFactory.doctor,
-                apadrinado: atencionFactory.apadrinado.cod,
-                tipo: $scope.atencion.tipo,
-                diagp: $scope.atencion.diagp,
-                diag1: $scope.atencion.diag1,
-                diag2: $scope.atencion.diag2
+                apadrinado: atencionFactory.codigo,
+                tipo: atencionFactory.atencion.tipo,
+                diagnosticos: [atencionFactory.atencion.diagp,
+                  atencionFactory.atencion.diag1,
+                  atencionFactory.atencion.diag2]
             }
 
-            $http.post("/api/atencion", data).then(function success(data){
+            $http.post("/api/atencion", AtencionNueva).then(function success(res){
 
-                console.log(data);
-
+                console.log("se creo atencion", res.data);
                 disable.atencion = true;
-                atencionFactory.atencion = $scope.atencion; //Se guarda la data ingresada en la factory
+                atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
+                atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
+                $state.go('atencion.remision');
 
-            }, function (err){
-                console.log(err);
+            }, function (err, status){
+              console.log("error atencion", err, status);
             });
         }
 
-
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
+        console.log("atencionFactory remision", atencionFactory);
 
         $scope.disable = disable.remision;
-        $scope.remision = dataFactory.remision;
-        $scope.instituciones = [];
-        $scope.enfermedades = [
-            atencionFactory.atencion.diagp,
-            atencionFactory.atencion.diag1,
-            atencionFactory.atencion.diag2]
+        $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
+        $scope.instituciones = dataFactory.instituciones;
+        $scope.diagnosticos = atencionFactory.diagnosticos
+
+        $scope.activar = function () {
+            $(".myselect").select2();
+        }
+
+        if (dataFactory.instituciones == null) {
+            dataFactory.getInstituciones().then(function success(res) {
+                dataFactory.instituciones = res.data;
+                $scope.instituciones = dataFactory.instituciones;
+            }, function error(err) {
+                console.log("error cargar instituciones", err);
+            })
+        }
+
+        $scope.send = function (remision) {
+            var RemisionRequest = {
+                atencionM: atencionFactory.atencion.id,
+                institucion: remision.institucion,
+                monto: remision.monto,
+                sintomas: remision.sintomas
+            }
+
+            $http.post("/api/remision", RemisionRequest).then(function success(res) {
+
+                console.log("se creo remision", res.data);
+                disable.remision = true;
+                atencionFactory.remision = res.data; //Se guarda la remision en la factory
+                $scope.disable = disable.remision; //Se desactiva atencion.remision.html
+
+            }, function (err, status) {
+                console.log("error crear remision", err, status);
+            });
+        }
+
+    }])
+    .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+        console.log("atencionFactory receta", atencionFactory);
+
+
+
+        $scope.stock = dataFactory.stock;
+        $scope.receta = atencionFactory.receta;
+        $scope.ItemRecetaNuevo = {};
+        $scope.editarItem = true;
+        $scope.diagnosticos = atencionFactory.diagnosticos;
 
 
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
-        dataFactory.instituciones().then(function success(res) {
-            $scope.instituciones = res.data;
-        }, function error(err) {
-            console.log(err);
-        })
+        if (dataFactory.stock==null) {
+            dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
+                dataFactory.stock = res.data;
+                $scope.stock = dataFactory.stock;
+            }, function error(err) {
+                console.log("error cargar itemFarmacia", err);
+            })
+        }
 
+        if (atencionFactory.receta.id == null) {
+            var RecetaRequest = {
+              doctor: atencionFactory.doctor,
+              apadrinado: atencionFactory.apadrinado.cod };
 
+            $http.post("/api/receta", RecetaRequest).then(function success(res) {
+                console.log("Se creo receta", res.data);
+                atencionFactory.receta.id = res.data.id;
+                $scope.receta.id = atencionFactory.receta.id;
+            }, function err(err) {
+                console.log("No se pudo crear receta", err);
+            });
 
+        }
 
-    }])
-    .controller('atencion.receta', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+        $scope.addItenReceta = function (item) {
+            $scope.editarItem = true;
+            var obj= angular.copy(item);;
+            atencionFactory.receta.push(obj);
+            $scope.receta = atencionFactory.receta;
+            item.diagnostico = {};
+            item.cantidad = 0;
+            item.posologia = "";
+        }
 
+        $scope.eliminarItem = function (receta, index){
+            receta.splice(index, 1);
+            atencionFactory.receta = receta;
+        }
+
+        $scope.select = function (item) {
+            $scope.editarItem = false;
+            $scope.ItemRecetaNuevo.itemFarmacia = angular.copy(item);
+        }
+
+        $scope.guardarReceta = function () {
+            var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta };
+
+            $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
+                console.log("Se crearon los items", res.data);
+            }, function err(err){
+                console.log("No se pudieron crear los items", err);
+            });
+        }
 
 
     }])

@@ -1,5 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace TheCircle.Models
 {
@@ -15,5 +17,14 @@ namespace TheCircle.Models
         public int edadFinal { get; set; }
 
         public Institucion() { }
+
+        public Institucion[] getAll (MyDbContext _context) {
+            try {
+                var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion");
+                return data.ToArray();
+            } catch (Exception e) {
+                return null;
+            }
+        }
     }
 }
