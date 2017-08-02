@@ -1,7 +1,6 @@
 <div >
     <div class="panel-body">
             <div class="form-group ">
-                <!--"m-bottom-30" para poner margen vertical de 30px-->
                 <div class="form-group col-sm-6">
 
                     <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
@@ -10,7 +9,9 @@
                                 Existencia en farmacia
                             </div>
                         </div>
-
+                        <label>
+                            Buscar por compuesto: <input type="text" ng-model="buscar.compuesto">
+                        </label>
                         <div class="panel-body">
                             <table class="table table-striped" style="text-align:center;">
                                 <thead>
@@ -22,7 +23,7 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr ng-repeat="item in stock" ng-click="select(item)">
+                                    <tr ng-repeat="item in stock | filter:buscar" ng-click="select(item)" data-toggle="modal" data-target="#myModal">
                                         <td>{{item.stock}}</td>
                                         <td>{{item.nombre}}</td>
                                         <td>{{item.compuesto}}</td>
@@ -34,35 +35,6 @@
                 </div>
 
                     <div class="form-group col-sm-6">
-                        <div>
-                          <form ng-submit="addItenReceta(ItemRecetaNuevo)">
-                              <label class="control-label col-sm-3">Item</label>
-                              <div class="col-sm-9" style="padding-bottom:5px;">
-                                  <input disabled type="text" class="form-control" value="{{ItemRecetaNuevo.itemFarmacia.nombre}} {{ItemRecetaNuevo.itemFarmacia.compuesto}}">
-                              </div>
-                              <label class="control-label col-sm-3">Enfermedad <a style="color:red;">(*)</a></label>
-                              <div class="col-sm-9" style="padding-bottom:5px;">
-                                  <select required class="form-control" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
-                                  </select>
-                              </div>
-                              <label class="control-label col-sm-3">Cantidad <a style="color:red;">(*)</a></label>
-                              <div class="col-sm-9" style="padding-bottom:5px;">
-                                  <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
-                              </div>
-                              <label class="control-label col-sm-3">Posologia <a style="color:red;">(*)</a></label>
-                              <div class="col-sm-9">
-                                  <textarea ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia" class="form-control" placeholder="....." rows="2"></textarea>
-                              </div>
-                              <div>
-                                  <a style="color:red;">(*) campo obligatorio.</a>
-                              </div>
-                              <div class="text-right">
-                                  <button ng-disabled="editarItem" type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
-                                  <button ng-disabled="editarItem" type="reset" class="btn btn-info" style="margin-top:5px;">Limpiar seleccion</button>
-                              </div>
-                          </form>
-                        </div>
-
                         <div class="panel panel-default-light border-default col-sm-12" style="margin-left: 5px;">
 
                             <div class="panel-heading">
@@ -70,7 +42,7 @@
                                     Receta Médica
                                 </div>
                                 <div class="panel-title" style="text-align:right">
-                                    # {{receta.id}}
+                                    # 00000{{receta.id}}
                                 </div>
                             </div>
 
@@ -96,7 +68,50 @@
                             </div><!-- /.panel-body -->
                         </div><!-- /.form-group TABLE 2 -->
                     </div><!-- /.form-group TABLE 2 and labels-->
+                    <!-- Modal -->
+                    <div id="myModal" class="modal fade" role="dialog">
+                      <div class="modal-dialog">
 
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h4 class="modal-title">Editar item</h4>
+                          </div>
+                          <div class="modal-body">
+                              <form ng-submit="addItenReceta(ItemRecetaNuevo)">
+                                  <label class="control-label">Item</label>
+                                  <div class="col-sm-9" style="padding-bottom:5px;">
+                                      <input disabled type="text" class="form-control" value="{{ItemRecetaNuevo.itemFarmacia.nombre}} {{ItemRecetaNuevo.itemFarmacia.compuesto}}">
+                                  </div>
+                                  <label class="control-label">Enfermedad <a style="color:red;">(*)</a></label>
+                                  <div class="col-sm-9" style="padding-bottom:5px;">
+                                      <select required class="form-control" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
+                                      </select>
+                                  </div>
+                                  <label class="control-label">Cantidad <a style="color:red;">(*)</a></label>
+                                  <div class="col-sm-9" style="padding-bottom:5px;">
+                                      <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
+                                  </div>
+                                  <label class="control-label">Posologia <a style="color:red;">(*)</a></label>
+                                  <div class="col-sm-9">
+                                      <textarea ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia" class="form-control" placeholder="....." rows="2"></textarea>
+                                  </div>
+                                  <div>
+                                      <a style="color:red;">(*) campo obligatorio.</a>
+                                  </div>
+                                  <div class="text-right">
+                                      <button ng-disabled="editarItem" type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
+                                      <button ng-disabled="editarItem" type="reset" class="btn btn-info" style="margin-top:5px;">Limpiar seleccion</button>
+                                  </div>
+                              </form>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
 
                 </div>
 

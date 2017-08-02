@@ -18,12 +18,12 @@ namespace TheCircle.Models
 
         public Receta () { }
 
-        public Receta crear (RecetaNueva request, MyDbContext _context) {
+        public Receta crear (RecetaRequest request, MyDbContext _context) {
 
             Receta receta;
             string query = "DECLARE @id int" +
-              " EXEC dbo.insert_Receta @idDoctor=" + request.idDoctor +
-              ", @idApadrinado=" + request.idApadrinado +
+              " EXEC dbo.insert_Receta @idDoctor=" + request.doctor +
+              ", @idApadrinado=" + request.apadrinado +
               ", @id = @id OUTPUT";
 
             try {
@@ -32,8 +32,7 @@ namespace TheCircle.Models
                 if (data == null || data.Length == 0) {
                     return null;
                 } else {
-                    receta = data.First(); //Receta creada
-                    return receta;
+                    return data.First(); //Receta creada
                 }
             } catch (Exception e) {
                 return null;
@@ -41,11 +40,11 @@ namespace TheCircle.Models
         }
     }
 
-    public class RecetaNueva
+    public class RecetaRequest
     {
-        public int idDoctor { get; set; }
-        public int idApadrinado { get; set; }
+        public int doctor { get; set; }
+        public int apadrinado { get; set; }
 
-        public RecetaNueva() { }
+        public RecetaRequest() { }
     }
 }

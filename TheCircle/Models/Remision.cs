@@ -20,7 +20,7 @@ namespace TheCircle.Models
 
         public Remision() { }
 
-        public Remision crear(RemisionNueva request, MyDbContext _context) {
+        public Remision crear(RemisionRequest request, MyDbContext _context) {
 
             Remision remision;
             try {
@@ -32,7 +32,6 @@ namespace TheCircle.Models
                   ", @id = @id OUTPUT";
 
                 remision = _context.Remisiones.FromSql(query).First();
-                //remision = data.First(); //Remision creada
                 return remision;
             } catch (Exception e) {
                 return null;
@@ -40,13 +39,13 @@ namespace TheCircle.Models
         }
     }
 
-    public class RemisionNueva
+    public class RemisionRequest
     {
         public int atencionM { get; set; }
         public int institucion { get; set; }
-        public int monto { get; set; }
+        public double monto { get; set; }
         public string sintomas { get; set; }
 
-        public RemisionNueva() { }
+        public RemisionRequest() { }
     }
 }

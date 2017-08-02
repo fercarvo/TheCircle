@@ -20,7 +20,7 @@ namespace TheCircle.Models
 
         public ItemReceta() { }
 
-        public void insert (int receta, ItemRecetaNuevo i, MyDbContext _context) {
+        public void insert (int receta, ItemRecetaRequest i, MyDbContext _context) {
             string query = "EXEC dbo.insert_ItemReceta @idItemFarmacia=" + i.itemFarmacia.id +
               ", @idDiagnostico=" + i.diagnostico +
               ", @cantidad=" + i.cantidad +
@@ -43,7 +43,7 @@ namespace TheCircle.Models
         }
     }
 
-    public class ItemRecetaNuevo
+    public class ItemRecetaRequest
     {
         [Key]
         public ItemFarmacia itemFarmacia { get; set; }
@@ -51,14 +51,14 @@ namespace TheCircle.Models
         public int cantidad { get; set; }
         public string posologia { get; set; }
 
-        public ItemRecetaNuevo() { }
+        public ItemRecetaRequest() { }
     }
 
-    public class RecetaNuevaItems
+    public class RecetaItemsRequest
     {
         public int idReceta { get; set; }
-        public ItemRecetaNuevo[] items { get; set; }
+        public ItemRecetaRequest[] items { get; set; }
 
-        public RecetaNuevaItems() { }
+        public RecetaItemsRequest() { }
     }
 }

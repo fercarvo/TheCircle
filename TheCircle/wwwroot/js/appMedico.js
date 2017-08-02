@@ -107,43 +107,31 @@ angular.module('appMedico', ['ui.router'])
         });
 
         $scope.buscarApadrinado = function (codigo) {
-            $http.get("/api/apadrinado/" + codigo)
-                .then(function success(res) {
-                    if (res.data) {
-                        if (res.data.status == "D" || res.data.status == "E") {
-                            $scope.status = false;
-                            atencionFactory.status = false;
-                        } else {
-                            $scope.status = true;
-                        }
+            $http.get("/api/apadrinado/" + codigo).then(function success(res) {
 
-                        $scope.foto = "/api/apadrinado/foto/" + codigo;
-                        atencionFactory.apadrinado = res.data;
-                        $scope.apadrinado = atencionFactory.apadrinado;
-                        atencionFactory.codigo = codigo;
+                if (res.data.status == "D" || res.data.status == "E") {
+                    $scope.status = false;
+                    atencionFactory.status = false;
+                } else {
+                    $scope.status = true;
+                }
+                $scope.foto = "/api/apadrinado/foto/" + codigo;
+                atencionFactory.apadrinado = res.data;
+                $scope.apadrinado = atencionFactory.apadrinado;
+                atencionFactory.codigo = codigo;
 
-                    } else {
-                        atencionFactory.apadrinado = {};
-                        $scope.apadrinado = atencionFactory.apadrinado;
-                        atencionFactory.foto = "/images/ci.png";
-                        $scope.foto = atencionFactory.foto;
-                        atencionFactory.status = true;
-                        $scope.status = atencionFactory.status;
-                        atencionFactory.codigo = {};
-                        $scope.codigo = atencionFactory.codigo;
-                    }
+            }, function error(err, status) {
 
-                }, function error(err, status) {
-                    console.log(err, status);
-                    atencionFactory.apadrinado = {};
-                    $scope.apadrinado = atencionFactory.apadrinado;
-                    atencionFactory.foto = "/images/ci.png";
-                    $scope.foto = atencionFactory.foto;
-                    atencionFactory.status = true;
-                    $scope.status = atencionFactory.status;
-                    atencionFactory.codigo = {};
-                    $scope.codigo = atencionFactory.codigo;
-                });
+                console.log(err, status);
+                atencionFactory.apadrinado = {};
+                $scope.apadrinado = atencionFactory.apadrinado;
+                atencionFactory.foto = "/images/ci.png";
+                $scope.foto = atencionFactory.foto;
+                atencionFactory.status = true;
+                $scope.status = atencionFactory.status;
+                atencionFactory.codigo = {};
+                $scope.codigo = atencionFactory.codigo;
+            });
         };
 
     }])
@@ -154,18 +142,17 @@ angular.module('appMedico', ['ui.router'])
         $scope.tipos = dataFactory.tipos;
         $scope.atencion = atencionFactory.atencion;
 
-
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
 
-        if (dataFactory.enfermedades==null) {
+        if (dataFactory.enfermedades == null) {
             dataFactory.getEnfermedades().then(function success(res) {
                 dataFactory.enfermedades = res.data;
                 $scope.enfermedades = dataFactory.enfermedades;
             }, function error(err) {
-                console.log(err);
+                console.log("error cargar enfermedades", err);
             })
         }
 
@@ -191,7 +178,6 @@ angular.module('appMedico', ['ui.router'])
             $http.post("/api/atencion", AtencionNueva).then(function success(res){
 
                 console.log("se creo atencion", res.data);
-
                 disable.atencion = true;
                 atencionFactory.atencion = res.data; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
@@ -203,51 +189,45 @@ angular.module('appMedico', ['ui.router'])
             });
         }
 
-
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
-
-
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
         $scope.instituciones = dataFactory.instituciones;
         $scope.diagnosticos = atencionFactory.atencion.diagnosticos
 
-
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
-        if (dataFactory.instituciones==null) {
+        if (dataFactory.instituciones == null) {
             dataFactory.getInstituciones().then(function success(res) {
                 dataFactory.instituciones = res.data;
                 $scope.instituciones = dataFactory.instituciones;
             }, function error(err) {
-                console.log("error al cargar instituciones", err);
+                console.log("error cargar instituciones", err);
             })
         }
 
         $scope.send = function (remision) {
-            var RemisionNueva = {
+            var RemisionRequest = {
                 atencionM: atencionFactory.atencion.atencion.id,
                 institucion: remision.institucion,
                 monto: remision.monto,
                 sintomas: remision.sintomas
             }
 
-            $http.post("/api/remision", RemisionNueva).then(function success(res) {
+            $http.post("/api/remision", RemisionRequest).then(function success(res) {
 
                 console.log("se creo remision", res);
                 disable.remision = true;
-                atencionFactory.remision = $scope.remision; //Se guarda la data ingresada en la factory
+                atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
 
             }, function (err, status) {
                 console.log("error crear remision", err, status);
             });
         }
-
-
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
@@ -263,15 +243,16 @@ angular.module('appMedico', ['ui.router'])
                 dataFactory.stock = res.data;
                 $scope.stock = dataFactory.stock;
             }, function error(err) {
-                console.log(err);
+                console.log("error cargar itemFarmacia", err);
             })
         }
 
-        if (atencionFactory.receta==null) {
+        if (atencionFactory.receta == null) {
+            var RecetaRequest = {
+              doctor: atencionFactory.doctor,
+              apadrinado: atencionFactory.apadrinado.cod };
 
-            var RecetaNueva = { idDoctor: atencionFactory.doctor, idApadrinado: atencionFactory.apadrinado.cod };
-
-            $http.post("/api/receta", RecetaNueva).then(function success(res) {
+            $http.post("/api/receta", RecetaRequest).then(function success(res) {
                 console.log("Se creo receta", res.data);
                 atencionFactory.receta.id = res.data.id;
                 $scope.receta.id = atencionFactory.receta.id;
@@ -299,8 +280,6 @@ angular.module('appMedico', ['ui.router'])
 
         $scope.guardarReceta = function () {
             var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta };
-
-            console.log("data a enviar", JSON.parse(angular.toJson(data)));
 
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);

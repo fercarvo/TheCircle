@@ -64,7 +64,7 @@ namespace TheCircle
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=TheCircle}/{action=Index}/{id?}");
+                    template: "{controller=TheCircle}/{action=Medico}");
             });
         }
     }

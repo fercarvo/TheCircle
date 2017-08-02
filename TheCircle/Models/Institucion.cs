@@ -20,8 +20,8 @@ namespace TheCircle.Models
 
         public Institucion[] getAll (MyDbContext _context) {
             try {
-                var institucionesDB = _context.Instituciones.FromSql("EXEC dbo.select_Institucion");
-                return institucionesDB.ToArray();
+                var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion");
+                return data.ToArray();
             } catch (Exception e) {
                 return null;
             }

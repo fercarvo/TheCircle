@@ -13,13 +13,6 @@ namespace TheCircle.Models
 
         public Diagnostico() { }
 
-        public Diagnostico (int id, string enfermedadCod, string enfermedadNombre)
-        {
-            this.id = id;
-            this.enfermedadCod = enfermedadCod;
-            this.enfermedadNombre = enfermedadNombre;
-        }
-
         public void insert (string enfermedadCod, int atencion, MyDbContext _context)
         {
             try {
@@ -34,9 +27,8 @@ namespace TheCircle.Models
             string q = "EXEC dbo.select_DiagnosticoByAtencion @atencion=" + idAtencion;
 
             try {
-                var diagnosticosDB = _context.Diagnosticos.FromSql(q); //Retorna los diagnosticos de esa AtencionM
-                return diagnosticosDB.ToArray();
-                //return diagnosticosDB.Select(s => new Diagnostico (s.id, s.enfermedadCod, s.enfermedadNombre)).ToArray();
+                var data = _context.Diagnosticos.FromSql(q); //Retorna los diagnosticos de esa AtencionM
+                return data.ToArray();
             } catch (Exception e) {
                 return null;
             }

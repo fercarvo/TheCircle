@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace TheCircle.Models
 {
-    public class Atencion 
+    public class Atencion
     {
         public int id { get; set; }
         public string idApadrinado { get; set; }
@@ -19,9 +19,10 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
-        public Atencion crear(AtencionNueva request, MyDbContext _context) 
+        public Atencion crear(AtencionRequest request, MyDbContext _context)
         {
             Atencion atencion;
+            Diagnostico d = new Diagnostico();
 
             if (request != null) {
                 string query = "DECLARE @id int " +
@@ -37,8 +38,6 @@ namespace TheCircle.Models
                 }
 
                 if (atencion != null) {
-                    Diagnostico d = new Diagnostico();
-
                     foreach (string diagnostico in request.diagnosticos) {
                         d.insert(diagnostico, atencion.id, _context);
                     }
@@ -53,14 +52,14 @@ namespace TheCircle.Models
 
     }
 
-    public class AtencionNueva
+    public class AtencionRequest
     {
         public int doctor { get; set; }
         public int apadrinado { get; set; }
         public string tipo { get; set; }
         public string[] diagnosticos { get; set; }
 
-        public AtencionNueva() { }
+        public AtencionRequest() { }
     }
 
     public class AtencionResponse
