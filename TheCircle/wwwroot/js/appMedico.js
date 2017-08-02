@@ -84,23 +84,23 @@ angular.module('appMedico', ['ui.router'])
         atencion.localidad = "CC2";
         atencion.apadrinado = {};
         atencion.foto = "/images/ci.png";
-        atencion.codigo = {};
-        atencion.atencion = {};
-        atencion.atencion.diag1 = null;
-        atencion.atencion.diag2 = null;
-        atencion.atencion.diagp = null;
-        atencion.remision = {};
+        atencion.codigo = null;
+        atencion.atencion = null;
+        atencion.diagnosticos = null;
+        atencion.remision = null;
         atencion.receta = [];
         atencion.receta.id = null;
-        atencion.status = false;
+        atencion.status = true;
 
         return atencion;
     }])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
+        console.log("atencionFactory atencion", atencionFactory);
         $scope.disable = disable.atencion;
         $scope.apadrinado = atencionFactory.apadrinado;
         $scope.foto = atencionFactory.foto;
+        $scope.status = atencionFactory.status;
 
         $scope.$on('disable', function (event, data) {
             $scope.disable = disable.atencion;
@@ -136,6 +136,8 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
+
+        console.log("atencionFactory registro", atencionFactory);
 
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
@@ -179,7 +181,8 @@ angular.module('appMedico', ['ui.router'])
 
                 console.log("se creo atencion", res.data);
                 disable.atencion = true;
-                atencionFactory.atencion = res.data; //Se guarda la data ingresada en la factory
+                atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
+                atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
                 $state.go('atencion.remision');
@@ -191,10 +194,12 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
+        console.log("atencionFactory remision", atencionFactory);
+
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
         $scope.instituciones = dataFactory.instituciones;
-        $scope.diagnosticos = atencionFactory.atencion.diagnosticos
+        $scope.diagnosticos = atencionFactory.diagnosticos
 
         $scope.activar = function () {
             $(".myselect").select2();
@@ -211,7 +216,7 @@ angular.module('appMedico', ['ui.router'])
 
         $scope.send = function (remision) {
             var RemisionRequest = {
-                atencionM: atencionFactory.atencion.atencion.id,
+                atencionM: atencionFactory.atencion.id,
                 institucion: remision.institucion,
                 monto: remision.monto,
                 sintomas: remision.sintomas
@@ -219,7 +224,7 @@ angular.module('appMedico', ['ui.router'])
 
             $http.post("/api/remision", RemisionRequest).then(function success(res) {
 
-                console.log("se creo remision", res);
+                console.log("se creo remision", res.data);
                 disable.remision = true;
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
@@ -231,12 +236,20 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+        console.log("atencionFactory receta", atencionFactory);
+
+
 
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
         $scope.ItemRecetaNuevo = {};
         $scope.editarItem = true;
-        $scope.diagnosticos = atencionFactory.atencion.diagnosticos;
+        $scope.diagnosticos = atencionFactory.diagnosticos;
+
+
+        $scope.activar = function () {
+            $(".myselect").select2();
+        }
 
         if (dataFactory.stock==null) {
             dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
@@ -247,7 +260,7 @@ angular.module('appMedico', ['ui.router'])
             })
         }
 
-        if (atencionFactory.receta == null) {
+        if (atencionFactory.receta.id == null) {
             var RecetaRequest = {
               doctor: atencionFactory.doctor,
               apadrinado: atencionFactory.apadrinado.cod };
@@ -264,18 +277,22 @@ angular.module('appMedico', ['ui.router'])
 
         $scope.addItenReceta = function (item) {
             $scope.editarItem = true;
-            atencionFactory.receta.push(item);
+            var obj= angular.copy(item);;
+            atencionFactory.receta.push(obj);
             $scope.receta = atencionFactory.receta;
+            item.diagnostico = {};
+            item.cantidad = 0;
+            item.posologia = "";
         }
 
         $scope.eliminarItem = function (receta, index){
             receta.splice(index, 1);
-            atencionFactory.receta = array;
+            atencionFactory.receta = receta;
         }
 
         $scope.select = function (item) {
             $scope.editarItem = false;
-            $scope.ItemRecetaNuevo.itemFarmacia = item
+            $scope.ItemRecetaNuevo.itemFarmacia = angular.copy(item);
         }
 
         $scope.guardarReceta = function () {

@@ -13,7 +13,7 @@ namespace TheCircle.Models
         public int doctor { get; set; }
         public Int32 IdInstitucion { get; set; }
         public string nombreInstitucion { get; set; }
-        public Int32 monto { get; set; }
+        public decimal monto { get; set; }
         public string sintomas { get; set; }
         public DateTime fecha { get; set; }
         public DateTime fCaducidad { get; set; }
@@ -27,9 +27,9 @@ namespace TheCircle.Models
                 string query = "DECLARE @id int" +
                   " EXEC dbo.insert_Remision @atencionM=" + request.atencionM +
                   ", @institucion=" + request.institucion +
-                  ", @monto=" + request.monto +
-                  ", @sintomas=" + request.sintomas +
-                  ", @id = @id OUTPUT";
+                  ", @monto='" + request.monto +
+                  "', @sintomas='" + request.sintomas +
+                  "', @id=@id OUTPUT";
 
                 remision = _context.Remisiones.FromSql(query).First();
                 return remision;
@@ -43,7 +43,7 @@ namespace TheCircle.Models
     {
         public int atencionM { get; set; }
         public int institucion { get; set; }
-        public double monto { get; set; }
+        public int monto { get; set; }
         public string sintomas { get; set; }
 
         public RemisionRequest() { }

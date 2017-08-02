@@ -1,17 +1,17 @@
-<div >
+<div ng-init="activar()">
     <div class="panel-body">
             <div class="form-group ">
                 <div class="form-group col-sm-6">
 
                     <div class="panel panel-default-light border-default col-sm-12" style="margin-right: 5px;">
                         <div class="panel-heading">
-                            <div class="panel-title">
+                            <div class="panel-title" style="padding-top:0px;">
                                 Existencia en farmacia
                             </div>
+                            <div style="text-align:right">
+                                <input type="text" ng-model="buscar.compuesto" placeholder=" buscar por compuesto">
+                            </div>
                         </div>
-                        <label>
-                            Buscar por compuesto: <input type="text" ng-model="buscar.compuesto">
-                        </label>
                         <div class="panel-body">
                             <table class="table table-striped" style="text-align:center;">
                                 <thead>
@@ -59,7 +59,7 @@
                                     <tbody>
                                         <tr ng-repeat="item in receta">
                                             <td>{{item.cantidad}}</td>
-                                            <td>{{item.nombre}}</td>
+                                            <td>{{item.itemFarmacia.nombre}}</td>
                                             <td>{{item.posologia}}</td>
                                             <td ng-click="eliminarItem(receta, $index)">eliminar</td>
                                         </tr>
@@ -68,49 +68,57 @@
                             </div><!-- /.panel-body -->
                         </div><!-- /.form-group TABLE 2 -->
                     </div><!-- /.form-group TABLE 2 and labels-->
-                    <!-- Modal -->
-                    <div id="myModal" class="modal fade" role="dialog">
-                      <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <h4 class="modal-title">Editar item</h4>
-                          </div>
-                          <div class="modal-body">
-                              <form ng-submit="addItenReceta(ItemRecetaNuevo)">
-                                  <label class="control-label">Item</label>
-                                  <div class="col-sm-9" style="padding-bottom:5px;">
-                                      <input disabled type="text" class="form-control" value="{{ItemRecetaNuevo.itemFarmacia.nombre}} {{ItemRecetaNuevo.itemFarmacia.compuesto}}">
-                                  </div>
-                                  <label class="control-label">Enfermedad <a style="color:red;">(*)</a></label>
-                                  <div class="col-sm-9" style="padding-bottom:5px;">
-                                      <select required class="form-control" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
-                                      </select>
-                                  </div>
-                                  <label class="control-label">Cantidad <a style="color:red;">(*)</a></label>
-                                  <div class="col-sm-9" style="padding-bottom:5px;">
-                                      <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
-                                  </div>
-                                  <label class="control-label">Posologia <a style="color:red;">(*)</a></label>
-                                  <div class="col-sm-9">
-                                      <textarea ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia" class="form-control" placeholder="....." rows="2"></textarea>
-                                  </div>
-                                  <div>
-                                      <a style="color:red;">(*) campo obligatorio.</a>
-                                  </div>
-                                  <div class="text-right">
-                                      <button ng-disabled="editarItem" type="submit" class="btn btn-info" style="margin-top:5px;">Agregar a Receta</button>
-                                      <button ng-disabled="editarItem" type="reset" class="btn btn-info" style="margin-top:5px;">Limpiar seleccion</button>
-                                  </div>
-                              </form>
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
+
+
+
+                    <div id="myModal" class="modal fade"">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Editar item</h5>
+                                </div>
+                                <div class="modal-body" style="max-height: none;">
+                                    <form ng-submit="addItenReceta(ItemRecetaNuevo)">
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label">Item</label>
+                                            <div class="col-sm-9">
+                                                <input disabled type="text" class="form-control" value="{{ItemRecetaNuevo.itemFarmacia.nombre}} {{ItemRecetaNuevo.itemFarmacia.compuesto}}">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label">Diagnostico <a style="color:red;">(*)</a></label>
+                                            <div class="col-sm-9">
+                                                <select required class="form-control myselect" style="width: 100%;" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
+                                                    <option style="display:none;" selected value="">Digite y Seleccione el diagnostico</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label  class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
+                                            <div class="col-sm-9">
+                                                <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-sm-2 control-label" >Posologia <a style="color:red;">(*)</a></label>
+                                            <div class="col-sm-9">
+                                                <textarea class="form-control" ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia"  placeholder="....." rows="2"></textarea>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a style="color:red;">(*) campo obligatorio.</a>
+                                        </div>
+                                        <div >
+                                            <button ng-disabled="editarItem" type="submit" class="btn btn-primary">Agregar a Receta</button>
+                                            <button ng-disabled="editarItem" type="reset" class="btn btn-secondary">Limpiar seleccion</button>
+                                        </div>
+                                    </form>
+                                </div>
                         </div>
-
-                      </div>
                     </div>
 
                 </div>

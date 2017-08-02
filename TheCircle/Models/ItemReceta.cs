@@ -25,12 +25,12 @@ namespace TheCircle.Models
               ", @idDiagnostico=" + i.diagnostico +
               ", @cantidad=" + i.cantidad +
               ", @receta=" + receta +
-              ", @posologia='" + i.posologia;
+              ", @posologia='" + i.posologia + "'";
 
-              try {
+              //try {
                   _context.Database.ExecuteSqlCommand(query);
-              } catch (Exception e) {
-              }
+              //} catch (Exception e) {
+              //}
         }
 
         public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {

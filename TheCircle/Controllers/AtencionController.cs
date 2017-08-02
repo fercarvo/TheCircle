@@ -17,39 +17,6 @@ namespace TheCircle.Controllers
         }
 
         //Crea una atencion medica
-        [HttpPost ("api/atencion2")]
-        public IActionResult PostAtencion2([FromBody] AtencionRequest atencion)
-        {
-            AtencionResponse a = new AtencionResponse();
-
-            if (atencion != null) {
-
-                string query = "DECLARE @id int "+
-                    "EXEC dbo.insert_AtencionM @apadrinado=" +atencion.apadrinado+
-                    ", @doctor="+ atencion.doctor +
-                    ", @tipo=" + atencion.tipo +
-                    ", @id = @id OUTPUT";
-
-                try {
-                    var atencionesDB = _context.Atenciones.FromSql(query); //Retorna la AtencionM creada
-                    a.atencion = atencionesDB.First(); //Atencion creada
-
-                    string query2 = "EXEC dbo.select_DiagnosticoByAtencion @atencion=" + a.atencion.id;
-                    var diagnosticosDB = _context.Diagnosticos.FromSql(query2); //Retorna los diagnosticos de esa AtencionM
-
-                    a.diagnosticos = diagnosticosDB.ToArray();
-
-                    return Ok(a);
-
-                } catch (Exception e) {
-                    return BadRequest(atencion);
-                }
-            } else {
-                return BadRequest(atencion);
-            }
-        }
-
-        //Crea una atencion medica
         [HttpPost ("api/atencion")]
         public IActionResult PostAtencion([FromBody] AtencionRequest request)
         {

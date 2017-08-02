@@ -24,9 +24,10 @@ namespace TheCircle.Controllers
             ItemFarmacia item = new ItemFarmacia();
             ItemFarmacia[] stock = item.getAllByLocalidad(localidad, _context);
             if (stock != null) {
-                Ok(stock);
+                return Ok(stock);
+            } else {
+                return BadRequest(stock);
             }
-            return BadRequest("Somethig broke");
         }
 
     }
