@@ -154,7 +154,7 @@ angular.module('appMedico', ['ui.router'])
                 dataFactory.enfermedades = res.data;
                 $scope.enfermedades = dataFactory.enfermedades;
             }, function error(err) {
-                console.log("error cargar enfermedades", err);
+                console.log("error cargar enfermedades");
             })
         }
 
@@ -187,8 +187,8 @@ angular.module('appMedico', ['ui.router'])
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
                 $state.go('atencion.remision');
 
-            }, function (err, status){
-              console.log("error atencion", err, status);
+            }, function error(err){
+              console.log("error atencion");
             });
         }
 
@@ -210,7 +210,7 @@ angular.module('appMedico', ['ui.router'])
                 dataFactory.instituciones = res.data;
                 $scope.instituciones = dataFactory.instituciones;
             }, function error(err) {
-                console.log("error cargar instituciones", err);
+                console.log("error cargar instituciones");
             })
         }
 
@@ -229,17 +229,15 @@ angular.module('appMedico', ['ui.router'])
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
 
-            }, function (err, status) {
-                console.log("error crear remision", err, status);
+            }, function (err) {
+                console.log("error crear remision");
             });
         }
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
         console.log("atencionFactory receta", atencionFactory);
-
-
-
+        
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
         $scope.ItemRecetaNuevo = {};
@@ -251,12 +249,12 @@ angular.module('appMedico', ['ui.router'])
             $(".myselect").select2();
         }
 
-        if (dataFactory.stock==null) {
+        if (dataFactory.stock == null && atencionFactory.codigo != null) {
             dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
                 dataFactory.stock = res.data;
                 $scope.stock = dataFactory.stock;
             }, function error(err) {
-                console.log("error cargar itemFarmacia", err);
+                console.log("error cargar itemFarmacia");
             })
         }
 
@@ -270,7 +268,7 @@ angular.module('appMedico', ['ui.router'])
                 atencionFactory.receta.id = res.data.id;
                 $scope.receta.id = atencionFactory.receta.id;
             }, function err(err) {
-                console.log("No se pudo crear receta", err);
+                console.log("No se pudo crear receta");
             });
 
         }
@@ -301,7 +299,7 @@ angular.module('appMedico', ['ui.router'])
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
             }, function err(err){
-                console.log("No se pudieron crear los items", err);
+                console.log("No se pudieron crear los items");
             });
         }
 
@@ -316,6 +314,7 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('estadisticas.1', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
 
 
     }])

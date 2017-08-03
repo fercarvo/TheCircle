@@ -62,11 +62,11 @@ namespace TheCircle.Controllers
         {
             if (request != null) {
                 Receta receta = new Receta();
-                try {
-                    receta = receta.crear(request, _context);
+                receta = receta.crear(request, _context);
+                if (receta != null) {
                     return Ok(receta);
-                } catch (Exception e) {
-                    BadRequest(e);
+                } else {
+                    BadRequest("Something broke");
                 }
             }
             return BadRequest("Incorrect Data");
@@ -101,8 +101,9 @@ namespace TheCircle.Controllers
             Institucion[] instituciones = institucion.getAll(_context);
             if (instituciones != null) {
                 return Ok(instituciones);
+            } else {
+                return BadRequest("Somethig broke");
             }
-            return BadRequest("Somethig broke");
         }
     }
 }
