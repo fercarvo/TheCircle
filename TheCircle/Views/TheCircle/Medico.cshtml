@@ -19,6 +19,7 @@
     <link href="~/css/wiseboard/theme-default.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css" rel="stylesheet"/>
 
 </head>
 <body class="page-dashboard" ng-app="appMedico">
@@ -31,7 +32,7 @@
                     <span style="color:white">TheCircle</span>
                 </a>
                 <button type="button" class="sidebar-toggle" style="color:white">
-                    <span class="glyphicon glyphicon-menu-hamburger"></span>
+                    <span ng-class="class='glyphicon glyphicon-chevron-right'"></span>
                 </button>
             </div><!-- /.navbar-header -->
         </div>
@@ -87,5 +88,9 @@
     <script src="~/js/angular.min.js"></script>
     <script src="~/js/appMedico.js"></script>
     <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>
 </body>
 </html>

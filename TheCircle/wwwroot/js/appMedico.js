@@ -1,4 +1,4 @@
-angular.module('appMedico', ['ui.router'])
+angular.module('appMedico', ['ui.router', 'nvd3'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
@@ -316,9 +316,53 @@ angular.module('appMedico', ['ui.router'])
     .controller('estadisticas.1', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
 
-
     }])
-    .controller('estadisticas.2', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('estadisticas.2', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
+
+        $scope.generar = function (desde, hasta) {
+
+            var data = {
+                desde: desde,
+                hasta: hasta,
+                apadrinado: atencionFactory.apadrinado.cod
+            }
+
+            $http.post("/api/reporte/enfermedad", data).then(function success(res) {
+
+                var arr = [];
+
+                res.data.forEach(function (obj) {
+                    arr.push({ key: obj.codigo, y: obj.veces });
+                });
+
+                $scope.data = arr;
+
+            }, function error(err) {
+                console.log("Error cargar estadisticas");
+            });
+
+        }
+
+        $scope.options = {
+            chart: {
+                type: 'pieChart',
+                height: 500,
+                x: function (d) { return d.key; },
+                y: function (d) { return d.y; },
+                showLabels: true,
+                duration: 500,
+                labelThreshold: 0.01,
+                labelSunbeamLayout: true,
+                legend: {
+                    margin: {
+                        top: 5,
+                        right: 35,
+                        bottom: 5,
+                        left: 0
+                    }
+                }
+            }
+        };
 
 
     }])
