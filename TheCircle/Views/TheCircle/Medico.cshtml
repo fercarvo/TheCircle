@@ -10,8 +10,7 @@
     <link href="~/css/wiseboard/css.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- REQUIRED PLUGINS -->
-    <link href="~/css/wiseboard/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="~/css/wiseboard/bootstrap-switch.min.css" rel="stylesheet" type="text/css">
+   <!-- <link href="~/css/wiseboard/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- main.min.css - WISEBOARD CORE CSS -->
     <link href="~/css/wiseboard/main.min.css" rel="stylesheet" type="text/css">
     <!-- admin.min.css - ADMIN LAYOUT -->
@@ -29,208 +28,12 @@
             <div class="navbar-header" style="color:#901F61">
                 <a class="navbar-brand" href="" style="color:#901F61">
                     <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
-                    <span style="color:#fff">TheCircle</span>
+                    <span style="color:white">TheCircle</span>
                 </a>
-                <button type="button" class="sidebar-toggle">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button type="button" class="sidebar-toggle" style="color:white">
+                    <span class="glyphicon glyphicon-menu-hamburger"></span>
                 </button>
             </div><!-- /.navbar-header -->
-
-
-            <ul class="nav navbar-nav navbar-right" >
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell"></i>
-                        <span class="label circle">4</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">
-                            You have 3 <a href="">notifications.</a>
-                        </li><!-- /.dropdown-header -->
-
-                        <li>
-                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 259px;">
-                                <ul class="list-dropdown-content list-dropdown-notifications" style="overflow: hidden; width: 193px; height: 259px;">
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-success circle">
-                                                        <i class="fa fa-power-off"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">1 min</i> Servers restarted successfully.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-info circle">
-                                                        <i class="fa fa-user"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">2 min</i> New user registered.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-danger circle">
-                                                        <i class="fa fa-undo"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">4 min</i> Backup error.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-primary circle">
-                                                        <i class="fa fa-gear"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">7 min</i> Settings updated.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-warning circle">
-                                                        <i class="fa fa-exclamation"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">9 min</i> Application is not responding.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </li>
-                    </ul><!-- /.dropdown-menu -->
-                </li><!-- /.dropdown -->
-
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope"></i>
-                        <span class="label circle">3</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">
-                            You have 3 new <a href="">messages.</a>
-                        </li><!-- /.dropdown-header -->
-
-                        <li>
-                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 230px;">
-                                <ul class="list-dropdown-content list-dropdown-messages" style="overflow: hidden; width: 193px; height: 230px;">
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <img src="~/images/wiseboard/avatar3.png" alt="avatar" class="media-object img-circle">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="media-heading">
-                                                        <i class="pull-right">1 min</i>
-                                                        <strong class="text-primary">Nancy Allen</strong>
-                                                    </h6>
-                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <img src="~/images/wiseboard/avatar2.png" alt="avatar" class="media-object img-circle">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="media-heading">
-                                                        <i class="pull-right">2 min</i>
-                                                        <strong class="text-primary">Michael Spencer</strong>
-                                                    </h6>
-                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-
-
-
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li><!-- /.dropdown -->
-
-
-
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="~/images/wiseboard/profile-sm.png" alt="avatar" class="img-circle">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-profile">
-                        <li class="dropdown-header">Account Details</li>
-                        <li>
-                            <div class="media">
-                                <div class="media-left">
-                                    <img src="~/images/wiseboard/profile-lg.png" alt="avatar" class="media-object img-circle">
-                                </div>
-                                <div class="media-body">
-                                    <h5 class="media-heading">Sandra Baker</h5>
-                                    <p>sandrabaker@gmail.com</p>
-                                    <a href="" class="btn btn-primary btn-xs">View profile</a>
-                                </div>
-                            </div><!-- /.media -->
-                        </li>
-
-                        <li>
-                            <a href="">
-                                <i class="fa fa-paper-plane-o"></i> Inbox
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fa fa-history"></i> Timeline
-                            </a>
-                        </li>
-                        <li>
-                            <a href="">
-                                <i class="fa fa-calendar-check-o"></i> Calendar
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="">
-                                <i class="fa fa-sign-out"></i> Sign Out
-                            </a>
-                        </li>
-                    </ul>
-                </li><!-- /.dropdown -->
-
-
-            </ul><!-- /.navbar-nav -->
         </div>
     </nav>
     <!-- TOP NAVIGATION ENDS -->
@@ -277,7 +80,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <!-- REQUIRED NOTIFICATION SCROLL -->
-    <script src="~/js/wiseboard/jquery.slimscroll.min.js"></script>
+    <!--<script src="~/js/wiseboard/jquery.slimscroll.min.js"></script> -->
     <!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES SIDE SCROLLBAR -->
     <script src="~/js/wiseboard/admin.min.js"></script>
 

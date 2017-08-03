@@ -310,7 +310,7 @@ angular.module('appMedico', ['ui.router'])
 
     }])
     .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-
+        
 
     }])
     .controller('estadisticas.1', ["$scope", "$state", "$http", function ($scope, $state, $http) {
