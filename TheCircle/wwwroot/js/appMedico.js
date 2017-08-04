@@ -129,7 +129,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.foto = atencionFactory.foto;
                 atencionFactory.status = true;
                 $scope.status = atencionFactory.status;
-                atencionFactory.codigo = {};
+                atencionFactory.codigo = null;
                 $scope.codigo = atencionFactory.codigo;
             });
         };
@@ -332,7 +332,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 var arr = [];
 
                 res.data.forEach(function (obj) {
-                    arr.push({ key: obj.codigo, y: obj.veces });
+                    arr.push({ key: obj.codigo + " " + obj.nombre, y: obj.veces });
                 });
 
                 $scope.data = arr;

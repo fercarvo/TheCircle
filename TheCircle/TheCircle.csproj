@@ -20,7 +20,6 @@
 
   <ItemGroup>
     <Content Include="wwwroot\css\wiseboard\admin.min.css" />
-    <Content Include="wwwroot\css\wiseboard\bootstrap.min.css" />
     <Content Include="wwwroot\css\wiseboard\css.css" />
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
     <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
