@@ -261,7 +261,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         if (atencionFactory.receta.id == null) {
             var RecetaRequest = {
               doctor: atencionFactory.doctor,
-              apadrinado: atencionFactory.apadrinado.cod };
+              apadrinado: atencionFactory.codigo };
 
             $http.post("/api/receta", RecetaRequest).then(function success(res) {
                 console.log("Se creo receta", res.data);

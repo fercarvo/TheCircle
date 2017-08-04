@@ -50,9 +50,10 @@
             .sidebar .sidebar-nav > .open > a:hover, .sidebar .sidebar-nav > .open > a:focus {
                 background-color: #d7d3d4;
             }
-            
+
             .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
-                background-color: #706f6f
+                /*background-color: #706f6f*/
+                background-color: #344868
             }
             .btn-info {
                 color: #fff;
@@ -60,7 +61,7 @@
                 background-color: #28d1a3;
             }
         </style>
-        <div class="sidebar" style="min-height: 0px;height:100vh;background-color:#f2f2f2;">
+        <div class="sidebar" style="min-height: 662px;height:100vh;background-color:#f2f2f2;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="atencion" ui-sref-active="active">
@@ -86,7 +87,7 @@
             </ul>
         </div>
         <!-- SIDEBAR ENDS -->
-
+        <div class="sidebar" style="background-color:#344868; width:1px;height:100vh;"> </div>
         <!-- CONTENT STARTS -->
         <ui-view></ui-view>
         <!-- CONTENT ENDS -->

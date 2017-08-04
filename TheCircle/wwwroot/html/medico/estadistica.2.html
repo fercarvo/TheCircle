@@ -3,30 +3,46 @@
         <form ng-submit="generar(desde, hasta)">
 
             <div class="container-fluid row">
-                <label class="control-label col-sm-2" style="text-align:left;width:12%;">Talla<a style="color:red;">(*)</a></label>
-                <div class="col-sm-3">
-                    <input required type="text" class="form-control" placeholder="Ingrese la Talla">
-                </div>
-                <div class="form-group col m6 s12">
-                    Desde <input class="browser-default" required ng-model="desde">
-                </div>
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-1" style="text-align:left;">Talla<a style="color:red;">(*)</a></label>
+                    <div class="col-sm-9">
+                        <input required type="text" class="form-control" placeholder="Ingrese la Talla">
+                    </div>
+                </div><!-- /.form-group -->
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-1" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
+                    <div class="col-sm-4">
+                        <input class="form-control col-sm-3" required ng-model="desde">
+                    </div>
+                </div><!-- /.form-group -->
+                <div class="form-group col-sm-12">
+                    <label class="control-label col-sm-1" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
+                    <div class="col-sm-4">
+                        <input class="form-control col-sm-3" required ng-model="hasta">
+                    </div>
+                </div><!-- /.form-group -->
 
-                <div class="form-group col m6 s12">
-                    Hasta <input class="browser-default" required ng-model="hasta">
-                </div>
             </div>
 
             <div class="container-fluid row">
-                <div class="form-group col m6 s12">
-                    <button class="btn " type="submit" name="action">
+                <div class="text-center">
+                    <button class="btn btn-info" type="submit" name="action">
+                        Crear
+                    </button>
+                    <button class="btn btn-info" type="reset" name="action">
+                        Cancelar
+                    </button>
+                </div><!-- /.form-group -->
+                <!--<div class="form-group col m6 s12">
+                    <button class="btn btn-info" type="submit" name="action">
                         Crear
                     </button>
                 </div>
                 <div class="form-group col m6 s12">
-                    <button class="btn" type="reset" name="action">
+                    <button class="btn btn-info" type="reset" name="action">
                         Cancelar
                     </button>
-                </div>
+                </div>-->
             </div>
 
         </form>

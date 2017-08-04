@@ -1,7 +1,14 @@
-<div class="content">
+<div class="content" style="padding-bottom:initial;">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
     <div class="panel panel-default-light border-default">
-        <div class="panel-heading">
-            <div class="panel-title">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title" >
                  Atención Médica
             </div><!-- /.panel-title -->
         </div><!-- /.panel-heading -->
@@ -13,7 +20,7 @@
                     <div class="col-sm-3">
                         <input ng-disabled="disable" type="text" pattern="[0-9]{5,11}" title="Solo numeros, minimo 5, maximo 11" class="form-control" placeholder="codigo" ng-model="codigo" required>
                     </div>
-                    <button ng-disabled="disable" type="submit" class="btn-info" ng-click="buscarApadrinado(codigo)">Buscar</button>
+                    <button ng-disabled="disable" type="submit" class="btn btn-info" ng-click="buscarApadrinado(codigo)">Buscar</button>
                 </div>
             </form><!-- /.form-group -->
 
@@ -24,25 +31,45 @@
 
             <div class="form-group">
                 <label  class="control-label" style="text-align:left;width:12.5%;">Nombres:</label>
-                <label  class="control-label" style="text-align:left;width:25%;"> {{apadrinado.nombres}} {{apadrinado.apellidos}} </label>
-                <label  class="control-label" style="text-align:left;width:12.5%;">PI:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.sector}}</label>
+                <label  class="control-label" style="text-align:left;width:22.5%;"> {{apadrinado.nombres}} {{apadrinado.apellidos}} </label>
+                <label  class="control-label" style="text-align:left;width:15%;">PI:</label>
+                <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.sector}}</label>
+                <label class="control-label" style="text-align:left;width:7.5%;">Peso:</label>
+                <label class="control-label" style="text-align:left;width:12.5%;">valor</label>
+
                 <label  class="control-label" style="text-align:left;width:12.5%;">Posesion del Hogar:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.posesionHogar}}</label>
-                <label  class="control-label" style="text-align:left;width:12.5%;">Edad:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.edad}}</label>
+                <label  class="control-label" style="text-align:left;width:22.5%;">{{apadrinado.posesionHogar}}</label>
+                <label  class="control-label" style="text-align:left;width:15%;">Edad:</label>
+                <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.edad}}</label>
+                <label class="control-label" style="text-align:left;width:7.5%;">Talla:</label>
+                <label class="control-label" style="text-align:left;width:12.5%;">valor</label>
 
                 <label  class="control-label" style="text-align:left;width:12.5%;">Niño vive con:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">###</label>
-                <label  class="control-label" style="text-align:left;width:12.5%;">Numero de Personas:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.numPer}}</label>
+                <label  class="control-label" style="text-align:left;width:22.5%;">###</label>
+                <label  class="control-label" style="text-align:left;width:15%;">Numero de Personas:</label>
+                <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.numPer}}</label>
+                <label class="control-label" style="text-align:left;width:7.5%;">IMC:</label>
+                <label class="control-label" style="text-align:left;width:12.5%;">X/Y</label>
+
                 <label  class="control-label" style="text-align:left;width:12.5%;">Ingreso Mensual:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">$ {{apadrinado.income}}</label>
-                <label  class="control-label" style="text-align:left;width:12.5%;">Numero de Camas:</label>
-                <label  class="control-label" style="text-align:left;width:25%;">{{apadrinado.numBeds}}</label>
+                <label  class="control-label" style="text-align:left;width:22.5%;">$ {{apadrinado.income}}</label>
+                <label  class="control-label" style="text-align:left;width:15%;">Numero de Camas:</label>
+                <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.numBeds}}</label>
+                <label class="control-label" style="text-align:left;width:7.5%;"></label>
+                <label class="control-label" style="text-align:left;width:15%;">Obesidad IV</label>
             </div>
         </div>
-
+        <style>
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                border-top-color: #901F61;
+                border-right-color: #901F61;
+                border-left-color: #901F61;
+                color: #901F61;
+            }
+            .nav-tabs, .nav-tabs > li > a:hover{
+                border-bottom-color: #901F61;
+            }
+        </style>
         <div class="panel-body" style="padding:0px 20px 10px 20px;">
             <ul class="nav nav-tabs">
                 <li ui-sref="atencion.registro" ui-sref-active="active">
