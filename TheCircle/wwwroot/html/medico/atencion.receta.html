@@ -97,7 +97,7 @@
                                         <div class="form-group" style="height:36px;">
                                             <label  class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
                                             <div class="col-sm-9">
-                                                <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="cantidad">
+                                                <input ng-disabled="editarItem" required type="number" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="">
                                             </div>
                                         </div>
 
@@ -110,9 +110,9 @@
                                         <div>
                                             <a style="color:red;">(*) campo obligatorio.</a>
                                         </div>
-                                        <div >
-                                            <button ng-disabled="editarItem" type="submit" class="btn btn-primary">Agregar a Receta</button>
-                                            <button ng-disabled="editarItem" type="reset" class="btn btn-secondary">Limpiar seleccion</button>
+                                        <div class="text-center">
+                                            <button ng-disabled="editarItem" type="submit" class="btn btn-info">Agregar a Receta</button>
+                                            <button ng-disabled="editarItem" type="reset" class="btn btn-default">Limpiar seleccion</button>
                                         </div>
                                     </form>
                                 </div>
