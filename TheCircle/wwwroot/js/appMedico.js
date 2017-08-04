@@ -174,7 +174,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 tipo: atencionFactory.atencion.tipo,
                 diagnosticos: [atencionFactory.atencion.diagp,
                   atencionFactory.atencion.diag1,
-                  atencionFactory.atencion.diag2]
+                  atencionFactory.atencion.diag2],
+                localidad: atencionFactory.localidad
             }
 
             $http.post("/api/atencion", AtencionNueva).then(function success(res){

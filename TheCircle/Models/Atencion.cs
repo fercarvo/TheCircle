@@ -16,6 +16,7 @@ namespace TheCircle.Models
         public double? peso { get; set; }
         public double? talla { get; set; }
         public string tipo { get; set; }
+        public string localidad { get; set; }
 
         public Atencion () { }
 
@@ -26,9 +27,10 @@ namespace TheCircle.Models
 
             if (request != null) {
                 string query = "DECLARE @id int " +
-                    "EXEC dbo.insert_Atencion2 @apadrinado=" + request.apadrinado+
+                    "EXEC dbo.insert_Atencion @apadrinado=" + request.apadrinado+
                     ", @doctor="+ request.doctor +
                     ", @tipo=" + request.tipo +
+                    ", @localidad=" + request.localidad +
                     ", @id = @id OUTPUT";
 
                 try {
@@ -58,6 +60,7 @@ namespace TheCircle.Models
         public int apadrinado { get; set; }
         public string tipo { get; set; }
         public string[] diagnosticos { get; set; }
+        public string localidad { get; set; }
 
         public AtencionRequest() { }
     }
