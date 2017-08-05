@@ -37,7 +37,7 @@ namespace TheCircle.Controllers
             if (apadrinado != null) {
                 return Ok(apadrinado);
             } else {
-                return NotFound(cod);
+                return NotFound();
             }
         }
 

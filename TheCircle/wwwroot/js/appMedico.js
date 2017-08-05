@@ -96,7 +96,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
-        console.log("atencionFactory atencion", atencionFactory);
+        //console.log("atencionFactory atencion", atencionFactory);
         $scope.disable = disable.atencion;
         $scope.apadrinado = atencionFactory.apadrinado;
         $scope.foto = atencionFactory.foto;
@@ -120,9 +120,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.apadrinado = atencionFactory.apadrinado;
                 atencionFactory.codigo = codigo;
 
-            }, function error(err, status) {
+            }, function error(err) {
 
-                console.log(err, status);
+                console.log(err);
                 atencionFactory.apadrinado = {};
                 $scope.apadrinado = atencionFactory.apadrinado;
                 atencionFactory.foto = "/images/ci.png";

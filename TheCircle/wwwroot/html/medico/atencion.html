@@ -16,36 +16,77 @@
 
             <form class="form-horizontal">
                 <div class="form-group">
-                    <label  class="control-label col-sm-2" style="text-align:left;width:12%;">Codigo Apadrinado <a style="color:red;">(*)</a></label>
+                    <label  class="control-label col-sm-2" style="text-align:left;width:20%;">Codigo Apadrinado <a style="color:red;">(*)</a></label>
+
                     <div class="col-sm-3">
                         <input ng-disabled="disable" type="text" pattern="[0-9]{5,11}" title="Solo numeros, minimo 5, maximo 11" class="form-control" placeholder="codigo" ng-model="codigo" required>
                     </div>
-                    <button ng-disabled="disable" type="submit" class="btn btn-info" ng-click="buscarApadrinado(codigo)">Buscar</button>
+                    <button ng-disabled="disable" type="submit" class="btn btn-info col-sm-1" ng-click="buscarApadrinado(codigo)">Buscar</button>
+
+                    
                 </div>
             </form><!-- /.form-group -->
 
-            <div class="form-group col-sm-2" style="position: relative;">
+            <div class="container" style="padding-left:0;">
+                <div class="col-sm-2" >
                     <img style="width: auto;height:120px;" ng-src="{{foto}}">
                     <label ng-hide="status" align="center" style="position:absolute;bottom: -5px;left: 15px;width:120px;background-color:#fd6969;">Cancelado</label>
+                </div>
+                <div class="col-sm-9">
+                    <table class="table">
+                        <tr>
+                            <td class="first">Nombre:</td>
+                            <td class="first">{{apadrinado.nombres}} {{apadrinado.apellidos}}</td>
+                            <td class="first">Sector:</td>
+                            <td class="first">{{apadrinado.sector}}</td>
+                            <td class="first">Peso (Kg):</td>
+                            <td class="first">{{apadrinado.peso}}</td>
+                        </tr>
+                        <tr>
+                            <td class="second">Posesion hogar:</td>
+                            <td class="second">{{apadrinado.posesionHogar}}</td>
+                            <td class="second">Edad:</td>
+                            <td class="second">{{apadrinado.edad}}</td>
+                            <td class="second">Talla:</td>
+                            <td class="second">{{apadrinado.talla}}</td>
+                        </tr>
+                        <tr>
+                            <td class="tres">Responsable:</td>
+                            <td class="tres">{{apadrinado.responsable}}</td>
+                            <td class="tres">Numero de Personas:</td>
+                            <td class="tres">{{apadrinado.numPer}}</td>
+                            <td class="tres">IMC:</td>
+                            <td class="tres">{{apadrinado.imc}}</td>
+                        </tr>
+                        <tr>
+                            <td class="cuatro">Ingreso Mensual:</td>
+                            <td class="cuatro">{{apadrinado.income | currency}}</td>
+                            <td class="cuatro">Numero de camas:</td>
+                            <td class="cuatro">{{apadrinado.numBeds}}</td>
+                            <td class="cuatro">Obesidad:</td>
+                            <td class="cuatro">{{apadrinado.obesidad}}</td>
+                        </tr>
+                    </table>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label  class="control-label" style="text-align:left;width:12.5%;">Nombres:</label>
+            <!--<div class="form-group">
+                <label  class="control-label" style="text-align:left;width:12.5%;">Nombre:</label>
                 <label  class="control-label" style="text-align:left;width:22.5%;"> {{apadrinado.nombres}} {{apadrinado.apellidos}} </label>
-                <label  class="control-label" style="text-align:left;width:15%;">PI:</label>
+                <label  class="control-label" style="text-align:left;width:15%;">Sector:</label>
                 <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.sector}}</label>
                 <label class="control-label" style="text-align:left;width:7.5%;">Peso:</label>
-                <label class="control-label" style="text-align:left;width:12.5%;">valor</label>
+                <label class="control-label" style="text-align:left;width:12.5%;">{{apadrinado.peso}}</label>
 
                 <label  class="control-label" style="text-align:left;width:12.5%;">Posesion del Hogar:</label>
                 <label  class="control-label" style="text-align:left;width:22.5%;">{{apadrinado.posesionHogar}}</label>
                 <label  class="control-label" style="text-align:left;width:15%;">Edad:</label>
                 <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.edad}}</label>
                 <label class="control-label" style="text-align:left;width:7.5%;">Talla:</label>
-                <label class="control-label" style="text-align:left;width:12.5%;">valor</label>
+                <label class="control-label" style="text-align:left;width:12.5%;">xyz</label>
 
-                <label  class="control-label" style="text-align:left;width:12.5%;">Niño vive con:</label>
-                <label  class="control-label" style="text-align:left;width:22.5%;">###</label>
+                <label  class="control-label" style="text-align:left;width:12.5%;">Responsable:</label>
+                <label  class="control-label" style="text-align:left;width:22.5%;">{{apadrinado.responsable}}</label>
                 <label  class="control-label" style="text-align:left;width:15%;">Numero de Personas:</label>
                 <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.numPer}}</label>
                 <label class="control-label" style="text-align:left;width:7.5%;">IMC:</label>
@@ -57,7 +98,7 @@
                 <label  class="control-label" style="text-align:left;width:5%;">{{apadrinado.numBeds}}</label>
                 <label class="control-label" style="text-align:left;width:7.5%;"></label>
                 <label class="control-label" style="text-align:left;width:15%;">Obesidad IV</label>
-            </div>
+            </div>-->
         </div>
         <style>
             .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
