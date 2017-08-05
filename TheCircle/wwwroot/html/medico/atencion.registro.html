@@ -1,65 +1,63 @@
-<div >
-    <div class="panel-body" style="padding:0px 20px 20px 20px;">
-        <form class="form-horizontal" ng-submit="send()" ng-init="activar()">
-            <!--"m-bottom-30" para poner margen vertical de 30px-->
-                <div class="form-group">
-                    <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Atencion Medica<a style="color:red;">(*)</a></label>
-                    <div class="col-sm-9" style="padding-left:initial">
-                        <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.tipo" ng-options="tipo as tipo for tipo in tipos" required>
-                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Atencion Medica</option>
-                        </select>
-                    </div>
-                </div><!-- /.form-group -->
-                <div class="form-group">
-                    <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Principal<a style="color:red;">(*)</a></label>
-                    <div class="col-sm-9" style="padding-left:initial">
-                        <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diagp" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" required>
-                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Principal</option>
-                        </select>
-                    </div>
-                </div><!-- /.form-group -->
+<div class="panel-body" style="padding:0px 20px 20px 20px;">
+    <form class="form-horizontal" ng-submit="send()" ng-init="activar()">
+        <!--"m-bottom-30" para poner margen vertical de 30px-->
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Atencion Medica<a style="color:red;">(*)</a></label>
+                <div class="col-sm-9" style="padding-left:initial">
+                    <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.tipo" ng-options="tipo as tipo for tipo in tipos" required>
+                        <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Atencion Medica</option>
+                    </select>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Principal<a style="color:red;">(*)</a></label>
+                <div class="col-sm-9" style="padding-left:initial">
+                    <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diagp" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" required>
+                        <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Principal</option>
+                    </select>
+                </div>
+            </div><!-- /.form-group -->
 
-                <div class="form-group">
-                    <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Relacionado 1</label>
-                    <div class="col-sm-9" style="padding-left:initial">
-                        <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diag1" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
-                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 1</option>
-                        </select>
-                    </div>
-                </div><!-- /.form-group -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Relacionado 1</label>
+                <div class="col-sm-9" style="padding-left:initial">
+                    <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diag1" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
+                        <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 1</option>
+                    </select>
+                </div>
+            </div><!-- /.form-group -->
 
-                <div class="form-group">
-                    <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Relacionado 2</label>
-                    <div class="col-sm-9" style="padding-left:initial">
-                        <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diag2" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
-                            <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 2</option>
-                        </select>
-                    </div>
-                </div><!-- /.form-group -->
-                <div class="form-group">
-                    <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;"></label>
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagnostico Relacionado 2</label>
+                <div class="col-sm-9" style="padding-left:initial">
+                    <select ng-disabled="disable" class="form-control myselect" ng-model="atencion.diag2" ng-options="enfermedad.codigo as enfermedad.codigo + ' ' + enfermedad.nombre for enfermedad in enfermedades" >
+                        <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Diagnostico Relacionado 2</option>
+                    </select>
+                </div>
+            </div><!-- /.form-group -->
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;"></label>
 
-                        <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-left:initial;padding-right:initial;">Peso (Kg)</label>
-                        <div class="col-sm-2" style="padding-left:initial;">
-                            <input type="number" class="form-control" placeholder="Ingrese el Peso">
-                        </div>
-                        <div class="col-sm-1">
-                        </div>
-                        <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-right:initial;">Talla (M)</label>
-                        <div class="col-sm-2" style="padding-left:initial;">
-                            <input type="number" class="form-control" placeholder="Ingrese la Talla">
-                        </div>
+                    <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-left:initial;padding-right:initial;">Peso (Kg)</label>
+                    <div class="col-sm-2" style="padding-left:initial;">
+                        <input ng-disabled="disable" type="number" ng-model="atencion.peso" class="form-control" placeholder="Ingrese el Peso">
+                    </div>
+                    <div class="col-sm-1">
+                    </div>
+                    <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-right:initial;">Talla (cm)</label>
+                    <div class="col-sm-2" style="padding-left:initial;">
+                        <input ng-disabled="disable" type="number" ng-model="atencion.talla" class="form-control" placeholder="Ingrese la Talla">
+                    </div>
                     
                         
-                </div><!-- /.form-group -->
-                <div>
-                    <a style="color:red;">(*) campo obligatorio.</a>
-                </div>
-                <div class="text-center">
-                    <button type="submit" class="btn btn-info" ng-disabled="disable">Aceptar</button>
-                    <button type="reset" class="btn btn-default" ng-click="reset()" ng-disabled="disable">Cancelar</button>
-                </div><!-- /.form-group -->
-</form>
-    </div><!-- /.panel-body -->
+            </div><!-- /.form-group -->
+            <div>
+                <a style="color:red;">(*) campo obligatorio.</a>
+            </div>
+            <div class="text-center">
+                <button type="submit" class="btn btn-info" ng-disabled="disable">Aceptar</button>
+                <button type="reset" class="btn btn-default" ng-click="reset()" ng-disabled="disable">Cancelar</button>
+            </div><!-- /.form-group -->
+    </form>
+</div><!-- /.panel-body -->
 
-</div><!-- /.tab-pane 1 -->

@@ -31,7 +31,9 @@ namespace TheCircle.Models
                     ", @doctor="+ request.doctor +
                     ", @tipo=" + request.tipo +
                     ", @localidad=" + request.localidad +
-                    ", @id = @id OUTPUT";
+                    ", @peso='" + request.peso +
+                    "', @talla='" + request.talla +
+                    "', @id = @id OUTPUT";
 
                 try {
                     atencion = _context.Atenciones.FromSql(query).First(); //Retorna la AtencionM creada
@@ -61,6 +63,8 @@ namespace TheCircle.Models
         public string tipo { get; set; }
         public string[] diagnosticos { get; set; }
         public string localidad { get; set; }
+        public int? peso { get; set; }
+        public int? talla { get; set; }
 
         public AtencionRequest() { }
     }

@@ -15,6 +15,7 @@ namespace TheCircle.Models
         public string apellidos { get; set; }
         public decimal edad { get; set; }
         public double peso { get; set; }
+        public Int32 talla { get; set; }
         public Int16 income { get; set; }
         public int numBeds { get; set; }
         public int numPer { get; set; }

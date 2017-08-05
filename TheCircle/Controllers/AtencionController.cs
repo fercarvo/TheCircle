@@ -1,9 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
 {
