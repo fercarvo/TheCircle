@@ -1,0 +1,36 @@
+<div class="panel-body" >
+    <div>
+        <form ng-submit="generar(desde, hasta)" >
+
+            <div class="container-fluid">
+                <div class="form-group">
+                    <label class="control-label" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
+                    <div>
+                        <input class="form-control" required ng-model="desde">
+                    </div>
+                </div><!-- /.form-group -->
+                <div class="form-group">
+                    <label class="control-label" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
+                    <div>
+                        <input class="form-control" required ng-model="hasta">
+                    </div>
+                </div><!-- /.form-group -->
+
+            </div>
+
+            <div class="container-fluid">
+                <div class="text-center">
+                    <button class="btn btn-info" type="submit" name="action">
+                        Generar grafico
+                    </button>
+                    <button class="btn btn-info" type="reset" name="action">
+                        Cancelar
+                    </button>
+                </div><!-- /.form-group -->
+
+            </div>
+
+        </form>
+    </div>
+    <nvd3 options="options" data="data"></nvd3>
+</div>

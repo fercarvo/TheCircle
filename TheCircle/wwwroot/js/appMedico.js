@@ -31,15 +31,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'html/medico/estadistica.html',
                 controller: 'estadisticas'
             })
-            .state('estadisticas.1', {
-                //url: '/1',
+            .state('estadisticas.atenciones', {
                 templateUrl: 'html/medico/estadistica.1.html',
-                controller: 'estadisticas.1'
+                controller: 'estadisticas.atenciones'
             })
-            .state('estadisticas.2', {
-                //url: '/2',
-                templateUrl: 'html/medico/estadistica.2.html',
-                controller: 'estadisticas.2'
+            .state('estadisticas.enfermedades', {
+                templateUrl: 'html/medico/estadistica.enfermedades.html',
+                controller: 'estadisticas.enfermedades'
             });
         //$urlRouterProvider.otherwise("/atencion/registro");
         $urlRouterProvider.otherwise(function ($injector) {
@@ -53,6 +51,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         dataFactory.enfermedades = null;
         dataFactory.instituciones = null;
         dataFactory.stock = null;
+        dataFactory.estadisticas = null;
 
         dataFactory.tipos = ["curativo", "seguimiento", "control"];
 
@@ -316,18 +315,38 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         
 
     }])
-    .controller('estadisticas.1', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
 
+        $scope.atenciones = dataFactory.estadisticas.atenciones;
+
+        $scope.$watch('atenciones', function () {
+            dataFactory.estadisticas.atenciones = $scope.atenciones;
+        });
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta,
+                doctor: atencionFactory.doctor
+            }
+            
+            $http.post("/api/reporte/atencion", data).then(function success(res) {
+                $scope.atenciones.all = res.data;
+            }, function error(err) {
+                console.log("error cargar atenciones")
+            });
+
+        }
 
     }])
-    .controller('estadisticas.2', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
 
         $scope.generar = function (desde, hasta) {
 
             var data = {
                 desde: desde,
                 hasta: hasta,
-                apadrinado: atencionFactory.apadrinado.cod
+                localidad: atencionFactory.localidad
             }
 
             $http.post("/api/reporte/enfermedad", data).then(function success(res) {
@@ -335,7 +354,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 var arr = [];
 
                 res.data.forEach(function (obj) {
-                    arr.push({ key: obj.codigo + " " + obj.nombre, y: obj.veces });
+                    arr.push({ key: obj.codigo + ' ' + obj.nombre, y: obj.veces });
                 });
 
                 $scope.data = arr;
@@ -352,7 +371,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 height: 500,
                 x: function (d) { return d.key; },
                 y: function (d) { return d.y; },
-                showLabels: true,
+                showLabels: false,
                 duration: 500,
                 labelThreshold: 0.01,
                 labelSunbeamLayout: true,

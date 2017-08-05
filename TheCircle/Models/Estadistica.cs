@@ -1,30 +1,24 @@
-﻿
-
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace TheCircle.Models
 {
-    public class EstadisticaEnfermedad
+    public class ReporteEnfermedad
     {
         [Key]
         public string codigo { get; set; }
         public string nombre { get; set; }
         public int veces { get; set; }
 
-        public EstadisticaEnfermedad() { }
+        public ReporteEnfermedad() { }
 
-        public EstadisticaEnfermedad[] getAll(string desde, string hasta, int apadrinado, MyDbContext _context)
+        public ReporteEnfermedad[] getAll(ReporteEnfermedadRequest req, MyDbContext _context)
         {
             try {
-                string query = "EXEC dbo.report_EnfermedadByFechaByVeces @desde='" + desde +
-                    "', @hasta='" + hasta +
-                    "', @apadrinado=" + apadrinado;
-
-                var data = _context.EstadisticaEnfermedad.FromSql(query);
-                return data.ToArray();
+                string query = $"EXEC dbo.report_EnfermedadByFecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad={req.localidad}";
+                return _context.ReporteEnfermedad.FromSql(query).ToArray();
             } catch (Exception e) {
                 return null;
             }
@@ -32,12 +26,42 @@ namespace TheCircle.Models
 
     }
 
-    public class EstadisticaEnfermedadReq
+    public class ReporteEnfermedadRequest
     {
         public string desde { get; set; }
         public string hasta { get; set; }
-        public int apadrinado { get; set; }
+        public string localidad { get; set; }
 
-        public EstadisticaEnfermedadReq() { }
+        public ReporteEnfermedadRequest() { }
+    }
+
+    public class ReporteAtencion
+    {
+        [Key]
+        public string codigo { get; set; }
+        public string nombre { get; set; }
+        public int veces { get; set; }
+
+        public ReporteAtencion() { }
+
+        public ReporteAtencion[] getAll(ReporteAtencionRequest req, MyDbContext _context)
+        {
+            //try {
+                string query = $"EXEC dbo.report_AtencionByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+                return _context.ReporteAtencion.FromSql(query).ToArray();
+            //} catch (Exception e) {
+                //return null;
+            //}
+        }
+
+    }
+
+    public class ReporteAtencionRequest
+    {
+        public string desde { get; set; }
+        public string hasta { get; set; }
+        public string doctor { get; set; }
+
+        public ReporteAtencionRequest() { }
     }
 }

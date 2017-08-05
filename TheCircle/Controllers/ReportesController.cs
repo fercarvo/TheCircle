@@ -15,12 +15,12 @@ namespace TheCircle.Controllers
 
         // GET: api/Reportes
         [HttpPost("enfermedad")]
-        public IActionResult GetReportes([FromBody] EstadisticaEnfermedadReq request)
+        public IActionResult GetEnfermedades([FromBody] ReporteEnfermedadRequest request)
         {
-            EstadisticaEnfermedad e = new EstadisticaEnfermedad();
+            ReporteEnfermedad e = new ReporteEnfermedad();
 
             if (request != null) {
-                EstadisticaEnfermedad[] response = e.getAll(request.desde, request.hasta, request.apadrinado, _context);
+                ReporteEnfermedad[] response = e.getAll(request, _context);
                 if (response != null) {
                     return Ok(response);
                 } else {
@@ -31,23 +31,28 @@ namespace TheCircle.Controllers
             }
         }
 
-        
-        // POST: api/Reportes
-        [HttpPost]
-        public void Post([FromBody]string value)
+        // GET: api/Reportes
+        [HttpPost("atencion")]
+        public IActionResult GetAtenciones([FromBody] ReporteAtencionRequest request)
         {
-        }
-        
-        // PUT: api/Reportes/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-        
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
+            ReporteAtencion e = new ReporteAtencion();
+
+            if (request != null)
+            {
+                ReporteAtencion[] response = e.getAll(request, _context);
+                if (response != null)
+                {
+                    return Ok(response);
+                }
+                else
+                {
+                    return NotFound();
+                }
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

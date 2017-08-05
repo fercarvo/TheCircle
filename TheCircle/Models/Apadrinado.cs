@@ -27,7 +27,7 @@ namespace TheCircle.Models
         public Apadrinado get (int codigo, MyDbContext _context) {
             Apadrinado apadrinado;
             try {
-                string query = "EXEC dbo.select_ApadrinadoByCod2 @cod=" + codigo;
+                string query = $"EXEC dbo.select_ApadrinadoByCod @cod={codigo}";
                 var data = _context.Apadrinados.FromSql(query).ToArray();
 
                 if (data == null || data.Length == 0) {
