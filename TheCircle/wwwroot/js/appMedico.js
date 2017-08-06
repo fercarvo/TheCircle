@@ -2,32 +2,26 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
-                //url: '/atencion',
                 templateUrl: 'html/medico/atencion.html',
                 controller: 'atencion'
             })
             .state('atencion.registro', {
-                //url: '/registro',
                 templateUrl: 'html/medico/atencion.registro.html',
                 controller: 'atencion.registro'
             })
             .state('atencion.receta', {
-                //url: '/receta',
                 templateUrl: 'html/medico/atencion.receta.html',
                 controller: 'atencion.receta'
             })
             .state('atencion.remision', {
-                //url: '/remision',
                 templateUrl: 'html/medico/atencion.remision.html',
                 controller: 'atencion.remision'
             })
             .state('anulaciones', {
-                //url: '/anulaciones',
                 templateUrl: 'html/medico/anulaciones.html',
                 controller: 'anulaciones'
             })
             .state('estadisticas', {
-                //url: '/estadisticas',
                 templateUrl: 'html/medico/estadistica.html',
                 controller: 'estadisticas'
             })
@@ -95,7 +89,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
-        //console.log("atencionFactory atencion", atencionFactory);
+        $state.go('atencion.registro');
         $scope.disable = disable.atencion;
         $scope.apadrinado = atencionFactory.apadrinado;
         $scope.foto = atencionFactory.foto;
@@ -239,7 +233,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
         console.log("atencionFactory receta", atencionFactory);
-        
+
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
         $scope.ItemRecetaNuevo = {};
@@ -312,7 +306,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        
+        $state.go('estadisticas.enfermedades');
 
     }])
     .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
@@ -329,7 +323,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 hasta: hasta,
                 doctor: atencionFactory.doctor
             }
-            
+
             $http.post("/api/reporte/atencion", data).then(function success(res) {
                 $scope.atenciones.all = res.data;
             }, function error(err) {
@@ -342,23 +336,17 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
 
         $scope.generar = function (desde, hasta) {
-
             var data = {
                 desde: desde,
                 hasta: hasta,
                 localidad: atencionFactory.localidad
             }
-
             $http.post("/api/reporte/enfermedad", data).then(function success(res) {
-
-                var arr = [];
-
-                res.data.forEach(function (obj) {
-                    arr.push({ key: obj.codigo + ' ' + obj.nombre, y: obj.veces });
+                //var arr = [];
+                $scope.data = res.data.map(function (obj) {
+                    return { key: obj.codigo + ' ' + obj.nombre, y: obj.veces };
                 });
-
-                $scope.data = arr;
-
+                //$scope.data = arr;
             }, function error(err) {
                 console.log("Error cargar estadisticas");
             });
