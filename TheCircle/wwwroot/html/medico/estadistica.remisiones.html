@@ -4,11 +4,11 @@
         <div class="form-group" style="padding-right:5px;">
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                <input ng-model="atenciones.desde" required type="text" class="form-control">
+                <input ng-model="remisiones.desde" required type="text" class="form-control">
             </div>
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                <input ng-model="atenciones.hasta" required type="text" class="form-control">
+                <input ng-model="remisiones.hasta" required type="text" class="form-control">
             </div>
             <div class="col-sm-1" style="padding-bottom:5px;">
                 <button type="submit" class="btn btn-info">Generar</button>
@@ -23,19 +23,15 @@
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Tipo</th>
-                    <th>Fecha</th>
-                    <th>ID Apadrinado</th>
-                    <th>Nombre</th>
+                    <th>Remision</th>
+
                 </tr>
             </thead>
 
             <tbody>
-                <tr ng-repeat="atencion in atenciones.all">
-                    <td>{{atencion.tipo}}</td>
-                    <td>{{atencion.fecha}}</td>
-                    <td>{{atencion.idApadrinado}}</td>
-                    <td>{{atencion.nombres}} {{atencion.apellidos}}</td>
+                <tr ng-repeat="remision in remisiones.all">
+                    <td>{{remision}}</td>
+
                 </tr>
             </tbody>
         </table>

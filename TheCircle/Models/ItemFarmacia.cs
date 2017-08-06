@@ -21,7 +21,7 @@ namespace TheCircle.Models
         public ItemFarmacia[] getAllByLocalidad (string localidad, MyDbContext _context) {
 
             try {
-                string query = "EXEC dbo.select_ItemFarmacia @localidad=" + localidad;
+                string query = $"EXEC dbo.select_ItemFarmacia @localidad={localidad}";
                 return _context.ItemFarmacias.FromSql(query).ToArray();
             } catch (Exception e) {
                 return null;

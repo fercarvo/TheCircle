@@ -26,9 +26,9 @@ namespace TheCircle.Models
             Diagnostico d = new Diagnostico();
 
             if (request != null) {
-                string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" + 
+                string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" +
                     $", @doctor={request.doctor}" +
-                    $", @tipo={request.tipo}" + 
+                    $", @tipo={request.tipo}" +
                     $", @localidad={request.localidad}" +
                     $", @peso='{request.peso}'" +
                     $", @talla='{request.talla}'" +

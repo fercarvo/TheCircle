@@ -46,17 +46,12 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60 * 5)]
         public IActionResult GetApadrinadoFoto(int cod)
         {
-            string query = "EXEC dbo.ApadrinadoFotoByCod @cod=" + cod;
-
+            string query = $"EXEC dbo.ApadrinadoFotoByCod @cod={cod}";
+            Foto foto;
             try {
-                var data = _context.Fotos.FromSql(query).ToList();
-                if (data.Count == 0) {
-                    var image2 = System.IO.File.OpenRead("..\\TheCircle\\wwwroot\\images\\ci.png");
-                    return File(image2, "image/jpeg");
-                } else {
-                    var image = System.IO.File.OpenRead("\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\" + data[0].path + "\\" + data[0].name);
-                    return File(image, "image/jpeg");
-                }
+                foto = _context.Fotos.FromSql(query).First();
+                var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");
+                return File(image, "image/jpeg");
             } catch (Exception e) {
                 var image2 = System.IO.File.OpenRead("..\\TheCircle\\wwwroot\\images\\ci.png");
                 return File(image2, "image/jpeg");

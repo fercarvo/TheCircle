@@ -21,19 +21,12 @@ namespace TheCircle.Models
         public Receta crear (RecetaRequest request, MyDbContext _context) {
 
             Receta receta;
-            string query = "DECLARE @id int" +
-              " EXEC dbo.insert_Receta @idDoctor=" + request.doctor +
-              ", @idApadrinado=" + request.apadrinado +
-              ", @id = @id OUTPUT";
+            string query = $"DECLARE @id int EXEC dbo.insert_Receta @idDoctor={request.doctor}" +
+              $", @idApadrinado={request.apadrinado} @id = @id OUTPUT";
 
             try {
-                var data = _context.Recetas.FromSql(query).ToArray();
-
-                if (data == null || data.Length == 0) {
-                    return null;
-                } else {
-                    return data.First(); //Receta creada
-                }
+                receta = _context.Recetas.FromSql(query).First();
+                return data;
             } catch (Exception e) {
                 return null;
             }

@@ -13,9 +13,8 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-        // GET: api/Reportes
         [HttpPost("enfermedad")]
-        public IActionResult GetEnfermedades([FromBody] ReporteEnfermedadRequest request)
+        public IActionResult GetEnfermedades([FromBody] ReporteRequest request)
         {
             ReporteEnfermedad e = new ReporteEnfermedad();
 
@@ -31,26 +30,53 @@ namespace TheCircle.Controllers
             }
         }
 
-        // GET: api/Reportes
         [HttpPost("atencion")]
-        public IActionResult GetAtenciones([FromBody] ReporteAtencionRequest request)
+        public IActionResult GetAtenciones([FromBody] ReporteRequest request)
         {
             ReporteAtencion e = new ReporteAtencion();
 
-            if (request != null)
-            {
+            if (request != null) {
                 ReporteAtencion[] response = e.getAll(request, _context);
-                if (response != null)
-                {
+                if (response != null) {
                     return Ok(response);
-                }
-                else
-                {
+                } else {
                     return NotFound();
                 }
+            } else {
+                return BadRequest();
             }
-            else
-            {
+        }
+
+        [HttpPost("remision")]
+        public IActionResult GetAtenciones([FromBody] ReporteRequest request)
+        {
+            ReporteRemision e = new ReporteRemision();
+
+            if (request != null) {
+                ReporteRemision[] response = e.getAll(request, _context);
+                if (response != null) {
+                    return Ok(response);
+                } else {
+                    return NotFound();
+                }
+            } else {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost("receta")]
+        public IActionResult GetAtenciones([FromBody] ReporteRequest request)
+        {
+            ReporteReceta e = new ReporteReceta();
+
+            if (request != null) {
+                ReporteReceta[] response = e.getAll(request, _context);
+                if (response != null) {
+                    return Ok(response);
+                } else {
+                    return NotFound();
+                }
+            } else {
                 return BadRequest();
             }
         }

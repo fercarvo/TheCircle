@@ -26,8 +26,16 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 controller: 'estadisticas'
             })
             .state('estadisticas.atenciones', {
-                templateUrl: 'html/medico/estadistica.1.html',
+                templateUrl: 'html/medico/estadistica.atenciones.html',
                 controller: 'estadisticas.atenciones'
+            })
+            .state('estadisticas.remisiones', {
+                templateUrl: 'html/medico/estadistica.remisiones.html',
+                controller: 'estadisticas.remisiones'
+            })
+            .state('estadisticas.recetas', {
+                templateUrl: 'html/medico/estadistica.recetas.html',
+                controller: 'estadisticas.recetas'
             })
             .state('estadisticas.enfermedades', {
                 templateUrl: 'html/medico/estadistica.enfermedades.html',
@@ -310,9 +318,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
-
         $scope.atenciones = dataFactory.estadisticas.atenciones;
-
         $scope.$watch('atenciones', function () {
             dataFactory.estadisticas.atenciones = $scope.atenciones;
         });
@@ -329,7 +335,48 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             }, function error(err) {
                 console.log("error cargar atenciones")
             });
+        }
 
+    }])
+    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+        $scope.remisiones = dataFactory.estadisticas.remisiones;
+        $scope.$watch('remisiones', function () {
+            dataFactory.estadisticas.remisiones = $scope.remisiones;
+        });
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta,
+                doctor: atencionFactory.doctor
+            }
+
+            $http.post("/api/reporte/remision", data).then(function success(res) {
+                $scope.remisiones.all = res.data;
+            }, function error(err) {
+                console.log("error cargar remisiones")
+            });
+        }
+
+    }])
+    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+        $scope.recetas = dataFactory.estadisticas.recetas;
+        $scope.$watch('recetas', function () {
+            dataFactory.estadisticas.recetas = $scope.recetas;
+        });
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta,
+                doctor: atencionFactory.doctor
+            }
+
+            $http.post("/api/reporte/remision", data).then(function success(res) {
+                $scope.recetas.all = res.data;
+            }, function error(err) {
+                console.log("error cargar recetas")
+            });
         }
 
     }])

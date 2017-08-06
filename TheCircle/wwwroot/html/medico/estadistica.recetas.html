@@ -1,0 +1,39 @@
+<div class="panel-body" style="padding:0px 20px 20px 20px;">
+    <form class="form-horizontal" ng-submit="generar(desde, hasta)">
+        <!--"m-bottom-30" para poner margen vertical de 30px-->
+        <div class="form-group" style="padding-right:5px;">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="recetas.desde" required type="text" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="recetas.hasta" required type="text" class="form-control">
+            </div>
+            <div class="col-sm-1" style="padding-bottom:5px;">
+                <button type="submit" class="btn btn-info">Generar</button>
+            </div>
+            <div class="col-sm-1" style="padding-bottom:5px;">
+                <button type="reset" class="btn btn-info">Borrar</button>
+            </div>
+        </div>
+    </form>
+
+    <div>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Receta</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr ng-repeat="receta in recetas.all">
+                    <td>{{receta}}</td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div><!-- Tabla -->
+</div>
