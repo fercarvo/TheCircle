@@ -22,6 +22,7 @@
     <Content Include="wwwroot\css\wiseboard\admin.min.css" />
     <Content Include="wwwroot\css\wiseboard\css.css" />
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
+    <Content Include="wwwroot\css\wiseboard\page-login3.min.css" />
     <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
     <Content Include="wwwroot\html\asistente\despachar.html" />
     <Content Include="wwwroot\html\asistente\historial.html" />
@@ -34,6 +35,7 @@
     <Content Include="wwwroot\html\medico\estadistica.1.html" />
     <Content Include="wwwroot\html\medico\estadistica.html" />
     <Content Include="wwwroot\images\ci.png" />
+    <Content Include="wwwroot\images\help-kids-have-a-childhood.jpg" />
     <Content Include="wwwroot\js\angular.min.js" />
     <Content Include="wwwroot\js\appAsistenteSalud.js" />
     <Content Include="wwwroot\js\appMedico.js" />
