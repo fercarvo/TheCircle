@@ -27,7 +27,7 @@ namespace TheCircle.Models
                 string query = $"DECLARE @id int EXEC dbo.insert_Remision @atencionM={request.atencionM}" +
                   $", @institucion={request.institucion}" +
                   $", @monto='{request.monto}'" +
-                  $", @sintomas='{request.sintomas}' @id=@id OUTPUT";
+                  $", @sintomas='{request.sintomas}', @id=@id OUTPUT";
 
                 remision = _context.Remisiones.FromSql(query).First();
                 return remision;

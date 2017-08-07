@@ -22,7 +22,7 @@ namespace TheCircle.Models
 
             Receta receta;
             string query = $"DECLARE @id int EXEC dbo.insert_Receta @idDoctor={request.doctor}" +
-              $", @idApadrinado={request.apadrinado} @id = @id OUTPUT";
+              $", @idApadrinado={request.apadrinado}, @id = @id OUTPUT";
 
             try {
                 receta = _context.Recetas.FromSql(query).First();

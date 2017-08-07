@@ -16,7 +16,7 @@ namespace TheCircle.Models
         public void insert (string enfermedadCod, int atencion, MyDbContext _context)
         {
             try {
-                string q = $"EXEC dbo.insert_Diagnostico @enfermedad={enfermedadCod} @atencion={atencion}";
+                string q = $"EXEC dbo.insert_Diagnostico @enfermedad='{enfermedadCod}', @atencion={atencion}";
                 _context.Database.ExecuteSqlCommand(q); //Se inserta en la BD el diagnostico
             } catch (Exception e) {
             }
@@ -24,7 +24,7 @@ namespace TheCircle.Models
 
         public Diagnostico[] getAllByAtencion (int idAtencion, MyDbContext _context)
         {
-            string q = "EXEC dbo.select_DiagnosticoByAtencion @atencion={idAtencion}";
+            string q = $"EXEC dbo.select_DiagnosticoByAtencion @atencion={idAtencion}";
 
             try {
                 var data = _context.Diagnosticos.FromSql(q); //Retorna los diagnosticos de esa AtencionM
