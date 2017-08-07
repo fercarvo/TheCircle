@@ -5,182 +5,91 @@
 
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Asistente de salud</title>
+    <title>TheCircle - Asistente salud</title>
     <!-- REQUIRED STYLES -->
     <link href="~/css/wiseboard/css.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!-- REQUIRED PLUGINS -->
-    <link href="~/css/wiseboard/font-awesome.min.css" rel="stylesheet" type="text/css">
-    <link href="~/css/wiseboard/bootstrap-switch.min.css" rel="stylesheet" type="text/css">
+    <!-- <link href="~/css/wiseboard/font-awesome.min.css" rel="stylesheet" type="text/css"> -->
     <!-- main.min.css - WISEBOARD CORE CSS -->
     <link href="~/css/wiseboard/main.min.css" rel="stylesheet" type="text/css">
     <!-- admin.min.css - ADMIN LAYOUT -->
     <link href="~/css/wiseboard/admin.min.css" rel="stylesheet" type="text/css">
     <!-- theme-default.min.css - DEFAULT THEME -->
     <link href="~/css/wiseboard/theme-default.min.css" rel="stylesheet" type="text/css">
-    <script src="~/js/angular.min.js"></script>
-    <script src="~/js/appAsistenteSalud.js"></script>
-    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
+
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
+    <link href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css" rel="stylesheet" />
+
 </head>
-<body class="page-dashboard" ng-app="appAsistenteSalud">
+<body class="page-dashboard" ng-app="appAsistente">
     <!-- TOP NAVIGATION STARTS -->
-    <nav class="navbar navbar-fixed-top navbar-top">
-        <div class="container-fluid">
-            <div class="navbar-header">
-                <a class="navbar-brand" href="">
+    <nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
+        <div class="container-fluid" style="color:#901F61">
+            <div class="navbar-header" style="color:#901F61">
+                <a class="navbar-brand" href="" style="color:#901F61">
                     <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
-                    <span style="color:#fff">Asistente de salud</span>
+                    <span style="color:white">TheCircle</span>
                 </a>
-                <button type="button" class="sidebar-toggle">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                <button type="button" class="sidebar-toggle" style="color:white">
+                    <span ng-class="class='glyphicon glyphicon-chevron-right'"></span>
                 </button>
             </div><!-- /.navbar-header -->
-
-
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-bell"></i>
-                        <span class="label circle">4</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">
-                            You have 3 <a href="">notifications.</a>
-                        </li><!-- /.dropdown-header -->
-
-                        <li>
-                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 259px;">
-                                <ul class="list-dropdown-content list-dropdown-notifications" style="overflow: hidden; width: 193px; height: 259px;">
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <span class="label label-success circle">
-                                                        <i class="fa fa-power-off"></i>
-                                                    </span>
-                                                </div>
-                                                <div class="media-body">
-                                                    <i class="pull-right">1 min</i> Servers restarted successfully.
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-
-
-                                </ul>
-                            </div>
-                        </li>
-                    </ul><!-- /.dropdown-menu -->
-                </li><!-- /.dropdown -->
-
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <i class="fa fa-envelope"></i>
-                        <span class="label circle">3</span>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li class="dropdown-header">
-                            You have 3 new <a href="">messages.</a>
-                        </li><!-- /.dropdown-header -->
-
-                        <li>
-                            <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: 193px; height: 230px;">
-                                <ul class="list-dropdown-content list-dropdown-messages" style="overflow: hidden; width: 193px; height: 230px;">
-                                    <li>
-                                        <a href="" data-click="prevent">
-                                            <div class="media">
-                                                <div class="media-left">
-                                                    <img src="~/images/wiseboard/avatar3.png" alt="avatar" class="media-object img-circle">
-                                                </div>
-                                                <div class="media-body">
-                                                    <h6 class="media-heading">
-                                                        <i class="pull-right">1 min</i>
-                                                        <strong class="text-primary">Nancy Allen</strong>
-                                                    </h6>
-                                                    <span class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</span>
-                                                </div>
-                                            </div><!-- /.media -->
-                                        </a>
-                                    </li>
-
-                                </ul>
-                            </div>
-                        </li>
-                    </ul>
-                </li><!-- /.dropdown -->
-
-
-
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="~/images/wiseboard/profile-sm.png" alt="avatar" class="img-circle">
-                    </a>
-                    <ul class="dropdown-menu dropdown-menu-profile">
-                        <li class="dropdown-header">Account Details</li>
-                        <li>
-                            <div class="media">
-                                <div class="media-left">
-                                    <img src="~/images/wiseboard/profile-lg.png" alt="avatar" class="media-object img-circle">
-                                </div>
-                                <div class="media-body">
-                                    <h5 class="media-heading">Sandra Baker</h5>
-                                    <p>sandrabaker@gmail.com</p>
-                                    <a href="" class="btn btn-primary btn-xs">View profile</a>
-                                </div>
-                            </div><!-- /.media -->
-                        </li>
-
-                        <li>
-                            <a href="">
-                                <i class="fa fa-paper-plane-o"></i> Inbox
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="">
-                                <i class="fa fa-sign-out"></i> Sign Out
-                            </a>
-                        </li>
-                    </ul>
-                </li><!-- /.dropdown -->
-
-
-            </ul><!-- /.navbar-nav -->
         </div>
     </nav>
     <!-- TOP NAVIGATION ENDS -->
     <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
     <div class="content-wrapper">
         <!-- SIDEBAR STARTS -->
+        <style>
+            .sidebar .sidebar-nav > li > a {
+                color: #901f61;
+                font-size: 16px;
+                font-weight: 600;
+            }
 
-        <div class="sidebar" style="min-height: 0px;">
+            .sidebar .sidebar-nav > .open > a:hover, .sidebar .sidebar-nav > .open > a:focus {
+                background-color: #d7d3d4;
+            }
+
+            .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
+                /*background-color: #706f6f*/
+                background-color: #344868
+            }
+
+            .btn-info {
+                color: #fff;
+                border-color: #17c092;
+                background-color: #28d1a3;
+            }
+        </style>
+        <div class="sidebar" style="height:100vh;background-color:#f2f2f2;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="despachar" ui-sref-active="active">
                     <a>
 
-                        <span>Despachar receta</span>
+                        <span>despachar</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="historial" ui-sref-active="active">
                     <a>
 
-                        <span>Historial despacho</span>
+                        <span>historial</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="stock" ui-sref-active="active">
                     <a>
 
-                        <span>Stock de farmacia</span>
+                        <span>stock</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 3 -->
             </ul>
         </div>
         <!-- SIDEBAR ENDS -->
+        <div class="sidebar" style="background-color:#344868; width:1px;height:100vh;"> </div>
         <!-- CONTENT STARTS -->
         <ui-view></ui-view>
         <!-- CONTENT ENDS -->
@@ -191,9 +100,20 @@
     <!-- REQUIRED SCRIPTS -->
     <script src="~/js/wiseboard/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <!-- REQUIRED NOTIFICATION SCROLL -->
-    <script src="~/js/wiseboard/jquery.slimscroll.min.js"></script>
+    <!--<script src="~/js/wiseboard/jquery.slimscroll.min.js"></script> -->
     <!-- admin.min.js - GENERAL CONFIGURATION SCRIPT FOR THE PAGES SIDE SCROLLBAR -->
     <script src="~/js/wiseboard/admin.min.js"></script>
+
+    <script src="~/js/angular.min.js"></script>
+    <script src="~/js/appAsistenteSalud.js"></script>
+
+
+    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
+    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>
 </body>
 </html>

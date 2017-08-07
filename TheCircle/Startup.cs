@@ -60,12 +60,7 @@ namespace TheCircle
             }
             */);
 
-            app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=TheCircle}/{action=Medico}");
-            });
+            app.UseMvc();
         }
     }
 }
