@@ -1,18 +1,18 @@
 <div class="panel-body" >
     <div>
-        <form ng-submit="generar(desde, hasta)" >
+        <form ng-submit="generar(enfermedades.desde, enfermedades.hasta)" >
 
             <div class="container-fluid">
                 <div class="form-group">
                     <label class="control-label" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
                     <div>
-                        <input class="form-control" required ng-model="desde">
+                        <input class="form-control" required ng-model="enfermedades.desde">
                     </div>
                 </div><!-- /.form-group -->
                 <div class="form-group">
                     <label class="control-label" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
                     <div>
-                        <input class="form-control" required ng-model="hasta">
+                        <input class="form-control" required ng-model="enfermedades.hasta">
                     </div>
                 </div><!-- /.form-group -->
 

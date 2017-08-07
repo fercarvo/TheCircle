@@ -53,7 +53,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         dataFactory.enfermedades = null;
         dataFactory.instituciones = null;
         dataFactory.stock = null;
-        dataFactory.estadisticas = null;
+        dataFactory.estadisticas = {};
 
         dataFactory.tipos = ["curativo", "seguimiento", "control"];
 
@@ -319,6 +319,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
         $scope.atenciones = dataFactory.estadisticas.atenciones;
+
         $scope.$watch('atenciones', function () {
             dataFactory.estadisticas.atenciones = $scope.atenciones;
         });
@@ -380,7 +381,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "atencionFactory", function ($scope, $state, $http, atencionFactory) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+
+        $scope.enfermedades = dataFactory.estadisticas.enfermedades;
+
+        $scope.$watch('enfermedades', function () {
+            dataFactory.estadisticas.enfermedades = $scope.enfermedades;
+        });
 
         $scope.generar = function (desde, hasta) {
             var data = {
