@@ -4,11 +4,11 @@
         <div class="form-group" style="padding-right:5px;">
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                <input ng-model="atenciones.desde" required type="text" class="form-control">
+                <input ng-model="atenciones.desde" ng-init="atenciones.desde='1/1/2017'" required type="text" class="form-control">
             </div>
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                <input ng-model="atenciones.hasta" required type="text" class="form-control">
+                <input ng-model="atenciones.hasta" ng-init="atenciones.hasta='9/9/2017'" required type="text" class="form-control">
             </div>
             <div class="col-sm-1" style="padding-bottom:5px;">
                 <button type="submit" class="btn btn-info">Generar</button>
