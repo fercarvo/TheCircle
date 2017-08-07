@@ -49,7 +49,7 @@ namespace TheCircle.Models
         public ReporteAtencion[] getAll(ReporteRequest req, MyDbContext _context)
         {
             //try {
-                string query = $"EXEC dbo.report_AtencionByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+                string query = $"EXEC dbo.report_AtencionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
                 return _context.ReporteAtencion.FromSql(query).ToArray();
             //} catch (Exception e) {
                 //return null;
@@ -72,7 +72,7 @@ namespace TheCircle.Models
         public ReporteRemision[] getAll(ReporteRequest req, MyDbContext _context)
         {
             //try {
-                string query = $"EXEC dbo.report_RemisionByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+                string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
                 return _context.ReporteRemision.FromSql(query).ToArray();
             //} catch (Exception e) {
                 //return null;
@@ -101,7 +101,7 @@ namespace TheCircle.Models
         public ReporteReceta[] getAll(ReporteRequest req, MyDbContext _context)
         {
             //try {
-                string query = $"EXEC dbo.report_RecetaByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+                string query = $"EXEC dbo.report_RecetaByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
                 return _context.ReporteReceta.FromSql(query).ToArray();
             //} catch (Exception e) {
                 //return null;
