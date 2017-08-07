@@ -48,7 +48,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("remision")]
-        public IActionResult GetAtenciones([FromBody] ReporteRequest request)
+        public IActionResult GetRemisiones([FromBody] ReporteRequest request)
         {
             ReporteRemision e = new ReporteRemision();
 
@@ -65,7 +65,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("receta")]
-        public IActionResult GetAtenciones([FromBody] ReporteRequest request)
+        public IActionResult GetRecetas([FromBody] ReporteRequest request)
         {
             ReporteReceta e = new ReporteReceta();
 

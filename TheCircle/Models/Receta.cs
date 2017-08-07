@@ -26,7 +26,7 @@ namespace TheCircle.Models
 
             try {
                 receta = _context.Recetas.FromSql(query).First();
-                return data;
+                return receta;
             } catch (Exception e) {
                 return null;
             }

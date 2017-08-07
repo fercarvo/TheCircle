@@ -110,7 +110,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.buscarApadrinado = function (codigo) {
             $http.get("/api/apadrinado/" + codigo).then(function success(res) {
 
-                if (res.data.status == "D" || res.data.status == "E") {
+                if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
                     atencionFactory.status = false;
                 } else {
@@ -150,7 +150,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
 
-        if (dataFactory.enfermedades == null) {
+        if (dataFactory.enfermedades === null) {
             dataFactory.getEnfermedades().then(function success(res) {
                 dataFactory.enfermedades = res.data;
                 $scope.enfermedades = dataFactory.enfermedades;
@@ -209,7 +209,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $(".myselect").select2();
         }
 
-        if (dataFactory.instituciones == null) {
+        if (dataFactory.instituciones === null) {
             dataFactory.getInstituciones().then(function success(res) {
                 dataFactory.instituciones = res.data;
                 $scope.instituciones = dataFactory.instituciones;
@@ -253,16 +253,16 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $(".myselect").select2();
         }
 
-        if (dataFactory.stock == null && atencionFactory.codigo != null) {
+        if (dataFactory.stock === null && atencionFactory.codigo !== null) {
             dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
                 dataFactory.stock = res.data;
                 $scope.stock = dataFactory.stock;
             }, function error(err) {
                 console.log("error cargar itemFarmacia");
             })
-        }
+        };
 
-        if (atencionFactory.receta.id == null) {
+        if (atencionFactory.receta.id === null) {
             var RecetaRequest = {
               doctor: atencionFactory.doctor,
               apadrinado: atencionFactory.codigo };

@@ -30,8 +30,8 @@ namespace TheCircle.Models
     {
         public string desde { get; set; }
         public string hasta { get; set; }
-        public string? localidad { get; set; }
-        public int? doctor { get; set;}
+        public string localidad { get; set; }
+        public int doctor { get; set;}
 
         public ReporteRequest() { }
     }
@@ -73,7 +73,7 @@ namespace TheCircle.Models
         {
             //try {
                 string query = $"EXEC dbo.report_RemisionByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-                return _context.ReporteAtencion.FromSql(query).ToArray();
+                return _context.ReporteRemision.FromSql(query).ToArray();
             //} catch (Exception e) {
                 //return null;
             //}
@@ -102,7 +102,7 @@ namespace TheCircle.Models
         {
             //try {
                 string query = $"EXEC dbo.report_RecetaByDateByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-                return _context.ReporteAtencion.FromSql(query).ToArray();
+                return _context.ReporteReceta.FromSql(query).ToArray();
             //} catch (Exception e) {
                 //return null;
             //}

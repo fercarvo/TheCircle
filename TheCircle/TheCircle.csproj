@@ -32,7 +32,6 @@
     <Content Include="wwwroot\html\medico\atencion.registro.html" />
     <Content Include="wwwroot\html\medico\atencion.remision.html" />
     <Content Include="wwwroot\html\medico\estadistica.1.html" />
-    <Content Include="wwwroot\html\medico\estadistica.2.html" />
     <Content Include="wwwroot\html\medico\estadistica.html" />
     <Content Include="wwwroot\images\ci.png" />
     <Content Include="wwwroot\js\angular.min.js" />
