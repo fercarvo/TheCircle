@@ -6,7 +6,7 @@ namespace TheCircle.Controllers.views
     {
         // GET: /TheCircle/
         // GET: /
-        //[HttpGet ("medico")]
+        [HttpGet ("")]
         public IActionResult Index()
         {
             return View();
@@ -14,13 +14,13 @@ namespace TheCircle.Controllers.views
 
         // GET: /TheCircle/AsistenteSalud
         // GET: /AsistenteSalud
-        //[HttpGet ("asistente")]
+        [HttpGet ("asistente")]
         public IActionResult AsistenteSalud()
         {
             return View();
         }
 
-        //[HttpGet ("asistente")]
+        [HttpGet ("medico")]
         public IActionResult Medico()
         {
             return View();

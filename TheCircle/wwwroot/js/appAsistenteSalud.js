@@ -1,4 +1,4 @@
-﻿angular.module('appAsistenteSalud', ['ui.router'])
+﻿angular.module('appAsistente', ['ui.router'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('despachar', {
