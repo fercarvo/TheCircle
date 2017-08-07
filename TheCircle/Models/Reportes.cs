@@ -39,8 +39,8 @@ namespace TheCircle.Models
     public class ReporteAtencion
     {
         [Key]
-        public string idApadrinado { get; set; }
-        public string nombreApadrinado { get; set; }
+        public int id { get; set; }
+        public Int32 idApadrinado { get; set; }
         public DateTime fecha { get; set; }
         public string tipo { get; set; }
 
@@ -48,12 +48,12 @@ namespace TheCircle.Models
 
         public ReporteAtencion[] getAll(ReporteRequest req, MyDbContext _context)
         {
-            //try {
+            try {
                 string query = $"EXEC dbo.report_AtencionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
                 return _context.ReporteAtencion.FromSql(query).ToArray();
-            //} catch (Exception e) {
-                //return null;
-            //}
+            } catch (Exception e) {
+                return null;
+            }
         }
 
     }
@@ -61,6 +61,7 @@ namespace TheCircle.Models
     public class ReporteRemision
     {
         [Key]
+        public int id { get; set; }
         public int codigoApadrinado { get; set; }
         public string institucion { get; set; }
         public decimal monto { get; set; }
@@ -73,9 +74,10 @@ namespace TheCircle.Models
         {
             //try {
                 string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+               
                 return _context.ReporteRemision.FromSql(query).ToArray();
             //} catch (Exception e) {
-                //return null;
+            //return null;
             //}
         }
 
@@ -84,6 +86,7 @@ namespace TheCircle.Models
     public class ReporteReceta
     {
         [Key]
+        public int idItemReceta { get; set; }
         public int idReceta { get; set; }
         public DateTime fechaReceta { get; set; }
         public int? despachada { get; set; }
@@ -94,7 +97,6 @@ namespace TheCircle.Models
         public string nombreItemFarmacia { get; set; }
 
         public int idApadrinado { get; set; }
-        public int nombreApadrinado { get; set; }
 
         public ReporteReceta() { }
 

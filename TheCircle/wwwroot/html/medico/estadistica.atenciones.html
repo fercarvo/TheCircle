@@ -26,16 +26,14 @@
                     <th>Tipo</th>
                     <th>Fecha</th>
                     <th>ID Apadrinado</th>
-                    <th>Nombre</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr ng-repeat="atencion in atenciones.all">
                     <td>{{atencion.tipo}}</td>
-                    <td>{{atencion.fecha}}</td>
+                    <td>{{atencion.fecha | date: 'dd/MM/yyyy'}}</td>
                     <td>{{atencion.idApadrinado}}</td>
-                    <td>{{atencion.nombres}} {{atencion.apellidos}}</td>
                 </tr>
             </tbody>
         </table>
