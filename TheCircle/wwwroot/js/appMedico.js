@@ -373,8 +373,26 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 doctor: atencionFactory.doctor
             }
 
-            $http.post("/api/reporte/remision", data).then(function success(res) {
-                $scope.recetas.all = res.data;
+            $http.post("/api/reporte/receta", data).then(function success(res) {
+
+                var recetas = [];
+
+                res.data.forEach(function (itemReceta) {
+                    var receta = recetas.find(function (receta) { return receta.receta == itemReceta.idReceta });
+                    if (!receta) {
+                        recetas.push({ receta: itemReceta.idReceta, items: [] });
+                    }
+                });
+
+                recetas.forEach(function (receta) {
+                    res.data.forEach(function (itemReceta) {
+                        if (receta.receta == itemReceta.idReceta) {
+                            receta.items.push(itemReceta);
+                        }
+                    });
+                });
+                
+                $scope.recetas.all = recetas;
             }, function error(err) {
                 console.log("error cargar recetas")
             });

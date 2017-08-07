@@ -1,14 +1,14 @@
 <div class="panel-body" style="padding:0px 20px 20px 20px;">
-    <form class="form-horizontal" ng-submit="generar(desde, hasta)">
+    <form class="form-horizontal" ng-submit="generar(recetas.desde, recetas.hasta)">
         <!--"m-bottom-30" para poner margen vertical de 30px-->
         <div class="form-group" style="padding-right:5px;">
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                <input ng-model="recetas.desde" required type="text" class="form-control">
+                <input ng-model="recetas.desde" ng-init="recetas.desde='1/1/2017'" required type="text" class="form-control">
             </div>
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                <input ng-model="recetas.hasta" required type="text" class="form-control">
+                <input ng-model="recetas.hasta" ng-init="recetas.hasta='9/9/2017'" required type="text" class="form-control">
             </div>
             <div class="col-sm-1" style="padding-bottom:5px;">
                 <button type="submit" class="btn btn-info">Generar</button>
@@ -19,19 +19,29 @@
         </div>
     </form>
 
-    <div>
-        <table class="table table-striped">
+    <div ng-repeat="receta in recetas.all">
+        <div>
+            Receta {{receta.receta}}
+        </div>
+        <table class="table table-striped" >
+
             <thead>
                 <tr>
-                    <th>Receta</th>
-
+                    <th>Apadrinado</th>
+                    <th>Medicamento</th>
+                    <th>Cantidad</th>
+                    <th>Posologia</th>
+                    <th>Enfermedad</th>
                 </tr>
             </thead>
 
             <tbody>
-                <tr ng-repeat="receta in recetas.all">
-                    <td>{{receta}}</td>
-
+                <tr ng-repeat="item in receta.items">
+                    <td>{{item.idApadrinado}}</td>
+                    <td>{{item.nombreItemFarmacia}}</td>
+                    <td>{{item.cantidad}}</td>
+                    <td>{{item.posologia}}</td>
+                    <td>{{item.enfermedadNombre}}</td>
                 </tr>
             </tbody>
         </table>
