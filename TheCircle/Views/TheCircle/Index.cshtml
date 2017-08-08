@@ -8,7 +8,6 @@
     <title>TheCircle : Login</title>
     <<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Login css -->
-    <link href="./css/wiseboard/page-login3.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <style>
         body {
@@ -28,37 +27,32 @@
             <div class="panel" style="border: 0px solid transparent;border-radius: 6px;">
                 <div class="panel-body" style="background-color: rgba(144, 31, 97, 0.55);border-radius: 6px;">
                     <h3>Autenticación - TheCircle</h3>
-                    <form>
+                    <form class="form-signin">
                         <div class="form-group">
                             <div class="input-icon-left">
-                                <span class='glyphicon glyphicon-user' style="left: 12px;width: 20px;height: 13px;position: absolute;top: 0;bottom: 0;margin-top: auto;margin-bottom: auto;"></span>
                                 <input type="text" class="form-control rounded" placeholder="Ingrese el Usuario">
                             </div>
-                        </div><!-- /.form-group -->
+                        </div>
+
                         <div class="form-group">
                             <div class="input-icon-left">
-                                <span class='glyphicon glyphicon-lock' style="left: 12px;width: 20px;height: 13px;position: absolute;top: 0;bottom: 0;margin-top: auto;margin-bottom: auto;"></span>
-                                <input type="password" class="form-control rounded" placeholder="Ingrese la contraseña">
+                                <input type="password" class="form-control rounded" placeholder="Password">
                             </div>
-                        </div><!-- /.form-group -->
-
-                        <button type="submit" class="btn btn-info col-sm-12" style="color:#fff; border-color: #17c092;background-color: #28d1a3;">ACCEDER</button>
-                        <a href="#" class="m-top-5" data-toggle="modal" data-target="#modal-forgotPass" style="color:#f2f4f4;">¿Olvido la Contraseña?</a>
+                        </div>
+                        <label class="checkbox">
+                            <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
+                        </label>
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
                     </form>
-
-                </div><!-- /.panel-body -->
-
-                <div class="panel-footer" style="background-color: rgba(144, 31, 97, 0.8);text-decoration: none;">
-                    <a href="#">CREA UNA CUENTA</a>
                 </div>
-
-            </div><!-- /.panel -->
+                
+            </div>
+            
         </div>
     </div><!-- /.container -->
-    <!-- REQUIRED PLUGINS -->
-    <script src="http://thenextheme.net/wiseboard/templates/admin4-light/js/page-login.min.js"></script>
+    <!-- scritpts -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-
-
+    
 </body>
 </html>
