@@ -63,33 +63,33 @@
                 background-color: #28d1a3;
             }
         </style>
-        <div class="sidebar" style="height:100vh;background-color:#f2f2f2;">
+        <div class="sidebar" style="min-height:inherit;background-color:#f2f2f2;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="despachar" ui-sref-active="active">
                     <a>
 
-                        <span>despachar</span>
+                        <span>Despachar</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="historial" ui-sref-active="active">
                     <a>
 
-                        <span>historial</span>
+                        <span>Historial</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="stock" ui-sref-active="active">
                     <a>
 
-                        <span>stock</span>
+                        <span>Stock</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 3 -->
             </ul>
         </div>
         <!-- SIDEBAR ENDS -->
-        <div class="sidebar" style="background-color:#344868; width:1px;height:100vh;"> </div>
+        <div class="sidebar" style="background-color:#344868; width:1px;min-height:inherit;padding:0px;border-right-width:0px;height:inherit;"> </div>
         <!-- CONTENT STARTS -->
         <ui-view></ui-view>
         <!-- CONTENT ENDS -->
