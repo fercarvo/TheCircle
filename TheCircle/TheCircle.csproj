@@ -20,10 +20,8 @@
 
   <ItemGroup>
     <Content Include="wwwroot\css\wiseboard\admin.min.css" />
-    <Content Include="wwwroot\css\wiseboard\css.css" />
     <Content Include="wwwroot\css\wiseboard\main.min.css" />
     <Content Include="wwwroot\css\wiseboard\page-login3.min.css" />
-    <Content Include="wwwroot\css\wiseboard\theme-default.min.css" />
     <Content Include="wwwroot\html\asistente\despachar.html" />
     <Content Include="wwwroot\html\asistente\historial.html" />
     <Content Include="wwwroot\html\asistente\stock.html" />
@@ -40,12 +38,9 @@
     <Content Include="wwwroot\js\appAsistenteSalud.js" />
     <Content Include="wwwroot\js\appMedico.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js" />
-    <Content Include="wwwroot\js\wiseboard\bootstrap.min.js" />
     <Content Include="wwwroot\js\wiseboard\jquery.min.js" />
-    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js.descarga" />
     <Content Include="wwwroot\js\wiseboard\jquery.min.js.descarga" />
-    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js.descarga" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
