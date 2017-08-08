@@ -40,12 +40,9 @@
     <Content Include="wwwroot\js\appAsistenteSalud.js" />
     <Content Include="wwwroot\js\appMedico.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js" />
-    <Content Include="wwwroot\js\wiseboard\bootstrap.min.js" />
     <Content Include="wwwroot\js\wiseboard\jquery.min.js" />
-    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js" />
     <Content Include="wwwroot\js\wiseboard\admin.min.js.descarga" />
     <Content Include="wwwroot\js\wiseboard\jquery.min.js.descarga" />
-    <Content Include="wwwroot\js\wiseboard\jquery.slimscroll.min.js.descarga" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
