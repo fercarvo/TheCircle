@@ -1,1 +1,58 @@
-﻿<div>stock</div>
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Stock
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+        <div class="panel-body" style="padding:25px 20px 20px 20px;" ng-init="activar()">
+
+            <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+                <div class="panel-heading">
+                    <div class="panel-title" style="padding-top:0px;margin-top:10px;margin-left:10px">
+                        <button class="btn btn-info">Refresh</button>
+                    </div>
+                    <div class="col-sm-12" style="text-align:right;align-content:inherit;">
+                        <label class="control-label col-sm-3" style="text-align:right;float:initial">Buscar</label>
+                        <input class="form-control col-sm-7" type="text" ng-model="buscar.compuesto" placeholder="buscar por codigo" style="width:40%;float:right;">
+                    </div>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:65vh">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Compuesto</th>
+                                <th>X</th>
+                                <th>Y</th>
+                                <th>Z</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr data-toggle="modal" data-target="#myModal">
+                                <!--ng-repeat="item in stock | filter:buscar" ng-click="select(item)"-->
+                                <td>{{item.stock}}x</td>
+                                <td>{{item.nombre}}x</td>
+                                <td>{{item.compuesto}}x</td>
+                                <td>{{item.compuesto}}x</td>
+                                <td>{{item.compuesto}}x</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!--Modal Item receta-->
+            
+            <!--Aqui Termina el modal para el item de receta-->
+        </div><!-- /.tab-pane 3 -->
+
+    </div>
+</div>
