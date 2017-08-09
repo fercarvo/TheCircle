@@ -2,12 +2,10 @@
 <html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TheCircle : Login</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <link href="~/css/wiseboard/page-login3.min.css" rel="stylesheet"/>
     <!-- Login css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <style>
@@ -15,6 +13,15 @@
             font-family: 'Roboto', sans-serif;
             background: url(/images/help-kids-have-a-childhood.jpg) fixed no-repeat 50% 70%;
             background-size: cover
+        }
+
+        .login-wrapper {
+            width: 100%;
+            float: right;
+            margin-top: 120px;
+            margin-bottom: 120px;
+            position: relative;
+            max-width: 360px
         }
     </style>
 </head>
@@ -25,10 +32,10 @@
 
             </div><!-- /.logo-wrapper -->
 
-            <div class="panel" style="border: 0px solid transparent;border-radius: 6px;">
-                <div class="panel-body" style="background-color: rgba(144, 31, 97, 0.55);border-radius: 6px;">
-                    <h3>Autenticación - TheCircle</h3>
+            <div class="panel" style="border-radius: 6px;background-color: rgba(130, 27, 87, 0.55);">
+                <div class="panel-body" style="border-radius: 6px;">
                     <form class="form-signin">
+                        <h3 class="form-signin-heading" style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="input-icon-left">
                                 <input type="text" class="form-control rounded" placeholder="Ingrese el Usuario">
@@ -40,9 +47,7 @@
                                 <input type="password" class="form-control rounded" placeholder="Password">
                             </div>
                         </div>
-                        <label class="checkbox">
-                            <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"> Remember me
-                        </label>
+
                         <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
                     </form>
                 </div>
@@ -54,6 +59,5 @@
     <!-- scritpts -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    
 </body>
 </html>
