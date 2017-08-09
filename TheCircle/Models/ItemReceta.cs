@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
@@ -11,12 +10,13 @@ namespace TheCircle.Models
         [Key]
         public int id { get; set; }
         public int idItemFarmacia { get; set; }
+        public DateTime fcaducidad { get; set; }
+        public string nombre { get; set; }
+        public string compuesto { get; set; }
         public Int32 diagnostico { get; set; }
         public int cantidad { get; set; }
-        public int receta { get; set; }
-        public DateTime fecha { get; set; }
         public string posologia { get; set; }
-        public int? funciono { get; set; }
+        public Boolean? funciono { get; set; }
 
         public ItemReceta() { }
 

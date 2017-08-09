@@ -20,7 +20,7 @@
                         Recetas Médicas
                     </div>
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar.compuesto" placeholder="buscar por codigo" class="form-control">
+                        <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
@@ -28,18 +28,18 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Apadrinado</th>
-                                <th>Doctor</th>
                                 <th>Fecha</th>
+                                <th>Doctor</th>
+                                <th>Apadrinado</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr  data-toggle="modal" data-target="#myModal"><!--ng-repeat="item in stock | filter:buscar" ng-click="select(item)"-->
-                                <td>{{item.stock}}x</td>
-                                <td>{{item.nombre}}x</td>
-                                <td>{{item.compuesto}}x</td>
-                                <td>{{item.compuesto}}x</td>
+                            <tr  data-toggle="modal" data-target="#myModal" ng-repeat="obj in recetas | filter:buscar" ng-click="select(obj)">
+                                <td>{{obj.receta.id}}</td>
+                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{obj.receta.idDoctor}}</td>
+                                <td>{{obj.receta.idApadrinado}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -67,7 +67,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in receta">
+                            <tr>
                                 <td>{{item.cantidad}}</td>
                                 <td>{{item.itemFarmacia.nombre}}</td>
                                 <td>{{item.posologia}}</td>
@@ -88,7 +88,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Editar item</h5>
+                            <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}          {{receta.receta.fecha | date: 'dd/MM/yyyy'}}</h5>
                         </div>
                         <div class="panel-body" style=" padding-top: 5px;">
                             <table class="table table-striped" style="text-align:center;">
@@ -103,26 +103,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr><!--ng-repeat="item in receta"-->
-                                        <td>{{item.cantidad}}x</td>
-                                        <td>{{item.itemFarmacia.nombre}}x</td>
-                                        <td><input type="number" value="35" class="form-control" placeholder="Nueva Cantidad" disabled/></td>
+                                    <tr ng-repeat="item in receta.items">
+                                        <td>{{item.nombre}}x</td>
+                                        <td>{{item.compuesto}}x</td>
+                                        <td><input type="number" ng-value={{item.cantidad}} class="form-control" placeholder="Nueva Cantidad" disabled/></td>
                                         <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
                                         <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-ok"></span></td>
-                                        <td>
-                                            {{item.posologia}}</span>
-                                                <div class="dropdown">
-                                                    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                        <span class="glyphicon glyphicon-pencil"></span>
-                                                        <span class="caret"></span>
-                                                    </button>
-                                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                                        <li><a href="#">Ingrese datos del Nuevo Despacho</a></li>
-                                                        <li><input type="text" class="form-control" placeholder="Nueva Cantidad" /></li>
-                                                        <li><input type="text" class="form-control" placeholder="Comentario" /></li>
-                                                    </ul>
-                                                </div>
-                                        </td>
+                                        <td ng-click="despachar(item, $index)"><span class="glyphicon glyphicon-pencil"></span></td>
                                     </tr>
                                 </tbody>
                             </table>

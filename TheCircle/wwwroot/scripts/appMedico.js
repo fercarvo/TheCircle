@@ -2,43 +2,43 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .config(function ($stateProvider, $urlRouterProvider) {
         $stateProvider
             .state('atencion', {
-                templateUrl: 'html/medico/atencion.html',
+                templateUrl: 'views/medico/atencion.html',
                 controller: 'atencion'
             })
             .state('atencion.registro', {
-                templateUrl: 'html/medico/atencion.registro.html',
+                templateUrl: 'views/medico/atencion.registro.html',
                 controller: 'atencion.registro'
             })
             .state('atencion.receta', {
-                templateUrl: 'html/medico/atencion.receta.html',
+                templateUrl: 'views/medico/atencion.receta.html',
                 controller: 'atencion.receta'
             })
             .state('atencion.remision', {
-                templateUrl: 'html/medico/atencion.remision.html',
+                templateUrl: 'views/medico/atencion.remision.html',
                 controller: 'atencion.remision'
             })
             .state('anulaciones', {
-                templateUrl: 'html/medico/anulaciones.html',
+                templateUrl: 'views/medico/anulaciones.html',
                 controller: 'anulaciones'
             })
             .state('estadisticas', {
-                templateUrl: 'html/medico/estadistica.html',
+                templateUrl: 'views/medico/estadistica.html',
                 controller: 'estadisticas'
             })
             .state('estadisticas.atenciones', {
-                templateUrl: 'html/medico/estadistica.atenciones.html',
+                templateUrl: 'views/medico/estadistica.atenciones.html',
                 controller: 'estadisticas.atenciones'
             })
             .state('estadisticas.remisiones', {
-                templateUrl: 'html/medico/estadistica.remisiones.html',
+                templateUrl: 'views/medico/estadistica.remisiones.html',
                 controller: 'estadisticas.remisiones'
             })
             .state('estadisticas.recetas', {
-                templateUrl: 'html/medico/estadistica.recetas.html',
+                templateUrl: 'views/medico/estadistica.recetas.html',
                 controller: 'estadisticas.recetas'
             })
             .state('estadisticas.enfermedades', {
-                templateUrl: 'html/medico/estadistica.enfermedades.html',
+                templateUrl: 'views/medico/estadistica.enfermedades.html',
                 controller: 'estadisticas.enfermedades'
             });
         //$urlRouterProvider.otherwise("/atencion/registro");
@@ -81,7 +81,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
-        atencion.doctor = 705565656;
+        atencion.doctor = 908362247;
         atencion.localidad = "CC2";
         atencion.apadrinado = {};
         atencion.foto = "/images/ci.png";

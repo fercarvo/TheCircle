@@ -8,39 +8,41 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="wwwroot\html\anulaciones\**" />
-    <Compile Remove="wwwroot\html\atencion\**" />
-    <Content Remove="wwwroot\html\anulaciones\**" />
-    <Content Remove="wwwroot\html\atencion\**" />
-    <EmbeddedResource Remove="wwwroot\html\anulaciones\**" />
-    <EmbeddedResource Remove="wwwroot\html\atencion\**" />
-    <None Remove="wwwroot\html\anulaciones\**" />
-    <None Remove="wwwroot\html\atencion\**" />
+    <Compile Remove="wwwroot\views\anulaciones\**" />
+    <Compile Remove="wwwroot\views\atencion\**" />
+    <Content Remove="wwwroot\views\anulaciones\**" />
+    <Content Remove="wwwroot\views\atencion\**" />
+    <EmbeddedResource Remove="wwwroot\views\anulaciones\**" />
+    <EmbeddedResource Remove="wwwroot\views\atencion\**" />
+    <None Remove="wwwroot\views\anulaciones\**" />
+    <None Remove="wwwroot\views\atencion\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\css\wiseboard\admin.min.css" />
-    <Content Include="wwwroot\css\wiseboard\main.min.css" />
-    <Content Include="wwwroot\css\wiseboard\page-login3.min.css" />
-    <Content Include="wwwroot\html\asistente\despachar.html" />
-    <Content Include="wwwroot\html\asistente\historial.html" />
-    <Content Include="wwwroot\html\asistente\stock.html" />
-    <Content Include="wwwroot\html\medico\anulaciones.html" />
-    <Content Include="wwwroot\html\medico\atencion.html" />
-    <Content Include="wwwroot\html\medico\atencion.receta.html" />
-    <Content Include="wwwroot\html\medico\atencion.registro.html" />
-    <Content Include="wwwroot\html\medico\atencion.remision.html" />
-    <Content Include="wwwroot\html\medico\estadistica.1.html" />
-    <Content Include="wwwroot\html\medico\estadistica.html" />
+    <Content Include="wwwroot\scripts\angular.min.js" />
+    <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
+    <Content Include="wwwroot\scripts\appMedico.js" />
+    <Content Include="wwwroot\scripts\wiseboard\admin.min.js" />
+    <Content Include="wwwroot\scripts\wiseboard\jquery.min.js" />
+    <Content Include="wwwroot\styles\wiseboard\admin.min.css" />
+    <Content Include="wwwroot\styles\wiseboard\main.min.css" />
     <Content Include="wwwroot\images\ci.png" />
     <Content Include="wwwroot\images\help-kids-have-a-childhood.jpg" />
-    <Content Include="wwwroot\js\angular.min.js" />
-    <Content Include="wwwroot\js\appAsistenteSalud.js" />
-    <Content Include="wwwroot\js\appMedico.js" />
-    <Content Include="wwwroot\js\wiseboard\admin.min.js" />
-    <Content Include="wwwroot\js\wiseboard\jquery.min.js" />
-    <Content Include="wwwroot\js\wiseboard\admin.min.js.descarga" />
-    <Content Include="wwwroot\js\wiseboard\jquery.min.js.descarga" />
+    <Content Include="wwwroot\scripts\wiseboard\admin.min.js.descarga" />
+    <Content Include="wwwroot\scripts\wiseboard\jquery.min.js.descarga" />
+    <Content Include="wwwroot\views\asistente\despachar.html" />
+    <Content Include="wwwroot\views\asistente\historial.html" />
+    <Content Include="wwwroot\views\asistente\stock.html" />
+    <Content Include="wwwroot\views\medico\anulaciones.html" />
+    <Content Include="wwwroot\views\medico\atencion.html" />
+    <Content Include="wwwroot\views\medico\atencion.receta.html" />
+    <Content Include="wwwroot\views\medico\atencion.registro.html" />
+    <Content Include="wwwroot\views\medico\atencion.remision.html" />
+    <Content Include="wwwroot\views\medico\estadistica.atenciones.html" />
+    <Content Include="wwwroot\views\medico\estadistica.enfermedades.html" />
+    <Content Include="wwwroot\views\medico\estadistica.html" />
+    <Content Include="wwwroot\views\medico\estadistica.recetas.html" />
+    <Content Include="wwwroot\views\medico\estadistica.remisiones.html" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.0.0" />
