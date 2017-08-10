@@ -18,7 +18,7 @@ namespace TheCircle.Controllers
             RecetaTotal recetaTotal = new RecetaTotal();
 
             if (localidad != null) {                
-                return Ok(recetaTotal.getAll(localidad, _context));
+                return Ok(recetaTotal.getAllByLocalidad(localidad, _context));
             } else {
                 return BadRequest();
             }

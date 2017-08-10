@@ -19,31 +19,39 @@
         </div>
     </form>
 
-    <div ng-repeat="receta in recetas.all">
-        <div>
-            Receta {{receta.receta}}
+    <div id="accordion" role="tablist" aria-multiselectable="true">
+        <div class="card" ng-repeat="receta in recetas.all">
+            <div class="card-header" role="tab" id="heading{{receta.receta.id}}">
+                <h5 class="mb-0">
+                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#{{receta.receta.id}}" aria-expanded="false" aria-controls="{{receta.receta.id}}">
+                        Receta: #00000{{receta.receta.id}} - fecha: {{receta.receta.fecha | date: 'dd/MM/yyyy'}} - apadrinado: {{receta.receta.idApadrinado}}
+                    </a>
+                </h5>
+            </div>
+
+            <div id="{{receta.receta.id}}" class="collapse" role="tabpanel" aria-labelledby="heading{{receta.receta.id}}">
+                <div class="card-block">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Posologia</th>
+                                <th>Diagnostico</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="item in receta.items">
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.cantidad}}</td>
+                                <td>{{item.posologia}}</td>
+                                <td>{{item.diagnostico}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-        <table class="table table-striped" >
-
-            <thead>
-                <tr>
-                    <th>Apadrinado</th>
-                    <th>Medicamento</th>
-                    <th>Cantidad</th>
-                    <th>Posologia</th>
-                    <th>Enfermedad</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr ng-repeat="item in receta.items">
-                    <td>{{item.idApadrinado}}</td>
-                    <td>{{item.nombreItemFarmacia}}</td>
-                    <td>{{item.cantidad}}</td>
-                    <td>{{item.posologia}}</td>
-                    <td>{{item.enfermedadNombre}}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div><!-- Tabla -->
+    </div>
 </div>

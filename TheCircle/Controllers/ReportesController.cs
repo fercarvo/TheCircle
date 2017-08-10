@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers
@@ -65,14 +66,15 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("receta")]
-        public IActionResult GetRecetas([FromBody] ReporteRequest request)
+        public IActionResult GetRecetasByDoctor([FromBody] ReporteRequest request)
         {
-            ReporteReceta e = new ReporteReceta();
+            RecetaTotal rt = new RecetaTotal();
+            List<RecetaTotal> recetas;
 
             if (request != null) {
-                ReporteReceta[] response = e.getAll(request, _context);
-                if (response != null) {
-                    return Ok(response);
+                recetas = rt.reporteByDoctor(request, _context);
+                if (recetas != null) {
+                    return Ok(recetas);
                 } else {
                     return NotFound();
                 }

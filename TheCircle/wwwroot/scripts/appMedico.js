@@ -366,6 +366,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             dataFactory.estadisticas.recetas = $scope.recetas;
         });
 
+        $scope.activar = function (index) {
+            index = ""
+
+        }
+
         $scope.generar = function (desde, hasta) {
             var data = {
                 desde: desde,
@@ -375,24 +380,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http.post("/api/reporte/receta", data).then(function success(res) {
 
-                var recetas = [];
+                dataFactory.estadisticas.recetas.all = res.data;
+                $scope.recetas.all = dataFactory.estadisticas.recetas.all;
 
-                res.data.forEach(function (itemReceta) {
-                    var receta = recetas.find(function (receta) { return receta.receta == itemReceta.idReceta });
-                    if (!receta) {
-                        recetas.push({ receta: itemReceta.idReceta, items: [] });
-                    }
-                });
-
-                recetas.forEach(function (receta) {
-                    res.data.forEach(function (itemReceta) {
-                        if (receta.receta == itemReceta.idReceta) {
-                            receta.items.push(itemReceta);
-                        }
-                    });
-                });
-                
-                $scope.recetas.all = recetas;
             }, function error(err) {
                 console.log("error cargar recetas")
             });

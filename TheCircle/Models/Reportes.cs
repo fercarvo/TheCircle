@@ -82,35 +82,4 @@ namespace TheCircle.Models
         }
 
     }
-
-    public class ReporteReceta
-    {
-        [Key]
-        public int idItemReceta { get; set; }
-        public int cantidad { get; set; }
-        public string posologia { get; set; }
-        public int idReceta { get; set; }
-        public DateTime fechaReceta { get; set; }
-        public int? despachada { get; set; }
-
-        public string enfermedadCod { get; set; }
-        public string enfermedadNombre { get; set; }
-
-        public string nombreItemFarmacia { get; set; }
-
-        public int idApadrinado { get; set; }
-
-        public ReporteReceta() { }
-
-        public ReporteReceta[] getAll(ReporteRequest req, MyDbContext _context)
-        {
-            try {
-                string query = $"EXEC dbo.report_RecetaByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-                return _context.ReporteReceta.FromSql(query).ToArray();
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-    }
 }
