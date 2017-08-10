@@ -1,36 +1,22 @@
-<div class="panel-body" >
-    <div>
-        <form ng-submit="generar(enfermedades.desde, enfermedades.hasta)" >
-
-            <div class="container-fluid">
-                <div class="form-group">
-                    <label class="control-label" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
-                    <div>
+<div class="panel-body" style="padding:0px 20px 20px 20px;">
+        <form class="form-horizontal" ng-submit="generar(enfermedades.desde, enfermedades.hasta)" >
+                <div class="form-group" style="padding-right:5px;">
+                    <div class="col-sm-3" style="padding-bottom:5px;">
+                        <label class="control-label" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
                         <input class="form-control" required ng-model="enfermedades.desde" ng-init="enfermedades.desde='1/1/2017'">
                     </div>
-                </div><!-- /.form-group -->
-                <div class="form-group">
-                    <label class="control-label" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
-                    <div>
+                    <div class="col-sm-3" style="padding-bottom:5px;">
+                        <label class="control-label" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
                         <input class="form-control" required ng-model="enfermedades.hasta" ng-init="enfermedades.hasta='9/9/2017'">
                     </div>
-                </div><!-- /.form-group -->
-
-            </div>
-
-            <div class="container-fluid">
-                <div class="text-center">
-                    <button class="btn btn-info" type="submit" name="action">
-                        Generar grafico
-                    </button>
-                    <button class="btn btn-info" type="reset" name="action">
-                        Cancelar
-                    </button>
-                </div><!-- /.form-group -->
-
-            </div>
+                    <div class="col-sm-1" style="padding-bottom:5px;">
+                        <button type="submit" class="btn btn-info">Generar</button>
+                    </div>
+                    <div class="col-sm-1" style="padding-bottom:5px;">
+                        <button type="reset" class="btn btn-info">Borrar</button>
+                    </div>
+                </div>
 
         </form>
-    </div>
     <nvd3 options="options" data="data"></nvd3>
 </div>
