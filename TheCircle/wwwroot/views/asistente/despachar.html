@@ -104,8 +104,8 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in receta.items">
-                                        <td>{{item.nombre}}x</td>
-                                        <td>{{item.compuesto}}x</td>
+                                        <td>{{item.nombre}}</td>
+                                        <td>{{item.compuesto}}</td>
                                         <td><input type="number" ng-value={{item.cantidad}} class="form-control" placeholder="Nueva Cantidad" disabled/></td>
                                         <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
                                         <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-ok"></span></td>
