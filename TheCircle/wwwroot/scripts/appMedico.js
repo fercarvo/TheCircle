@@ -252,7 +252,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
+    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
         console.log("atencionFactory remision", atencionFactory);
 
         $scope.disable = disable.remision;
@@ -287,16 +287,16 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 disable.remision = true;
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
-                alert("Se creo remision");
+                notify("Exito", "Se creo la remision exitosamente", "success");
 
             }, function (err) {
                 console.log("error crear remision");
-                alert("Error crear remision");
+                notify("Error", "No se pudo generar la remision", "danger");
             });
         }
 
     }])
-    .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
+    .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, dataFactory, atencionFactory,notify) {
 
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
@@ -358,10 +358,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
-                alert("Se creo la receta");
+                notify("Exito", "Se creo la receta exitosamente", "success");
             }, function err(err){
                 console.log("No se pudieron crear los items");
-                alert("No se pudo crear la receta");
+                notify("Error", "No se pudo crear la receta", "danger");
             });
         }
 
