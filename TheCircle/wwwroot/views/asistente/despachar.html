@@ -106,10 +106,10 @@
                                     <tr ng-repeat="item in receta.items">
                                         <td>{{item.nombre}}x</td>
                                         <td>{{item.compuesto}}x</td>
-                                        <td><input type="number" ng-value={{item.cantidad}} class="form-control" placeholder="Nueva Cantidad" disabled/></td>
+                                        <td width="10%"><input type="number" ng-value={{item.cantidad}} class="form-control" disabled/></td>
                                         <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
-                                        <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-ok"></span></td>
-                                        <td ng-click="despachar(item, $index)"><span class="glyphicon glyphicon-pencil"></span></td>
+                                        <td width="10%" ng-click="eliminarItem(receta, $index)"><button><span class="glyphicon glyphicon-ok"></span></button></td>
+                                        <td width="10%" ng-click="despachar(item, $index)"><button><span class="glyphicon glyphicon-pencil"></span></button></td>
                                     </tr>
                                 </tbody>
                             </table>
