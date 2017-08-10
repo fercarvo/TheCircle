@@ -67,8 +67,6 @@
                                         <th>Nombre</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
-                                        <th>Motivo</th>
-                                        <th>Eliminar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,8 +75,6 @@
                                         <td>{{item.compuesto}}x</td>
                                         <td>{{item.compuesto}}x</td>
                                         <td width="10%"><input type="number" value="10" class="form-control" disabled /></td>
-                                        <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
-                                        <td width="10%" ng-click="eliminarItem(receta, $index)"><button><span class="glyphicon glyphicon-remove"></span></button></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -48,6 +48,7 @@
 
             }, function error(err) {
                 console.log("error cargar recetas");
+                alert("error cargar recetas");
             })
         };
 
@@ -101,6 +102,7 @@
                 $scope.stock = dataFac.stock;
             }, function error(err) {
                 console.log("error cargar stock");
+                alert("error cargar stock");
             })
         };
         

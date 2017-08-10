@@ -138,8 +138,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
-        console.log("atencionFactory registro", atencionFactory);
-
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
         $scope.tipos = dataFactory.tipos;
@@ -190,9 +188,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
                 $state.go('atencion.remision');
+                alert("Se creo atencion");
 
-            }, function error(err){
-              console.log("error atencion");
+            }, function error(err) {
+                alert("error atencion");
+                console.log("error atencion");
             });
         }
 
@@ -232,15 +232,16 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 disable.remision = true;
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
+                alert("Se creo remision");
 
             }, function (err) {
                 console.log("error crear remision");
+                alert("Error crear remision");
             });
         }
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
-        console.log("atencionFactory receta", atencionFactory);
 
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
@@ -302,8 +303,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
+                alert("Se creo la receta");
             }, function err(err){
                 console.log("No se pudieron crear los items");
+                alert("No se pudo crear la receta");
             });
         }
 
@@ -335,6 +338,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.atenciones.all = res.data;
             }, function error(err) {
                 console.log("error cargar atenciones")
+                alert("error cargar atenciones")
             });
         }
 
@@ -355,7 +359,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $http.post("/api/reporte/remision", data).then(function success(res) {
                 $scope.remisiones.all = res.data;
             }, function error(err) {
-                console.log("error cargar remisiones")
+                console.log("error cargar remisiones");
+                alert("error cargar remisiones")
             });
         }
 
@@ -385,6 +390,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             }, function error(err) {
                 console.log("error cargar recetas")
+                alert("error cargar recetas")
             });
         }
 
@@ -411,6 +417,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 //$scope.data = arr;
             }, function error(err) {
                 console.log("Error cargar estadisticas");
+                alert("Error cargar estadisticas");
             });
 
         }
