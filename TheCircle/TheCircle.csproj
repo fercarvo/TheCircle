@@ -22,6 +22,7 @@
     <Content Include="wwwroot\scripts\angular.min.js" />
     <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
+    <Content Include="wwwroot\scripts\bootstrap-notify.min.js" />
     <Content Include="wwwroot\scripts\wiseboard\admin.min.js" />
     <Content Include="wwwroot\scripts\wiseboard\jquery.min.js" />
     <Content Include="wwwroot\styles\wiseboard\admin.min.css" />

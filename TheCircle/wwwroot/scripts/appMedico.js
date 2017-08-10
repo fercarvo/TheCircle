@@ -79,6 +79,61 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         return disable;
     }])
+    .factory('notify', [function () {
+
+        var notify = {};
+
+        notify = function (titulo, mensaje, tipo) {
+
+            var icono;
+
+            if (tipo === "success") {
+                icono = "glyphicon glyphicon-saved";
+            } else if (tipo == "danger") {
+                icono = "glyphicon glyphicon-ban-circle"
+            }
+
+            $.notify(
+                {
+                    icon: icono,
+                    title: titulo,
+                    message: mensaje,
+                    url: '#',
+                    target: '_blank'
+                },
+                {
+                    element: 'body',
+                    position: null,
+                    showProgressbar: true,
+                    type: tipo,
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: {x:20,y:70},
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 1000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: "pause",
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class'
+                });
+        };
+
+        return notify;
+    }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         var atencion = {};
         atencion.doctor = 908362247;
@@ -136,7 +191,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         };
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
 
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
@@ -188,10 +243,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
                 $state.go('atencion.remision');
-                alert("Se creo atencion");
+                notify("Exito", "Apadrinado creado satisfactoriamente", "success");
 
             }, function error(err) {
-                alert("error atencion");
+                notify("Error", "Intento fallido de atencion medica", "danger");
                 console.log("error atencion");
             });
         }
@@ -398,6 +453,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($scope, $state, $http, dataFactory, atencionFactory) {
 
         $scope.enfermedades = dataFactory.estadisticas.enfermedades;
+        $scope.data = [];
 
         $scope.$watch('enfermedades', function () {
             dataFactory.estadisticas.enfermedades = $scope.enfermedades;
@@ -411,9 +467,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             }
             $http.post("/api/reporte/enfermedad", data).then(function success(res) {
                 //var arr = [];
-                $scope.data = res.data.map(function (obj) {
-                    return { key: obj.codigo + ' ' + obj.nombre, y: obj.veces };
-                });
+
+                for (i = 0; i < res.data.length; i++) {
+                    $scope.data.push({ key: res.data[i].codigo + ' ' + res.data[i].nombre, y: res.data[i].veces, color: color[i] });
+                }
+
+                /*$scope.data = res.data.map(function (obj) {
+                    return { key: obj.codigo + ' ' + obj.nombre, y: obj.veces, color: "red" };
+                });*/
                 //$scope.data = arr;
             }, function error(err) {
                 console.log("Error cargar estadisticas");
@@ -421,6 +482,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             });
 
         }
+
+        var color = ["#901F61", "#009877", "#D64227", "#FED115", "#ADBF2B"];
 
         $scope.options = {
             chart: {
