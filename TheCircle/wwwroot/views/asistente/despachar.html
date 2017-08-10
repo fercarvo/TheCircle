@@ -12,7 +12,7 @@
                 Despachos Recetas Medicas
             </div><!-- /.panel-title -->
         </div><!-- /.panel-heading -->
-        <div class="panel-body" style="padding:25px 20px 20px 20px;" ng-init="activar()">
+        <div class="panel-body" style="padding:25px 20px 20px 20px;">
 
             <div class="panel panel-default-light border-default col-sm-6" style="padding:0px">
                 <div class="panel-heading">
@@ -31,15 +31,17 @@
                                 <th>Fecha</th>
                                 <th>Doctor</th>
                                 <th>Apadrinado</th>
+                                <th>Despachar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr  data-toggle="modal" data-target="#myModal" ng-repeat="obj in recetas | filter:buscar" ng-click="select(obj)">
+                            <tr  data-toggle="modal" data-target="#myModal" ng-repeat="obj in recetas | filter:buscar">
                                 <td>{{obj.receta.id}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{obj.receta.idDoctor}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
+                                <td ><button class="glyphicon glyphicon-remove" ng-click="select(obj)"></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -59,27 +61,27 @@
                     <table class="table table-striped" style="text-align:center;">
                         <thead>
                             <tr>
-                                <th>Item</th>
-                                <th>Receta</th>
+                                <th>Nombre</th>
+                                <th>Compuesto</th>
                                 <th>Cantidad</th>
-                                <th>Monto</th>
-                                <th>Comentarios</th>
+                                <th>Nueva cantidad</th>
+                                <th>Comentario</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
+                            <tr ng-repeat="item in despachado">
+                                <td>{{item.nombre}}</td>
+                                <td>{{item.compuesto}}</td>
                                 <td>{{item.cantidad}}</td>
-                                <td>{{item.itemFarmacia.nombre}}</td>
-                                <td>{{item.posologia}}</td>
-                                <td>{{item.cantidad}}</td>
-                                <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></td>
+                                <td>{{item.nuevaCantidad}}</td>
+                                <td>{{item.comentario}}</td>                            
                             </tr>
                         </tbody>
                     </table>
                 </div><!--  -->
                 <div class="text-center ">
-                    <button type="submit" ng-click="guardarReceta()" class="btn btn-info">Guardar Egreso de Farmacia</button>
-                    <button type="button" class="btn btn-default">Cancelar</button>
+                    <button type="submit" ng-click="guardarDespacho()" class="btn btn-info">Guardar Egreso de Farmacia</button>
+                    <button type="button" ng-click="limpiarDespacho()" class="btn btn-default">Cancelar</button>
                 </div><!-- /.form-group -->
             </div><!--  -->
 
@@ -97,19 +99,21 @@
                                         <th>Nombre</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
+                                        <th>Nueva cantidad</th>
                                         <th>Comentario</th>
-                                        <th>Despachar</th>
                                         <th>Otra Cantidad</th>
+                                        <th>Despachar</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in receta.items">
                                         <td>{{item.nombre}}</td>
                                         <td>{{item.compuesto}}</td>
-                                        <td><input type="number" ng-value={{item.cantidad}} class="form-control" placeholder="Nueva Cantidad" disabled/></td>
-                                        <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
-                                        <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-ok"></span></td>
-                                        <td ng-click="despachar(item, $index)"><span class="glyphicon glyphicon-pencil"></span></td>
+                                        <td>{{item.cantidad}}</td>
+                                        <td><input type="number" ng-disabled="item.desactivar" ng-model="item.nuevaCantidad" class="form-control"/></td>
+                                        <td><textarea class="form-control" ng-disabled="item.desactivar" ng-model="item.comentario" rows="2" cols="10" maxlength="100" style="resize: none;"></textarea></td>
+                                        <td><button class="glyphicon glyphicon-pencil" ng-click="activar(item)"></button></td>
+                                        <td ><button class="glyphicon glyphicon-ok" ng-click="despachar(item)"></button></td>
                                     </tr>
                                 </tbody>
                             </table>

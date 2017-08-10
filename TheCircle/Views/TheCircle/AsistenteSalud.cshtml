@@ -70,8 +70,15 @@
             .table > tbody > tr > td {
                 padding: 8px 10px;
             }
+
+            @@media (max-width: 991px) {
+                .sidebar {
+                    height: 160px;
+                }
+            }
+
         </style>
-        <div class="sidebar" style="min-height:inherit;background-color:#f2f2f2;">
+        <div class="sidebar" style="min-height: 672px ;background-color:#f2f2f2;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
                 <li class=" open" ui-sref="despachar" ui-sref-active="active">
