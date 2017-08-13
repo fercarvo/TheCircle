@@ -1,5 +1,5 @@
 ﻿angular.module('appAsistente', ['ui.router'])
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(["$stateProvider", function ($stateProvider) {
         $stateProvider
             .state('despachar', {
                 templateUrl: 'views/asistente/despachar.html',
@@ -13,12 +13,10 @@
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
             });
-        //$urlRouterProvider.otherwise("/atencion/registro");
-        $urlRouterProvider.otherwise(function ($injector) {
-            var $state = $injector.get('$state');
-            $state.go('despachar');
-        });
-    })
+    }])
+    .run(["$state", function ($state){
+        $state.go("despachar");
+    }])
     .factory('dataFac', ['$http', function ($http) {
         var dataFactory = {};
 
@@ -105,7 +103,7 @@
                 alert("error cargar stock");
             })
         };
-        
+
 
 
     }])

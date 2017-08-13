@@ -20,7 +20,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="item in stock | filter:buscar" ng-click="select(item)" data-toggle="modal" data-target="#myModal">
+                    <tr ng-repeat="item in stock | filter:buscar" ng-disabled="disable" ng-click="select(item)" data-toggle="modal" data-target="#myModal">
                         <td>{{item.stock}}</td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.compuesto}}</td>
@@ -29,7 +29,7 @@
             </table>
         </div>
     </div>
-    
+
 
     <div class="panel panel-default-light border-default col-sm-6">
 
@@ -58,20 +58,20 @@
                         <td>{{item.cantidad}}</td>
                         <td>{{item.itemFarmacia.nombre}}</td>
                         <td>{{item.posologia}}</td>
-                        <td ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></td>
+                        <td ng-disabled="disable" ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></td>
                     </tr>
                 </tbody>
             </table>
         </div><!--  -->
         <div class="text-center ">
-            <button type="submit" ng-click="guardarReceta()" class="btn btn-info">Guardar receta medica</button>
-            <button type="button" class="btn btn-default">Cancelar</button>
+            <button ng-disabled="disable" type="submit" ng-click="guardarReceta()" class="btn btn-info">Guardar receta medica</button>
+            <button ng-disabled="disable" type="button" class="btn btn-default">Cancelar</button>
         </div><!-- /.form-group -->
     </div><!--  -->
 
 
     <!--Modal Item receta-->
-    <div id="myModal" class="modal fade"">
+    <div id="myModal" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">

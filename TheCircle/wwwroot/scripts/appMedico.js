@@ -1,5 +1,5 @@
 angular.module('appMedico', ['ui.router', 'nvd3'])
-    .config(function ($stateProvider, $urlRouterProvider) {
+    .config(["$stateProvider", function ($stateProvider) {
         $stateProvider
             .state('atencion', {
                 templateUrl: 'views/medico/atencion.html',
@@ -41,12 +41,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/estadistica.enfermedades.html',
                 controller: 'estadisticas.enfermedades'
             });
-        //$urlRouterProvider.otherwise("/atencion/registro");
-        $urlRouterProvider.otherwise(function ($injector) {
-            var $state = $injector.get('$state');
-            $state.go('atencion.registro');
-        });
-    })
+    }])
+    .run(["$state", function ($state){
+        $state.go("atencion");
+    }])
     .factory('dataFactory', ['$http', function ($http) {
         var dataFactory = {};
 
@@ -76,6 +74,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         disable.atencion = false;
         disable.remision = false;
+        disable.receta = false;
 
         return disable;
     }])
@@ -242,8 +241,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('disable', {}); //evento para desactivar atencion.html
-                $state.go('atencion.remision');
                 notify("Exito", "Apadrinado creado satisfactoriamente", "success");
+                $state.go('atencion.receta');
 
             }, function error(err) {
                 notify("Error", "Intento fallido de atencion medica", "danger");
@@ -253,7 +252,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
-        console.log("atencionFactory remision", atencionFactory);
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
@@ -296,8 +294,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('atencion.receta', ["$scope", "$state", "$http", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, dataFactory, atencionFactory,notify) {
+    .controller('atencion.receta', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
 
+        $scope.disable = disable.receta;
         $scope.stock = dataFactory.stock;
         $scope.receta = atencionFactory.receta;
         $scope.ItemRecetaNuevo = {};
@@ -359,6 +358,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
                 notify("Exito", "Se creo la receta exitosamente", "success");
+                disable.receta = true;
+                $scope.disable = disable.receta; //Se desactiva atencion.receta.html
+
             }, function err(err){
                 console.log("No se pudieron crear los items");
                 notify("Error", "No se pudo crear la receta", "danger");
@@ -368,7 +370,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('anulaciones', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-
+        console.log("en anulaciones");
 
     }])
     .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
