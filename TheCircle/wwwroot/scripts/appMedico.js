@@ -1,3 +1,8 @@
+/*
+ appMedico v1.0
+ Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+ Children International
+*/
 angular.module('appMedico', ['ui.router', 'nvd3'])
     .config(["$stateProvider", function ($stateProvider) {
         $stateProvider

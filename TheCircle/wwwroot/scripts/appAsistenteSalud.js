@@ -1,4 +1,9 @@
-﻿angular.module('appAsistente', ['ui.router'])
+/*
+ appMedico v1.0
+ Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+ Children International
+*/
+angular.module('appAsistente', ['ui.router'])
     .config(["$stateProvider", function ($stateProvider) {
         $stateProvider
             .state('despachar', {
