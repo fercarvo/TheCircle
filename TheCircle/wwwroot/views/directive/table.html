@@ -1,0 +1,13 @@
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th ng-repeat="item in data.head">{{ item }}</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr ng-repeat="row in data.row">
+            <td ng-repeat="item in row">{{item}}</td>
+        </tr>
+    </tbody>
+</table>

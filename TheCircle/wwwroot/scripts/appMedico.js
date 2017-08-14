@@ -52,6 +52,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .run(["$state", function ($state){
         $state.go("atencion");
     }])
+    .directive('mdTable', function(){
+        return {
+            restrict: 'EA', //E = element, A = attribute, C = class, M = comment
+            scope: { data: '='},
+            templateUrl: 'views/directive/table.html'
+        }
+    })
     .factory('dataFactory', ['$http', function ($http) {
         var dataFactory = {};
 
@@ -391,6 +398,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.$watch('atenciones', function () {
             dataFactory.estadisticas.atenciones = $scope.atenciones;
         });
+
+        $scope.data = {
+          head: ["columna 1", "col2", "col 3", "columna 4"],
+          row: [["asdas","asdasd asd","as dasd asd"," asdasd"],[" asdfsf"," sdfsd "," sdfdfd","sd fsdf"]]
+        }
 
         $scope.generar = function (desde, hasta) {
             var data = {
