@@ -1,4 +1,4 @@
-<div class="panel-body" style="padding:0px 20px 20px 20px;">
+<div class="panel-body" style="padding:0px 20px 0px 20px;">
     <form class="form-horizontal" ng-submit="send()" ng-init="activar()">
         <!--"m-bottom-30" para poner margen vertical de 30px-->
             <div class="form-group">
@@ -35,18 +35,18 @@
                     </select>
                 </div>
             </div><!-- /.form-group -->
-            <div class="form-group">
+            <div class="form-group" style="margin-bottom:5px;">
                 <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;"></label>
 
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-left:initial;padding-right:initial;">Peso (Kg)</label>
                     <div class="col-sm-2" style="padding-left:initial;">
-                        <input ng-disabled="disable" type="number" ng-model="atencion.peso" class="form-control" placeholder="Ingrese el Peso">
+                        <input ng-disabled="disable" type="number" min="10" max="100" ng-model="atencion.peso" class="form-control" placeholder="Ingrese el Peso">
                     </div>
                     <div class="col-sm-1">
                     </div>
                     <label class="control-label col-sm-2" style="text-align:left;width:12%;padding-right:initial;">Talla (cm)</label>
                     <div class="col-sm-2" style="padding-left:initial;">
-                        <input ng-disabled="disable" type="number" ng-model="atencion.talla" class="form-control" placeholder="Ingrese la Talla">
+                        <input ng-disabled="disable" type="number" min="60" max="200" ng-model="atencion.talla" class="form-control" placeholder="Ingrese la Talla">
                     </div>
                     
                         

@@ -56,7 +56,7 @@
                             <td class="tres">Numero de Personas:</td>
                             <td class="tres">{{apadrinado.numPer}}</td>
                             <td class="tres">IMC:</td>
-                            <td class="tres">{{apadrinado.peso}}/{{apadrinado.talla}}</td>
+                            <td class="tres">{{apadrinado.peso}}</td>
                         </tr>
                         <tr>
                             <td class="cuatro">Ingreso Mensual:</td>
@@ -64,7 +64,7 @@
                             <td class="cuatro">Numero de camas:</td>
                             <td class="cuatro">{{apadrinado.numBeds}}</td>
                             <td class="cuatro">Obesidad:</td>
-                            <td class="cuatro">{{apadrinado.obesidad}}</td>
+                            <td class="cuatro">{{if(apadrinado.peso='53.5')pbeso}}}</td>
                         </tr>
                     </table>
                 </div>
@@ -94,7 +94,7 @@
                     <a >Remision</a>
                 </li>
             </ul>
-            <div class="tab-content">
+            <div class="tab-content" style="margin-top:10px;">
                 <ui-view></ui-view>
             </div><!-- /.tab-content -->
         </div><!-- /.panel-body -->
