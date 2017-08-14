@@ -42,7 +42,6 @@ angular.module('appAsistente', ['ui.router'])
     .controller('despachar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
-        $scope.despachado = [];
 
         if (dataFac.recetas === null) {
             dataFac.getRecetas(dataFac.localidad).then(function success(res) {
@@ -67,25 +66,12 @@ angular.module('appAsistente', ['ui.router'])
             item.desactivar = false;
         }
 
-        $scope.despachar = function (item) {
-            var itemDespachado = angular.copy(item);
-            $scope.despachado.push(itemDespachado);
+        $scope.despachar = function (item, index, arr) {
+            //arr.splice(index, 1);
         }
 
         $scope.guardarDespacho = function () {
-            if ($scope.despachado.length == 0 || !$scope.despachado) {
-                alert("no hay items a despachar");
-            } else if ($scope.despachado.length != $scope.receta.items.length) {
-                alert("La cantidad de items a despachar son diferentes a la receta")
-            } else if ($scope.despachado.length == $scope.receta.items.length) {
-                $scope.receta = null;
-                $scope.despachado = [];
-                alert("despacho exitoso");
-            }
-        }
 
-        $scope.limpiarDespacho = function () {
-            $scope.despachado = [];
         }
 
     }])

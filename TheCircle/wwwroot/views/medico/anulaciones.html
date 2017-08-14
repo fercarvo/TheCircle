@@ -27,23 +27,19 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>ID</th>
+                                <th>Numero</th>
                                 <th>Fecha</th>
-                                <th>Doctor</th>
                                 <th>Apadrinado</th>
                                 <th>Ver items</th>
-                                <th>Anular</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             <tr ng-repeat="obj in recetas" >
-                                <td>{{obj.receta.id}}</td>
-                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
-                                <td>{{obj.receta.idDoctor}}</td>
+                                <td>00000{{obj.receta.id}}</td>
+                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
                                 <td width="10%" ><button ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                                <td width="10%" ng-click="eliminarReceta(obj)"><button><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -63,7 +59,7 @@
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Nombre</th>
+                                        <th>Item</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
                                         <th>Posologia</th>
@@ -79,6 +75,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        <button type="submit" ng-click="eliminarReceta(receta)" class="btn btn-info">Eliminar receta</button>
                     </div>
                 </div>
             </div>

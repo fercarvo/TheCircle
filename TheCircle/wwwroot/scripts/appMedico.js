@@ -475,15 +475,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('estadisticas.recetas', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", function ($log, $scope, $state, $http, dataFactory, atencionFactory) {
+    .controller('estadisticas.recetas', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "notify", function ($log, $scope, $state, $http, dataFactory, atencionFactory, notify) {
         $scope.recetas = dataFactory.estadisticas.recetas;
         $scope.$watch('recetas', function () {
             dataFactory.estadisticas.recetas = $scope.recetas;
         });
 
-        $scope.activar = function (index) {
-            index = ""
-
+        $scope.select = function (receta) {
+            $scope.receta = receta;
         }
 
         $scope.generar = function (desde, hasta) {
@@ -500,7 +499,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             }, function error(err) {
                 $log.error("error cargar recetas")
-                alert("error cargar recetas")
+                notify("Error", "No se pudo cargar recetas", "danger");
             });
         }
 

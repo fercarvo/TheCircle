@@ -14,7 +14,7 @@
         </div><!-- /.panel-heading -->
         <div class="panel-body" style="padding:25px 20px 20px 20px;">
 
-            <div class="panel panel-default-light border-default col-sm-6" style="padding:0px">
+            <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div class="panel-title" style="padding-top:0px;">
                         Recetas Médicas
@@ -48,43 +48,6 @@
                 </div>
             </div>
 
-
-            <div class="panel panel-default-light border-default col-sm-6">
-
-                <div class="panel-heading">
-                    <div class="panel-title" style="padding-top:0px;">
-                        Items Despachados
-                    </div>
-                </div>
-
-                <div class="panel-body" style=" padding-top: 5px;">
-                    <table class="table table-striped" style="text-align:center;">
-                        <thead>
-                            <tr>
-                                <th>Nombre</th>
-                                <th>Compuesto</th>
-                                <th>Cantidad</th>
-                                <th>Nueva cantidad</th>
-                                <th>Comentario</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="item in despachado">
-                                <td>{{item.nombre}}</td>
-                                <td>{{item.compuesto}}</td>
-                                <td>{{item.cantidad}}</td>
-                                <td>{{item.nuevaCantidad}}</td>
-                                <td>{{item.comentario}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div><!--  -->
-                <div class="text-center ">
-                    <button type="submit" ng-click="guardarDespacho()" class="btn btn-info">Guardar Egreso de Farmacia</button>
-                    <button type="button" ng-click="limpiarDespacho()" class="btn btn-default">Cancelar</button>
-                </div><!-- /.form-group -->
-            </div><!--  -->
-
             <!--Modal Item receta-->
             <div id="myModal" class="modal fade">
                 <div class="modal-dialog modal-lg">
@@ -96,6 +59,7 @@
                             <table class="table table-striped" style="text-align:center;">
                                 <thead>
                                     <tr>
+                                        <th>Despachado</th>
                                         <th>Nombre</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
@@ -107,18 +71,23 @@
                                 </thead>
                                 <tbody>
                                     <tr ng-repeat="item in receta.items">
+                                        <td class="glyphicon glyphicon-ok"></td>
                                         <td>{{item.nombre}}</td>
                                         <td>{{item.compuesto}}</td>
                                         <td>{{item.cantidad}}</td>
                                         <td><input type="number" ng-disabled="item.desactivar" ng-model="item.nuevaCantidad" class="form-control"/></td>
                                         <td><textarea class="form-control" ng-disabled="item.desactivar" ng-model="item.comentario" rows="2" cols="10" maxlength="100" style="resize: none;"></textarea></td>
                                         <td><button class="glyphicon glyphicon-pencil" ng-click="activar(item)"></button></td>
-                                        <td ><button class="glyphicon glyphicon-ok" ng-click="despachar(item)"></button></td>
+                                        <td ><button class="glyphicon glyphicon-ok" ng-click="despachar(item, $index, receta.items)"></button></td>
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div><!--  -->
+                        <div class="text-center ">
+                            <button type="submit" ng-click="guardarDespacho()" class="btn btn-info">Guardar Egreso de Farmacia</button>
+                            <button type="button" ng-click="limpiarDespacho()" class="btn btn-default">Cancelar</button>
+                        </div><!-- /.form-group -->
                     </div>
                 </div>
 

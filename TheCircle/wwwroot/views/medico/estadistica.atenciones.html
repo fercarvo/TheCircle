@@ -32,7 +32,7 @@
             <tbody>
                 <tr ng-repeat="atencion in atenciones.all">
                     <td>{{atencion.tipo}}</td>
-                    <td>{{atencion.fecha | date: 'dd/MM/yyyy'}}</td>
+                    <td>{{atencion.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
                     <td>{{atencion.idApadrinado}}</td>
                 </tr>
             </tbody>

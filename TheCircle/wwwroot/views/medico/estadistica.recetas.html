@@ -13,42 +13,65 @@
             <div class="col-sm-1" style="padding-bottom:5px;">
                 <button type="submit" class="btn btn-info">Generar</button>
             </div>
-            <div class="col-sm-1" style="padding-bottom:5px;">
-                <button type="reset" class="btn btn-info">Borrar</button>
-            </div>
         </div>
     </form>
 
-    <div id="accordion" role="tablist" aria-multiselectable="true">
-        <div class="card" ng-repeat="receta in recetas.all">
-            <div class="card-header" role="tab" id="heading{{receta.receta.id}}">
-                <div>
-                    <h5 class="mb-0">
-                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" data-target="#{{receta.receta.id}}" aria-expanded="false" aria-controls="{{receta.receta.id}}">
-                            Receta: bla bla bla
-                        </a>
-                    </h5>
+    <div class="panel-body" style="padding:25px 20px 20px 20px;">
+        <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+            <div class="panel-heading">
+                <div class="panel-title" style="padding-top:0px;">
+                    Recetas Medicas
                 </div>
             </div>
+            <div class="panel-body" style=" padding-top: 5px;">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Doctor</th>
+                            <th>Apadrinado</th>
+                            <th>Ver items</th>
+                        </tr>
+                    </thead>
 
-            <div id="{{receta.receta.id}}" class="collapse" role="tabpanel" aria-labelledby="heading{{receta.receta.id}}">
-                <div class="card-block">
+                    <tbody>
+                        <tr ng-repeat="obj in recetas.all">
+                            <td>{{obj.receta.id}}</td>
+                            <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
+                            <td>{{obj.receta.idDoctor}}</td>
+                            <td>{{obj.receta.idApadrinado}}</td>
+                            <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!--Modal Item receta-->
+    <div id="recetaModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy'}}</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
                     <table class="table table-striped">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
+                                <th>Compuesto</th>
                                 <th>Cantidad</th>
                                 <th>Posologia</th>
-                                <th>Diagnostico</th>
                             </tr>
                         </thead>
-
                         <tbody>
                             <tr ng-repeat="item in receta.items">
                                 <td>{{item.nombre}}</td>
+                                <td>{{item.compuesto}}</td>
                                 <td>{{item.cantidad}}</td>
                                 <td>{{item.posologia}}</td>
-                                <td>{{item.diagnostico}}</td>
                             </tr>
                         </tbody>
                     </table>
@@ -56,4 +79,6 @@
             </div>
         </div>
     </div>
+
+
 </div>
