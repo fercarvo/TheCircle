@@ -1,4 +1,4 @@
-<div class="content">
+<div class="content" ng-init="init()">
     <style>
         .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
         .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
@@ -12,7 +12,7 @@
                 Anular Recetas Medicas
             </div><!-- /.panel-title -->
         </div><!-- /.panel-heading -->
-        <div class="panel-body" style="padding:25px 20px 20px 20px;" ng-init="activar()">
+        <div class="panel-body" style="padding:25px 20px 20px 20px;">
 
             <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
                 <div class="panel-heading">
@@ -31,19 +31,19 @@
                                 <th>Fecha</th>
                                 <th>Doctor</th>
                                 <th>Apadrinado</th>
-                                <th>Comentario</th>
+                                <th>Ver items</th>
                                 <th>Anular</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr data-toggle="modal" data-target="#myModal" ng-click="select(obj)">
-                                <td>{{obj.receta.id}}x</td>
-                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}x</td>
-                                <td>{{obj.receta.idDoctor}}x</td>
-                                <td>{{obj.receta.idApadrinado}}x</td>
-                                <td><textarea class="form-control" placeholder="....." rows="2" cols="10" maxlength="100" style="resize: none;" disabled></textarea></td>
-                                <td width="10%" ng-click="eliminarItem(receta, $index)"><button><span class="glyphicon glyphicon-trash"></span></button></td>
+                            <tr ng-repeat="obj in recetas" >
+                                <td>{{obj.receta.id}}</td>
+                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
+                                <td>{{obj.receta.idDoctor}}</td>
+                                <td>{{obj.receta.idApadrinado}}</td>
+                                <td width="10%" ><button ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td width="10%" ng-click="eliminarReceta(obj)"><button><span class="glyphicon glyphicon-trash"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -53,42 +53,37 @@
 
 
             <!--Modal Item receta-->
-            <div id="myModal" class="modal fade">
+            <div id="recetaModal" class="modal fade">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}          {{receta.receta.fecha | date: 'dd/MM/yyyy'}}</h5>
+                            <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy'}}</h5>
                         </div>
                         <div class="panel-body" style=" padding-top: 5px;">
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th>Codigo</th>
                                         <th>Nombre</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
+                                        <th>Posologia</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>{{item.nombre}}x</td>
-                                        <td>{{item.compuesto}}x</td>
-                                        <td>{{item.compuesto}}x</td>
-                                        <td width="10%"><input type="number" value="10" class="form-control" disabled /></td>
+                                    <tr ng-repeat="item in receta.items">
+                                        <td>{{item.nombre}}</td>
+                                        <td>{{item.compuesto}}</td>
+                                        <td>{{item.cantidad}}</td>
+                                        <td>{{item.posologia}}</td>
                                     </tr>
                                 </tbody>
                             </table>
-
-                        </div><!--  -->
+                        </div>
                     </div>
                 </div>
-
             </div>
-            <!--Aqui Termina el modal para el item de receta-->
 
 
-
-        </div><!-- /.tab-pane 3 -->
-
+        </div>
     </div>
 </div>

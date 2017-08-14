@@ -32,12 +32,23 @@ namespace TheCircle.Models
         public Receta[] getAllByDoctorByDate(ReporteRequest request, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByDoctor @doctor={request.doctor}, @desde='{request.desde}', @hasta='{request.hasta}'";
-            //try {
+            try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;
-            //} catch (Exception e) {
-                //return null;
-            //}
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public Receta[] getAllByDoctorByStatus(int doctor, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.select_RecetaByDoctorByStatus @doctor={doctor}";
+            try {
+                var data = _context.Recetas.FromSql(query).ToArray();
+                return data;
+            } catch (Exception e) {
+                return null;
+            }
         }
 
         public Receta crear (RecetaRequest request, MyDbContext _context) {
@@ -51,6 +62,18 @@ namespace TheCircle.Models
                 return receta;
             } catch (Exception e) {
                 return null;
+            }
+        }
+
+        public int delete(int id, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.delete_Receta @id={id}";
+
+            try {
+                var data = _context.Database.ExecuteSqlCommand(query);
+                return 1;
+            } catch (Exception e) {
+                return 0;
             }
         }
     }
@@ -75,7 +98,7 @@ namespace TheCircle.Models
             this.items = items;
         }
 
-        public List <RecetaTotal> getAllByLocalidad (string localidad, MyDbContext _context) {
+        public List<RecetaTotal> getAllByLocalidad (string localidad, MyDbContext _context) {
 
             Receta r = new Receta();
             ItemReceta i = new ItemReceta();
@@ -109,6 +132,27 @@ namespace TheCircle.Models
                 }
             }
             return recetasTotales;
-        }       
+        }
+
+        public List<RecetaTotal> reporteByDoctorByStatus(int doctor, MyDbContext _context)
+        {
+
+            Receta r = new Receta();
+            ItemReceta i = new ItemReceta();
+
+            Receta[] recetas = r.getAllByDoctorByStatus(doctor, _context);
+            List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
+
+            foreach (Receta receta in recetas)
+            { 
+
+                ItemReceta[] items = i.getAllByReceta(receta.id, _context);
+                if (items.Count() > 0)
+                {
+                    recetasTotales.Add(new RecetaTotal(receta, items));
+                }
+            }
+            return recetasTotales;
+        }
     }
 }

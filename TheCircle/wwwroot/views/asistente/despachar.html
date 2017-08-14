@@ -36,12 +36,12 @@
                         </thead>
 
                         <tbody>
-                            <tr  data-toggle="modal" data-target="#myModal" ng-repeat="obj in recetas | filter:buscar">
+                            <tr ng-repeat="obj in recetas | filter:buscar">
                                 <td>{{obj.receta.id}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{obj.receta.idDoctor}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
-                                <td ><button class="glyphicon glyphicon-remove" ng-click="select(obj)"></button></td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
                     </table>

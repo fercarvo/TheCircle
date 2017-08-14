@@ -68,6 +68,19 @@ namespace TheCircle.Controllers
             return BadRequest("Incorrect Data");
         }
 
+        //Crea una receta de farmacia
+        [HttpDelete("api/receta/{id}")]
+        public IActionResult DeleteReceta(int id)
+        {
+            Receta receta = new Receta();
+            int success = receta.delete(id, _context);
+            if (success == 1) {
+                return Ok();
+            } else {
+                return BadRequest("Something broke");
+            }          
+        }
+
 
         //Crea una receta de farmacia
         [HttpPost ("api/itemsreceta")]

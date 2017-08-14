@@ -371,7 +371,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta };
 
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
-                $log.error("Se crearon los items", res.data);
+                $log.info("Se crearon los items", res.data);
                 notify("Exito", "Se creo la receta exitosamente", "success");
                 disable.receta = true;
                 $scope.disable = disable.receta; //Se desactiva atencion.receta.html
@@ -384,8 +384,41 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
 
     }])
-    .controller('anulaciones', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
-        $log.error("en anulaciones");
+    .controller('anulaciones', ["$log", "$scope", "$state", "$http", "atencionFactory", "notify", function ($log, $scope, $state, $http, atencionFactory, notify) {
+        $log.info("en anulaciones");
+
+        $scope.recetas = null;
+        $scope.receta = null;
+
+        $scope.init = function () {
+            $http.get("/api/reporte/receta/" + atencionFactory.doctor).then(function success(res) {
+                $log.info("recetas by status", res.data);
+                $scope.recetas = res.data;
+            }, function error(err) {
+                $log.error("error cargar recetas", err);
+            });
+        }
+
+
+
+        $scope.select = function (receta) {
+            $scope.receta = receta;
+        }
+
+        $scope.eliminarReceta = function (receta) {
+
+            $http.delete("/api/receta/" + receta.receta.id).then(function success(res) {
+                $log.info("Receta eliminada con exito", receta, res);
+                notify("Exito", "Receta eliminada con exito", "success");
+                $scope.init();
+
+            }, function error(err) {
+                $log.error("No se pudo eliminar receta", err);
+                notify("Error", "Receta no se pudo eliminar", "danger");
+            });
+        }
+
+
 
     }])
     .controller('estadisticas', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {

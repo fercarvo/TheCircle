@@ -72,13 +72,13 @@ namespace TheCircle.Models
 
         public ReporteRemision[] getAll(ReporteRequest req, MyDbContext _context)
         {
-            //try {
+            try {
                 string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
                
                 return _context.ReporteRemision.FromSql(query).ToArray();
-            //} catch (Exception e) {
-            //return null;
-            //}
+            } catch (Exception e) {
+                return null;
+            }
         }
 
     }

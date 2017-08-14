@@ -66,7 +66,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("receta")]
-        public IActionResult GetRecetasByDoctor([FromBody] ReporteRequest request)
+        public IActionResult GetRecetasByDoctorByDate([FromBody] ReporteRequest request)
         {
             RecetaTotal rt = new RecetaTotal();
             List<RecetaTotal> recetas;
@@ -80,6 +80,20 @@ namespace TheCircle.Controllers
                 }
             } else {
                 return BadRequest();
+            }
+        }
+
+        [HttpGet("receta/{doctor}")]
+        public IActionResult GetRecetasByDoctorByStatus(int doctor)
+        {
+            RecetaTotal rt = new RecetaTotal();
+            List<RecetaTotal> recetas;
+
+            recetas = rt.reporteByDoctorByStatus(doctor, _context);
+            if (recetas != null) {
+                return Ok(recetas);
+            } else {
+                return NotFound();
             }
         }
     }
