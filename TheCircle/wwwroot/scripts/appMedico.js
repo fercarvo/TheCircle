@@ -520,7 +520,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 localidad: atencionFactory.localidad
             }
             $http.post("/api/reporte/enfermedad", data).then(function success(res) {
-                //var arr = [];
+                $scope.data = [];
 
                 for (i = 0; i < res.data.length; i++) {
                     $scope.data.push({ key: res.data[i].codigo + ' ' + res.data[i].nombre, y: res.data[i].veces, color: color[i] });
