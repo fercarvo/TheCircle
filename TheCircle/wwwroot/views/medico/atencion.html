@@ -56,15 +56,13 @@
                             <td class="tres">Numero de Personas:</td>
                             <td class="tres">{{apadrinado.numPer}}</td>
                             <td class="tres">IMC:</td>
-                            <td class="tres">{{apadrinado.peso * 10 / (apadrinado.talla / 100 * apadrinado.talla / 100) / 10}}</td>
+                            <td class="tres">{{apadrinado.peso * 10 / (apadrinado.talla / 100 * apadrinado.talla / 100) / 10 | number:2}}</td>
                         </tr>
                         <tr>
                             <td class="cuatro">Ingreso Mensual:</td>
                             <td class="cuatro">{{apadrinado.income | currency}}</td>
                             <td class="cuatro">Numero de camas:</td>
                             <td class="cuatro">{{apadrinado.numBeds}}</td>
-                            <td class="cuatro">Obesidad:</td>
-                            <td class="cuatro">{{apadrinado.obesidad}}</td>
                         </tr>
                     </table>
                 </div>
