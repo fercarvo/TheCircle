@@ -21,20 +21,28 @@
   <ItemGroup>
     <Content Include="wwwroot\scripts\angular.min.js" />
     <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
+    <Content Include="wwwroot\scripts\appContralor.js" />
     <Content Include="wwwroot\scripts\appCoordinador.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
     <Content Include="wwwroot\scripts\bootstrap-notify.min.js" />
-    <Content Include="wwwroot\scripts\wiseboard\admin.min.js" />
-    <Content Include="wwwroot\scripts\wiseboard\jquery.min.js" />
+    <Content Include="wwwroot\scripts\vendor\angular.min.js" />
+    <Content Include="wwwroot\scripts\vendor\bootstrap-notify.min.js" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\angular.min.js" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js" />
     <Content Include="wwwroot\styles\wiseboard\admin.min.css" />
     <Content Include="wwwroot\styles\wiseboard\main.min.css" />
     <Content Include="wwwroot\images\ci.png" />
     <Content Include="wwwroot\images\help-kids-have-a-childhood.jpg" />
-    <Content Include="wwwroot\scripts\wiseboard\admin.min.js.descarga" />
-    <Content Include="wwwroot\scripts\wiseboard\jquery.min.js.descarga" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js.descarga" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js.descarga" />
     <Content Include="wwwroot\views\asistente\despachar.html" />
     <Content Include="wwwroot\views\asistente\historial.html" />
     <Content Include="wwwroot\views\asistente\stock.html" />
+    <Content Include="wwwroot\views\contralor\historial.html" />
+    <Content Include="wwwroot\views\contralor\aprobar.html">
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="wwwroot\views\coordinador\historial.html" />
     <Content Include="wwwroot\views\coordinador\validar.html" />
     <Content Include="wwwroot\views\medico\anulaciones.html" />

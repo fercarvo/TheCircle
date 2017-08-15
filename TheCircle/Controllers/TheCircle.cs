@@ -4,16 +4,13 @@ namespace TheCircle.Controllers.views
 {
     public class TheCircle : Controller
     {
-        // GET: /TheCircle/
-        // GET: /
+
         [HttpGet ("")]
         public IActionResult Index()
         {
             return View();
         }
 
-        // GET: /TheCircle/AsistenteSalud
-        // GET: /AsistenteSalud
         [HttpGet ("asistente")]
         public IActionResult AsistenteSalud()
         {
@@ -28,6 +25,12 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("coordinador")]
         public IActionResult CoordinadorSalud()
+        {
+            return View();
+        }
+
+        [HttpGet("contralor/")]
+        public IActionResult Contralor()
         {
             return View();
         }
