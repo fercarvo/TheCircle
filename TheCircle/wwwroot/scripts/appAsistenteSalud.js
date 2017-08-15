@@ -1,10 +1,10 @@
 /*
- appMedico v1.0
+ appAsistente v1.0
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
 angular.module('appAsistente', ['ui.router'])
-    .config(["$stateProvider", function ($stateProvider) {
+    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
         $stateProvider
             .state('despachar', {
                 templateUrl: 'views/asistente/despachar.html',
@@ -18,6 +18,8 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
             });
+        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
+        //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
     .run(["$state", function ($state){
         $state.go("despachar");
@@ -94,7 +96,4 @@ angular.module('appAsistente', ['ui.router'])
                 alert("error cargar stock");
             })
         };
-
-
-
     }])
