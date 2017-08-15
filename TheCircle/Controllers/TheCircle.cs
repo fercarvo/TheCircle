@@ -25,5 +25,11 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        [HttpGet("coordinador")]
+        public IActionResult CoordinadorSalud()
+        {
+            return View();
+        }
     }
 }

@@ -542,7 +542,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.options = {
             chart: {
                 type: 'pieChart',
-                height: 500,
+                height: 280,
                 x: function (d) { return d.key; },
                 y: function (d) { return d.y; },
                 showLabels: false,
