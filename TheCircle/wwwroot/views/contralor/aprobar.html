@@ -13,9 +13,163 @@
             </div><!-- /.panel-title -->
         </div><!-- /.panel-heading -->
         <div class="panel-body" style="padding:25px 20px 20px 20px;">
-            <p>
-                Hola mundo
-            </p>
+            <div class="panel panel-default-light border-default" style="padding:0px">
+                <div class="panel-heading">
+                    <div style="text-align:right">
+                        <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+                    </div>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
+                    <table class="table table-striped" id="tabla1">
+                        <thead>
+                            <tr>
+                                <th>Codigo</th>
+                                <th>Apadrinado</th>
+                                <th>PI</th>
+                                <th>Monto</th>
+                                <th>Fecha Remision</th>
+                                <th>Visualizar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                            <tr>
+                                <td>xxxxxxx</td>
+                                <td>nombre yyy</td>
+                                <td>##</td>
+                                <td>$$</td>
+                                <td>DD/MM/AAAA</td>
+                                <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <script type="text/javascript">
+                function unhide() {
+                    var trhiden = document.getElementById("hidden");
+                    trhiden.removeAttribute("hidden")
+
+                    var inputdisabled = document.getElementById("disabled");
+                    inputdisabled.removeAttribute("disabled")
+                }
+            </script>
+            <!--Modal Item receta-->
+            <div id="myModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Datos de la Remision</h5>
+                        </div>
+                        <div class="panel-body" style=" padding-top: 5px;">
+                            <table class="table table-striped" style="text-align:center;">
+
+                                <tbody style="text-align:left;">
+                                    <tr>
+                                        <td>Apadrinado: </td>
+                                        <td>1083334</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Doctor: </td>
+                                        <td>Doctor A</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Institucion: </td>
+                                        <td>Instituto de X</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monto: </td>
+                                        <td>$$</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha de Creacion: </td>
+                                        <td>DD/MM/YYYY</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha de Expiracion: </td>
+                                        <td>DD/MM/YYYY</td>
+                                    </tr>
+                                    <tr id="hidden" hidden>
+                                        <td>Motivo de Rechazo: </td>
+                                        <td><textarea style="resize:none;" rows="2" cols="20"></textarea></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div><!--  -->
+                        <div class="text-center" style="margin-bottom: 5px;">
+                            <button type="submit" class="btn btn-info">Aprobar Remision</button>
+                            <button type="button" class="btn btn-info" onclick="unhide()">Rechazar Remision</button>
+                            <button type="button" class="btn btn-default">Cancelar</button>
+                        </div><!-- /.form-group -->
+                    </div>
+                </div>
+            </div>
+            <!--Aqui Termina el modal para el item de remision-->
         </div>
     </div>
 </div>
