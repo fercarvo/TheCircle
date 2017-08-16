@@ -24,6 +24,57 @@ angular.module('appAsistente', ['ui.router'])
     .run(["$state", function ($state){
         $state.go("despachar");
     }])
+    .factory('notify', [function () {
+
+        return function (titulo, mensaje, tipo) {
+
+            var icono;
+
+            if (tipo === "success") {
+                icono = "glyphicon glyphicon-saved";
+            } else if (tipo == "danger") {
+                icono = "glyphicon glyphicon-ban-circle"
+            }
+
+            $.notify(
+                {
+                    icon: icono,
+                    title: titulo,
+                    message: mensaje,
+                    url: '#',
+                    target: '_blank'
+                },
+                {
+                    element: 'body',
+                    position: null,
+                    showProgressbar: true,
+                    type: tipo,
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    showProgressbar: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: { x: 20, y: 70 },
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 1000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: "pause",
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class'
+                });
+        };
+    }])
     .factory('dataFac', ['$http', function ($http) {
         var dataFactory = {};
 
@@ -41,38 +92,54 @@ angular.module('appAsistente', ['ui.router'])
 
         return dataFactory;
     }])
-    .controller('despachar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", function ($log, $scope, $state, $http, dataFac, notify) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
+        $scope.index = null;
 
-        if (dataFac.recetas === null) {
-            dataFac.getRecetas(dataFac.localidad).then(function success(res) {
-                dataFac.recetas = res.data;
-                $scope.recetas = dataFac.recetas;
+        dataFac.getRecetas(dataFac.localidad).then(function success(res) {
+            $log.info("Cargando recetas");
+            dataFac.recetas = res.data;
+            $scope.recetas = dataFac.recetas;
+        }, function error(err) {
+            $log.error("error cargar recetas", err);
+        })
 
-            }, function error(err) {
-                console.log("error cargar recetas");
-                alert("error cargar recetas");
-            })
-        };
 
-        $scope.select = function (receta) {
-            receta.items.map(function (item) {
-                item.desactivar = true;
-            });
+        $scope.select = function (receta, index) {
             $scope.receta = receta;
-
+            $scope.index = index;
         }
 
-        $scope.activar = function (item) {
-            item.desactivar = false;
+        $scope.despachar = function (item) {
+            $log.info(item);
+            item.disable = true;
+            item.class = "glyphicon glyphicon-ok"
+            item.count = 1;
         }
 
-        $scope.despachar = function (item, index, arr) {
-            //arr.splice(index, 1);
-        }
+        $scope.guardarDespacho = function (receta, recetas, index) {
+            $log.info("Receta a despachar", receta.items);
 
-        $scope.guardarDespacho = function () {
+            try {
+                var total = receta.items.reduce(function (sum, item) {
+                    return sum + item.count;
+                }, 0);
+
+                if (total === receta.items.length) {
+                    $log.info("Se puede despachar", total, receta.items);
+                    notify("Exito: ", "Receta despachada exitosamente", "success");
+                    recetas.splice(index, 1);
+
+                } else {
+                    $log.info("No se puede despachar", total, receta.items);
+                    notify("Error: ", "No se han despachado todos los items", "danger");
+                }
+            } catch (e) {
+                $log.error("Error try", e);
+                notify("Error: ", "No se han despachado todos los items", "danger");
+            }
+
 
         }
 
@@ -87,13 +154,12 @@ angular.module('appAsistente', ['ui.router'])
     .controller('stock', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.stock = dataFac.stock;
 
-        if (dataFac.stock === null) {
-            dataFac.getStock(dataFac.localidad).then(function success(res) {
-                dataFac.stock = res.data;
-                $scope.stock = dataFac.stock;
-            }, function error(err) {
-                console.log("error cargar stock");
-                alert("error cargar stock");
-            })
-        };
+        dataFac.getStock(dataFac.localidad).then(function success(res) {
+            dataFac.stock = res.data;
+            $scope.stock = dataFac.stock;
+        }, function error(err) {
+            console.log("error cargar stock");
+            alert("error cargar stock");
+        })
+
     }])

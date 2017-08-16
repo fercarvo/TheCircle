@@ -106,13 +106,17 @@ namespace TheCircle.Models
             Receta[] recetas = r.getAllByLocalidad(localidad, _context);            
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
-            foreach (Receta receta in recetas) { //se insertan en la base de datos todos los items
-                ItemReceta[] items = i.getAllByReceta(receta.id, _context);
-                if (items != null) {
-                    recetasTotales.Add(new RecetaTotal(receta, items));
-                }                
-            }
-            return recetasTotales;
+            if (recetas != null) {
+                foreach (Receta receta in recetas) {
+                    ItemReceta[] items = i.getAllByReceta(receta.id, _context);
+                    if (items != null) {
+                        recetasTotales.Add(new RecetaTotal(receta, items));
+                    }
+                }
+                return recetasTotales;
+            } else {
+                return null;
+            }            
         }
 
         public List<RecetaTotal> reporteByDoctor (ReporteRequest request, MyDbContext _context)
