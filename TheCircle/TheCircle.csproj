@@ -27,7 +27,9 @@
     <Content Include="wwwroot\scripts\vendor\bootstrap-notify.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\angular.min.js" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\Export-Html-Table-To-Excel-Spreadsheet-using-jQuery-table2excel.zip" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js" />
+    <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.table2excel.js" />
     <Content Include="wwwroot\styles\wiseboard\admin.min.css" />
     <Content Include="wwwroot\styles\wiseboard\main.min.css" />
     <Content Include="wwwroot\images\ci.png" />
