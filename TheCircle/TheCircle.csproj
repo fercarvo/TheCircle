@@ -19,12 +19,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="wwwroot\scripts\angular.min.js" />
     <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
     <Content Include="wwwroot\scripts\appContralor.js" />
     <Content Include="wwwroot\scripts\appCoordinador.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
-    <Content Include="wwwroot\scripts\bootstrap-notify.min.js" />
     <Content Include="wwwroot\scripts\vendor\angular.min.js" />
     <Content Include="wwwroot\scripts\vendor\bootstrap-notify.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js" />

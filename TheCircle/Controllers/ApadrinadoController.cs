@@ -53,8 +53,7 @@ namespace TheCircle.Controllers
                 var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");
                 return File(image, "image/jpeg");
             } catch (Exception e) {
-                var image2 = System.IO.File.OpenRead("..\\TheCircle\\wwwroot\\images\\ci.png");
-                return File(image2, "image/jpeg");
+                return Redirect("/images/ci.png");
             }
         }
     }

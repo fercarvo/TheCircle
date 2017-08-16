@@ -206,7 +206,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             }, function error(err) {
 
-                $log.error(err);
+                $log.error("No existe apadrinado", err);
                 atencionFactory.apadrinado = {};
                 $scope.apadrinado = atencionFactory.apadrinado;
                 atencionFactory.foto = "/images/ci.png";
@@ -225,6 +225,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.enfermedades = dataFactory.enfermedades;
         $scope.tipos = dataFactory.tipos;
         $scope.atencion = atencionFactory.atencion;
+
 
         $scope.activar = function () {
             $(".myselect").select2();
@@ -557,13 +558,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.options = {
             chart: {
                 type: 'pieChart',
-                height: 280,
+                height: 350,
                 x: function (d) { return d.key; },
                 y: function (d) { return d.y; },
                 showLabels: false,
                 duration: 500,
                 labelThreshold: 0.01,
                 labelSunbeamLayout: true,
+                legendPosition: "right",
                 legend: {
                     margin: {
                         top: 5,

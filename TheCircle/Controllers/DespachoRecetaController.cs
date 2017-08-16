@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers
@@ -15,10 +16,11 @@ namespace TheCircle.Controllers
         // GET: api/DespachoReceta
         [HttpGet("api/receta/{localidad}")]
         public IActionResult GetRecetasByLocalidad(string localidad) {
-            RecetaTotal recetaTotal = new RecetaTotal();
+            RecetaTotal rt = new RecetaTotal();
+            List<RecetaTotal> recetas = rt.getAllByLocalidad(localidad, _context);
 
-            if (localidad != null) {                
-                return Ok(recetaTotal.getAllByLocalidad(localidad, _context));
+            if (recetas != null) {                
+                return Ok(recetas);
             } else {
                 return BadRequest();
             }
