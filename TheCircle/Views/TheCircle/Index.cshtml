@@ -4,6 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!--Los que se usan en las demas-->
+    <link href="~/styles/wiseboard/main.min.css" rel="stylesheet" type="text/css">
+    <link href="~/styles/wiseboard/admin.min.css" rel="stylesheet" type="text/css">
+    <!--Aqui acaban-->
     <title>TheCircle : Login</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Login css -->
@@ -22,6 +26,12 @@
             margin-bottom: 120px;
             position: relative;
             max-width: 360px
+
+        }
+        .btn-info {
+            color: #fff;
+            border-color: #17c092;
+            background-color: #28d1a3;
         }
     </style>
 </head>
@@ -38,24 +48,26 @@
                         <h3 class="form-signin-heading" style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
+                                <!--<span class="glyphicon glyphicon-user" style="position: relative;top: 30px;left: 5px;color: #ccc;"></span>aqui iria el icono-->
                                 <input type="text" required class="form-control rounded" placeholder="Ingrese el Usuario">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="browser-default">
+                                <!--<span class="glyphicon glyphicon-lock" style="position: relative;top: 30px;left: 5px;color: #ccc;"></span>aqui iria el icono-->
                                 <input type="password" required class="form-control rounded" placeholder="Password">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="browser-default">
-                                <select class="form-control myselect">
-                                    <option value="medico">Medico</option>
-                                    <option value="asistente">Asistente</option>
-                                </select>
+                            <div class="checkbox">
+                                <label style="color:#fff;">
+                                    <input type="checkbox" />
+                                    Recordar clave
+                                </label>
                             </div>
-                        </div>
-                        <button class="btn btn-lg btn-primary btn-block" id="submit" type="submit">Login</button>
+                        </div><!-- /.form-group -->
+                        <button type="submit" class="btn btn-info col-sm-12 rounded">Acceder</button>
                     </form>
                 </div>
                 
