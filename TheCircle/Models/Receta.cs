@@ -76,6 +76,7 @@ namespace TheCircle.Models
                 return 0;
             }
         }
+
     }
 
     public class RecetaRequest

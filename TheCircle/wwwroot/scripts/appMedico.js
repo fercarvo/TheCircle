@@ -74,43 +74,45 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         };;
     }])
     .factory('dataFactory', ['$http', function ($http) {
-        var dataFactory = {};
 
-        dataFactory.enfermedades = null;
-        dataFactory.instituciones = null;
-        dataFactory.stock = null;
-        //dataFactory.estadisticas = {}; //Se guardaba la data, pero ya no por pedido gerencia
-
-        dataFactory.tipos = ["curativo", "seguimiento", "control"];
-
-        dataFactory.getInstituciones = function () {
+        function getInstituciones() {
             return $http.get("/api/institucion");
         }
 
-        dataFactory.getEnfermedades = function () {
+        function getEnfermedades() {
             return $http.get("/api/enfermedad");
         }
 
-        dataFactory.getStock = function (localidad) {
+        function getStock(localidad) {
             return $http.get("/api/itemfarmacia/" + localidad);
         }
 
-        return dataFactory;
+        function getRecetas(doctor) {
+            return $http.get("/api/reporte/receta/" + doctor);
+        }
+
+        return {
+            enfermedades: null,
+            instituciones: null,
+            stock: null,
+            recetas: null,
+            //estadisticas : {}, //Se guardaba la data, pero ya no por pedido gerencia
+            tipos: ["curativo", "seguimiento", "control"],
+            getInstituciones: getInstituciones,
+            getEnfermedades: getEnfermedades,
+            getStock: getStock,
+            getRecetas: getRecetas
+        }
     }])
     .factory('disable', [function () {
-        var disable = {};
-
-        disable.atencion = false;
-        disable.remision = false;
-        disable.receta = false;
-
-        return disable;
+        return {
+            atencion : false,
+            remision : false,
+            receta : false
+        }
     }])
     .factory('notify', [function () {
-
-        var notify = {};
-
-        notify = function (titulo, mensaje, tipo) {
+        return function (titulo, mensaje, tipo) {
 
             var icono;
 
@@ -157,25 +159,24 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                     onClosed: null,
                     icon_type: 'class'
                 });
-        };
-
-        return notify;
+        }
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
-        var atencion = {};
-        atencion.doctor = 908362247;
-        atencion.localidad = "CC2";
-        atencion.apadrinado = {};
-        atencion.foto = "/images/ci.png";
-        atencion.codigo = null;
-        atencion.atencion = null;
-        atencion.diagnosticos = null;
-        atencion.remision = null;
-        atencion.receta = [];
-        atencion.receta.id = null;
-        atencion.status = true;
-
-        return atencion;
+        return {
+            doctor : 908362247,
+            localidad : "CC2",
+            apadrinado : {},
+            foto : "/images/ci.png",
+            codigo : null,
+            atencion : null,
+            diagnosticos : null,
+            remision : null,
+            receta: {
+                items: [],
+                id: null
+            },
+            status : true
+        }
     }])
     .controller('atencion', ["$log", "$scope", "$state", "$http", "atencionFactory", "disable", function ($log, $scope, $state, $http, atencionFactory, disable) {
 
@@ -311,7 +312,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http.post("/api/remision", RemisionRequest).then(function success(res) {
 
-                $log.error("se creo remision", res.data);
+                $log.info("se creo remision", res.data);
                 disable.remision = true;
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
@@ -353,7 +354,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         if (atencionFactory.receta.id === null) {
             var RecetaRequest = {
               doctor: atencionFactory.doctor,
-              apadrinado: atencionFactory.codigo };
+              apadrinado: atencionFactory.codigo
+            }
 
             $http.post("/api/receta", RecetaRequest).then(function success(res) {
                 $log.info("Se creo receta", res.data);
@@ -367,27 +369,24 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         $scope.addItenReceta = function (item) {
             var obj= angular.copy(item);
-            atencionFactory.receta.push(obj);
-            $scope.receta = atencionFactory.receta;
-            item.diagnostico = {};
-            item.cantidad = 0;
-            item.posologia = "";
+            atencionFactory.receta.items.push(obj);
+            $scope.receta.items = atencionFactory.receta.items;
         }
 
         $scope.eliminarItem = function (receta, index){
             receta.splice(index, 1);
-            atencionFactory.receta = receta;
+            atencionFactory.receta.items = receta;
         }
 
         $scope.select = function (item) {
             $scope.ItemRecetaNuevo.itemFarmacia = angular.copy(item);
             $scope.ItemRecetaNuevo.diagnostico = {};
-            $scope.ItemRecetaNuevo.cantidad = 0;
+            $scope.ItemRecetaNuevo.cantidad = 1;
             $scope.ItemRecetaNuevo.posologia = "";
         }
 
         $scope.guardarReceta = function () {
-            var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta };
+            var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta.items };
 
             $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
                 $log.info("Se crearon los items", res.data);
@@ -403,22 +402,21 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
 
     }])
-    .controller('anulaciones', ["$log", "$scope", "$state", "$http", "atencionFactory", "notify", function ($log, $scope, $state, $http, atencionFactory, notify) {
+    .controller('anulaciones', ["$log", "$scope", "$state", "$http", "atencionFactory", "notify", "dataFactory", function ($log, $scope, $state, $http, atencionFactory, notify, dataFactory) {
         $log.info("en anulaciones");
 
-        $scope.recetas = null;
+        $scope.recetas = dataFactory.recetas;
         $scope.receta = null;
 
         $scope.init = function () {
-            $http.get("/api/reporte/receta/" + atencionFactory.doctor).then(function success(res) {
+            dataFactory.getRecetas(atencionFactory.doctor).then(function success(res) {
                 $log.info("recetas by status", res.data);
-                $scope.recetas = res.data;
+                dataFactory.recetas = res.data;
+                $scope.recetas = dataFactory.recetas;
             }, function error(err) {
                 $log.error("error cargar recetas", err);
             });
         }
-
-
 
         $scope.select = function (receta) {
             $scope.receta = receta;
@@ -583,6 +581,4 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 }
             }
         };
-
-
     }])

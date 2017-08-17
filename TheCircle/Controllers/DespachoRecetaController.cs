@@ -26,6 +26,23 @@ namespace TheCircle.Controllers
             }
         }
 
+        [HttpPost("api/despacho/receta")]
+        public IActionResult PostRemision([FromBody] DespachoRecetaRequest request)
+        {
+            ItemsDespachoRequest i = new ItemsDespachoRequest();
+
+            if (request != null) {
+                foreach(ItemsDespachoRequest item in request.items) {
+                    i.insert(item, _context);
+                }
+                if () {
+
+                }
+
+            }
+            return BadRequest("Incorrect Data");
+        }
+
 
     }
 }

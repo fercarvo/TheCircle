@@ -76,21 +76,22 @@ angular.module('appAsistente', ['ui.router'])
         };
     }])
     .factory('dataFac', ['$http', function ($http) {
-        var dataFactory = {};
 
-        dataFactory.stock = null;
-        dataFactory.recetas = null;
-        dataFactory.localidad = "CC2";
-
-        dataFactory.getStock = function (localidad) {
+        function getStock(localidad) {
             return $http.get("/api/itemfarmacia/" + localidad);
         }
-
-        dataFactory.getRecetas = function (localidad) {
+        
+        function getRecetas(localidad) {
             return $http.get("/api/receta/" + localidad);
         }
 
-        return dataFactory;
+        return {
+            stock : null,
+            recetas : null,
+            localidad: "CC2",
+            getStock: getStock,
+            getRecetas: getRecetas
+        }
     }])
     .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", function ($log, $scope, $state, $http, dataFac, notify) {
         $scope.recetas = dataFac.recetas;
@@ -98,7 +99,7 @@ angular.module('appAsistente', ['ui.router'])
         $scope.index = null;
 
         dataFac.getRecetas(dataFac.localidad).then(function success(res) {
-            $log.info("Cargando recetas");
+            $log.info("Cargando recetas", res.data);
             dataFac.recetas = res.data;
             $scope.recetas = dataFac.recetas;
         }, function error(err) {
@@ -107,15 +108,24 @@ angular.module('appAsistente', ['ui.router'])
 
 
         $scope.select = function (receta, index) {
-            $scope.receta = receta;
+            $scope.receta = angular.copy(receta);
+
+            $scope.receta.items.forEach(function (item) {
+                item.cambio = true;
+            });
+
             $scope.index = index;
         }
 
+        $scope.cambiar = function (item) {
+            item.cambio = false;
+        }
+
         $scope.despachar = function (item) {
-            $log.info(item);
             item.disable = true;
             item.class = "glyphicon glyphicon-ok"
             item.count = 1;
+            $log.info("despachar", item);
         }
 
         $scope.guardarDespacho = function (receta, recetas, index) {
@@ -139,8 +149,6 @@ angular.module('appAsistente', ['ui.router'])
                 $log.error("Error try", e);
                 notify("Error: ", "No se han despachado todos los items", "danger");
             }
-
-
         }
 
     }])
