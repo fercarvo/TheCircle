@@ -30,13 +30,21 @@ namespace TheCircle.Controllers
         public IActionResult PostRemision([FromBody] DespachoRecetaRequest request)
         {
             ItemsDespachoRequest i = new ItemsDespachoRequest();
+            RecetaDespacho receta = new RecetaDespacho();
+            ItemDespacho id = new ItemDespacho();
 
             if (request != null) {
                 foreach(ItemsDespachoRequest item in request.items) {
                     i.insert(item, _context);
                 }
-                if () {
 
+                receta.idReceta = request.id;
+                receta.items = id.getByReceta(request.id, _context);
+
+                if (receta.items != null) {
+                    return Ok(receta);
+                } else {
+                    return BadRequest("Something Broke");
                 }
 
             }
