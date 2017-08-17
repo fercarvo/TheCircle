@@ -24,11 +24,11 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th>Numero</th>
+                                <th>N&uacute;mero</th>
                                 <th>Fecha</th>
                                 <th>Doctor</th>
                                 <th>Apadrinado</th>
-                                <th>Ver items</th>
+                                <th>Ver &iacute;tems</th>
                             </tr>
                         </thead>
 
@@ -58,7 +58,7 @@
                                 <thead>
                                     <tr>
                                         <th>Despachado</th>
-                                        <th>Item</th>
+                                        <th>&Iacute;tem</th>
                                         <th>Compuesto</th>
                                         <th>Cantidad</th>
                                         <th>Nueva cantidad</th>
@@ -75,7 +75,7 @@
                                         <td>{{item.cantidad}}</td>
                                         <td><input type="number" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control"/></td>
                                         <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
-                                        <td><button class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
+                                        <td><button class="glyphicon glyphicon-pencil" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
                                         <td ><button class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
                                     </tr>
                                 </tbody>

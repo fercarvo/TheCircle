@@ -25,8 +25,14 @@
     <div class="panel panel-default-light border-default col-sm-12" id="estadistica-atenciones-table">
         <div class="panel-heading">
             <div style="text-align:right">
-                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" style="width:50%;">
-                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por tipo" style="width:50%;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
+                 <select class="col-sm-6 form-control myselect" style="width:49%;margin-left:1%;">
+                    <option style="display:none;" selected disabled value="">Buscar por tipo</option>
+                     <option value="Todos">Todos</option>
+                    <option   value="Curativo">Curativo</option>
+                    <option   value="Seguimiento">Seguimiento</option>
+                    <option value="Control">Control</option>
+                </select>
             </div>
         </div>
         <div style="overflow-y:auto;max-height:44vh;padding-bottom:10px;">
