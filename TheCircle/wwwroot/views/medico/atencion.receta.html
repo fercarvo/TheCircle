@@ -58,7 +58,7 @@
                         <td>{{item.cantidad}}</td>
                         <td>{{item.itemFarmacia.nombre}}</td>
                         <td>{{item.posologia}}</td>
-                        <td ng-disabled="disable" ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></td>
+                        <td width="10%"><button ng-disabled="disable" ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -78,7 +78,7 @@
                     <h5 class="modal-title">Detalle del Compuesto Seleccionado</h5>
                 </div>
                 <div class="modal-body panel-body">
-                    <form class="form-horizontal" ng-submit="addItenReceta(ItemRecetaNuevo)">
+                    <form class="form-horizontal">
                         <div class="form-group" style="height:36px;">
                             <label class="col-sm-2 control-label">Item</label>
                             <div class="col-sm-9">
@@ -89,7 +89,7 @@
                         <div class="form-group" style="height:36px;">
                             <label  class="col-sm-2 control-label">Diagnostico <a style="color:red;">(*)</a></label>
                             <div class="col-sm-9">
-                                <select required class="form-control myselect" style="width: 100%;" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
+                                <select ng-disabled="disable" required class="form-control myselect" style="width: 100%;" ng-model="ItemRecetaNuevo.diagnostico" ng-options="d.id as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
                                 </select>
                             </div>
                         </div>
@@ -97,22 +97,22 @@
                         <div class="form-group" style="height:36px;">
                             <label  class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
                             <div class="col-sm-9">
-                                <input ng-disabled="editarItem" required type="number" min="1" max="99" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="">
+                                <input ng-disabled="disable" required type="number" min="1" max="99" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="">
                             </div>
                         </div>
 
                         <div class="form-group" style="height:36px;">
                             <label class="col-sm-2 control-label" >Posologia <a style="color:red;">(*)</a></label>
                             <div class="col-sm-9">
-                                <textarea class="form-control" ng-disabled="editarItem" required ng-model="ItemRecetaNuevo.posologia"  placeholder="....." rows="2"></textarea>
+                                <textarea ng-disabled="disable" class="form-control" required ng-model="ItemRecetaNuevo.posologia"  placeholder="....." rows="2"></textarea>
                             </div>
                         </div>
                         <div>
                             <a style="color:red;">(*) campo obligatorio.</a>
                         </div>
                         <div class="text-center">
-                            <button ng-disabled="editarItem" type="submit" class="btn btn-info">Agregar a Receta</button>
-                            <button ng-disabled="editarItem" type="reset" class="btn btn-default">Limpiar seleccion</button>
+                            <button type="submit" ng-disabled="disable" data-dismiss="modal" ng-click="addItenReceta(ItemRecetaNuevo)" class="btn btn-info">Agregar a Receta</button>
+                            <button type="button" data-dismiss="modal"  class="btn btn-default">Cancelar</button>
                         </div>
                     </form>
                 </div>

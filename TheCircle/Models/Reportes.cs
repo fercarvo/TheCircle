@@ -64,6 +64,7 @@ namespace TheCircle.Models
         public int id { get; set; }
         public int codigoApadrinado { get; set; }
         public string institucion { get; set; }
+        public string especialidad { get; set; }
         public decimal monto { get; set; }
         public string sintomas { get; set; }
         public DateTime fecha { get; set; }

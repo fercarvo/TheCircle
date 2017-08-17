@@ -1,7 +1,12 @@
-<div class="panel-body" style="padding:0px 20px 20px 20px;">
-    <form class="form-horizontal" ng-submit="generar(recetas.desde, recetas.hasta)">
-        <!--"m-bottom-30" para poner margen vertical de 30px-->
-        <div class="form-group" style="padding-right:5px;">
+<style>
+    #estadistica-recetas-panel, #estadistica-recetas-form, #estadistica-recetas-table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="estadistica-recetas-panel">
+    <div class="form-group" id="estadistica-recetas-form">
+        <form class="form-horizontal" ng-submit="generar(recetas.desde, recetas.hasta)">
+            <!--"m-bottom-30" para poner margen vertical de 30px-->
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
                 <input ng-model="recetas.desde" required type="date" class="form-control">
@@ -13,37 +18,35 @@
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <button type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
             </div>
+        </form>
+    </div>
+
+    <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+            </div>
         </div>
-    </form>
+        <div style="overflow-y:auto;max-height:45vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Numero</th>
+                        <th>Fecha</th>
+                        <th>Apadrinado</th>
+                        <th>Ver items</th>
+                    </tr>
+                </thead>
 
-    <div class="panel-body" style="padding:0px 0px 0px 0px;overflow-y:auto;height:45vh;">
-        <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
-            <div class="panel-heading">
-                <div class="panel-title" style="padding-top:0px;">
-                    Recetas Medicas
-                </div>
-            </div>
-            <div class="panel-body" style=" padding-top: 5px;">
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Fecha</th>
-                            <th>Apadrinado</th>
-                            <th>Ver items</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-                        <tr ng-repeat="obj in recetas.all">
-                            <td>{{obj.receta.id}}</td>
-                            <td>{{obj.receta.fecha | date: 'dd/MM/yyyy'}}</td>
-                            <td>{{obj.receta.idApadrinado}}</td>
-                            <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+                <tbody>
+                    <tr ng-repeat="obj in recetas.all">
+                        <td>000000{{obj.receta.id}}</td>
+                        <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{obj.receta.idApadrinado}}</td>
+                        <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </div>
 

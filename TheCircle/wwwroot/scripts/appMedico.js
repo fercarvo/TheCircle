@@ -79,7 +79,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         dataFactory.enfermedades = null;
         dataFactory.instituciones = null;
         dataFactory.stock = null;
-        dataFactory.estadisticas = {};
+        //dataFactory.estadisticas = {}; //Se guardaba la data, pero ya no por pedido gerencia
 
         dataFactory.tipos = ["curativo", "seguimiento", "control"];
 
@@ -332,20 +332,23 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.ItemRecetaNuevo = {};
         $scope.editarItem = true;
         $scope.diagnosticos = atencionFactory.diagnosticos;
+        getStock();
 
 
         $scope.activar = function () {
             $(".myselect").select2();
         }
 
-        if (dataFactory.stock === null && atencionFactory.codigo !== null) {
-            dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
-                dataFactory.stock = res.data;
-                $scope.stock = dataFactory.stock;
-            }, function error(err) {
-                $log.error("Error cargar itemFarmacia", err);
-            })
-        };
+        function getStock() {
+            if (atencionFactory.codigo !== null) {
+                dataFactory.getStock(atencionFactory.localidad).then(function success(res) {
+                    dataFactory.stock = res.data;
+                    $scope.stock = dataFactory.stock;
+                }, function error(err) {
+                    $log.error("Error cargar Stock de farmacia", err);
+                })
+            };
+        }
 
         if (atencionFactory.receta.id === null) {
             var RecetaRequest = {
@@ -363,8 +366,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.addItenReceta = function (item) {
-            $scope.editarItem = true;
-            var obj= angular.copy(item);;
+            var obj= angular.copy(item);
             atencionFactory.receta.push(obj);
             $scope.receta = atencionFactory.receta;
             item.diagnostico = {};
@@ -378,8 +380,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.select = function (item) {
-            $scope.editarItem = false;
             $scope.ItemRecetaNuevo.itemFarmacia = angular.copy(item);
+            $scope.ItemRecetaNuevo.diagnostico = {};
+            $scope.ItemRecetaNuevo.cantidad = 0;
+            $scope.ItemRecetaNuevo.posologia = "";
         }
 
         $scope.guardarReceta = function () {
@@ -390,7 +394,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 notify("Exito", "Se creo la receta exitosamente", "success");
                 disable.receta = true;
                 $scope.disable = disable.receta; //Se desactiva atencion.receta.html
-
+                getStock();
             }, function err(err){
                 $log.error("No se pudieron crear los items", err);
                 notify("Error", "No se pudo crear la receta", "danger");
@@ -441,16 +445,12 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('estadisticas.atenciones', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
-        $scope.atenciones = dataFactory.estadisticas.atenciones;
+        //$scope.atenciones = dataFactory.estadisticas.atenciones;
 
-        $scope.$watch('atenciones', function () {
+        //Se guardaba la data, pero ya no por pedido de gerencia sistemas
+        /*$scope.$watch('atenciones', function () {
             dataFactory.estadisticas.atenciones = $scope.atenciones;
-        });
-
-        $scope.data = {
-          head: ["columna 1", "col2", "col 3", "columna 4"],
-          row: [["asdas","asdasd asd","as dasd asd"," asdasd"],[" asdfsf"," sdfsd "," sdfdfd","sd fsdf"]]
-        }
+        });*/
 
         $scope.generar = function (desde, hasta) {
             var data = {
@@ -469,10 +469,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('estadisticas.remisiones', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
-        $scope.remisiones = dataFactory.estadisticas.remisiones;
+        //$scope.remisiones = dataFactory.estadisticas.remisiones;
+
+        //Se guardaba la data, pero ya no por pedido de gerencia sistemas
+        /*
         $scope.$watch('remisiones', function () {
             dataFactory.estadisticas.remisiones = $scope.remisiones;
         });
+        */
 
         $scope.generar = function (desde, hasta) {
 
@@ -492,10 +496,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('estadisticas.recetas', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "notify", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, notify, date) {
-        $scope.recetas = dataFactory.estadisticas.recetas;
+        //$scope.recetas = dataFactory.estadisticas.recetas;
+
+        //Se guardaba la data, pero ya no por pedido de gerencia sistemas
+        /*
         $scope.$watch('recetas', function () {
             dataFactory.estadisticas.recetas = $scope.recetas;
         });
+        */
 
         $scope.select = function (receta) {
             $scope.receta = receta;
@@ -509,10 +517,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             }
 
             $http.post("/api/reporte/receta", data).then(function success(res) {
-
-                dataFactory.estadisticas.recetas.all = res.data;
-                $scope.recetas.all = dataFactory.estadisticas.recetas.all;
-
+                $scope.recetas.all = res.data;
             }, function error(err) {
                 $log.error("error cargar recetas")
                 notify("Error", "No se pudo cargar recetas", "danger");
@@ -522,12 +527,14 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .controller('estadisticas.enfermedades', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
 
-        $scope.enfermedades = dataFactory.estadisticas.enfermedades;
+        //$scope.enfermedades = dataFactory.estadisticas.enfermedades;
         $scope.data = [];
 
-        $scope.$watch('enfermedades', function () {
+        //Se guardaba la data, pero ya no por pedido de gerencia sistemas
+        /*$scope.$watch('enfermedades', function () {
             dataFactory.estadisticas.enfermedades = $scope.enfermedades;
         });
+        */
 
         $scope.generar = function (desde, hasta) {
             var data = {

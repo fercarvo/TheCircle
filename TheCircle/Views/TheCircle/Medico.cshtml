@@ -22,7 +22,7 @@
         }
     </style>
 </head>
-<body class="page-dashboard" ng-app="appMedico">
+<body class="page-dashboard" ng-app="appMedico" style="max-height:100%;overflow:hidden">
     <!-- TOP NAVIGATION STARTS -->
     <nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
         <div class="container-fluid" style="color:#901F61">
@@ -102,7 +102,9 @@
         <!-- SIDEBAR ENDS -->
        <div class="sidebar" style="background-color:#344868; width:1px;min-height:inherit;padding:0px;border-right-width:0px;height:inherit;"> </div>
         <!-- CONTENT STARTS -->
-        <ui-view></ui-view>
+        <div style="overflow-y:auto;max-height:89vh">
+            <ui-view></ui-view>
+        </div>
         <!-- CONTENT ENDS -->
 
 
