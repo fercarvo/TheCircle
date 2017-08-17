@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
+    <Content Include="wwwroot\scripts\appBodeguero.js" />
     <Content Include="wwwroot\scripts\appContralor.js" />
     <Content Include="wwwroot\scripts\appCoordinador.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
@@ -39,6 +40,9 @@
     <Content Include="wwwroot\views\asistente\despachar.html" />
     <Content Include="wwwroot\views\asistente\historial.html" />
     <Content Include="wwwroot\views\asistente\stock.html" />
+    <Content Include="wwwroot\views\bodeguero\despachar.html" />
+    <Content Include="wwwroot\views\bodeguero\historial.html" />
+    <Content Include="wwwroot\views\bodeguero\htmlpage.html" />
     <Content Include="wwwroot\views\contralor\historial.html" />
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>

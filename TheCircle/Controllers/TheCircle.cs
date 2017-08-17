@@ -34,5 +34,11 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        [HttpGet("bodeguero/")]
+        public IActionResult Bodeguero()
+        {
+            return View();
+        }
     }
 }
