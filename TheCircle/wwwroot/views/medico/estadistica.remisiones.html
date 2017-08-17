@@ -23,11 +23,13 @@
 
     <div  class="panel panel-default-light border-default col-sm-12" id="estadistica-remisiones-table">
         <div class="panel-heading">
-            <div style="text-align:right">
-                <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+            <div  style="text-align:right;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" style="width:50%;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por Institucion/especialidad" style="width:50%;">
             </div>
+
         </div>
-        <div style="overflow-y:auto;max-height:45vh">
+        <div style="overflow-y:auto;max-height:44vh;padding-bottom:10px;">
             <table class="table table-striped">
                 <thead>
                     <tr>
