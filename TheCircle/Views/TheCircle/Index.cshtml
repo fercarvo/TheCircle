@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!--Los que se usan en las demas-->
-
+    <link href="http://thenextheme.net/wiseboard/dist/main/css/main.min.css" rel="stylesheet" type="text/css" />
     <!--Aqui acaban-->
     <title>TheCircle : Login</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
@@ -72,13 +72,48 @@
                         <button type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
                 </div>
-                <div class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;">
-                   <a href="#">Crea una cuenta</a>
+                <div class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;border-color:rgba(0,0,0,0.55);">
+                   <a href="#" data-toggle="modal" data-target="#myModal" style="color:#fff;text-decoration: none; font-size:16px;margin-left:33%;" >Crear una cuenta</a>
                 </div>
                 
             </div>
             
         </div>
+
+
+        <!--Modal Item receta-->
+        <div id="myModal" class="modal fade" style="margin-top:10%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Crear una Cuenta</h5>
+                    </div>
+                    <div class="panel-body" style=" padding-top: 5px;">
+                        <table class="table table-striped" style="text-align:center;">
+
+                            <tbody style="text-align:left;">
+                                <tr>
+                                    <td>C&eacute;dula de Identidad: </td>
+                                    <td><input type="text" class="form-control rounded"/></td>
+                                </tr>
+                                <tr>
+                                    <td>Correo Institucional: </td>
+                                    <td><input type="text" class="form-control rounded" /></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div><!--  -->
+                    <div class="text-center" style="margin-bottom: 5px;">
+                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                        <button type="button" class="btn btn-default">Cancelar</button>
+                    </div><!-- /.form-group -->
+                </div>
+            </div>
+        </div>
+        <!--Aqui Termina el modal para el item de remision-->
+
+
     </div><!-- /.container -->
     <!-- scritpts -->
     <script>
