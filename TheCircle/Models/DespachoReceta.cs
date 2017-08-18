@@ -24,12 +24,12 @@ namespace TheCircle.Models
         public ItemDespacho[] getByReceta(int idReceta, MyDbContext _context)
         {
             string q = $"EXEC dbo.select_DespachoRecetaByReceta @idReceta={idReceta}";
-            //try {
+            try {
                 var recetas =  _context.ItemDespacho.FromSql(q).ToArray();
                 return recetas;
-            //} catch (Exception e) {
-                //return null;
-            //}
+            } catch (Exception e) {
+                return null;
+            }
         }
     }
 
@@ -51,10 +51,10 @@ namespace TheCircle.Models
 
         public void insert(ItemsDespachoRequest item, MyDbContext _context) {
             string q = $"EXEC dbo.insert_DespachoReceta @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={item.personal}, @comentario='{item.comentario}'";
-            //try {
+            try {
                 _context.Database.ExecuteSqlCommand(q);
-            //} catch (Exception e) {
-            //}
+            } catch (Exception e) {
+            }
         }
     }
 }

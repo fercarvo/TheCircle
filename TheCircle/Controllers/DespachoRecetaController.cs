@@ -44,7 +44,7 @@ namespace TheCircle.Controllers
                 if (receta.items != null) {
                     return Ok(receta);
                 } else {
-                    return BadRequest("Something Broke");
+                    return BadRequest("No se insertaron los datos");
                 }
 
             }
