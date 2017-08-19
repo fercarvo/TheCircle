@@ -12,6 +12,7 @@ namespace TheCircle.Models
         public int id { get; set; }
         public DateTime fecha { get; set; }
         public DateTime fCaducidad { get; set; }
+        public DateTime? fDespacho { get; set; }
         public Boolean? despachada { get; set; }
         public Boolean? eliminada { get; set; }
         public int idDoctor { get; set; }
@@ -21,6 +22,17 @@ namespace TheCircle.Models
 
         public Receta[] getAllByLocalidad(string localidad, MyDbContext _context) {
             string query = $"EXEC dbo.select_RecetaByLocalidad @localidad={localidad}";
+            try {
+                var data = _context.Recetas.FromSql(query).ToArray();
+                return data;
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        public Receta[] getAllBy_Asistente(int asistente, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.select_RecetaBy_Asistente @asistente={asistente}";
             try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;

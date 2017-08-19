@@ -13,7 +13,6 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-        // GET: api/DespachoReceta
         [HttpGet("api/receta/{localidad}")]
         public IActionResult GetRecetasByLocalidad(string localidad) {
             RecetaTotal rt = new RecetaTotal();
@@ -25,15 +24,26 @@ namespace TheCircle.Controllers
             if (recetas != null) {                
                 return Ok(recetas);
             } else {
-                return BadRequest();
+                return BadRequest("GetRecetasByLocalidad broke");
+            }
+        }
+
+        
+        [HttpGet("api/despacho/receta/{asistente}")]
+        public IActionResult getAllBy_Asistente(int asistente)
+        {
+
+            if (asistente == 1) {
+                return Ok();
+            } else {
+                return BadRequest("getAllBy_Asistente broke");
             }
         }
 
         [HttpPost("api/despacho/receta")]
-        public IActionResult PostRemision([FromBody] DespachoRecetaRequest request)
+        public IActionResult PostDespachoReceta([FromBody] DespachoRecetaRequest request)
         {
             ItemsDespachoRequest i = new ItemsDespachoRequest();
-            RecetaDespacho receta = new RecetaDespacho();
             ItemDespacho id = new ItemDespacho();
 
             if (request != null) {
@@ -41,11 +51,10 @@ namespace TheCircle.Controllers
                     i.insert(item, _context);
                 }
 
-                receta.idReceta = request.id;
-                receta.items = id.getByReceta(request.id, _context);
+                int success = id.update_RecetaDespachada(request.id, _context);
 
-                if (receta.items != null) {
-                    return Ok(receta);
+                if (success == 1) {
+                    return Ok();
                 } else {
                     return BadRequest("No se insertaron los datos");
                 }

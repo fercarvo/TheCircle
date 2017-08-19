@@ -15,19 +15,35 @@ namespace TheCircle.Models
     public class ItemDespacho {
         [Key]
         public int id { get; set; }
+        public string nombreItem { get; set; }
+        public string compuesto { get; set; }
         public DateTime fecha { get; set; }
         public int cantidadDespachada { get; set; }
         public int cantidadRecetada { get; set; }
         public string comentario { get; set; }
         public int idPersonal { get; set; }
 
+        public int update_RecetaDespachada(int idReceta, MyDbContext _context)
+        {
+            string q = $"EXEC dbo.update_Receta_despachada @idReceta={idReceta}";
+            try {
+                _context.Database.ExecuteSqlCommand(q);
+                return 1;
+            } catch (Exception e) {
+                return 0;
+            }
+        }
+
         public ItemDespacho[] getByReceta(int idReceta, MyDbContext _context)
         {
-            string q = $"EXEC dbo.select_DespachoRecetaByReceta @idReceta={idReceta}";
-            try {
-                var recetas =  _context.ItemDespacho.FromSql(q).ToArray();
-                return recetas;
-            } catch (Exception e) {
+            string q = $"EXEC dbo.select_DespachoRecetaBy_Receta @idReceta={idReceta}";
+            try
+            {
+                var data = _context.ItemDespacho.FromSql(q).ToArray();
+                return data;
+            }
+            catch (Exception e)
+            {
                 return null;
             }
         }
