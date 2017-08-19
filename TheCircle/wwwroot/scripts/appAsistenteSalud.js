@@ -129,23 +129,47 @@ angular.module('appAsistente', ['ui.router'])
 
         }
     }])
-    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", function ($log, $scope, $state, $http, dataFac, notify, crearDespacho) {
+    .factory('refresh', ["$log", function ($log) { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+
+        function go(fn) {
+            fn();
+            $log.info("Go refresh");
+            return setInterval(fn, 10000);
+        }
+
+        function stop(repeater) {
+            $log.info("Stop refresh");
+            clearInterval(repeater);
+        }
+
+        return {
+            go: go,
+            stop: stop
+        }
+    }])
+    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($log, $scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
+        var actualizar = refresh.go(cargar)
 
-        dataFac.getRecetas(dataFac.localidad).then(function success(res) {
-            $log.info("Cargando recetas", res.data);
-            dataFac.recetas = res.data;
-            $scope.recetas = dataFac.recetas;
-        }, function error(err) {
-            $log.error("error cargar recetas", err);
-        }).catch(function (e) {
-            $log.error("Error promise", e);
-        })
-
+        function cargar() {
+            if ($state.includes('despachar')) {
+                $log.info("Ejecutando cargar");
+                dataFac.getRecetas(dataFac.localidad).then(function success(res) {
+                    $log.info("Recetas a despachar", res.data);
+                    dataFac.recetas = res.data;
+                    $scope.recetas = dataFac.recetas;
+                }, function error(err) {
+                    $log.error("error cargar recetas", err);
+                })
+            } else {
+                refresh.stop(actualizar);
+            }            
+        }
 
         $scope.select = function (receta, index) {
+            refresh.stop(actualizar);
             $scope.receta = angular.copy(receta);
 
             $scope.receta.items.forEach(function (item) {
@@ -166,7 +190,8 @@ angular.module('appAsistente', ['ui.router'])
             $log.info("despachar", item);
         }
 
-        $scope.guardarDespacho = function (receta, recetas, index) {
+        $scope.guardarEgreso = function (receta, recetas, index) {
+            actualizar = refresh.go(cargar);
             var total = receta.items.reduce(function (sum, item) {
                 return sum + item.count;
             }, 0);
