@@ -368,14 +368,19 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.addItenReceta = function (item) {
-            var obj= angular.copy(item);
+            $('.modal').modal('hide')
+            var obj = angular.copy(item);
+            $log.info("Item copiado ", obj);
+
             atencionFactory.receta.items.push(obj);
             $scope.receta.items = atencionFactory.receta.items;
+            $log.info("Receta despues de agregar item", $scope.receta.items);
         }
 
-        $scope.eliminarItem = function (receta, index){
-            receta.splice(index, 1);
-            atencionFactory.receta.items = receta;
+        $scope.eliminarItem = function (itemsReceta, index) {
+            $log.info("receta", itemsReceta);
+            itemsReceta.splice(index, 1);
+            atencionFactory.receta.items = itemsReceta;
         }
 
         $scope.select = function (item) {

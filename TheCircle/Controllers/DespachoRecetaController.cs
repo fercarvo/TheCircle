@@ -17,7 +17,10 @@ namespace TheCircle.Controllers
         [HttpGet("api/receta/{localidad}")]
         public IActionResult GetRecetasByLocalidad(string localidad) {
             RecetaTotal rt = new RecetaTotal();
-            List<RecetaTotal> recetas = rt.getAllByLocalidad(localidad, _context);
+
+            int despachada = 0; //Todas las recetas que esten sin despachar
+
+            List<RecetaTotal> recetas = rt.getAllByLocalidadByStatus(localidad, despachada, _context);
 
             if (recetas != null) {                
                 return Ok(recetas);

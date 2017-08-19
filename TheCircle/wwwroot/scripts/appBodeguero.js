@@ -12,15 +12,14 @@
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
         //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
-    .controller('despachar', ["$log", "$scope", "$state", "$http", "atencionFactory", "disable", function ($log, $scope, $state, $http, atencionFactory, disable) {
-        $scope.casa = "dasdasdasd"
-
-
-    }])
-    .controller('historial', ["$log", "$scope", "$state", "$http", "atencionFactory", "disable", function ($log, $scope, $state, $http, atencionFactory, disable) {
-        $scope.casa = "dasdasdasd"
-    }])
-
     .run(["$state", function ($state) {
         $state.go("despachar");
+    }])
+    .controller('despachar', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+        $scope.casa = "dasdasdasd"
+
+
+    }])
+    .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+        $scope.casa = "dasdasdasd"
     }])

@@ -29,6 +29,20 @@ namespace TheCircle.Models
             }
         }
 
+        public Receta[] getAllByLocalidadByStatus(string localidad, int despachada, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.select_RecetaByLocalidad_despachada @localidad={localidad}, @despachada={despachada}";
+            try
+            {
+                var data = _context.Recetas.FromSql(query).ToArray();
+                return data;
+            }
+            catch (Exception e)
+            {
+                return null;
+            }
+        }
+
         public Receta[] getAllByDoctorByDate(ReporteRequest request, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByDoctor @doctor={request.doctor}, @desde='{request.desde}', @hasta='{request.hasta}'";
@@ -118,6 +132,33 @@ namespace TheCircle.Models
             } else {
                 return null;
             }            
+        }
+
+        public List<RecetaTotal> getAllByLocalidadByStatus(string localidad, int despachada, MyDbContext _context)
+        {
+
+            Receta r = new Receta();
+            ItemReceta i = new ItemReceta();
+
+            Receta[] recetas = r.getAllByLocalidadByStatus(localidad, despachada, _context);
+            List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
+
+            if (recetas != null)
+            {
+                foreach (Receta receta in recetas)
+                {
+                    ItemReceta[] items = i.getAllByReceta(receta.id, _context);
+                    if (items != null)
+                    {
+                        recetasTotales.Add(new RecetaTotal(receta, items));
+                    }
+                }
+                return recetasTotales;
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public List<RecetaTotal> reporteByDoctor (ReporteRequest request, MyDbContext _context)

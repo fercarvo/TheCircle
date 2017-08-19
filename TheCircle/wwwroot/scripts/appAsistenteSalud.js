@@ -89,11 +89,47 @@ angular.module('appAsistente', ['ui.router'])
             stock : null,
             recetas : null,
             localidad: "CC2",
+            personal: 908362247,
             getStock: getStock,
             getRecetas: getRecetas
         }
     }])
-    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", function ($log, $scope, $state, $http, dataFac, notify) {
+    .factory('crearDespacho', ["$log", "dataFac", "$http", "notify", function ($log, dataFac, $http, notify) {
+        return function (receta) {
+            var despacho = {}
+
+            despacho.id = receta.receta.id;
+            despacho.items = [];
+
+            receta.items.forEach(function (item) {
+
+                var data = {
+                    itemReceta: item.id,
+                    cantidad: null,
+                    personal: dataFac.personal,
+                    comentario: item.comentario
+                }
+
+                if (item.nuevaCantidad < item.cantidad) {
+                    data.cantidad = item.nuevaCantidad;
+                    despacho.items.push(data);
+
+                } else if (item.nuevaCantidad > item.cantidad || item.nuevaCantidad <= 0) {
+                    $log.error("item nuevaCantidad erroneo", item.nuevaCantidad);
+                    notify("Error: ", "La nueva cantidad a despachar es erronea", "danger");
+
+                } else {
+                    data.cantidad = item.cantidad;
+                    despacho.items.push(data);
+                }                
+            })
+
+            $log.info("Despacho", despacho);
+            return $http.post("api/despacho/receta", despacho);
+
+        }
+    }])
+    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", function ($log, $scope, $state, $http, dataFac, notify, crearDespacho) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
@@ -104,6 +140,8 @@ angular.module('appAsistente', ['ui.router'])
             $scope.recetas = dataFac.recetas;
         }, function error(err) {
             $log.error("error cargar recetas", err);
+        }).catch(function (e) {
+            $log.error("Error promise", e);
         })
 
 
@@ -129,28 +167,29 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         $scope.guardarDespacho = function (receta, recetas, index) {
-            $log.info("Receta a despachar", receta.items);
+            var total = receta.items.reduce(function (sum, item) {
+                return sum + item.count;
+            }, 0);
 
-            try {
-                var total = receta.items.reduce(function (sum, item) {
-                    return sum + item.count;
-                }, 0);
+            if (total === receta.items.length) {
+                $log.info("Se han despachado todos los items", total);
 
-                if (total === receta.items.length) {
-                    $log.info("Se puede despachar", total, receta.items);
+                crearDespacho(receta).then(function success(res) {
+
+                    $log.info("Receta despachada", res.data);
                     notify("Exito: ", "Receta despachada exitosamente", "success");
                     recetas.splice(index, 1);
 
-                } else {
-                    $log.info("No se puede despachar", total, receta.items);
-                    notify("Error: ", "No se han despachado todos los items", "danger");
-                }
-            } catch (e) {
-                $log.error("Error try", e);
+                }, function error(e) {
+                    $log.info("Error despacho", e);
+                    notify("Error: ", "No se ha podido despachar", "danger");
+                })                
+
+            } else {
+                $log.info("No se han despachado todos los items", total);
                 notify("Error: ", "No se han despachado todos los items", "danger");
             }
         }
-
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $scope.nuevo_paciente = {};

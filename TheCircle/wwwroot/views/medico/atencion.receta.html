@@ -58,7 +58,7 @@
                         <td>{{item.cantidad}}</td>
                         <td>{{item.itemFarmacia.nombre}}</td>
                         <td>{{item.posologia}}</td>
-                        <td width="10%"><button ng-disabled="disable" ng-click="eliminarItem(receta, $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        <td width="10%"><button ng-disabled="disable" ng-click="eliminarItem(receta.items, $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -78,7 +78,7 @@
                     <h5 class="modal-title">Detalle del Compuesto Seleccionado</h5>
                 </div>
                 <div class="modal-body panel-body">
-                    <form class="form-horizontal">
+                    <form class="form-horizontal" ng-submit="addItenReceta(ItemRecetaNuevo)">
                         <div class="form-group" style="height:36px;">
                             <label class="col-sm-2 control-label">Item</label>
                             <div class="col-sm-9">
@@ -111,7 +111,7 @@
                             <a style="color:red;">(*) campo obligatorio.</a>
                         </div>
                         <div class="text-center">
-                            <button type="submit" ng-disabled="disable" data-dismiss="modal" ng-click="addItenReceta(ItemRecetaNuevo)" class="btn btn-info">Agregar a Receta</button>
+                            <button type="submit" ng-disabled="disable" class="btn btn-info">Agregar a Receta</button>
                             <button type="button" data-dismiss="modal"  class="btn btn-default">Cancelar</button>
                         </div>
                     </form>
