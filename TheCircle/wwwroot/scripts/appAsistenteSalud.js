@@ -75,18 +75,36 @@ angular.module('appAsistente', ['ui.router'])
                 });
         };
     }])
-    .factory('dataFac', ['$http', function ($http) {
+    .factory('dataFac', ['$log', '$http', '$rootScope', function ($log, $http, $rootScope) {
 
         function getStock(localidad) { //Se obtiene el stock completo de esa localidad
-            return $http.get("/api/itemfarmacia/" + localidad);
+            $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
+                $log.info("Stock de farmacia", res.data);
+                this.stock = res.data;
+                $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
+            }, function error(err) {
+                $log.error("error cargar stock");
+            })
         }
 
         function getRecetas(localidad) { //Se obtienen todas las recetas a despachar en esa localidad
-            return $http.get("/api/receta/" + localidad);
+            $http.get("/api/receta/" + localidad).then(function success(res) {
+                $log.info("Recetas a despachar", res.data);
+                this.recetas = res.data;
+                $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
+            }, function error(err) {
+                $log.error("error cargar recetas", err);
+            })
         }
 
         function getDespachos(asistente) { //Se obtienen todos los despachos de la BDD
-            return $http.get("api/despacho/receta/" + asistente);
+            $http.get("api/despacho/receta/" + asistente).then(function success(res) {
+                $log.info("Despachos del personal", res.data);
+                this.despachos = res.data;
+                $rootScope.$broadcast('dataFac.despachos'); //Se informa a los controladores que cambio despachos
+            }, function error(err) {
+                $log.error("Error al cargar despachos", err);
+            })
         }
 
         return {
@@ -166,16 +184,13 @@ angular.module('appAsistente', ['ui.router'])
         $scope.index = null;
         var actualizar = refresh.go(cargar)
 
+        $scope.$on('dataFac.recetas', function () {
+            $scope.recetas = dataFac.recetas;
+        })
+
         function cargar() {
             if ($state.includes('despachar')) {
-                $log.info("Ejecutando cargar");
-                dataFac.getRecetas(dataFac.localidad).then(function success(res) {
-                    $log.info("Recetas a despachar", res.data);
-                    dataFac.recetas = res.data;
-                    $scope.recetas = dataFac.recetas;
-                }, function error(err) {
-                    $log.error("error cargar recetas", err);
-                })
+                dataFac.getRecetas(dataFac.localidad);
             } else {
                 refresh.stop(actualizar);
             }
@@ -216,15 +231,17 @@ angular.module('appAsistente', ['ui.router'])
 
                     $log.info("Receta despachada", res.data);
                     notify("Exito: ", "Receta despachada exitosamente", "success");
+                    $('#myModal').modal('hide'); //Se cierra el modal
                     recetas.splice(index, 1);
 
                 }, function error(e) {
                     $log.error("Error despacho", e);
+                    $('#myModal').modal('hide'); //Se cierra el modal
                     notify("Error: ", "No se ha podido despachar", "danger");
                 })
 
             } else {
-                $log.info("No se han despachado todos los items", total);
+                $log.error("No se han despachado todos los items", total);
                 notify("Error: ", "No se han despachado todos los items", "danger");
             }
         }
@@ -234,44 +251,40 @@ angular.module('appAsistente', ['ui.router'])
         $scope.receta = null;
         var actualizar = refresh.go(cargar, 30000);
 
+        $scope.$on('dataFac.despachos', function () {
+            $scope.despachos = dataFac.despachos;
+        })
+
         function cargar() {
             if ($state.includes('historial')) {
-                dataFac.getDespachos(dataFac.personal).then(function success(res) {
-                    $log.info("Despachos del personal", res.data);
-                    dataFac.despachos = res.data;
-                    $scope.despachos = dataFac.despachos;
-                }, function error(err) {
-                    $log.error("Error al cargar despachos", err);
-                })
+                dataFac.getDespachos(dataFac.personal);
             } else {
                 refresh.stop(actualizar);
             }
         }
 
         $scope.select = function (receta) {
-            refresh.stop(actualizar);
+            refresh.stop(actualizar); //Se detiene la carga de despachos cuando se abre el modal
             $scope.receta = receta;
         }
 
         $scope.close = function () {
-            actualizar = refresh.go(cargar, 30000);
+            actualizar = refresh.go(cargar, 30000); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
     .controller('stock', ["$log", "$scope", "$state", "$http", "dataFac", "refresh", function ($log, $scope, $state, $http, dataFac, refresh) {
         $scope.stock = dataFac.stock;
         var actualizar = refresh.go(cargar, 30000);
 
+        $scope.$on('dataFac.stock', function () {
+            $scope.stock = dataFac.stock;
+        })
+
         function cargar() {
             if ($state.includes('stock')) {
-                dataFac.getStock(dataFac.localidad).then(function success(res) {
-                    dataFac.stock = res.data;
-                    $scope.stock = dataFac.stock;
-                }, function error(err) {
-                    $log.error("error cargar stock");
-                })
+                dataFac.getStock(dataFac.localidad);
             } else {
                 refresh.stop(actualizar);
             }
         }
-
     }])

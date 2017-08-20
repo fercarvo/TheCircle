@@ -368,7 +368,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.addItenReceta = function (item) {
-            $('.modal').modal('hide')
+            $('.modal').modal('hide');
             var obj = angular.copy(item);
             $log.info("Item copiado ", obj);
 
