@@ -7,9 +7,31 @@ using System.Linq;
 namespace TheCircle.Models
 {
     public class RecetaDespacho {
-        public int idReceta { get; set; }
+        public Receta receta { get; set; }
         public ItemDespacho[] items { get; set; }
- 
+
+        public RecetaDespacho(Receta receta, ItemDespacho[] items)
+        {
+            this.receta = receta;
+            this.items = items;
+        }
+
+        public List<RecetaDespacho> getBy_Asistente (int asistente, MyDbContext _context) {
+
+            Receta r = new Receta();
+            ItemDespacho i = new ItemDespacho();
+
+            Receta[] recetas = r.getBy_Asistente(asistente, _context);
+            List<RecetaDespacho> recetasDespacho = new List<recetasDespacho>();
+
+            foreach (Receta receta in recetas) {
+                ItemDespacho[] items = i.getByReceta(receta.id, _context);
+                if (items != null) {
+                    recetasDespacho.Add(new RecetaDespacho(receta, items));
+                }
+            }
+            return recetasDespacho;
+        }
     }
 
     public class ItemDespacho {
@@ -23,27 +45,23 @@ namespace TheCircle.Models
         public string comentario { get; set; }
         public int idPersonal { get; set; }
 
-        public int update_RecetaDespachada(int idReceta, MyDbContext _context)
+        public void update_RecetaDespachada(int idReceta, MyDbContext _context)
         {
             string q = $"EXEC dbo.update_Receta_despachada @idReceta={idReceta}";
             try {
                 _context.Database.ExecuteSqlCommand(q);
-                return 1;
             } catch (Exception e) {
-                return 0;
+                throw new Exception("Error update receta a despachada");
             }
         }
 
         public ItemDespacho[] getByReceta(int idReceta, MyDbContext _context)
         {
             string q = $"EXEC dbo.select_DespachoRecetaBy_Receta @idReceta={idReceta}";
-            try
-            {
+            try {
                 var data = _context.ItemDespacho.FromSql(q).ToArray();
                 return data;
-            }
-            catch (Exception e)
-            {
+            } catch (Exception e) {
                 return null;
             }
         }
@@ -53,8 +71,6 @@ namespace TheCircle.Models
     {
         public int id { get; set; }
         public ItemsDespachoRequest[] items { get; set; }
-
-        public DespachoRecetaRequest() { }
 
     }
 
@@ -70,6 +86,7 @@ namespace TheCircle.Models
             try {
                 _context.Database.ExecuteSqlCommand(q);
             } catch (Exception e) {
+                throw new Exception("Error insertar DespachoReceta, verifique data");
             }
         }
     }

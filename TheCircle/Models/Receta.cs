@@ -30,14 +30,14 @@ namespace TheCircle.Models
             }
         }
 
-        public Receta[] getAllBy_Asistente(int asistente, MyDbContext _context)
+        public Receta[] getBy_Asistente(int asistente, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaBy_Asistente @asistente={asistente}";
             try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error al cargar recetas getBy_Asistente");
             }
         }
 
@@ -130,7 +130,7 @@ namespace TheCircle.Models
             Receta r = new Receta();
             ItemReceta i = new ItemReceta();
 
-            Receta[] recetas = r.getAllByLocalidad(localidad, _context);            
+            Receta[] recetas = r.getAllByLocalidad(localidad, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
             if (recetas != null) {
@@ -143,7 +143,7 @@ namespace TheCircle.Models
                 return recetasTotales;
             } else {
                 return null;
-            }            
+            }
         }
 
         public List<RecetaTotal> getAllByLocalidadByStatus(string localidad, int despachada, MyDbContext _context)
@@ -193,7 +193,7 @@ namespace TheCircle.Models
                     }
                 }
             }
-            
+
             return recetasTotales;
         }
 
@@ -207,7 +207,7 @@ namespace TheCircle.Models
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
             foreach (Receta receta in recetas)
-            { 
+            {
 
                 ItemReceta[] items = i.getAllByReceta(receta.id, _context);
                 if (items.Count() > 0)

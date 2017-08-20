@@ -16,53 +16,47 @@ namespace TheCircle.Controllers
         [HttpGet("api/receta/{localidad}")]
         public IActionResult GetRecetasByLocalidad(string localidad) {
             RecetaTotal rt = new RecetaTotal();
-
             int despachada = 0; //Todas las recetas que esten sin despachar
-
             List<RecetaTotal> recetas = rt.getAllByLocalidadByStatus(localidad, despachada, _context);
 
-            if (recetas != null) {                
+            if (recetas != null) {
                 return Ok(recetas);
             } else {
                 return BadRequest("GetRecetasByLocalidad broke");
             }
         }
 
-        
-        [HttpGet("api/despacho/receta/{asistente}")]
-        public IActionResult getAllBy_Asistente(int asistente)
-        {
 
-            if (asistente == 1) {
-                return Ok();
-            } else {
-                return BadRequest("getAllBy_Asistente broke");
+        [HttpGet("api/despacho/receta/{asistente}")]
+        public IActionResult getRecetasDespachadas(int asistente) {
+
+            RecetaDespacho rd = new RecetaDespacho();
+
+            try {
+                List<RecetaDespacho> recetas = rd.getBy_Asistente(asistente);
+                return Ok(recetas);
+            } catch (Exception e) {
+                return BadRequest(e);
             }
         }
 
         [HttpPost("api/despacho/receta")]
-        public IActionResult PostDespachoReceta([FromBody] DespachoRecetaRequest request)
-        {
+        public IActionResult PostDespachoReceta([FromBody] DespachoRecetaRequest request) {
             ItemsDespachoRequest i = new ItemsDespachoRequest();
             ItemDespacho id = new ItemDespacho();
 
             if (request != null) {
-                foreach(ItemsDespachoRequest item in request.items) {
-                    i.insert(item, _context);
-                }
-
-                int success = id.update_RecetaDespachada(request.id, _context);
-
-                if (success == 1) {
+                try {
+                    foreach(ItemsDespachoRequest item in request.items) { //Se insertan todos los despachos
+                        i.insert(item, _context);
+                    }
+                    id.update_RecetaDespachada(request.id, _context); //Se actualiza la receta a despachada
                     return Ok();
-                } else {
-                    return BadRequest("No se insertaron los datos");
+                } catch (Exception e) {
+                    return BadRequest(e);
                 }
-
             }
             return BadRequest("Incorrect Data");
         }
-
-
     }
 }

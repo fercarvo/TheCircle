@@ -18,8 +18,8 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
             });
-        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
-        //$logProvider.debugEnabled(false); Activar en modo produccion
+        //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
+        //$logProvider.debugEnabled(false); //Activar en modo produccion
     }])
     .run(["$state", function ($state){
         $state.go("despachar");
@@ -77,21 +77,27 @@ angular.module('appAsistente', ['ui.router'])
     }])
     .factory('dataFac', ['$http', function ($http) {
 
-        function getStock(localidad) {
+        function getStock(localidad) { //Se obtiene el stock completo de esa localidad
             return $http.get("/api/itemfarmacia/" + localidad);
         }
-        
-        function getRecetas(localidad) {
+
+        function getRecetas(localidad) { //Se obtienen todas las recetas a despachar en esa localidad
             return $http.get("/api/receta/" + localidad);
+        }
+
+        function getDespachos(asistente) { //Se obtienen todos los despachos de la BDD
+            return $http.get("api/despacho/receta/" + asistente);
         }
 
         return {
             stock : null,
             recetas : null,
+            despachos : null,
             localidad: "CC2",
             personal: 908362247,
             getStock: getStock,
-            getRecetas: getRecetas
+            getRecetas: getRecetas,
+            getDespachos: getDespachos
         }
     }])
     .factory('crearDespacho', ["$log", "dataFac", "$http", "notify", function ($log, dataFac, $http, notify) {
@@ -121,7 +127,7 @@ angular.module('appAsistente', ['ui.router'])
                 } else {
                     data.cantidad = item.cantidad;
                     despacho.items.push(data);
-                }                
+                }
             })
 
             $log.info("Despacho", despacho);
@@ -137,6 +143,12 @@ angular.module('appAsistente', ['ui.router'])
             return setInterval(fn, 10000);
         }
 
+        function goTime(fn, time) {
+            fn();
+            $log.info("Go refresh by ", time);
+            return setInterval(fn, time);
+        }
+
         function stop(repeater) {
             $log.info("Stop refresh");
             clearInterval(repeater);
@@ -144,7 +156,8 @@ angular.module('appAsistente', ['ui.router'])
 
         return {
             go: go,
-            stop: stop
+            stop: stop,
+            goTime: goTime
         }
     }])
     .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($log, $scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
@@ -165,7 +178,7 @@ angular.module('appAsistente', ['ui.router'])
                 })
             } else {
                 refresh.stop(actualizar);
-            }            
+            }
         }
 
         $scope.select = function (receta, index) {
@@ -206,9 +219,9 @@ angular.module('appAsistente', ['ui.router'])
                     recetas.splice(index, 1);
 
                 }, function error(e) {
-                    $log.info("Error despacho", e);
+                    $log.error("Error despacho", e);
                     notify("Error: ", "No se ha podido despachar", "danger");
-                })                
+                })
 
             } else {
                 $log.info("No se han despachado todos los items", total);
@@ -216,22 +229,49 @@ angular.module('appAsistente', ['ui.router'])
             }
         }
     }])
-    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.nuevo_paciente = {};
-        $scope.pacientes = {};
-        $scope.laboratorios = {};
+    .controller('historial', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
+        $scope.despachos = dataFac.despachos;
+        $scope.receta = null;
+        var actualizar = refresh.go(cargar, 30000);
 
+        function cargar() {
+            if ($state.includes('historial')) {
+                dataFac.getDespachos(dataFac.personal).then(function success(res) {
+                    $log.info("Despachos del personal", res.data);
+                    dataFac.despachos = res.data;
+                    $scope.despachos = dataFac.despachos;
+                }, function error(err) {
+                    $log.error("Error al cargar despachos", err);
+                })
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
 
+        $scope.select = function (receta) {
+            refresh.stop(actualizar);
+            $scope.receta = receta;
+        }
+
+        $scope.close = function () {
+            actualizar = refresh.go(cargar, 30000);
+        }
     }])
-    .controller('stock', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('stock', ["$log", "$scope", "$state", "$http", "dataFac", "refresh", function ($log, $scope, $state, $http, dataFac, refresh) {
         $scope.stock = dataFac.stock;
+        var actualizar = refresh.go(cargar, 30000);
 
-        dataFac.getStock(dataFac.localidad).then(function success(res) {
-            dataFac.stock = res.data;
-            $scope.stock = dataFac.stock;
-        }, function error(err) {
-            console.log("error cargar stock");
-            alert("error cargar stock");
-        })
+        function cargar() {
+            if ($state.includes('stock')) {
+                dataFac.getStock(dataFac.localidad).then(function success(res) {
+                    dataFac.stock = res.data;
+                    $scope.stock = dataFac.stock;
+                }, function error(err) {
+                    $log.error("error cargar stock");
+                })
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
 
     }])
