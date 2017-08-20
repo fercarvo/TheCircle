@@ -79,31 +79,31 @@ angular.module('appAsistente', ['ui.router'])
 
         function getStock(localidad) { //Se obtiene el stock completo de esa localidad
             $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
-                $log.debug("Stock de farmacia", res.data);
+                console.log("Stock de farmacia", res.data);
                 this.stock = res.data;
                 $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
             }, function error(err) {
-                $log.debug("error cargar stock");
+                console.log("error cargar stock");
             })
         }
 
         function getRecetas(localidad) { //Se obtienen todas las recetas a despachar en esa localidad
             $http.get("/api/receta/" + localidad).then(function success(res) {
-                $log.debug("Recetas a despachar", res.data);
+                console.log("Recetas a despachar", res.data);
                 this.recetas = res.data;
                 $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
             }, function error(err) {
-                $log.debug("error cargar recetas", err);
+                console.log("error cargar recetas", err);
             })
         }
 
         function getDespachos(asistente) { //Se obtienen todos los despachos de la BDD
             $http.get("api/despacho/receta/" + asistente).then(function success(res) {
-                $log.debug("Despachos del personal", res.data);
+                console.log("Despachos del personal", res.data);
                 this.despachos = res.data;
                 $rootScope.$broadcast('dataFac.despachos'); //Se informa a los controladores que cambio despachos
             }, function error(err) {
-                $log.debug("Error al cargar despachos", err);
+                console.log("Error al cargar despachos", err);
             })
         }
 
@@ -139,7 +139,7 @@ angular.module('appAsistente', ['ui.router'])
                     despacho.items.push(data);
 
                 } else if (item.nuevaCantidad > item.cantidad || item.nuevaCantidad <= 0) {
-                    $log.debug("item nuevaCantidad erroneo", item.nuevaCantidad);
+                    console.log("item nuevaCantidad erroneo", item.nuevaCantidad);
                     notify("Error: ", "La nueva cantidad a despachar es erronea", "danger");
 
                 } else {
@@ -148,7 +148,7 @@ angular.module('appAsistente', ['ui.router'])
                 }
             })
 
-            $log.debug("Despacho", despacho);
+            console.log("Despacho", despacho);
             return $http.post("api/despacho/receta", despacho);
 
         }
@@ -157,18 +157,18 @@ angular.module('appAsistente', ['ui.router'])
 
         function go(fn) {
             fn();
-            $log.debug("Go refresh");
+            console.log("Go refresh");
             return setInterval(fn, 10000);
         }
 
         function goTime(fn, time) {
             fn();
-            $log.debug("Go refresh by ", time);
+            console.log("Go refresh by ", time);
             return setInterval(fn, time);
         }
 
         function stop(repeater) {
-            $log.debug("Stop refresh");
+            console.log("Stop refresh");
             clearInterval(repeater);
         }
 
@@ -215,7 +215,7 @@ angular.module('appAsistente', ['ui.router'])
             item.disable = true;
             item.class = "glyphicon glyphicon-ok"
             item.count = 1;
-            $log.debug("despachar", item);
+            console.log("despachar", item);
         }
 
         $scope.guardarEgreso = function (receta, recetas, index) {
@@ -225,23 +225,23 @@ angular.module('appAsistente', ['ui.router'])
             }, 0);
 
             if (total === receta.items.length) {
-                $log.debug("Se han despachado todos los items", total);
+                console.log("Se han despachado todos los items", total);
 
                 crearDespacho(receta).then(function success(res) {
 
-                    $log.debug("Receta despachada", res.data);
+                    console.log("Receta despachada", res.data);
                     notify("Exito: ", "Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
                     recetas.splice(index, 1);
 
                 }, function error(e) {
-                    $log.debug("Error despacho", e);
+                    console.log("Error despacho", e);
                     $('#myModal').modal('hide'); //Se cierra el modal
                     notify("Error: ", "No se ha podido despachar", "danger");
                 })
 
             } else {
-                $log.debug("No se han despachado todos los items", total);
+                console.log("No se han despachado todos los items", total);
                 notify("Error: ", "No se han despachado todos los items", "danger");
             }
         }
