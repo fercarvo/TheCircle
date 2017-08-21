@@ -46,7 +46,7 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60 * 5)]
         public IActionResult GetApadrinadoFoto(int cod)
         {
-            string query = $"EXEC dbo.ApadrinadoFotoByCod @cod={cod}";
+            string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
             Foto foto;
             try {
                 foto = _context.Fotos.FromSql(query).First();
