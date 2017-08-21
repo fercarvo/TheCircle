@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
+using System;
 
 namespace TheCircle.Controllers
 {
@@ -21,16 +22,19 @@ namespace TheCircle.Controllers
             Atencion atencion = new Atencion(); //atencion creada
 
             if (request != null) {
-
-                atencion = atencion.crear(request, _context);
-                if (atencion != null) {
+                try {
+                    atencion = atencion.crear(request, _context);
                     Diagnostico[] diagnosticos = temp.getAllByAtencion(atencion.id, _context);
+
                     response.atencion = atencion;
                     response.diagnosticos = diagnosticos;
+
                     return Ok(response);
-                } else {
-                    return BadRequest("Somethig broke");
+
+                } catch (Exception e) {
+                  return BadRequest("Somethig broke");
                 }
+
             } else {
                 return BadRequest("Incorrect Data");
             }
@@ -78,7 +82,7 @@ namespace TheCircle.Controllers
                 return Ok();
             } else {
                 return BadRequest("Something broke");
-            }          
+            }
         }
 
 

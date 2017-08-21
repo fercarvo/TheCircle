@@ -18,25 +18,16 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-        /*
-        [HttpGet]
-        public IEnumerable<Apadrinado> GerApadrinados()
-        {
-            var data = _context.Apadrinados.FromSql("EXEC dbo.select_Apadrinado3").ToList();
-            return data;
-        }
-        */
-
         [HttpGet("{cod}")]
         [ResponseCache(Duration = 60)] //cache de 60 segundos
         public IActionResult GetApadrinado(int cod)
         {
             Apadrinado apadrinado = new Apadrinado();
-            apadrinado = apadrinado.get(cod, _context);
 
-            if (apadrinado != null) {
+            try {
+                apadrinado = apadrinado.get(cod, _context);
                 return Ok(apadrinado);
-            } else {
+            } catch (Exception e) {
                 return NotFound();
             }
         }

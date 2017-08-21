@@ -15,8 +15,9 @@ namespace TheCircle.Models
 
         public void insert (string enfermedadCod, int atencion, MyDbContext _context)
         {
+            string q = $"EXEC dbo.insert_Diagnostico @enfermedad='{enfermedadCod}', @atencion={atencion}";
+
             try {
-                string q = $"EXEC dbo.insert_Diagnostico @enfermedad='{enfermedadCod}', @atencion={atencion}";
                 _context.Database.ExecuteSqlCommand(q); //Se inserta en la BD el diagnostico
             } catch (Exception e) {
             }
@@ -35,5 +36,4 @@ namespace TheCircle.Models
         }
 
     }
-
 }

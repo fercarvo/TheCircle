@@ -24,31 +24,23 @@ namespace TheCircle.Models
             Atencion atencion;
             Diagnostico d = new Diagnostico();
 
-            if (request != null) {
-                string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" +
-                    $", @doctor={request.doctor}" +
-                    $", @tipo={request.tipo}" +
-                    $", @localidad={request.localidad}" +
-                    $", @peso='{request.peso}'" +
-                    $", @talla='{request.talla}'" +
-                    $", @id = @id OUTPUT";
+            string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" +
+                $", @doctor={request.doctor}" +
+                $", @tipo={request.tipo}" +
+                $", @localidad={request.localidad}" +
+                $", @peso='{request.peso}'" +
+                $", @talla='{request.talla}'" +
+                $", @id = @id OUTPUT";
 
-                try {
-                    atencion = _context.Atenciones.FromSql(query).First(); //Retorna la AtencionM creada
-                } catch (Exception e) {
-                    return null;
+            try {
+                atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
+                foreach (string diagnostico in request.diagnosticos) { //Se ingresan los diagnosticos en la atencion
+                    d.insert(diagnostico, atencion.id, _context);
                 }
+                return atencion;
 
-                if (atencion != null) {
-                    foreach (string diagnostico in request.diagnosticos) {
-                        d.insert(diagnostico, atencion.id, _context);
-                    }
-                    return atencion;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
+            } catch (Exception e) {
+                throw new Exception("Error crear/cargar atencion medica, Atencion.crear");
             }
         }
 

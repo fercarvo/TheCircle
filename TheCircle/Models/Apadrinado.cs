@@ -21,23 +21,17 @@ namespace TheCircle.Models
         public int numPer { get; set; }
         public string posesionHogar { get; set; }
         public string responsable { get; set; }
-        
+
         public Apadrinado() { }
 
         public Apadrinado get (int codigo, MyDbContext _context) {
-            Apadrinado apadrinado;
             try {
                 string query = $"EXEC dbo.select_Apadrinado @cod={codigo}";
-                var data = _context.Apadrinados.FromSql(query).ToArray();
+                var data = _context.Apadrinados.FromSql(query).First();
+                return data;
 
-                if (data == null || data.Length == 0) {
-                    return null;
-                } else {
-                    apadrinado = data.First(); //Atencion creada
-                    return apadrinado;
-                }                
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error cargar apadrinado, Apadrinado.get");
             }
         }
     }
