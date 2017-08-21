@@ -38,7 +38,7 @@
                                 <td>000000{{obj.receta.id}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td>{{obj.receta.idDoctor}}</td>
+                                <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
                                 <td width="10%"><button ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>

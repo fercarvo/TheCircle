@@ -16,6 +16,8 @@ namespace TheCircle.Models
         public Boolean? despachada { get; set; }
         public Boolean? eliminada { get; set; }
         public int idDoctor { get; set; }
+        public string nombreDoctor { get; set; }
+        public string apellidoDoctor { get; set; }
         public int idApadrinado { get; set; }
 
         public Receta () { }
