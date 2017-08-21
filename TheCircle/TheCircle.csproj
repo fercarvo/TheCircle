@@ -37,12 +37,12 @@
     <Content Include="wwwroot\images\help-kids-have-a-childhood.jpg" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js.descarga" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js.descarga" />
+    <Content Include="wwwroot\styles\wiseboard\ripple_css.css" />
     <Content Include="wwwroot\views\asistente\despachar.html" />
     <Content Include="wwwroot\views\asistente\historial.html" />
     <Content Include="wwwroot\views\asistente\stock.html" />
     <Content Include="wwwroot\views\bodeguero\despachar.html" />
     <Content Include="wwwroot\views\bodeguero\historial.html" />
-    <Content Include="wwwroot\views\bodeguero\htmlpage.html" />
     <Content Include="wwwroot\views\contralor\historial.html" />
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
