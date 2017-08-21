@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using TheCircle.Models;
 
@@ -33,7 +34,7 @@ namespace TheCircle.Controllers
             RecetaDespacho rd = new RecetaDespacho();
 
             try {
-                List<RecetaDespacho> recetas = rd.getBy_Asistente(asistente);
+                List<RecetaDespacho> recetas = rd.getBy_Asistente(asistente, _context);
                 return Ok(recetas);
             } catch (Exception e) {
                 return BadRequest(e);

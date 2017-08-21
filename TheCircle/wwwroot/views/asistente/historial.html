@@ -34,7 +34,7 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="obj in recetas | filter:buscar">
+                            <tr ng-repeat="obj in despachos | filter:buscar">
                                 <td>000000{{obj.receta.id}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>

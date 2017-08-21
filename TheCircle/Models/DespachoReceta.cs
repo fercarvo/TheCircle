@@ -1,12 +1,14 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
 namespace TheCircle.Models
 {
     public class RecetaDespacho {
+        [Key]
         public Receta receta { get; set; }
         public ItemDespacho[] items { get; set; }
 
@@ -16,13 +18,15 @@ namespace TheCircle.Models
             this.items = items;
         }
 
+        public RecetaDespacho() { }
+
         public List<RecetaDespacho> getBy_Asistente (int asistente, MyDbContext _context) {
 
             Receta r = new Receta();
             ItemDespacho i = new ItemDespacho();
 
             Receta[] recetas = r.getBy_Asistente(asistente, _context);
-            List<RecetaDespacho> recetasDespacho = new List<recetasDespacho>();
+            List<RecetaDespacho> recetasDespacho = new List<RecetaDespacho>();
 
             foreach (Receta receta in recetas) {
                 ItemDespacho[] items = i.getByReceta(receta.id, _context);

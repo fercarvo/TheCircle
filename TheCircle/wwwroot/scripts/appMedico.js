@@ -71,7 +71,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 console.log(e);
                 return null;
             }
-        };;
+        };
     }])
     .factory('session', function(){
 
@@ -92,34 +92,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     })
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
-        function getInstituciones() {
-            return $http.get("/api/institucion");
-        }
-
-        function getEnfermedades() {
-            return $http.get("/api/enfermedad");
-        }
-
-        function getStock(localidad) {
-            $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
-                this.stock = res.data;
-                $rootScope.$broadcast('dataFactory.stock'); //Se informa a los controladores que cambio stock
-            }, function error(err) {
-                console.log("Error cargar Stock de farmacia", err);
-            })
-        }
-
-        function getRecetas(doctor) {
-            $http.get("/api/reporte/receta/" + doctor).then(function success(res) {
-                console.log("recetas by status", res.data);
-                this.recetas = res.data;
-                $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
-            }, function error(err) {
-                console.log("error cargar recetas", err);
-            })
-        }
-
-        return {
+        var dataFactory = {
             enfermedades: null,
             instituciones: null,
             stock: null,
@@ -131,6 +104,36 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             getStock: getStock,
             getRecetas: getRecetas
         }
+
+        function getInstituciones() {
+            return $http.get("/api/institucion");
+        }
+
+        function getEnfermedades() {
+            return $http.get("/api/enfermedad");
+        }
+
+        function getStock(localidad) {
+            $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
+                console.log("Actualizando Stock by localidad");
+                dataFactory.stock = res.data;
+                $rootScope.$broadcast('dataFactory.stock'); //Se informa a los controladores que cambio stock
+            }, function error(err) {
+                console.log("Error cargar Stock de farmacia", err);
+            })
+        }
+
+        function getRecetas(doctor) {
+            $http.get("/api/reporte/receta/" + doctor).then(function success(res) {
+                console.log("recetas by status", res.data);
+                dataFactory.recetas = res.data;
+                $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
+            }, function error(err) {
+                console.log("error cargar recetas", err);
+            })
+        }
+
+        return dataFactory;
     }])
     .factory('disable', [function () {
         return {
@@ -146,7 +149,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             if (tipo === "success") {
                 icono = "glyphicon glyphicon-saved";
-            } else if (tipo == "danger") {
+            } else if (tipo === "danger") {
                 icono = "glyphicon glyphicon-ban-circle"
             }
 
@@ -165,7 +168,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                     type: tipo,
                     allow_dismiss: true,
                     newest_on_top: false,
-                    showProgressbar: false,
                     placement: {
                         from: "top",
                         align: "right"
@@ -378,7 +380,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('atencion.receta', ["$log", "$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", "notify", function ($log, $scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
+    .controller('atencion.receta', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", "notify", "refresh", function ($scope, $state, $http, disable, dataFactory, atencionFactory, notify, refresh) {
 
         $scope.disable = disable.receta;
         $scope.stock = dataFactory.stock;
@@ -397,7 +399,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         })
 
         function cargar() {
-            if ($state.includes('atencion.receta') && atencionFactory.codigo !== null ) {
+            if ($state.includes('atencion.receta') && atencionFactory.codigo !== null) {
                 dataFactory.getStock(atencionFactory.localidad);
             } else {
                 refresh.stop(actualizar);
@@ -428,7 +430,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.addItenReceta = function (item) {
             $('.modal').modal('hide'); //Se cierra el modal
             actualizar = refresh.go(cargar); //Se empiezan a actualizar las recetas
-            $scope.receta.items.push(item); //Se actualiza la receta con el nuevo item
+            $scope.receta.items.push(angular.copy(item)); //Se actualiza la receta con el nuevo item
             //var obj = angular.copy(item);
             //console.log("Item copiado ", obj);
 
@@ -438,7 +440,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.eliminarItem = function (itemsReceta, index) {
-            console.log("receta", itemsReceta);
+            console.log("Eliminando item");
             itemsReceta.splice(index, 1); //Se elimina el item de $scope.receta.items
             //atencionFactory.receta.items = itemsReceta;
         }
@@ -468,7 +470,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('anulaciones', ["$log", "$scope", "$state", "$http", "atencionFactory", "notify", "dataFactory", function ($log, $scope, $state, $http, atencionFactory, notify, dataFactory) {
+    .controller('anulaciones', ["$scope", "$state", "$http", "atencionFactory", "notify", "dataFactory", "refresh", function ($scope, $state, $http, atencionFactory, notify, dataFactory, refresh) {
         console.log("en anulaciones");
 
         $scope.recetas = dataFactory.recetas;
