@@ -19,6 +19,8 @@ namespace TheCircle.Models
         public string nombreDoctor { get; set; }
         public string apellidoDoctor { get; set; }
         public int idApadrinado { get; set; }
+        public string nombreApadrinado { get; set; }
+        public string apellidoApadrinado { get; set; }
 
         public Receta () { }
 
