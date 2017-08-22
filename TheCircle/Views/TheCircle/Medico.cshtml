@@ -8,7 +8,7 @@
     <title>TheCircle - Medico</title>
     <!-- REQUIRED STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/styles/ripple.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     
     <link href="~/styles/wiseboard/main.min.css" rel="stylesheet" type="text/css">
@@ -77,21 +77,21 @@
         <div class="sidebar" style="min-height:600px;background-color:#f2f2f2;position:sticky;top:auto;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="atencion" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="atencion" ui-sref-active="active">
                     <a >
                         
                         <span>Atención Médica</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="anulaciones" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="anulaciones" ui-sref-active="active">
                     <a  >
                         
                         <span>Anulaciones</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="estadisticas" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="estadisticas" ui-sref-active="active">
                     <a >
                         
                         <span>Estadísticas</span>
@@ -111,7 +111,7 @@
     </div>
     <!-- CONTENT WRAPPER ENDS -->
     <script src="~/scripts/vendor/wiseboard/jquery.min.js"></script>
-       
+    <script src="~/scripts/ripple.js"> </script>   
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 

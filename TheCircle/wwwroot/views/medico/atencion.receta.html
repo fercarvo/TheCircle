@@ -58,14 +58,14 @@
                         <td>{{item.cantidad}}</td>
                         <td>{{item.itemFarmacia.nombre}}</td>
                         <td>{{item.posologia}}</td>
-                        <td width="10%"><button ng-disabled="disable" ng-click="eliminarItem(receta.items, $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
+                        <td width="10%"><button data-ripple style="border:none;background-color:inherit;" ng-disabled="disable" ng-click="eliminarItem(receta.items, $index)"><span class="glyphicon glyphicon-remove"></span></button></td>
                     </tr>
                 </tbody>
             </table>
         </div><!--  -->
         <div class="text-center ">
-            <button ng-disabled="disable" type="submit" ng-click="guardarReceta()" class="btn btn-info">Guardar receta médica</button>
-            <button ng-disabled="disable" type="button" class="btn btn-default">Cancelar</button>
+            <button data-ripple ng-disabled="disable" type="submit" ng-click="guardarReceta()" class="btn btn-info">Guardar receta médica</button>
+            <button data-ripple ng-disabled="disable" type="button" class="btn btn-default">Cancelar</button>
         </div><!-- /.form-group -->
     </div><!--  -->
 
@@ -111,8 +111,8 @@
                             <a style="color:red;">(*) campo obligatorio.</a>
                         </div>
                         <div class="text-center">
-                            <button type="submit" ng-disabled="disable" class="btn btn-info">Agregar a Receta</button>
-                            <button type="button" data-dismiss="modal"  class="btn btn-default">Cancelar</button>
+                            <button data-ripple type="submit" ng-disabled="disable" class="btn btn-info">Agregar a Receta</button>
+                            <button data-ripple type="button" data-dismiss="modal"  class="btn btn-default">Cancelar</button>
                         </div>
                     </form>
                 </div>
