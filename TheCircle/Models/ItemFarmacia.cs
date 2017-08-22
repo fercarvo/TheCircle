@@ -18,13 +18,16 @@ namespace TheCircle.Models
 
         public ItemFarmacia() { }
 
-        public ItemFarmacia[] getAllByLocalidad (string localidad, MyDbContext _context) {
+        public ItemFarmacia[] getAllByLocalidad (string localidad, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.select_ItemFarmacia @localidad={localidad}";
 
             try {
-                string query = $"EXEC dbo.select_ItemFarmacia @localidad={localidad}";
-                return _context.ItemFarmacias.FromSql(query).ToArray();
+                var data = _context.ItemFarmacias.FromSql(query).ToArray();
+                return data;
             } catch (Exception e) {
-                return null;
+                Console.WriteLine(e);
+                throw new Exception("Error cargar ItemsFarmacia, ItemFarmacia.getAllByLocalidad");
             }
         }
     }

@@ -17,13 +17,15 @@ namespace TheCircle.Controllers
         public IActionResult GetItems(string localidad)
         {
             ItemFarmacia item = new ItemFarmacia();
-            ItemFarmacia[] stock = item.getAllByLocalidad(localidad, _context);
-            if (stock != null) {
+
+            try {
+                ItemFarmacia[] stock = item.getAllByLocalidad(localidad, _context);
                 return Ok(stock);
-            } else {
-                return BadRequest(stock);
+            } catch (Exception e) {
+                Console.WriteLine(e);
+                return BadRequest();
             }
         }
-
     }
+    
 }

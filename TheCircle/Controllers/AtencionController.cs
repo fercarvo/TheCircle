@@ -32,7 +32,8 @@ namespace TheCircle.Controllers
                     return Ok(response);
 
                 } catch (Exception e) {
-                  return BadRequest("Somethig broke");
+                    Console.WriteLine(e);
+                    return BadRequest("Somethig broke");
                 }
 
             } else {
@@ -46,10 +47,12 @@ namespace TheCircle.Controllers
         {
             Remision remision = new Remision();
             if (request != null) {
-                remision = remision.crear(request, _context);
-                if (remision != null) {
+
+                try {
+                    remision = remision.crear(request, _context);
                     return Ok(remision);
-                } else {
+                } catch (Exception e) {
+                    Console.WriteLine(e);
                     BadRequest("Something Broke");
                 }
             }
@@ -77,10 +80,11 @@ namespace TheCircle.Controllers
         public IActionResult DeleteReceta(int id)
         {
             Receta receta = new Receta();
-            int success = receta.delete(id, _context);
-            if (success == 1) {
+
+            try {
+                receta.delete(id, _context);
                 return Ok();
-            } else {
+            } catch (Exception e) {
                 return BadRequest("Something broke");
             }
         }
@@ -111,10 +115,11 @@ namespace TheCircle.Controllers
         public IActionResult GetInstituciones()
         {
             Institucion institucion = new Institucion();
-            Institucion[] instituciones = institucion.getAll(_context);
-            if (instituciones != null) {
+
+            try {
+                Institucion[] instituciones = institucion.getAll(_context);
                 return Ok(instituciones);
-            } else {
+            } catch (Exception e) {
                 return BadRequest("Somethig broke");
             }
         }

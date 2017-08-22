@@ -24,13 +24,14 @@ namespace TheCircle.Models
 
         public Receta () { }
 
-        public Receta[] getAllByLocalidad(string localidad, MyDbContext _context) {
+        public Receta[] getAllByLocalidad(string localidad, MyDbContext _context)
+        {
             string query = $"EXEC dbo.select_RecetaByLocalidad @localidad={localidad}";
             try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error al cargar recetas, Receta.getAllByLocalidad");
             }
         }
 
@@ -95,15 +96,15 @@ namespace TheCircle.Models
             }
         }
 
-        public int delete(int id, MyDbContext _context)
+        public void delete(int id, MyDbContext _context)
         {
             string query = $"EXEC dbo.delete_Receta @id={id}";
 
             try {
-                var data = _context.Database.ExecuteSqlCommand(query);
-                return 1;
+                _context.Database.ExecuteSqlCommand(query);
             } catch (Exception e) {
-                return 0;
+                Console.WriteLine(e);
+                throw new Exception("Error borrar Receta, Receta.delete");
             }
         }
 
@@ -133,11 +134,11 @@ namespace TheCircle.Models
 
             Receta r = new Receta();
             ItemReceta i = new ItemReceta();
-
-            Receta[] recetas = r.getAllByLocalidad(localidad, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
-            if (recetas != null) {
+            try {
+                Receta[] recetas = r.getAllByLocalidad(localidad, _context);
+
                 foreach (Receta receta in recetas) {
                     ItemReceta[] items = i.getAllByReceta(receta.id, _context);
                     if (items != null) {
@@ -145,7 +146,7 @@ namespace TheCircle.Models
                     }
                 }
                 return recetasTotales;
-            } else {
+            } catch (Exception e) {
                 return null;
             }
         }
