@@ -27,7 +27,7 @@ h1, h2{font-weight: 300;}
   position: absolute;
   border-radius: 50%;
   transform: scale(0.7); -webkit-transform: scale(0.7);
-  background: rgba(214,66,39, 1);
+  background: rgba(255,255,255, 0.3);
   opacity: 0.45;
           animation: ripple 2s forwards;
   -webkit-animation: ripple 2s forwards;
