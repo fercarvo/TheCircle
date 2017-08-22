@@ -92,7 +92,8 @@ namespace TheCircle.Models
                 receta = _context.Recetas.FromSql(query).First();
                 return receta;
             } catch (Exception e) {
-                return null;
+                Console.WriteLine(e);
+                throw new Exception("Error al crear/cargar receta medica");
             }
         }
 

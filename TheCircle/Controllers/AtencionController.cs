@@ -65,10 +65,12 @@ namespace TheCircle.Controllers
         {
             if (request != null) {
                 Receta receta = new Receta();
-                receta = receta.crear(request, _context);
-                if (receta != null) {
+                
+                try {
+                    receta = receta.crear(request, _context);
                     return Ok(receta);
-                } else {
+                } catch (Exception e) {
+                    Console.WriteLine(e);
                     BadRequest("Something broke");
                 }
             }
