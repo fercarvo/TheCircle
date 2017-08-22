@@ -6,52 +6,6 @@
             height: 0px;
         }
     </style>
-    <script type="text/javascript" language="javascript">
-         jQuery(function($) {
-		  // MAD-RIPPLE // (jQ+CSS)
-		  $(document).on("mousedown", "[data-ripple]", function(e) {
-
-		    var $self = $(this);
-
-		    if($self.is(".btn-disabled")) {
-		      return;
-		    }
-		    if($self.closest("[data-ripple]")) {
-		      e.stopPropagation();
-		    }
-
-		    var initPos = $self.css("position"),
-		        offs = $self.offset(),
-		        x = e.pageX - offs.left,
-		        y = e.pageY - offs.top,
-		        dia = Math.min(this.offsetHeight, this.offsetWidth, 100), // start diameter
-		        $ripple = $('<div/>', {class : "ripple",appendTo : $self });
-
-		    if(!initPos || initPos==="static") {
-		      $self.css({position:"relative"});
-		    }
-
-		    $('<div/>', {
-		      class : "rippleWave",
-		      css : {
-		        background: $self.data("ripple"),
-		        width: dia,
-		        height: dia,
-		        left: x - (dia/2),
-		        top: y - (dia/2),
-		      },
-		      appendTo : $ripple,
-		      one : {
-		        animationend : function(){
-		          $ripple.remove();
-		        }
-		      }
-		    });
-		  });
-
-		});
-    </script>
-
     <div class="panel panel-default-light border-default">
         <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
             <div class="panel-title">
@@ -84,7 +38,7 @@
                                 <td>y</td>
                                 <td>z</td>
                                 <td>a</td>
-                                <td width="10%"><button data-ripple data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td width="10%"><button style="background-color:inherit;border:none;" data-ripple data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -121,8 +75,8 @@
                                         <td>52</td>
                                         <td><input type="number" ng-disabled="item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
                                         <td><textarea class="form-control" ng-disabled="item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
                                     </tr>
                                     <tr>
                                         <td style="padding-top: 15px"></td>
@@ -131,8 +85,8 @@
                                         <td>24</td>
                                         <td><input type="number" ng-disabled="item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
                                         <td><textarea class="form-control" ng-disabled="item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
                                     </tr>
                                     <tr>
                                         <td style="padding-top: 15px"></td>
@@ -141,8 +95,8 @@
                                         <td>33</td>
                                         <td><input type="number" ng-disabled="item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
                                         <td><textarea class="form-control" ng-disabled="item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
-                                        <td><button data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-pencil" ng-disabled="item.disable"></button></td>
+                                        <td><button style="background-color:inherit;border:none;" data-ripple class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
                                     </tr>
                                 </tbody>
                             </table>

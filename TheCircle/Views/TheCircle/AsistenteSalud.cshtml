@@ -8,7 +8,7 @@
     <title>TheCircle - Asistente salud</title>
     <!-- REQUIRED STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-
+    <link rel="stylesheet" href="~/styles/ripple.css" type="text/css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
     <link href="~/styles/wiseboard/main.min.css" rel="stylesheet" type="text/css">
@@ -81,21 +81,21 @@
         <div class="sidebar" style="min-height: 600px ;background-color:#f2f2f2;">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="despachar" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="despachar" ui-sref-active="active">
                     <a>
 
                         <span>Despachar</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="historial" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="historial" ui-sref-active="active">
                     <a>
 
                         <span>Historial</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 2 -->
                 <!--add class dropdown for subitems in lists-->
-                <li class=" open" ui-sref="stock" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="stock" ui-sref-active="active">
                     <a>
 
                         <span>Existencia</span>
@@ -112,6 +112,7 @@
     </div>
     <!-- CONTENT WRAPPER ENDS -->
     <script src="~/scripts/vendor/wiseboard/jquery.min.js"></script>
+    <script src="~/scripts/ripple.js"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
 
