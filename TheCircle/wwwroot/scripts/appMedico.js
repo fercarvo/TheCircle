@@ -82,15 +82,15 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         function getInstituciones() {
-            return $http.get("/api/institucion");
+            return $http.get("/api/institucion", {cache: true});
         }
 
         function getEnfermedades() {
-            return $http.get("/api/enfermedad");
+            return $http.get("/api/enfermedad", {cache: true});
         }
 
         function getStock(localidad) {
-            $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
+            $http.get("/api/itemfarmacia/" + localidad, {cache: false}).then(function success(res) {
                 console.log("Actualizando Stock by localidad");
                 dataFactory.stock = res.data;
                 $rootScope.$broadcast('dataFactory.stock'); //Se informa a los controladores que cambio stock
@@ -100,7 +100,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         function getRecetas(doctor) {
-            $http.get("/api/reporte/receta/" + doctor).then(function success(res) {
+            $http.get("/api/reporte/receta/" + doctor, {cache: false}).then(function success(res) {
                 console.log("recetas by status", res.data);
                 dataFactory.recetas = res.data;
                 $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
@@ -223,7 +223,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         });
 
         $scope.buscarApadrinado = function (codigo) {
-            $http.get("/api/apadrinado/" + codigo).then(function success(res) {
+            $http.get("/api/apadrinado/" + codigo, {cache: true}).then(function success(res) {
 
                 if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
