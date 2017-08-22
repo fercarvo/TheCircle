@@ -212,12 +212,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('atencion', ["$log", "$scope", "$state", "$http", "atencionFactory", "disable", function ($log, $scope, $state, $http, atencionFactory, disable) {
 
         $state.go('atencion.registro');
-        $scope.disable = disable.atencion;
+        $scope.disable = disable.atencion;        
         $scope.apadrinado = atencionFactory.apadrinado;
         $scope.foto = atencionFactory.foto;
         $scope.status = atencionFactory.status;
 
         $scope.$on('disable', function (event, data) {
+            //$scope.recargar = disable.atencion;
             $scope.disable = disable.atencion;
             console.log("Se desactivo atencion.html");
         });

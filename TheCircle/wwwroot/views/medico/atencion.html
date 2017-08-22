@@ -32,7 +32,7 @@
                         <input ng-disabled="disable" type="text" pattern="[0-9]{5,11}" title="Solo números, mínimo 5, máximo 11" class="form-control" placeholder="código" ng-model="codigo" required>
                     </div>
                     <button ng-disabled="disable" type="submit" class="btn btn-info col-sm-1" ng-click="buscarApadrinado(codigo)">Buscar</button>
-                    <button id="btn-NuevaAtencion" onClick="document.location.reload();" class="btn btn-info2 col-sm-2" style="float:right;margin-right:2%;display:none;">Nueva Atención</button>
+                    <button ng-show="disable" id="btn-NuevaAtencion" onClick="document.location.reload();" class="btn btn-info2 col-sm-2" style="float:right;margin-right:2%;">Nueva Atención</button>
                     
                 </div>
             </form><!-- /.form-group -->
@@ -90,11 +90,6 @@
                 border-bottom-color: #901F61;
             }
         </style>
-        <script type="text/javascript">
-            function unhidebtn() {
-                var btndisabled = document.getElementById("btn-NuevaAtencion").style.display="";
-            }
-        </script>
 
         <div class="panel-body" style="padding:0px 20px 10px 20px;">
             <ul class="nav nav-tabs">
