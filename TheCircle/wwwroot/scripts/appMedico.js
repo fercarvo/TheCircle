@@ -52,13 +52,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .run(["$state", function ($state){
         $state.go("atencion");
     }])
-    .directive('mdTable', function(){
-        return {
-            restrict: 'EA', //E = element, A = attribute, C = class, M = comment
-            scope: { data: '='},
-            templateUrl: 'views/directive/table.html'
-        }
-    })
     .factory('date', ["$log", function ($log) {
         return function (date) {
             try {
@@ -73,23 +66,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             }
         };
     }])
-    .factory('session', function(){
-
-        function set(data) {
-            this.personal = data.personal;
-            this.localidad = data.localidad;
-            this.expires = data.expires;
-            this.firm = data.firm;
-        }
-
-        return {
-            set : set,
-            personal: 908362247,
-            localidad: 'CC2',
-            expires: '3-04-2017',
-            firm: 'neiu3g183ge812daugswd1g28g3197dg9uwg1927g931gd9ugw97197g23'
-        }
-    })
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var dataFactory = {
@@ -153,7 +129,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 icono = "glyphicon glyphicon-ban-circle"
             }
 
-            $.notify(
+            return $.notify(
                 {
                     icon: icono,
                     title: titulo,
@@ -477,7 +453,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.receta = null;
         var actualizar = refresh.go(cargar); //cada 10 segundos
 
-        $scope.on('dataFactory.recetas', function(){
+        $scope.$on('dataFactory.recetas', function(){
             $scope.recetas = dataFactory.recetas;
         })
 
