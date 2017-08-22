@@ -20,7 +20,10 @@ namespace TheCircle.Controllers.views
         [HttpGet ("medico")]
         public IActionResult Medico()
         {
-            return View();
+            if (true) //validaciones
+            {
+                return View();
+            }
         }
 
         [HttpGet("coordinador")]
