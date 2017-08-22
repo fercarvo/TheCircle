@@ -169,7 +169,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         return {
-            doctor : 908362247,
+            doctor: 0905134136,
             localidad : "CC2",
             apadrinado : {},
             foto : "/images/ci.png",
