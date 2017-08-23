@@ -33,16 +33,18 @@
                     <tr>
                         <th>N&uacute;mero</th>
                         <th>Fecha</th>
-                        <th>Apadrinado</th>
+                        <th>Codigo</th>
+                        <th>Nombre apadrinado</th>
                         <th>Ver &iacute;tems</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="obj in recetas.all">
+                    <tr ng-repeat="obj in recetas.all | filter:buscar">
                         <td>000000{{obj.receta.id}}</td>
                         <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{obj.receta.idApadrinado}}</td>
+                        <td>{{obj.receta.nombreApadrinado}} {{obj.receta.apellidoApadrinado}}</td>
                         <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
@@ -55,7 +57,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy'}}</h5>
+                    <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
                     <table class="table table-striped">

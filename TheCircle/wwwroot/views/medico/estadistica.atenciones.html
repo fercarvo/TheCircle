@@ -25,13 +25,12 @@
     <div class="panel panel-default-light border-default col-sm-12" id="estadistica-atenciones-table">
         <div class="panel-heading">
             <div style="text-align:right">
-                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
-                 <select class="col-sm-6 form-control myselect" style="width:49%;margin-left:1%;">
-                    <option style="display:none;" selected disabled value="">Buscar por tipo</option>
-                     <option value="Todos">Todos</option>
-                    <option   value="Curativo">Curativo</option>
-                    <option   value="Seguimiento">Seguimiento</option>
-                    <option value="Control">Control</option>
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.idApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
+                <select class="col-sm-6 form-control myselect" ng-model="buscar.tipo" style="width:49%;margin-left:1%;">
+                    <option value="" selected >Todos los tipos de atencion</option>
+                    <option value="curativo">Curativo</option>
+                    <option value="seguimiento">Seguimiento</option>
+                    <option value="control">Control</option>
                 </select>
             </div>
         </div>
@@ -39,17 +38,22 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
+                        <th>Numero</th>
                         <th>Tipo</th>
                         <th>Fecha</th>
-                        <th>ID Apadrinado</th>
+                        <th>Codigo apadrinado</th>
+                        <th>Nombre</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="atencion in atenciones.all">
+                    <tr ng-repeat="atencion in atenciones.all | filter:buscar">
+                        <td>{{("00000000"+ atencion.id).slice(-9)}}</td>
                         <td>{{atencion.tipo}}</td>
                         <td>{{atencion.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
                         <td>{{atencion.idApadrinado}}</td>
+                        <td>{{atencion.nombreApadrinado}} {{atencion.apellidoApadrinado}}</td>
+
                     </tr>
                 </tbody>
             </table>

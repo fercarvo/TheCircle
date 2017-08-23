@@ -15,6 +15,7 @@ namespace TheCircle.Controllers
 
         // GET: api/ItemFarmacia
         [HttpGet("api/itemfarmacia/{localidad}")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetItems(string localidad)
         {
             ItemFarmacia item = new ItemFarmacia();

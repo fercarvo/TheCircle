@@ -36,28 +36,6 @@ namespace TheCircle.Models
         public ReporteRequest() { }
     }
 
-    public class ReporteAtencion
-    {
-        [Key]
-        public int id { get; set; }
-        public Int32 idApadrinado { get; set; }
-        public DateTime fecha { get; set; }
-        public string tipo { get; set; }
-
-        public ReporteAtencion() { }
-
-        public ReporteAtencion[] getAll(ReporteRequest req, MyDbContext _context)
-        {
-            try {
-                string query = $"EXEC dbo.report_AtencionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-                return _context.ReporteAtencion.FromSql(query).ToArray();
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
-    }
-
     public class ReporteRemision
     {
         [Key]

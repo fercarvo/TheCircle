@@ -8,8 +8,9 @@ namespace TheCircle.Models
     public class Atencion
     {
         public int id { get; set; }
-        public string idApadrinado { get; set; }
+        public Int32 idApadrinado { get; set; }
         public string nombreApadrinado { get; set; }
+        public string apellidoApadrinado { get; set; }
         public int idDoctor { get; set; }
         public DateTime fecha { get; set; }
         public double? peso { get; set; }
@@ -41,6 +42,17 @@ namespace TheCircle.Models
 
             } catch (Exception e) {
                 throw new Exception("Error crear/cargar atencion medica, Atencion.crear");
+            }
+        }
+
+        public Atencion[] getBy_doctor_date(ReporteRequest req, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+            try {
+                var data = _context.Atenciones.FromSql(query).ToArray();
+                return data;
+            } catch (Exception e) {
+                throw new Exception("Error cargar atenciones by doctor, Atencion.getBy_doctor");
             }
         }
 
