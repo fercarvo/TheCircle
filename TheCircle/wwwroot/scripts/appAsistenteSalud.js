@@ -17,6 +17,10 @@ angular.module('appAsistente', ['ui.router'])
             .state('stock', {
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
+            })
+            .state('ingresar', {
+                templateUrl: 'views/asistente/ingresar.html',
+                controller: 'ingresar'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
         $logProvider.debugEnabled(true); //Activar en modo produccion

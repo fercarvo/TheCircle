@@ -34,22 +34,24 @@
                 <thead>
                     <tr>
                         <th>N&uacute;mero</th>
+                        <th>Fecha</th>
                         <th>Apadrinado</th>
                         <th>Instituci&oacute;n/especialidad</th>
                         <th>Monto</th>
                         <th>S&iacute;ntomas</th>
-                        <th>Fecha</th>
+                        
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr ng-repeat="remision in remisiones.all | filter:buscar | orderBy:'fecha'">
                         <td>{{("00000000"+ remision.id).slice(-9)}}</td>
+                        <td>{{remision.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{remision.codigoApadrinado}}</td>
                         <td>{{remision.institucion}} - {{remision.especialidad}} </td>
                         <td>{{remision.monto | currency}}</td>
                         <td>{{remision.sintomas}}</td>
-                        <td>{{remision.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        
 
                     </tr>
                 </tbody>

@@ -38,21 +38,21 @@
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Numero</th>
-                        <th>Tipo</th>
+                        <th>N&uacute;mero</th> 
                         <th>Fecha</th>
                         <th>Codigo apadrinado</th>
                         <th>Nombre</th>
+                        <th>Tipo</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr ng-repeat="atencion in atenciones.all | filter:buscar | orderBy:'fecha'">
                         <td>{{("00000000"+ atencion.id).slice(-9)}}</td>
-                        <td>{{atencion.tipo}}</td>
                         <td>{{atencion.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
                         <td>{{atencion.idApadrinado}}</td>
                         <td>{{atencion.nombreApadrinado}} {{atencion.apellidoApadrinado}}</td>
+                        <td>{{atencion.tipo}}</td>
 
                     </tr>
                 </tbody>
