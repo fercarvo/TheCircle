@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +11,16 @@ namespace TheCircle.Controllers
     public class LoginController : Controller
     {
 
+        private readonly MyDbContext _context;
+        private readonly AuthorizeTheCircle _authorize;
+
+        public LoginController(MyDbContext context)
+        {
+            _context = context;
+            _authorize = new AuthorizeTheCircle();
+        }
+
+
         [HttpGet("logout")]
         public IActionResult Logout([FromHeader]Data data)
         {
@@ -18,10 +29,10 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("login")]
-        [blablabla]
         public IActionResult login([FromBody] LoginRequest req)
         {
-            if (ModelState.IsValid)
+            if (ModelState.IsValid && _authorize.validate(Request.Cookies, "medico") )
+                //Request.Cookies["fontSize"]
             {
                 Data data = new Data();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using System;
 
 namespace TheCircle.Models
@@ -53,6 +54,18 @@ namespace TheCircle.Models
         public string localidad { get; set; }
     }
 
+
+    internal class AuthorizeTheCircle
+    {
+        public string policy { get; set; }
+
+        public AuthorizeTheCircle() { }
+
+        internal bool validate(IRequestCookieCollection cookies, string v)
+        {
+            throw new NotImplementedException();
+        }
+    }
 
 
 }
