@@ -210,42 +210,52 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
         $state.go('atencion.registro');
+        $scope.codigo = atencionFactory.codigo;
         $scope.disable = disable.atencion;        
         $scope.apadrinado = atencionFactory.apadrinado;
         $scope.foto = atencionFactory.foto;
         $scope.status = atencionFactory.status;
 
-        $scope.$on('disable', function (event, data) {
-            //$scope.recargar = disable.atencion;
-            $scope.disable = disable.atencion;
-            console.log("Se desactivo atencion.html");
-        });
+        if (disable.atencion === false) {
+            cargar();
+        }
+
+        function cargar() {
+            //Se desactiva el codigo de apadrinado y se bloquea la informacion del mismo.
+            var unregister1 = $scope.$on('guardar', function () {
+                $scope.disable = disable.atencion;
+                unregister1(); //Deja de escuchar
+                unregister2(); //Deja de escuchar 
+            })
+
+            var unregister2 = $scope.$watch('apadrinado', function () {
+                atencionFactory.apadrinado = $scope.apadrinado;
+                atencionFactory.status = $scope.status;
+                atencionFactory.codigo = $scope.codigo;
+                atencionFactory.foto = $scope.foto;
+            })
+        }
+
+
 
         $scope.buscarApadrinado = function (codigo) {
             $http.get("/api/apadrinado/" + codigo, {cache: true}).then(function success(res) {
 
                 if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
-                    atencionFactory.status = false;
                 } else {
                     $scope.status = true;
                 }
                 $scope.foto = "/api/apadrinado/foto/" + codigo;
-                atencionFactory.apadrinado = res.data;
-                $scope.apadrinado = atencionFactory.apadrinado;
-                atencionFactory.codigo = codigo;
+                $scope.apadrinado = res.data;
 
             }, function error(err) {
 
-                console.log("No existe apadrinado", err);
-                atencionFactory.apadrinado = {};
-                $scope.apadrinado = atencionFactory.apadrinado;
-                atencionFactory.foto = "/images/ci.png";
-                $scope.foto = atencionFactory.foto;
-                atencionFactory.status = true;
-                $scope.status = atencionFactory.status;
-                atencionFactory.codigo = null;
-                $scope.codigo = atencionFactory.codigo;
+                console.log("No existe apadrinado", err);                
+                $scope.foto = "/images/ci.png";
+                $scope.status = true
+                $scope.codigo = null;
+                $scope.apadrinado = {};
             });
         };
 
@@ -301,7 +311,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
                 atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
-                $scope.$emit('disable', {}); //evento para desactivar atencion.html
+                $scope.$emit('guardar'); //Guarda y bloquea la atencion medica
                 notify("Apadrinado creado satisfactoriamente", "success");
                 $state.go('atencion.receta');
 

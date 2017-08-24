@@ -43,8 +43,8 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="remision in remisiones.all | filter:buscar">
-                        <td>000000{{remision.id}}</td>
+                    <tr ng-repeat="remision in remisiones.all | filter:buscar | orderBy:'fecha'">
+                        <td>{{("00000000"+ remision.id).slice(-9)}}</td>
                         <td>{{remision.codigoApadrinado}}</td>
                         <td>{{remision.institucion}} - {{remision.especialidad}} </td>
                         <td>{{remision.monto | currency}}</td>
