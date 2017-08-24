@@ -8,6 +8,10 @@
             .state('historial', {
                 templateUrl: 'views/bodeguero/historial.html',
                 controller: 'historial'
+            })
+            .state('ingresar', {
+                templateUrl: 'views/bodeguero/ingresar.html',
+                controller: 'ingresar'
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
         //$logProvider.debugEnabled(false); Activar en modo produccion
