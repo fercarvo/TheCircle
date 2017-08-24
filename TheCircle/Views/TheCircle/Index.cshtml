@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Login css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -39,35 +40,33 @@
             }
     </style>
 </head>
-<body class="page-dashboard" >
+<body class="page-dashboard" ng-app="appLogin" >
     <div class="container">
         <div class="login-wrapper">
             <div class="text-center">
 
             </div><!-- /.logo-wrapper -->
 
-            <div class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
+            <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
-                    <form class="form-signin">
-                        <h3 class="form-signin-heading" style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
+                    <form ng-submit="login(form)">
+                        <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input type="text" required class="form-control rounded" placeholder="Ingrese el Usuario">
+                                <input ng-model="form.cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="browser-default">
-                                <input type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
+                                <input ng-model="form.clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="checkbox">
-                                <label style="color:#fff;">
-                                    <input type="checkbox" />
-                                    Recordar clave
-                                </label>
-                            </div>
+                            <select ng-model="form.localidad" class="form-control" required style="width: 328px;">
+                                <option style="display:none;" selected disabled value="">Seleccione el centro comunitario</option>
+                                <option value="{{lo.id}}" ng-repeat="lo in localidades">{{lo.nombre}}</option>
+                            </select>             
                         </div><!-- /.form-group -->
                         <button type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
@@ -117,9 +116,41 @@
     </div><!-- /.container -->
     <!-- scritpts -->
     <script>
-
+        
     </script>
+    <script src="~/scripts/vendor/angular.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script>
+            angular.module("appLogin", [])
+                .controller('login', ["$http", "$scope", "$location", function ($http, $scope, $location) {
+
+                    $(".myselect").select2();
+
+                    $scope.localidades = [
+                        { id: "OC", nombre: "Oficina central" },
+                        { id: "CC0", nombre: "Centro Comunitario 0 - Durán" },
+                        { id: "CC2", nombre: "Centro Comunitario 2 - Phelan" },
+                        { id: "CC3", nombre: "Centro Comunitario 3 - BUDS" },
+                        { id: "CC5", nombre: "Centro Comunitario 5 - Flor de Bastión" },
+                        { id: "CC6", nombre: "Centro Comunitario 6 - Estrella de Belén" },
+                        { id: "HEE", nombre: "Centro Hacia El Empleo" }
+                    ]
+
+
+                    $scope.login = function (data) {
+
+                        console.log(data);
+                        $http.post("/login", data).then(function success(res) {
+                            console.log(res);
+                            //window.location.replace(res.data.path);
+                        }, function error(err) {
+                            console.log("error", err);
+                        })
+                    }
+
+                }]);
+    </script>
 </body>
 </html>
