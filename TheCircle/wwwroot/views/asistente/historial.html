@@ -27,8 +27,8 @@
                                 <th>N&uacute;mero</th>
                                 <th>Fecha creacion</th>
                                 <th>Fecha despacho</th>
-                                <th>Doctor</th>
                                 <th>Apadrinado</th>
+                                <th>Doctor</th>
                                 <th>Ver &iacute;tems</th>
                             </tr>
                         </thead>
@@ -38,8 +38,8 @@
                                 <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
+                                <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                                 <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
