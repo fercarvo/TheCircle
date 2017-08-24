@@ -51,7 +51,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .run(["$state", function ($state){
         $state.go("atencion");
     }])
-    .factory('date', ["$log", function ($log) {
+    .factory('date', [function () {
         return function (date) {
             try {
                 var format = new Date(date);
@@ -72,7 +72,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             instituciones: null,
             stock: null,
             recetas: null,
-            estadisticas : {},
+            estadisticas: {},
             tipos: ["curativo", "seguimiento", "control"],
             getInstituciones: getInstituciones,
             getEnfermedades: getEnfermedades,
@@ -182,7 +182,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             status : true
         }
     }])
-    .factory('refresh', ["$log", function ($log) { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
 
         function go(fn) {
             fn();
@@ -207,7 +207,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             goTime: goTime
         }
     }])
-    .controller('atencion', ["$log", "$scope", "$state", "$http", "atencionFactory", "disable", function ($log, $scope, $state, $http, atencionFactory, disable) {
+    .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
 
         $state.go('atencion.registro');
         $scope.disable = disable.atencion;        
@@ -250,7 +250,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         };
 
     }])
-    .controller('atencion.registro', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($log, $scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
 
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
@@ -312,7 +312,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('atencion.remision', ["$log", "$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($log, $scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
+    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
@@ -469,6 +469,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $scope.receta = receta;
         }
 
+        $scope.cancelar = function () {
+            actualizar = refresh.go(cargar);
+        }
+
         $scope.eliminarReceta = function (receta) {
 
             $http.delete("/api/receta/" + receta.receta.id).then(function success(res) {
@@ -485,11 +489,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
 
     }])
-    .controller('estadisticas', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $state.go('estadisticas.enfermedades');
 
     }])
-    .controller('estadisticas.atenciones', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
         $scope.atenciones = dataFactory.estadisticas.atenciones;
 
         $scope.$watch('atenciones', function () {
@@ -503,7 +507,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 doctor: atencionFactory.doctor
             }
 
-            $http.post("/api/reporte/atencion", data).then(function success(res) {
+            $http({
+                method: "GET",
+                url: "/api/reporte/atencion",
+                params: data
+            }).then(function success(res) {
                 $scope.atenciones.all = res.data;
                 console.log($scope.atenciones.all);
             }, function error(err) {
@@ -513,7 +521,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('estadisticas.remisiones', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
         $scope.remisiones = dataFactory.estadisticas.remisiones;
 
         $scope.$watch('remisiones', function () {
@@ -529,7 +537,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 doctor: atencionFactory.doctor
             }
 
-            $http.post("/api/reporte/remision", data).then(function success(res) {
+            $http({
+                method: "GET",
+                url: "/api/reporte/remision",
+                params: data
+            }).then(function success(res) {
                 $scope.remisiones.all = res.data;
             }, function error(err) {
                 console.log("error cargar remisiones", err);
@@ -538,10 +550,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('estadisticas.recetas', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "notify", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, notify, date) {
+    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "notify", "date", function ($scope, $state, $http, dataFactory, atencionFactory, notify, date) {
         $scope.recetas = dataFactory.estadisticas.recetas;
-
-        //Se guardaba la data, pero ya no por pedido de gerencia sistemas
         
         $scope.$watch('recetas', function () {
             dataFactory.estadisticas.recetas = $scope.recetas;
@@ -559,7 +569,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 doctor: atencionFactory.doctor
             }
 
-            $http.post("/api/reporte/receta", data).then(function success(res) {
+            $http({
+                method: "GET",
+                url: "/api/reporte/receta",
+                params: data
+            }).then(function success(res) {
                 $scope.recetas.all = res.data;
             }, function error(err) {
                 console.log("error cargar recetas")
@@ -568,15 +582,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
     }])
-    .controller('estadisticas.enfermedades', ["$log", "$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($log, $scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
 
         $scope.enfermedades = dataFactory.estadisticas.enfermedades;
-        $scope.data = [];
 
         $scope.$watch('enfermedades', function () {
             dataFactory.estadisticas.enfermedades = $scope.enfermedades;
-        });
-        
+        })
 
         $scope.generar = function (desde, hasta) {
             var data = {
@@ -584,17 +596,18 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 hasta: date(hasta),
                 localidad: atencionFactory.localidad
             }
-            $http.post("/api/reporte/enfermedad", data).then(function success(res) {
+
+            $http({
+                method: "GET",
+                url: "/api/reporte/enfermedad",
+                params: data
+            }).then(function success(res) {
                 $scope.data = [];
 
                 for (i = 0; i < res.data.length; i++) {
                     $scope.data.push({ key: res.data[i].codigo + ' ' + res.data[i].nombre, y: res.data[i].veces, color: color[i] });
                 }
 
-                /*$scope.data = res.data.map(function (obj) {
-                    return { key: obj.codigo + ' ' + obj.nombre, y: obj.veces, color: "red" };
-                });*/
-                //$scope.data = arr;
             }, function error(err) {
                 console.log("Error cargar estadisticas", err);
                 alert("Error cargar estadisticas");
@@ -612,7 +625,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 y: function (d) { return d.y; },
                 showLabels: false,
                 duration: 500,
-                labelThreshold: 0.01,
+                labelThreshold: 0,
                 labelSunbeamLayout: true,
                 legendPosition: "right",
                 legend: {
