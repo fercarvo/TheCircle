@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using TheCircle.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
@@ -22,11 +21,11 @@ namespace TheCircle.Controllers
 
         // GET: api/Enfermedad
         [HttpGet]
-        [ResponseCache(Duration = 60 * 120)] //1*120 minutos
+        [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*120 segundos = 120 horas
         public IActionResult GetEnfermedades()
         {
             try {
-                var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToList();
+                var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToArray();
                 return Ok(data);
             } catch (Exception e) {
                 return BadRequest("Something Broke");

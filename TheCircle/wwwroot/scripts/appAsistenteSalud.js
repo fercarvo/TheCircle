@@ -81,7 +81,7 @@ angular.module('appAsistente', ['ui.router'])
             recetas: null,
             despachos: null,
             localidad: "CC2",
-            personal: 908362247,
+            personal: 0912261476,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos

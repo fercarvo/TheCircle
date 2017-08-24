@@ -113,7 +113,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("api/institucion")]
-        [ResponseCache(Duration = 60*60)] //1*60 minutos
+        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
         public IActionResult GetInstituciones()
         {
             Institucion institucion = new Institucion();

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
@@ -19,7 +18,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("{cod}")]
-        [ResponseCache(Duration = 60)] //cache de 60 segundos
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 12 segundos = 12 horas
         public IActionResult GetApadrinado(int cod)
         {
             Apadrinado apadrinado = new Apadrinado();
@@ -34,7 +33,7 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("foto/{cod}")]
-        [ResponseCache(Duration = 60 * 5)]
+        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
         public IActionResult GetApadrinadoFoto(int cod)
         {
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";

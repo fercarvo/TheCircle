@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
     <Content Include="wwwroot\scripts\appBodeguero.js" />
     <Content Include="wwwroot\scripts\appContralor.js" />

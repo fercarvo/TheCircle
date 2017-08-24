@@ -33,8 +33,8 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="obj in recetas | filter:buscar">
-                                <td>000000{{obj.receta.id}}</td>
+                            <tr ng-repeat="obj in recetas | filter:buscar | orderBy:'receta.fecha'">
+                                <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.idDoctor}}</td>
                                 <td>{{obj.receta.idApadrinado}}</td>
@@ -50,7 +50,7 @@
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}} - {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - {{receta.receta.idApadrinado}}</h5>
+                            <h5 class="modal-title">Receta Nro {{("00000000"+ receta.receta.id).slice(-9)}} - {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - {{receta.receta.idApadrinado}}</h5>
                         </div>
                         <div class="panel-body" style=" padding-top: 5px;">
 

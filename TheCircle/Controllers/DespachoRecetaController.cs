@@ -15,6 +15,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("api/receta/{localidad}")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetRecetasByLocalidad(string localidad) {
             RecetaTotal rt = new RecetaTotal();
             int despachada = 0; //Todas las recetas que esten sin despachar
@@ -29,6 +30,7 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("api/despacho/receta/{asistente}")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult getRecetasDespachadas(int asistente) {
 
             RecetaDespacho rd = new RecetaDespacho();

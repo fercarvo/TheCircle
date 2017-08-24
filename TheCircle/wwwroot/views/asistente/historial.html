@@ -34,8 +34,8 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="obj in despachos | filter:buscar">
-                                <td>000000{{obj.receta.id}}</td>
+                            <tr ng-repeat="obj in despachos | filter:buscar | orderBy:'receta.fDespacho'">
+                                <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                                 <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>

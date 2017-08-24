@@ -24,8 +24,8 @@
     <div  class="panel panel-default-light border-default col-sm-12" id="estadistica-remisiones-table">
         <div class="panel-heading">
             <div  style="text-align:right;">
-                <input class="col-sm-6 form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
-                <input class="col-sm-6 form-control" type="text"  placeholder="buscar por Institucion/especialidad" style="width:49%;margin-left:1%;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.codigoApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.institucion" placeholder="buscar por Institucion" style="width:49%;margin-left:1%;">
             </div>
 
         </div>
@@ -43,8 +43,8 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="remision in remisiones.all">
-                        <td>000000{{remision.id}}</td>
+                    <tr ng-repeat="remision in remisiones.all | filter:buscar | orderBy:'fecha'">
+                        <td>{{("00000000"+ remision.id).slice(-9)}}</td>
                         <td>{{remision.codigoApadrinado}}</td>
                         <td>{{remision.institucion}} - {{remision.especialidad}} </td>
                         <td>{{remision.monto | currency}}</td>

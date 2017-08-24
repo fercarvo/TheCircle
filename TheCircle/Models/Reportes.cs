@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace TheCircle.Models
                 string query = $"EXEC dbo.report_EnfermedadByFecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad={req.localidad}";
                 return _context.ReporteEnfermedad.FromSql(query).ToArray();
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error al cargar reporte de enfermedades, ReporteEnfermedad.getAll");
             }
         }
 
@@ -28,34 +29,14 @@ namespace TheCircle.Models
 
     public class ReporteRequest
     {
+        [BindRequired]
         public string desde { get; set; }
+        [BindRequired]
         public string hasta { get; set; }
         public string localidad { get; set; }
         public int doctor { get; set;}
 
         public ReporteRequest() { }
-    }
-
-    public class ReporteAtencion
-    {
-        [Key]
-        public int id { get; set; }
-        public Int32 idApadrinado { get; set; }
-        public DateTime fecha { get; set; }
-        public string tipo { get; set; }
-
-        public ReporteAtencion() { }
-
-        public ReporteAtencion[] getAll(ReporteRequest req, MyDbContext _context)
-        {
-            try {
-                string query = $"EXEC dbo.report_AtencionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-                return _context.ReporteAtencion.FromSql(query).ToArray();
-            } catch (Exception e) {
-                return null;
-            }
-        }
-
     }
 
     public class ReporteRemision
@@ -73,12 +54,12 @@ namespace TheCircle.Models
 
         public ReporteRemision[] getAll(ReporteRequest req, MyDbContext _context)
         {
+            string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
             try {
-                string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
-               
-                return _context.ReporteRemision.FromSql(query).ToArray();
+                var data = _context.ReporteRemision.FromSql(query).ToArray();
+                return data;
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error al cargar remisiones by doctor, ReporteRemision.getAll");
             }
         }
 
