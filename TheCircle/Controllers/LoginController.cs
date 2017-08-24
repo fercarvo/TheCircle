@@ -14,7 +14,7 @@ namespace TheCircle.Controllers
         public IActionResult Logout([FromHeader]Data data)
         {
 
-            return Ok(data);
+            return Redirect("/");
         }
 
         [HttpPost("login")]
