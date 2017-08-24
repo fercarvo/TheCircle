@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 
 namespace TheCircle.Models
 {
@@ -26,8 +27,12 @@ namespace TheCircle.Models
 
     public class LoginRequest
     {
+        [BindRequired]
         public string cedula { get; set; }
+        [BindRequired]
         public string clave { get; set; }
+        [BindRequired]
+        public string localidad { get; set; }
     }
 
 

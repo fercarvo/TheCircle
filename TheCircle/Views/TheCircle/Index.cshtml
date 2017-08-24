@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <!-- Login css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -48,26 +49,30 @@
 
             <div class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
-                    <form class="form-signin">
-                        <h3 class="form-signin-heading" style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
+                    <form onsubmit="return login()">
+                        <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input type="text" required class="form-control rounded" placeholder="Ingrese el Usuario">
+                                <input id="cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="browser-default">
-                                <input type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
+                                <input id="clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
                             </div>
                         </div>
                         <div class="form-group">
-                            <div class="checkbox">
-                                <label style="color:#fff;">
-                                    <input type="checkbox" />
-                                    Recordar clave
-                                </label>
-                            </div>
+                            <select id="localidad" class="myselect" required style="width: 328px;">
+                                <option style="display:none;" selected disabled value="">Seleccione el centro comunitario</option>
+                                <option value="OC">Oficina central</option>
+                                <option value="CC0">Centro Comunitario 0 - Durán</option>
+                                <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                                <option value="CC3">Centro Comunitario 3 - BUDS</option>
+                                <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                                <option value="CC4">Centro Comunitario 6 - Estrella de Belén</option>
+                                <option value="HEE">Centro Hacia El Empleo</option>
+                            </select>             
                         </div><!-- /.form-group -->
                         <button type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
@@ -117,9 +122,36 @@
     </div><!-- /.container -->
     <!-- scritpts -->
     <script>
+        function login() {
 
+            var data = {
+                cedula: $('#cedula').val(),
+                clave: $('#clave').val(),
+                localidad: $('#localidad').val()
+            }
+
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: data,
+                success: function (res) {
+                    console.log("Exito", res);
+                    window.location.href = res.redirect;
+                    return true;
+                },
+                error: function (e) {
+                    console.log("Error", e);
+                    setTimeout(alert("Usuario/Contraseña incorrecta"), 1)                    
+                    return false;
+                }
+            })
+        }
     </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
+    <script>
+        $(".myselect").select2();
+    </script>
 </body>
 </html>
