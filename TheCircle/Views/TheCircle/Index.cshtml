@@ -9,6 +9,7 @@
     <!--Aqui acaban-->
     <title>TheCircle : Login</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
+    <link rel="stylesheet" href="~/styles/ripple.css" type="text/css">
     <!-- Login css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
@@ -43,16 +44,15 @@
 <body class="page-dashboard" ng-app="appLogin" >
     <div class="container">
         <div class="login-wrapper">
-            <div class="text-center">
 
-            </div><!-- /.logo-wrapper -->
 
             <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
                     <form ng-submit="login(form)">
-                        <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
+                        <h3 style="margin-bottom: 30px;color:white;text-align:center" >Autenticación - TheCircle </h3>
                         <div class="form-group">
                             <div class="browser-default">
+                                <label (Resources:Strings,saludo)></label>
                                 <input ng-model="form.cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
                             </div>
                         </div>
@@ -68,10 +68,10 @@
                                 <option value="{{lo.id}}" ng-repeat="lo in localidades">{{lo.nombre}}</option>
                             </select>             
                         </div><!-- /.form-group -->
-                        <button type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
+                        <button data-ripple type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
                 </div>
-                <div class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;border-color:rgba(0,0,0,0.55);">
+                <div data-ripple class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;border-color:rgba(0,0,0,0.55);">
                    <a href="#" data-toggle="modal" data-target="#myModal" style="color:#fff;text-decoration: none; font-size:16px;margin-left:33%;" >Crear una cuenta</a>
                 </div>
                 
@@ -104,8 +104,8 @@
 
                     </div><!--  -->
                     <div class="text-center" style="margin-bottom: 5px;">
-                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
-                        <button type="button" class="btn btn-default">Cancelar</button>
+                        <button data-ripple type="submit" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                        <button data-ripple type="button" class="btn btn-default">Cancelar</button>
                     </div><!-- /.form-group -->
                 </div>
             </div>
@@ -120,6 +120,7 @@
     </script>
     <script src="~/scripts/vendor/angular.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="~/scripts/ripple.js"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script>
