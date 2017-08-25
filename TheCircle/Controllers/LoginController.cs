@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
-using System.Linq;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers
@@ -12,53 +12,64 @@ namespace TheCircle.Controllers
     {
 
         private readonly MyDbContext _context;
-        private readonly AuthorizeTheCircle _authorize;
-
         public LoginController(MyDbContext context)
         {
             _context = context;
-            _authorize = new AuthorizeTheCircle();
         }
 
 
         [HttpGet("logout")]
-        public IActionResult Logout([FromHeader]Data data)
+        public IActionResult Logout()
         {
+            //KeyValuePair<string, string>[] cookies = Request.Cookies.ToArray(); //Todas las cookies
 
+            CookieOptions options = new CookieOptions();
+            options.Expires = DateTime.Now.AddDays(-5); //Ya han expirado
+            options.HttpOnly = true; //no js}
+            //options.Path = "/medico";
+            //foreach (KeyValuePair<string, string> cookie in cookies)
+            //{
+            Response.Cookies.Append("session", "", options); //Se borra la data
+                //Request.Cookies[cookie.Value] = 
+                //cookie.Value = DateTime.Now.AddDays(-1);
+            //}
             return Redirect("/");
         }
 
         [HttpPost("login")]
-        public IActionResult login([FromBody] LoginRequest req) {
+        public IActionResult login([FromForm] LoginRequest request) {
 
-            if (ModelState.IsValid && _authorize.validate(Request.Cookies, "medico") ) {
-              
-                Data data = new Data();
+            User usuario = new User();
 
-                data.path = "/medico";
-                data.cedula = req.cedula;
-                data.nombres = "Edgar Fernando";
-                data.apellidos = "Carvajal Ulloa";
-                data.cargo = "medico";
-                data.localidad = "CC2";
-                data.path = "/medico";
-                data.issueAt = DateTime.Now;
-                data.expireAt = DateTime.Now.AddHours(24);
+            if (ModelState.IsValid) {
 
-                string sign = "asdasdx324c23rx4vtewq4tvgr4b54vuw6uwj6j465cf";
+                try {
+                    usuario = usuario.isValid(request, _context);
+                    Data data = new Data(usuario, request);
+                    Token token = new Token(data, "asdasdx324c23rx4vtewq4tvgr4b54vuw6uwj6j465cf");
+                    string tokenToString = JsonConvert.SerializeObject(token);
 
-                Token token = new Token(data, sign);
+                    CookieOptions options = new CookieOptions();
+                    options.Expires = data.expireAt;
+                    options.HttpOnly = true;
+                    Response.Cookies.Append("session", tokenToString, options);
 
-                var t = token.ToString();
+                    if (data.cargo == "medico")
+                    {
+                        return Redirect("/medico");
+                    }
+                    else if (data.cargo == "asistenteSalud")
+                    {
+                        return Redirect("/asistente");
+                    }
+                    else {
+                        return Redirect("google.com");
+                    }
 
-                CookieOptions options = new CookieOptions();
-                options.Expires = DateTime.Now.AddDays(1);
-
-                Response.Cookies.Append("token", t, options);
-                Response.Headers.Append("token", t);
-
-                //return Ok(new {token1 = token, token2 = t});
-                return OK(t);
+                } catch (Exception e) {
+                    //return (RedirectToAction("Index", new { message = "hi there!" }));
+                    return Redirect("/?validate=1");
+                }                            
             }
             return BadRequest("Incorrect data");
         }

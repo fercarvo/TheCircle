@@ -48,22 +48,25 @@
             </div><!-- /.logo-wrapper -->
 
             <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
+                <div style="background-color: white;">
+                    @ViewData["login"]
+                </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
-                    <form ng-submit="login(form)">
+                    <form action="/login" method="post" >
                         <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input ng-model="form.cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
+                                <input name="cedula" ng-model="form.cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="browser-default">
-                                <input ng-model="form.clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
+                                <input name="clave" ng-model="form.clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
                             </div>
                         </div>
                         <div class="form-group">
-                            <select ng-model="form.localidad" class="form-control" required style="width: 328px;">
+                            <select name="localidad" ng-model="form.localidad" class="form-control" required style="width: 328px;">
                                 <option style="display:none;" selected disabled value="">Seleccione el centro comunitario</option>
                                 <option value="{{lo.id}}" ng-repeat="lo in localidades">{{lo.nombre}}</option>
                             </select>             
@@ -143,7 +146,8 @@
 
                         console.log(data);
                         $http.post("/login", data).then(function success(res) {
-                            console.log(res);
+                            console.log(res.data);
+                            //console.log(JSON.parse(res.data.p));
                             //window.location.replace(res.data.path);
                         }, function error(err) {
                             console.log("error", err);

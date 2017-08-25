@@ -18,6 +18,8 @@ namespace TheCircle
         public virtual DbSet<ReporteEnfermedad> ReporteEnfermedad { get; set; }
         public virtual DbSet<ReporteRemision> ReporteRemision { get; set; }
         public virtual DbSet<ItemDespacho> ItemDespacho { get; set; }
+        public virtual DbSet<User> User { get; set; }
+
 
         /*
 protected override void OnModelCreating(ModelBuilder modelBuilder)
