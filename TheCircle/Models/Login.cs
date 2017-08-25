@@ -4,10 +4,6 @@ using System;
 
 namespace TheCircle.Models
 {
-    public class Login
-    {
-
-    }
 
     public class Token
     {
@@ -22,7 +18,7 @@ namespace TheCircle.Models
 
         public override string ToString()
         {
-            return $"{{'payload':'{this.payload.ToString()}','sign':'{this.sign}'}}";
+            return $"{{'payload':'{payload}','sign':'{sign}'}}";
         }
 
     }
@@ -40,7 +36,46 @@ namespace TheCircle.Models
 
         public override string ToString()
         {
-            return $"{{'cedula':'{this.cedula}','nombres':'{this.nombres}','apellidos':'{this.apellidos}','issueAt':'{this.issueAt}'}}";
+            string data = "";
+            var properties = typeof(Data).GetProperties();
+
+            foreach(PropertyInfo p in properties) {
+                if (properties.Last() == p) {
+                    if (typeof(ICollection<>).IsAssignableFrom(p.PropertyType)) {
+                        data = data + $"{{'{p.Name}':[";
+                        var collection = (IEnumerable) p.GetValue(this, null);
+
+                        foreach (var item in collection) {
+                            if (collection.Last() == item) {
+                                data = data + $"'{item}'";
+                            } else {
+                                data = data + $"'{item}',";
+                            }
+                        }
+                        data = data + "]";
+                    } else {
+                        data = data + $"{{'{p.Name}':'{p.GetValue(this, null)}'}},";
+                    }
+                } else {
+                    if (typeof(ICollection<>).IsAssignableFrom(p.PropertyType)) {
+                        data = data + $"{{'{p.Name}':[";
+                        var collection = (IEnumerable) p.GetValue(this, null);
+
+                        foreach (var item in collection) {
+                            if (collection.Last() == item) {
+                                data = data + $"'{item}'";
+                            } else {
+                                data = data + $"'{item}',";
+                            }
+                        }
+                        data = data + "]";
+                    } else {
+                        data = data + $"{{'{p.Name}':'{p.GetValue(this, null)}'}}";
+                    }
+                }
+            }
+            return "{" + data + "}";
+            //return $"{{'cedula':'{this.cedula}','nombres':'{this.nombres}','apellidos':'{this.apellidos}','issueAt':'{this.issueAt}'}}";
         }
     }
 
@@ -58,12 +93,11 @@ namespace TheCircle.Models
     internal class AuthorizeTheCircle
     {
         public string policy { get; set; }
-
         public AuthorizeTheCircle() { }
 
         internal bool validate(IRequestCookieCollection cookies, string v)
         {
-            throw new NotImplementedException();
+            return true;
         }
     }
 

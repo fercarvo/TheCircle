@@ -29,11 +29,10 @@ namespace TheCircle.Controllers
         }
 
         [HttpPost("login")]
-        public IActionResult login([FromBody] LoginRequest req)
-        {
-            if (ModelState.IsValid && _authorize.validate(Request.Cookies, "medico") )
-                //Request.Cookies["fontSize"]
-            {
+        public IActionResult login([FromBody] LoginRequest req) {
+
+            if (ModelState.IsValid && _authorize.validate(Request.Cookies, "medico") ) {
+              
                 Data data = new Data();
 
                 data.path = "/medico";
@@ -50,15 +49,16 @@ namespace TheCircle.Controllers
 
                 Token token = new Token(data, sign);
 
-                string t = token.ToString();
+                var t = token.ToString();
 
                 CookieOptions options = new CookieOptions();
                 options.Expires = DateTime.Now.AddDays(1);
 
                 Response.Cookies.Append("token", t, options);
                 Response.Headers.Append("token", t);
-                
-                return Ok(token);
+
+                //return Ok(new {token1 = token, token2 = t});
+                return OK(t);
             }
             return BadRequest("Incorrect data");
         }
