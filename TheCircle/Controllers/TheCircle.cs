@@ -8,14 +8,12 @@ namespace TheCircle.Controllers.views
     {
 
         [HttpGet ("")]
-        //[ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public ActionResult Index([FromQuery]int validate)
+        [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        public ActionResult Index([FromQuery] int success, [FromQuery] string msg)
         {
-            if (validate == 1) {
-                ViewData["login"] = "Usuario/Clave incorrectos";
+            if (success == 0) {
+                ViewData["mensaje"] = msg;
             }
-            
-            //var data = TempData["msg"];
             return View();
         }
 
@@ -39,7 +37,7 @@ namespace TheCircle.Controllers.views
             //var font = Request.Cookies["session"];
             //return Ok(new {token1 = token, token2 = t});
 
-            if (string.IsNullOrEmpty(cookieSession)) 
+            if (string.IsNullOrEmpty(cookieSession))
             {
                 return Redirect("/");
             }

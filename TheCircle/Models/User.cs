@@ -15,7 +15,7 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
-        public User isValid(LoginRequest req, MyDbContext _context)
+        public User get(LoginRequest req, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_User @cedula={req.cedula}, @clave='{req.clave}'";
             try

@@ -10,18 +10,26 @@ namespace TheCircle.Models
 
     public class Token
     {
-        public Token(Data payload, string sign)
-        {
-            this.payload = payload;
-            this.sign = sign;
-        }
-
         public Data payload { get; set; }
         public string sign { get; set; }
+
+        public Token(User user, string localidad) {
+            payload = new Data(user, localidad);
+            string payloadToString = JsonConvert.SerializeObject(payload); //Se convierte el payload a JsonString
+            
+        }
 
         public override string ToString()
         {
             return $"{{\"payload\":{payload},\"sign\":\"{sign}\"}}";
+        }
+
+        public string serialize(Token token) {
+
+        }
+
+        public string desSerialize(Token token) {
+
         }
 
     }
@@ -36,12 +44,12 @@ namespace TheCircle.Models
         public DateTime issueAt { get; set; }
         public DateTime expireAt { get; set; }
 
-        public Data (User u, LoginRequest request) {
+        public Data (User u, string localidad) {
             cedula = u.cedula;
             nombres = u.nombre;
             apellidos = u.apellido;
             cargo = u.cargo;
-            localidad = request.localidad;
+            localidad = localidad;
             issueAt = DateTime.Now;
             expireAt = DateTime.Now.AddHours(10);
         }
@@ -82,7 +90,7 @@ namespace TheCircle.Models
                         var size = 0;
                         foreach (var item in collection) { size++; };
                         int flag = 1;
-                        
+
                         foreach (var item in collection) {
                             if (flag == size) {
                                 data = data + $"\"{item}\"";
@@ -101,6 +109,7 @@ namespace TheCircle.Models
         }
     }
 
+    public enum Localidad { OC, CC0, CC2, CC3, CC5, CC6, HEE }
     public class LoginRequest
     {
         [BindRequired]
@@ -108,20 +117,6 @@ namespace TheCircle.Models
         [BindRequired]
         public string clave { get; set; }
         [BindRequired]
-        public string localidad { get; set; }
+        public Localidad localidad { get; set; }
     }
-
-
-    internal class AuthorizeTheCircle
-    {
-        public string policy { get; set; }
-        public AuthorizeTheCircle() { }
-
-        internal bool validate(IRequestCookieCollection cookies, string v)
-        {
-            return true;
-        }
-    }
-
-
 }

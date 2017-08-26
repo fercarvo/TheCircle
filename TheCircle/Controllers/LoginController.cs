@@ -30,7 +30,7 @@ namespace TheCircle.Controllers
             //foreach (KeyValuePair<string, string> cookie in cookies)
             //{
             Response.Cookies.Append("session", "", options); //Se borra la data
-                //Request.Cookies[cookie.Value] = 
+                //Request.Cookies[cookie.Value] =
                 //cookie.Value = DateTime.Now.AddDays(-1);
             //}
             return Redirect("/");
@@ -40,13 +40,17 @@ namespace TheCircle.Controllers
         public IActionResult login([FromForm] LoginRequest request) {
 
             User usuario = new User();
+            Url login = new Url("/");
 
             if (ModelState.IsValid) {
 
                 try {
-                    usuario = usuario.isValid(request, _context);
-                    Data data = new Data(usuario, request);
-                    Token token = new Token(data, "asdasdx324c23rx4vtewq4tvgr4b54vuw6uwj6j465cf");
+                    usuario = usuario.get(request, _context);
+
+                    Token token = new Token(usuario, request.localidad);
+
+                    //Data data = new Data(usuario, request);
+                    //Token token = new Token(data, "asdasdx324c23rx4vtewq4tvgr4b54vuw6uwj6j465cf");
                     string tokenToString = JsonConvert.SerializeObject(token);
 
                     CookieOptions options = new CookieOptions();
@@ -63,15 +67,20 @@ namespace TheCircle.Controllers
                         return Redirect("/asistente");
                     }
                     else {
-                        return Redirect("google.com");
+                        return Redirect("logout");
                     }
 
                 } catch (Exception e) {
-                    //return (RedirectToAction("Index", new { message = "hi there!" }));
-                    return Redirect("/?validate=1");
-                }                            
+                    login.SetQueryParam("success", "0");
+                    login.SetQueryParam("msg", "Usuario/Clave incorrecto");
+                    return Redirect(login);
+                    //return Redirect("/?validate=1");
+                }
             }
-            return BadRequest("Incorrect data");
+            login.SetQueryParam("success", "0");
+            login.SetQueryParam("msg", "Usuario/Clave incorrecto");
+            return Redirect(login);
+            //return BadRequest("Incorrect data");
         }
     }
 }
