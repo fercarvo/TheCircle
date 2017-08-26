@@ -1,11 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
+using System;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers.views
 {
     public class TheCircle : Controller
     {
+
+        private readonly Token _validate;
+        public TheCircle()
+        {
+            _validate = new Token();
+        }
 
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
@@ -18,51 +24,45 @@ namespace TheCircle.Controllers.views
         }
 
         [HttpGet ("asistente")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult AsistenteSalud()
         {
-            return View();
+            try {
+                _validate.check(Request, "asistenteSalud");
+                return View();
+            } catch (Exception e) {
+                return Redirect("/");
+            }
         }
 
         [HttpGet ("medico")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Medico()
         {
-            var cookieSession = Request.Cookies["session"];
-            //var tokenToString = token.ToString();
-            Token tokenReversed = JsonConvert.DeserializeObject<Token>(cookieSession);
-
-            //Response.Headers.Append("token", t);
-
-            //var font = Request.Cookies["session"];
-            //return Ok(new {token1 = token, token2 = t});
-
-            if (string.IsNullOrEmpty(cookieSession))
-            {
-                return Redirect("/");
-            }
-            else
-            {
+            try {
+                _validate.check(Request, "medico");
                 return View();
+            } catch (Exception e) {
+                return Redirect("/");
             }
         }
 
         [HttpGet("coordinador")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult CoordinadorSalud()
         {
             return View();
         }
 
         [HttpGet("contralor/")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Contralor()
         {
             return View();
         }
 
         [HttpGet("bodeguero/")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Bodeguero()
         {
             return View();

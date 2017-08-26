@@ -1,8 +1,9 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers
@@ -21,18 +22,12 @@ namespace TheCircle.Controllers
         [HttpGet("logout")]
         public IActionResult Logout()
         {
-            //KeyValuePair<string, string>[] cookies = Request.Cookies.ToArray(); //Todas las cookies
+            CookieOptions options = new CookieOptions() {
+                Expires = DateTime.Now.AddDays(-5), //Ya han expirado
+                HttpOnly = true
+            };
 
-            CookieOptions options = new CookieOptions();
-            options.Expires = DateTime.Now.AddDays(-5); //Ya han expirado
-            options.HttpOnly = true; //no js}
-            //options.Path = "/medico";
-            //foreach (KeyValuePair<string, string> cookie in cookies)
-            //{
             Response.Cookies.Append("session", "", options); //Se borra la data
-                //Request.Cookies[cookie.Value] =
-                //cookie.Value = DateTime.Now.AddDays(-1);
-            //}
             return Redirect("/");
         }
 
@@ -40,47 +35,43 @@ namespace TheCircle.Controllers
         public IActionResult login([FromForm] LoginRequest request) {
 
             User usuario = new User();
-            Url login = new Url("/");
+            Dictionary<string, string> parameters;
+            string loginRedirect;
 
             if (ModelState.IsValid) {
 
                 try {
                     usuario = usuario.get(request, _context);
-
                     Token token = new Token(usuario, request.localidad);
-
-                    //Data data = new Data(usuario, request);
-                    //Token token = new Token(data, "asdasdx324c23rx4vtewq4tvgr4b54vuw6uwj6j465cf");
                     string tokenToString = JsonConvert.SerializeObject(token);
 
-                    CookieOptions options = new CookieOptions();
-                    options.Expires = data.expireAt;
-                    options.HttpOnly = true;
+                    var options = new CookieOptions() {
+                        Expires = token.data.expireAt,
+                        HttpOnly = true
+                    };
+
                     Response.Cookies.Append("session", tokenToString, options);
 
-                    if (data.cargo == "medico")
-                    {
+                    if (token.data.cargo == "medico") 
                         return Redirect("/medico");
-                    }
-                    else if (data.cargo == "asistenteSalud")
-                    {
+                    else if (token.data.cargo == "asistenteSalud")
                         return Redirect("/asistente");
-                    }
-                    else {
+                    else
                         return Redirect("logout");
-                    }
 
                 } catch (Exception e) {
-                    login.SetQueryParam("success", "0");
-                    login.SetQueryParam("msg", "Usuario/Clave incorrecto");
-                    return Redirect(login);
-                    //return Redirect("/?validate=1");
+
+                    parameters = new Dictionary<string, string> { { "success", "0" }, { "msg", "Usuario/Clave incorrecto" } };
+                    loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+
+                    return Redirect(loginRedirect);
                 }
             }
-            login.SetQueryParam("success", "0");
-            login.SetQueryParam("msg", "Usuario/Clave incorrecto");
-            return Redirect(login);
-            //return BadRequest("Incorrect data");
+
+            parameters = new Dictionary<string, string> { { "success", "0" }, { "msg", "Precaucion, data fuera de rangos" } };
+            loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+
+            return Redirect(loginRedirect);
         }
     }
 }
