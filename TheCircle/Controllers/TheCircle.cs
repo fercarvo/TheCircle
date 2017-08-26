@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System;
-using TheCircle.Models;
+using TheCircle.Util;
 
 namespace TheCircle.Controllers.views
 {
@@ -17,9 +17,8 @@ namespace TheCircle.Controllers.views
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
         public ActionResult Index([FromQuery] int success, [FromQuery] string msg)
         {
-            if (success == 0) {
+            if (success == 0)
                 ViewData["mensaje"] = msg;
-            }
             return View();
         }
 

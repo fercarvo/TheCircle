@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace TheCircle.Models
+namespace TheCircle.Util
 {
     internal class TokenException : Exception
     {

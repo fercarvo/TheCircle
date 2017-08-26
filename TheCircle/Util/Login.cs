@@ -3,8 +3,9 @@ using Newtonsoft.Json;
 using System;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
+using TheCircle.Models;
 
-namespace TheCircle.Models
+namespace TheCircle.Util
 {
     public enum Localidad { HEE, CC0, CC2, CC3, CC5, CC6, OC }
 
@@ -14,19 +15,26 @@ namespace TheCircle.Models
         public string sign { get; set; }
 
         public Token(User user, Localidad loc) {
-            data = new Data(user, loc);
-            sign = "7stf8saywe77sfey9<ye9aehv9s7erhg7shergveh7fytse7fEFR";
+
+            Data newData = new Data(user, loc);
+            Signature _signer = new Signature();
+            string newDataToString = serialize(newData);
+
+            data = newData;
+            sign = _signer.sign(newDataToString);
         }
 
         public Token() { }
 
-        public string serialize(Token token) {
-            return null;
+        public string serialize(Data data) {
+            try {
+                string dataToString = JsonConvert.SerializeObject(data);
+                return dataToString;
+            } catch (Exception e) {
+                return null;
+            }            
         }
 
-        public string desSerialize(Token token) {
-            return null;
-        }
 
         /*  @request: el requerimiento de donde se extraerá el cookie de session            
             @cargo: El cargo que deberia tener el cookie de session
@@ -34,23 +42,32 @@ namespace TheCircle.Models
         */
         internal void check(HttpRequest request, string cargo) {
 
-            string cookieSession = request.Cookies["session"];
-            Token token;
+            try
+            {
+                string cookieSession = request.Cookies["session"]; //Se obtiene el string de la cookie
+                Signature _signer = new Signature();
+                Token token;
 
-            if (string.IsNullOrEmpty(cookieSession) || string.IsNullOrEmpty(cookieSession))
+                if (string.IsNullOrEmpty(cookieSession) || string.IsNullOrEmpty(cookieSession))
+                    throw new TokenException("No existe cookieSession/cargo, at Token.check");
 
-                throw new TokenException("No existe cookieSession/cargo, at Token.check");
+                token = JsonConvert.DeserializeObject<Token>(cookieSession); //Se parcea el string de cookie a Token.
 
-            token = JsonConvert.DeserializeObject<Token>(cookieSession);
+                if (token.data.expireAt < DateTime.Now)
+                    throw new TokenException("Token expirado, at Token.check");
 
-            if (token.data.expireAt < DateTime.Now) 
-                throw new TokenException("Token expirado, at Token.check");
+                if (token.data.cargo != cargo)
+                    throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
 
-            if (token.data.cargo != cargo)
-                throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
+                string dataToString = serialize(token.data); 
 
-            if (false)
-                throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
+                if (!_signer.check(dataToString, token.sign))
+                    throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
+
+            } catch (Exception e)
+            {
+                throw new TokenException("Algo salio mal");
+            }
 
         }
 

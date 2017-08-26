@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using TheCircle.Util;
 
 namespace TheCircle.Models
 {
@@ -29,6 +30,5 @@ namespace TheCircle.Models
             }
 
         }
-
     }
 }

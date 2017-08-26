@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using TheCircle.Models;
+using TheCircle.Util;
 
 namespace TheCircle.Controllers
 {
@@ -52,21 +53,21 @@ namespace TheCircle.Controllers
 
                     Response.Cookies.Append("session", tokenToString, options);
 
-                    if (token.data.cargo == "medico") 
+                    if (token.data.cargo == "medico")
                         return Redirect("/medico");
                     else if (token.data.cargo == "asistenteSalud")
                         return Redirect("/asistente");
                     else
                         return Redirect("logout");
 
-                } catch (Exception e) {
+                } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
 
                     parameters = new Dictionary<string, string> { { "success", "0" }, { "msg", "Usuario/Clave incorrecto" } };
                     loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
                     return Redirect(loginRedirect);
                 }
-            }
+            } //Si la data enviada en el formulario esta incorrecta
 
             parameters = new Dictionary<string, string> { { "success", "0" }, { "msg", "Precaucion, data fuera de rangos" } };
             loginRedirect = QueryHelpers.AddQueryString("/", parameters);
