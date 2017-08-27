@@ -17,7 +17,7 @@ namespace TheCircle.Controllers.views
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
         public ActionResult Index([FromQuery] int flag, [FromQuery] string msg)
         {
-            if (flag == 0)
+            if (flag == 21)
                 ViewData["mensaje"] = msg;
             return View();
         }

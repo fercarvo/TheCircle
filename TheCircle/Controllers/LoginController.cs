@@ -62,14 +62,14 @@ namespace TheCircle.Controllers
 
                 } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
 
-                    parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "Usuario/Clave incorrecto" } };
+                    parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
                     loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
                     return Redirect(loginRedirect);
                 }
             } //Si la data enviada en el formulario esta incorrecta
 
-            parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "Precaucion, data fuera de rangos" } };
+            parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Precaucion, data fuera de rangos" } };
             loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
             return Redirect(loginRedirect);
@@ -84,13 +84,13 @@ namespace TheCircle.Controllers
             try {
                 var user = new User();
                 user.reset_clave(cedula, email, _context);
-                var parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "Reseteo de clave exitoso, verifique su email institucional" } };
+                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Reseteo de clave exitoso, verifique su email institucional" } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
                 return Redirect(loginRedirect);
 
             } catch (Exception e) {
-                var parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "No se ha podido ejecutar el reseteo de clave, favor verifique datos o contactese con Gerencia de sistemas" } };
+                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido ejecutar el reseteo de clave, favor verifique datos o contactese con Gerencia de sistemas" } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
 
@@ -107,13 +107,13 @@ namespace TheCircle.Controllers
             try {
                 var user = new User();
                 user.crear(cedula, clave, _context);
-                var parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email." } };
+                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email." } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
                 return Redirect(loginRedirect);
 
             } catch (Exception e) {
-                var parameters = new Dictionary<string, string> { { "flag", "0" }, { "msg", "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas." } };
+                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas." } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
 
