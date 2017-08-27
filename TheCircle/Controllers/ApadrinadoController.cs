@@ -27,7 +27,7 @@ namespace TheCircle.Controllers
             Apadrinado apadrinado = new Apadrinado();
 
             try {
-                _validate.check(Request, "medico");
+                //_validate.check(Request, "medico");
 
                 apadrinado = apadrinado.get(cod, _context);
                 return Ok(apadrinado);
@@ -46,7 +46,7 @@ namespace TheCircle.Controllers
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
             Foto foto;
             try {
-                _validate.check(Request, "medico");
+                //_validate.check(Request, "medico");
 
                 foto = _context.Fotos.FromSql(query).First();
                 var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");

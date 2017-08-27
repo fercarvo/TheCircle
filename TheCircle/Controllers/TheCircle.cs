@@ -15,9 +15,9 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public ActionResult Index([FromQuery] int success, [FromQuery] string msg)
+        public ActionResult Index([FromQuery] int flag, [FromQuery] string msg)
         {
-            if (success == 0)
+            if (flag == 0)
                 ViewData["mensaje"] = msg;
             return View();
         }
@@ -27,7 +27,7 @@ namespace TheCircle.Controllers.views
         public IActionResult AsistenteSalud()
         {
             try {
-                _validate.check(Request, "asistenteSalud");
+                //_validate.check(Request, "asistenteSalud");
                 return View();
             } catch (Exception e) {
                 return Redirect("/");
@@ -39,7 +39,7 @@ namespace TheCircle.Controllers.views
         public IActionResult Medico()
         {
             try {
-                _validate.check(Request, "medico");
+                //_validate.check(Request, "medico");
                 return View();
             } catch (Exception e) {
                 return Redirect("/");

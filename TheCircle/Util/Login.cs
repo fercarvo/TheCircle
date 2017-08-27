@@ -16,34 +16,22 @@ namespace TheCircle.Util
 
         public Token(User user, Localidad loc) {
 
-            Data newData = new Data(user, loc);
+            Data data = new Data(user, loc);
             Signature _signer = new Signature();
-            string newDataToString = serialize(newData);
+            string newDataToString = JsonConvert.SerializeObject(newData);
 
-            data = newData;
-            sign = _signer.sign(newDataToString);
+            this.data = data;
+            this.sign = _signer.sign_HMAC(newDataToString);
         }
 
         public Token() { }
 
-        public string serialize(Data data) {
-            try {
-                string dataToString = JsonConvert.SerializeObject(data);
-                return dataToString;
-            } catch (Exception e) {
-                return null;
-            }            
-        }
-
-
-        /*  @request: el requerimiento de donde se extraerá el cookie de session            
+        /*  @request: el requerimiento de donde se extraerá el cookie de session
             @cargo: El cargo que deberia tener el cookie de session
-            En caso de no cumplir alguna validacion, se dispara un exception 
+            En caso de no cumplir alguna validacion, se dispara un exception
         */
         internal void check(HttpRequest request, string cargo) {
-
-            try
-            {
+            try {
                 string cookieSession = request.Cookies["session"]; //Se obtiene el string de la cookie
                 Signature _signer = new Signature();
                 Token token;
@@ -59,16 +47,14 @@ namespace TheCircle.Util
                 if (token.data.cargo != cargo)
                     throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
 
-                string dataToString = serialize(token.data); 
+                string dataToString = JsonConvert.SerializeObject(token.data);
 
-                if (!_signer.check(dataToString, token.sign))
+                if (_signer.checkHMAC(dataToString, token.sign) == false)
                     throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
 
-            } catch (Exception e)
-            {
-                throw new TokenException("Algo salio mal");
+            } catch (Exception e) {
+                throw new TokenException("Algo salio mal at Token.check");
             }
-
         }
 
     }

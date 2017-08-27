@@ -1,90 +1,79 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Collections.Generic;
 
 namespace TheCircle.Util
 {
     public class Signature
     {
-        private string salt;
-        private SHA256 algorithm;
-        private Encoding encode;
-
-        /*
         private byte[] key;
-        private HMACSHA256 algorithm;
+        private Byte[10] salt; //= new Byte[50];
+        private HMACSHA256 sign_algorithm;
+        private SHA256 hash_algorithm;
         private Encoding encode;
 
+        //ALERTA, cambiar el string del key generado deriva en anulacion de todos los tokens generados
         public Signature(){
             Encoding enconde = Encoding.Unicode;
-            byte[] key = encode.GetBytes("S3Cr3tTheCircle13989h7h/7gisdfU7g78GfiyFIF686r%");
+            byte[] key = encode.GetBytes("ThECircle_signUnik3");
 
             this.key = key;
-            this.algorithm = new HMACSHA256(key);
+            this.salt = new Byte[10];
+            this.sign_algorithm = new HMACSHA256(key);
+            this.hash_algorithm = SHA256.Create();
             this.encode = encode;
         }
-        */
 
-        //ATENCIOM, CAMBIAR salt, algorithm y encode causaran una invalidacion de toda la data firmada por esta clase
-        public Signature() {
-            salt = "TheC1rCl3-Bla12347&%$#blablabla1614_d8g4df64gd";
-            algorithm = SHA256.Create();
-            encode = Encoding.Unicode;
-        }
-
-        public string sign(string data)
-        {
+        public Dictionary<string, string> hashing_SHA256(string clave){
             try {
-                string toSign = $"{data},{this.salt}";
+                var dic = new Dictionary<string, string>(); //Contendra salt y el hash de la clave
+                Random randomNumber = new Random();
+                randomNumber.NextBytes(this.salt);
+                string salt_Base = Convert.ToBase64String(this.salt); //Ramdon salt string
 
-                byte[] toSignByte = this.encode.GetBytes(toSign);
-                byte[] hashedByte = this.algorithm.ComputeHash(toSignByte);
+                string data = $"{salt_Base},{clave}";
+                byte[] data_Byte = this.encode.GetBytes(data);
+                byte[] data_Byte_Hash = this.hash_algorithm.ComputeHash(data_Byte);
+                string data_Byte_Hash_base = Convert.ToBase64String(data_Byte_Hash);
 
-                string hashed = Convert.ToBase64String(hashedByte);
-                return hashed;
+                dic.Add("salt", salt_Base);
+                dic.Add("hash", data_Byte_Hash_base);
+
+                return dic;
 
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error de hashing clave at Signature.hashing_SHA256");
             }
         }
-        /*
-        public string signHMAC(string data)
-        {
+
+        public string sign_HMAC(string data) {
             try {
                 byte[] data_Byte = this.encode.GetBytes(data);
-                byte[] data_Byte_HMAC = this.algorithm.ComputeHash(data_Byte);
-
+                byte[] data_Byte_HMAC = this.sign_algorithm.ComputeHash(data_Byte);
                 string data_Byte_HMAC_Base = Convert.ToBase64String(data_Byte_HMAC);
                 return data_Byte_HMAC_Base;
 
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error generando HMAC, Signature.sign_HMAC");
             }
         }
-        */
-        public bool check(string dataToCheck, string hashedToCheck)
-        {
-            try
-            {
-                string toCheck = $"{dataToCheck},{this.salt}";
 
-                byte[] toCheck_Byte = this.encode.GetBytes(toCheck);
-                byte[] hashed_toCheck_Byte = this.algorithm.ComputeHash(toCheck_Byte); //Hash resultante
-                string resultante = Convert.ToBase64String(hashed_toCheck_Byte);
+        //Recibe un string y verifica su hash con hashToCheck usando la salt
+        public void check_hashing(string clave, string hashToCheck, string salt) {
 
-                if (hashedToCheck == resultante)
-                    return true;
-                return false;
+            string data = $"{salt},{clave}";
+            byte[] data_Byte = this.encode.GetBytes(toCheck);
+            byte[] data_Byte_Hash = this.hash_algorithm.ComputeHash(data_Byte); //Hash resultante
+            string data_Byte_Hash_base = Convert.ToBase64String(data_Byte_Hash);
 
-            } catch (Exception e) {
-                return false;
-            }
+            if (hashToCheck != data_Byte_Hash_base)
+                throw new Exception("Clave erronea at Signature.check_hashing");
         }
-        /*
-        public bool checkHMAC(string data, string hmacToCheck)
-        {
-            try
-            {
+
+        //Recibe un string y verifica su HMAC con hmacToCheck
+        public bool checkHMAC(string data, string hmacToCheck) {
+            try {
                 byte[] data_Byte = this.encode.GetBytes(data);
                 byte[] data_Byte_HMAC = this.algorithm.ComputeHash(data_Byte); //Signature resultante
                 string data_Byte_HMAC_Base = Convert.ToBase64String(data_Byte_HMAC);
@@ -94,9 +83,20 @@ namespace TheCircle.Util
                 return false;
 
             } catch (Exception e) {
-                return false;
+                throw new Exception("Error al verificar HMAC, Signature.checkHMAC");
             }
         }
-        */
+
+        //Genera un clave aleatoria
+        public string random() {
+            var bytes = new Byte[2];
+            var randomNumber = new Random();
+            randomNumber.NextBytes(bytes);
+            var bytes_int = BitConverter.ToInt32(bytes);
+
+            string resultado = $"{bytes_int}";
+            return resultado;
+        }
+
     }
 }
