@@ -15,10 +15,11 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public ActionResult Index([FromQuery] int flag, [FromQuery] string msg)
+        public ActionResult Index([FromQuery] LoginMessage lm)
         {
-            if (flag == 21)
-                ViewData["mensaje"] = msg;
+            if (ModelState.IsValid)
+                if (lm.flag == 21)
+                    ViewData["mensaje"] = lm.msg;
             return View();
         }
 

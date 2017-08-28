@@ -94,4 +94,13 @@ namespace TheCircle.Util
         [BindRequired]
         public Localidad localidad { get; set; }
     }
+
+    public class LoginMessage
+    {
+        [BindRequired]
+        public int flag { get; set; }
+        [BindRequired]
+        [StringLength(120)]
+        public string msg { get; set; }
+    }
 }
