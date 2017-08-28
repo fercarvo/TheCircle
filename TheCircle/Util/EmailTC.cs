@@ -1,11 +1,13 @@
 using System;
-using System.Net.Mail;
+//using System.Net.Mail;
 using System.Net;
 
 namespace TheCircle.Util
 {
     public class EmailTC
-    {
+    {   
+        /*
+        private Smtp smtp2;
         private SmtpClient smtp;
         private MailAddress sender;
         private MailAddress receiver;
@@ -34,7 +36,7 @@ namespace TheCircle.Util
               Body = body
             }
             this.smtp.Send(message);
-        }
+        }*/
 
     }
 

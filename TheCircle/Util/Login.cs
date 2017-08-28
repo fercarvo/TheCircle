@@ -18,7 +18,7 @@ namespace TheCircle.Util
 
             Data data = new Data(user, loc);
             Signature _signer = new Signature();
-            string newDataToString = JsonConvert.SerializeObject(newData);
+            string newDataToString = JsonConvert.SerializeObject(data);
 
             this.data = data;
             this.sign = _signer.sign_HMAC(newDataToString);

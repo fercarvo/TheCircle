@@ -99,7 +99,7 @@ namespace TheCircle.Models
             try {
                 var _signer = new Signature();
 
-                _checkClave(cedula, antiguaClave);
+                _checkClave(cedula, antiguaClave, _context);
 
                 var dic = _signer.hashing_SHA256(nuevaclave);
                 string hash = dic["hash"];
@@ -117,7 +117,7 @@ namespace TheCircle.Models
         {
             try {
                 var _signer = new Signature();
-                var _mailer = new EmailTC(email);
+                //var _mailer = new EmailTC(email);
 
                 string nueva_clave = _signer.random();
                 var dic = _signer.hashing_SHA256(nueva_clave);
@@ -126,7 +126,7 @@ namespace TheCircle.Models
 
                 string q = $"EXEC dbo.update_User_reset @cedula={cedula}, @email='{email}', @clave_hash='{hash}', @salt='{salt}'";
                 _context.Database.ExecuteSqlCommand(q);
-                _mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
+                //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
 
             } catch (Exception e) {
                 throw new Exception("Error al resetear clave de usuario at User.reset_clave");
