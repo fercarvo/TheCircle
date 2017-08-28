@@ -1,50 +1,68 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System;
+using TheCircle.Util;
 
 namespace TheCircle.Controllers.views
 {
     public class TheCircle : Controller
     {
 
+        private readonly Token _validate;
+        public TheCircle()
+        {
+            _validate = new Token();
+        }
+
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public IActionResult Index()
+        public ActionResult Index([FromQuery] LoginMessage lm)
         {
+            if (ModelState.IsValid)
+                if (lm.flag == 21)
+                    ViewData["mensaje"] = lm.msg;
             return View();
         }
 
         [HttpGet ("asistente")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult AsistenteSalud()
         {
-            return View();
+            try {
+                _validate.check(Request, "asistenteSalud");
+                return View();
+            } catch (Exception e) {
+                return Redirect("/");
+            }
         }
 
         [HttpGet ("medico")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Medico()
         {
-            if (true) //validaciones
-            {
+            try {
+                //_validate.check(Request, "medico");
                 return View();
+            } catch (Exception e) {
+                return Redirect("/");
             }
         }
 
         [HttpGet("coordinador")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult CoordinadorSalud()
         {
             return View();
         }
 
         [HttpGet("contralor/")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Contralor()
         {
             return View();
         }
 
         [HttpGet("bodeguero/")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Bodeguero()
         {
             return View();

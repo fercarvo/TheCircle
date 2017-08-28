@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using TheCircle.Models;
 
-namespace TheCircle
+namespace TheCircle.Util
 {
     public class MyDbContext : DbContext
     {
@@ -18,13 +18,11 @@ namespace TheCircle
         public virtual DbSet<ReporteEnfermedad> ReporteEnfermedad { get; set; }
         public virtual DbSet<ReporteRemision> ReporteRemision { get; set; }
         public virtual DbSet<ItemDespacho> ItemDespacho { get; set; }
+        public virtual DbSet<User> User { get; set; }
+        public virtual DbSet<CompuestoNombre> CompuestoNombre { get; set; }
+        public virtual DbSet<Item> ItemNombre { get; set; }
 
-        /*
-protected override void OnModelCreating(ModelBuilder modelBuilder)
-{
-modelBuilder.Entity<Cargo>()
-.HasKey(c => c.tipo);
-}*/
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {

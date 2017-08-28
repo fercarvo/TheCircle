@@ -47,25 +47,35 @@
 
 
             <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
+                <div style="background-color: rgba(51, 122, 183, 0.74);text-align: center;color: rgb(255, 255, 255);font-size: 150%;">
+                    @ViewData["mensaje"]
+                </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
-                    <form ng-submit="login(form)">
-                        <h3 style="margin-bottom: 30px;color:white;text-align:center" >Autenticación - TheCircle </h3>
+
+                    <form action="/login" method="post" >
+                        <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input ng-model="form.cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
+                                <input name="cedula" type="number" required class="form-control rounded" placeholder="Ingrese el Usuario/Cédula">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <div class="browser-default">
-                                <input ng-model="form.clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
+                                <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
                             </div>
                         </div>
                         <div class="form-group">
-                            <select ng-model="form.localidad" class="form-control" required style="width: 328px;">
+                            <select name="localidad" class="form-control myselect" required style="width: 328px;">
                                 <option style="display:none;" selected disabled value="">Seleccione el centro comunitario</option>
-                                <option value="{{lo.id}}" ng-repeat="lo in localidades">{{lo.nombre}}</option>
-                            </select>             
+                                <option value="OC">Oficina central</option>
+                                <option value="CC0">Centro Comunitario 0 - Durán</option>
+                                <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                                <option value="CC3">Centro Comunitario 3 - BUDS"</option>
+                                <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                                <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
+                                <option value="HEE">Centro Hacia El Empleo</option>
+                            </select>
                         </div><!-- /.form-group -->
                         <button data-ripple type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
@@ -73,9 +83,9 @@
                 <div data-ripple class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;border-color:rgba(0,0,0,0.55);">
                    <a href="#" data-toggle="modal" data-target="#myModal" style="color:#fff;text-decoration: none; font-size:16px;margin-left:33%;" >Crear una cuenta</a>
                 </div>
-                
+
             </div>
-            
+
         </div>
 
 
@@ -87,25 +97,40 @@
                         <h5 class="modal-title">Crear una Cuenta</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
-                        <table class="table table-striped" style="text-align:center;">
-
-                            <tbody style="text-align:left;">
-                                <tr>
-                                    <td>C&eacute;dula de Identidad: </td>
-                                    <td><input type="text" class="form-control rounded"/></td>
-                                </tr>
-                                <tr>
-                                    <td>Correo Institucional: </td>
-                                    <td><input type="text" class="form-control rounded" /></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
+                        <form id="crearCuenta" action="login/crear" method="post" style="text-align:left;">
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    C&eacute;dula de Identidad:
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    Clave:
+                                    <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
+                                </div>
+                            </div>
+                            <button type="submit" id="crearButton" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </form>
+                        <script>
+                            $('#crearButton').click(function () {
+                                $.ajax({
+                                    url: 'login/crear',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: $('#crearCuenta').serialize(),
+                                    success: function (data, textStatus) {
+                                        if (data.redirect) {
+                                            alert("Se redireciconara");
+                                            window.location.href = data.redirect;
+                                        }                                               
+                                    }
+                                })
+                            })
+                        </script>
                     </div><!--  -->
-                    <div class="text-center" style="margin-bottom: 5px;">
-                        <button data-ripple type="submit" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
-                        <button data-ripple type="button" class="btn btn-default">Cancelar</button>
-                    </div><!-- /.form-group -->
+
                 </div>
             </div>
         </div>
@@ -115,42 +140,14 @@
     </div><!-- /.container -->
     <!-- scritpts -->
     <script>
-        
+
     </script>
-    <script src="~/scripts/vendor/angular.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="~/scripts/ripple.js"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script>
-            angular.module("appLogin", [])
-                .controller('login', ["$http", "$scope", "$location", function ($http, $scope, $location) {
-
-                    $(".myselect").select2();
-
-                    $scope.localidades = [
-                        { id: "OC", nombre: "Oficina central" },
-                        { id: "CC0", nombre: "Centro Comunitario 0 - Durán" },
-                        { id: "CC2", nombre: "Centro Comunitario 2 - Phelan" },
-                        { id: "CC3", nombre: "Centro Comunitario 3 - BUDS" },
-                        { id: "CC5", nombre: "Centro Comunitario 5 - Flor de Bastión" },
-                        { id: "CC6", nombre: "Centro Comunitario 6 - Estrella de Belén" },
-                        { id: "HEE", nombre: "Centro Hacia El Empleo" }
-                    ]
-
-
-                    $scope.login = function (data) {
-
-                        console.log(data);
-                        $http.post("/login", data).then(function success(res) {
-                            console.log(res);
-                            //window.location.replace(res.data.path);
-                        }, function error(err) {
-                            console.log("error", err);
-                        })
-                    }
-
-                }]);
+        $(".myselect").select2();
     </script>
 </body>
 </html>
