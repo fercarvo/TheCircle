@@ -17,12 +17,13 @@ namespace TheCircle.Models
         public int cedula { get; set; }
         public string clave_hash { get; set; }
         public string salt { get; set; }
+        public Boolean? activo { get; set; }
 
         public User() {}
 
         public User get(LoginRequest req, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_User @cedula={req.cedula}";
+            string query = $"EXEC dbo.User_select @cedula={req.cedula}";
             var _signer = new Signature();
 
             try {
@@ -42,7 +43,7 @@ namespace TheCircle.Models
         }
 
         private void _checkClave(int cedula, string clave, MyDbContext _context) {
-            string query = $"EXEC dbo.select_User @cedula={cedula}";
+            string query = $"EXEC dbo.User_Select @cedula={cedula}";
             var _signer = new Signature();
 
             try {
@@ -58,7 +59,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void crear(int cedula, string clave, MyDbContext _context)
+        public void crear(string cedula, string clave, MyDbContext _context)
         {
             try {
                 var _signer = new Signature();
@@ -66,7 +67,7 @@ namespace TheCircle.Models
                 string hash = dic["hash"];
                 string salt = dic["salt"];
 
-                string q = $"EXEC dbo.insert_User @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+                string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 _context.Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {
@@ -77,7 +78,7 @@ namespace TheCircle.Models
         public void activar(string cedula, MyDbContext _context)
         {
             try {
-                string q = $"EXEC dbo.update_User_activar @cedula={cedula}";
+                string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
                 _context.Database.ExecuteSqlCommand(q);
             } catch (Exception e) {
                 throw new Exception("Error al activar usuario at User.activar");
@@ -87,14 +88,14 @@ namespace TheCircle.Models
         public void desactivar(string cedula, MyDbContext _context)
         {
             try {
-                string q = $"EXEC dbo.update_User_desactivar @cedula={cedula}";
+                string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
                 _context.Database.ExecuteSqlCommand(q);
             } catch (Exception e) {
                 throw new Exception("Error al desactivar usuario at User.desactivar");
             }
         }
 
-        public void cambiar_clave(int cedula, ,string nuevaclave, string antiguaClave, MyDbContext _context)
+        public void cambiar_clave(int cedula, string nuevaclave, string antiguaClave, MyDbContext _context)
         {
             try {
                 var _signer = new Signature();
@@ -104,7 +105,7 @@ namespace TheCircle.Models
                 var dic = _signer.hashing_SHA256(nuevaclave);
                 string hash = dic["hash"];
                 string salt = dic["salt"];
-                string q = $"EXEC dbo.update_User_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+                string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 
                 _context.Database.ExecuteSqlCommand(q);
 
@@ -113,7 +114,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void reset_clave(int cedula, ,string email, MyDbContext _context)
+        public void reset_clave(int cedula, string email, MyDbContext _context)
         {
             try {
                 var _signer = new Signature();
@@ -124,7 +125,7 @@ namespace TheCircle.Models
                 string hash = dic["hash"];
                 string salt = dic["salt"];
 
-                string q = $"EXEC dbo.update_User_reset @cedula={cedula}, @email='{email}', @clave_hash='{hash}', @salt='{salt}'";
+                string q = $"EXEC dbo.User_Update_reset @cedula={cedula}, @email='{email}', @clave_hash='{hash}', @salt='{salt}'";
                 _context.Database.ExecuteSqlCommand(q);
                 //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
 

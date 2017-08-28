@@ -97,25 +97,39 @@
                         <h5 class="modal-title">Crear una Cuenta</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
-                        <table class="table table-striped" style="text-align:center;">
-
-                            <tbody style="text-align:left;">
-                                <tr>
-                                    <td>C&eacute;dula de Identidad: </td>
-                                    <td><input type="text" class="form-control rounded"/></td>
-                                </tr>
-                                <tr>
-                                    <td>Correo Institucional: </td>
-                                    <td><input type="text" class="form-control rounded" /></td>
-                                </tr>
-                            </tbody>
-                        </table>
-
+                        <form id="crearCuenta" action="login/crear" method="post" style="text-align:left;">
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    C&eacute;dula de Identidad:
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    Clave:
+                                    <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
+                                </div>
+                            </div>
+                            <button type="submit" id="crearButton" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </form>
+                        <script>
+                            $('#crearButton').click(function () {
+                                $.ajax({
+                                    url: 'login/crear',
+                                    type: 'post',
+                                    dataType: 'json',
+                                    data: $('#crearCuenta').serialize(),
+                                    success: function (data, textStatus) {
+                                        if (data.redirect) {
+                                            alert("Se redireciconara");
+                                            window.location.href = data.redirect;
+                                        }                                               
+                                    }
+                                })
+                            })
+                        </script>
                     </div><!--  -->
-                    <div class="text-center" style="margin-bottom: 5px;">
-                        <button type="submit" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
-                        <button type="button" class="btn btn-default">Cancelar</button>
-                    </div><!-- /.form-group -->
                 </div>
             </div>
         </div>

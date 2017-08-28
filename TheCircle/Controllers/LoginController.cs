@@ -93,15 +93,13 @@ namespace TheCircle.Controllers
                 var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido ejecutar el reseteo de clave, favor verifique datos o contactese con Gerencia de sistemas" } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
-
-                return Redirect(loginRedirect);
             }
         }
 
-        [HttpPost("login/create")]
-        public IActionResult Login_create([FromForm]int cedula, [FromForm]string clave)
+        [HttpPost("login/crear")]
+        public IActionResult Login_create([FromForm]string cedula, [FromForm]string clave)
         {
-            if ( cedula<=0 || string.IsNullOrEmpty(clave))
+            if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
                 return Redirect("/");
 
             try {
@@ -115,8 +113,6 @@ namespace TheCircle.Controllers
             } catch (Exception e) {
                 var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas." } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
-
                 return Redirect(loginRedirect);
             }
         }
