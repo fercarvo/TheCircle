@@ -30,7 +30,7 @@ angular.module('appAsistente', ['ui.router'])
     }])
     .factory('notify', [function () {
 
-        return function (titulo, mensaje, tipo) {
+        return function (mensaje, tipo) {
 
             var icono;
 
@@ -43,7 +43,7 @@ angular.module('appAsistente', ['ui.router'])
             $.notify(
                 {
                     icon: icono,
-                    title: titulo,
+                    //title: titulo,
                     message: mensaje,
                     url: '#',
                     target: '_blank'
@@ -51,7 +51,7 @@ angular.module('appAsistente', ['ui.router'])
                 {
                     element: 'body',
                     position: null,
-                    showProgressbar: true,
+                    showProgressbar: false,
                     type: tipo,
                     allow_dismiss: true,
                     newest_on_top: false,
@@ -78,17 +78,46 @@ angular.module('appAsistente', ['ui.router'])
                 });
         };
     }])
+    .factory('date', [function () {
+        return function (date) {
+            try {
+                var format = new Date(date);
+                var day = format.getDate();
+                var month = format.getMonth() + 1;
+                var year = format.getFullYear();
+                return day + '/' + month + '/' + year;
+            } catch (e) {
+                console.log(e);
+                return null;
+            }
+        };
+    }])
     .factory('dataFac', ['$log', '$http', '$rootScope', function ($log, $http, $rootScope) {
 
         var dataFac = {
             stock: null,
+            compuestos: null,
             recetas: null,
             despachos: null,
             localidad: "CC2",
             personal: 0912261476,
             getStock: getStock,
             getRecetas: getRecetas,
-            getDespachos: getDespachos
+            getDespachos: getDespachos,
+            getCompuestos: getCompuestos
+        }
+
+        function getCompuestos() {
+            $http({
+                method: "GET",
+                url: "/api/itemfarmacia",
+                params: {value: "nombres"}
+            }).then(function success(res) {
+                dataFac.compuestos = res.data;
+                $rootScope.$broadcast('dataFac.compuestos'); //Se informa a los controladores que cambio
+            }, function error(err) {
+                console.log("Error cargar nombre items farmacia", err);
+            })
         }
 
         function getStock(localidad) { //Se obtiene el stock completo de esa localidad
@@ -145,7 +174,7 @@ angular.module('appAsistente', ['ui.router'])
 
                 } else if (item.nuevaCantidad > item.cantidad || item.nuevaCantidad <= 0) {
                     console.log("item nuevaCantidad erroneo", item.nuevaCantidad);
-                    notify("Error: ", "La nueva cantidad a despachar es erronea", "danger");
+                    notify("Error, a nueva cantidad a despachar es erronea", "danger");
 
                 } else {
                     data.cantidad = item.cantidad;
@@ -235,7 +264,7 @@ angular.module('appAsistente', ['ui.router'])
                 crearDespacho(receta).then(function success(res) {
 
                     console.log("Despacho exitoso");
-                    notify("Exito: ", "Receta despachada exitosamente", "success");
+                    notify("Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
                     recetas.splice(index, 1);
                     actualizar = refresh.go(cargar);
@@ -243,14 +272,14 @@ angular.module('appAsistente', ['ui.router'])
                 }, function error(e) {
                     console.log("Error despacho", e);
                     $('#myModal').modal('hide'); //Se cierra el modal
-                    notify("Error: ", "No se ha podido despachar", "danger");
+                    notify("No se ha podido despachar", "danger");
                     actualizar = refresh.go(cargar);
                 })
 
             } else {
                 actualizar = refresh.go(cargar);
                 console.log("No se han despachado todos los items", total);
-                notify("Error: ", "No se han despachado todos los items", "danger");
+                notify("No se han despachado todos los items", "danger");
             }
         }
     }])
@@ -280,7 +309,7 @@ angular.module('appAsistente', ['ui.router'])
             actualizar = refresh.go(cargar, 30000); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
-    .controller('stock', ["$log", "$scope", "$state", "$http", "dataFac", "refresh", function ($log, $scope, $state, $http, dataFac, refresh) {
+    .controller('stock', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
         $scope.stock = dataFac.stock;
         var actualizar = refresh.go(cargar, 30000);
 
@@ -295,4 +324,39 @@ angular.module('appAsistente', ['ui.router'])
                 refresh.stop(actualizar);
             }
         }
+    }])
+    .controller('ingresar', ["$scope", "$http", "dataFac", "notify", "date", function ($scope, $http, dataFac, notify, date) {
+        $scope.compuestos = dataFac.compuestos;
+        $scope.items = null;
+        dataFac.getCompuestos();
+        //var actualizar = refresh.go(cargar, 30000);
+
+        $scope.$on('dataFac.compuestos', function () {
+            $scope.compuestos = dataFac.compuestos;
+        })
+
+        $scope.crear = function (compuesto, item, fecha, cantidad) {
+            var data = {
+                compuesto: compuesto,
+                nombre: item,
+                fcaducidad: date(fecha),
+                cantidad: cantidad                
+            }
+            console.log("data a enviar", data);
+
+            $http.post("api/itemfarmacia", data).then(function sucess(res) {
+                console.log("Ingreso exitoso", res.data);
+                notify("Ingreso en farmacia exitoso", "success");
+                compuesto = item = fecha = cantidad = {};
+            }, function err(err) {
+                console.log("No se pudo guardar el ingreso", err)
+                notify("No se ha podido guardar el ingreso en farmacia", "danger");
+            })
+        }
+
+        $scope.cambioCompuesto = function (items) {
+            $scope.items = items;
+        }
+
+
     }])

@@ -28,7 +28,7 @@ namespace TheCircle.Controllers.views
         public IActionResult AsistenteSalud()
         {
             try {
-                //_validate.check(Request, "asistenteSalud");
+                _validate.check(Request, "asistenteSalud");
                 return View();
             } catch (Exception e) {
                 return Redirect("/");

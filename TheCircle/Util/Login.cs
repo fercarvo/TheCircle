@@ -30,7 +30,7 @@ namespace TheCircle.Util
             @cargo: El cargo que deberia tener el cookie de session
             En caso de no cumplir alguna validacion, se dispara un exception
         */
-        internal void check(HttpRequest request, string cargo) {
+        internal Token check(HttpRequest request, string cargo) {
             try {
                 string cookieSession = request.Cookies["session"]; //Se obtiene el string de la cookie
                 Signature _signer = new Signature();
@@ -51,6 +51,8 @@ namespace TheCircle.Util
 
                 if (_signer.checkHMAC(dataToString, token.sign) == false)
                     throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
+
+                return token;
 
             } catch (Exception e) {
                 throw new TokenException("Algo salio mal at Token.check");
