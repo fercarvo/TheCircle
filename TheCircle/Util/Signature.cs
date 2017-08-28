@@ -15,19 +15,11 @@ namespace TheCircle.Util
 
         //ALERTA, cambiar el string del key generado deriva en anulacion de todos los tokens generados
         public Signature(){
-            try
-            {
-                this.encode = Encoding.Unicode;
-                this.key = this.encode.GetBytes("ThECircle_signUnik3");
-                this.salt = new Byte[10];
-                this.sign_algorithm = new HMACSHA256(key);
-                this.hash_algorithm = SHA256.Create();
-                
-            }
-            catch (Exception e) {
-                throw new Exception("Algo se murio en Signature");
-            }
-            
+            this.encode = Encoding.Unicode;
+            this.key = this.encode.GetBytes("ThECircle_signUnik3");
+            this.salt = new Byte[10];
+            this.sign_algorithm = new HMACSHA256(key);
+            this.hash_algorithm = SHA256.Create();            
         }
 
         public Dictionary<string, string> hashing_SHA256(string clave){
