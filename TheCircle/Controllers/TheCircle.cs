@@ -71,7 +71,15 @@ namespace TheCircle.Controllers.views
         [HttpGet("sistema/")]
         public IActionResult Sistema()
         {
-            return View();
+            try
+            {
+                _validate.check(Request, new string[] { "sistema" });
+                return View();
+            }
+            catch (Exception e)
+            {
+                return Redirect("/");
+            }
         }
     }
 }
