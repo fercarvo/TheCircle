@@ -83,11 +83,10 @@ namespace TheCircle.Models
     {
         public int itemReceta { get; set; }
         public int cantidad { get; set; }
-        public int personal { get; set; }
         public string comentario { get; set; }
 
-        public void insert(ItemsDespachoRequest item, MyDbContext _context) {
-            string q = $"EXEC dbo.insert_DespachoReceta @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={item.personal}, @comentario='{item.comentario}'";
+        public void insert(ItemsDespachoRequest item, int personal, MyDbContext _context) {
+            string q = $"EXEC dbo.insert_DespachoReceta @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             try {
                 _context.Database.ExecuteSqlCommand(q);
             } catch (Exception e) {

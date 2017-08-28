@@ -16,10 +16,10 @@ namespace TheCircle.Models
 
         public ReporteEnfermedad() { }
 
-        public ReporteEnfermedad[] getAll(ReporteRequest req, MyDbContext _context)
+        public ReporteEnfermedad[] getAll(ReporteRequest req, Localidad localidad, MyDbContext _context)
         {
             try {
-                string query = $"EXEC dbo.report_EnfermedadByFecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad={req.localidad}";
+                string query = $"EXEC dbo.report_EnfermedadByFecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad='{localidad}'";
                 return _context.ReporteEnfermedad.FromSql(query).ToArray();
             } catch (Exception e) {
                 throw new Exception("Error al cargar reporte de enfermedades, ReporteEnfermedad.getAll");
@@ -34,8 +34,6 @@ namespace TheCircle.Models
         public string desde { get; set; }
         [BindRequired]
         public string hasta { get; set; }
-        public string localidad { get; set; }
-        public int doctor { get; set;}
 
         public ReporteRequest() { }
     }
@@ -53,9 +51,9 @@ namespace TheCircle.Models
 
         public ReporteRemision() { }
 
-        public ReporteRemision[] getAll(ReporteRequest req, MyDbContext _context)
+        public ReporteRemision[] getAll_Doctor_Date(ReporteRequest req, int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+            string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             try {
                 var data = _context.ReporteRemision.FromSql(query).ToArray();
                 return data;

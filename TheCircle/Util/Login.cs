@@ -4,6 +4,7 @@ using System;
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using TheCircle.Models;
+using System.Linq;
 
 namespace TheCircle.Util
 {
@@ -30,7 +31,7 @@ namespace TheCircle.Util
             @cargo: El cargo que deberia tener el cookie de session
             En caso de no cumplir alguna validacion, se dispara un exception
         */
-        internal Token check(HttpRequest request, string cargo) {
+        internal Token check(HttpRequest request, string[] cargos) {
             try {
                 string cookieSession = request.Cookies["session"]; //Se obtiene el string de la cookie
                 Signature _signer = new Signature();
@@ -44,7 +45,7 @@ namespace TheCircle.Util
                 if (token.data.expireAt < DateTime.Now)
                     throw new TokenException("Token expirado, at Token.check");
 
-                if (token.data.cargo != cargo)
+                if(!cargos.Contains(token.data.cargo))
                     throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
 
                 string dataToString = JsonConvert.SerializeObject(token.data);

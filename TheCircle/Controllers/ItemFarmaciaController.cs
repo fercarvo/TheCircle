@@ -19,34 +19,35 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/ItemFarmacia
-        [HttpGet("api/itemfarmacia/{localidad}")]
+        [HttpGet("api/itemfarmacia")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        public IActionResult GetItems(string localidad)
+        public IActionResult GetItems()
         {
             ItemFarmacia item = new ItemFarmacia();
 
             try {
-                ItemFarmacia[] stock = item.getAllByLocalidad(localidad, _context);
+
+                Token token = _validate.check(Request, new string[] {"medico", "asistenteSalud"});
+
+                ItemFarmacia[] stock = item.getAllByLocalidad(token.data.localidad, _context);
                 return Ok(stock);
             } catch (Exception e) {
-                Console.WriteLine(e);
-                return BadRequest();
+                if (e is TokenException)
+                    return Unauthorized();
+                return BadRequest("Something broke");
             }
         }
 
-        [HttpGet("api/itemfarmacia")]
+        [HttpGet("api/itemnombre")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
-        public IActionResult GetNombres([FromQuery]string value) {
+        public IActionResult GetNombres() {
 
             var c = new Compuesto();
             var compuestos = new List<Compuesto>();
 
-            if (value != "nombres")
-                return BadRequest();
-
             try
             {
-                var token = _validate.check(Request, "asistenteSalud");
+                var token = _validate.check(Request, new string[] {"asistenteSalud"});
 
                 compuestos = c.getAllBy_Localidad(token.data.localidad, _context);
                 return Ok(compuestos);
@@ -69,7 +70,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                var token = _validate.check(Request, "asistenteSalud");
+                Token token = _validate.check(Request, new string[] { "asistenteSalud" });
                 i.insert(item, token.data.localidad, token.data.cedula, _context);
                 return Ok();
             }

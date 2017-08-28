@@ -88,8 +88,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             return $http.get("/api/enfermedad", {cache: true});
         }
 
-        function getStock(localidad) {
-            $http.get("/api/itemfarmacia/" + localidad, {cache: false}).then(function success(res) {
+        function getStock() {
+            $http.get("/api/itemfarmacia").then(function success(res) {
                 console.log("Actualizando Stock by localidad");
                 dataFactory.stock = res.data;
                 $rootScope.$broadcast('dataFactory.stock'); //Se informa a los controladores que cambio stock
@@ -98,8 +98,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             })
         }
 
-        function getRecetas(doctor) {
-            $http.get("/api/reporte/receta/" + doctor, {cache: false}).then(function success(res) {
+        function getRecetas() {
+            $http.get("/api/reporte/receta").then(function success(res) {
                 console.log("recetas by status", res.data);
                 dataFactory.recetas = res.data;
                 $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
@@ -167,8 +167,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         return {
-            doctor: 0905134136,
-            localidad : "CC2",
+            doctor: 0,
+            localidad : "",
             apadrinado : {},
             foto : "/images/ci.png",
             codigo : null,
@@ -293,13 +293,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         $scope.send = function () {
             var AtencionNueva = {
-                doctor: atencionFactory.doctor,
                 apadrinado: atencionFactory.codigo,
                 tipo: atencionFactory.atencion.tipo,
                 diagnosticos: [atencionFactory.atencion.diagp,
                   atencionFactory.atencion.diag1,
                   atencionFactory.atencion.diag2],
-                localidad: atencionFactory.localidad,
                 peso: atencionFactory.atencion.peso,
                 talla: atencionFactory.atencion.talla
             }
@@ -385,7 +383,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         function cargar() {
             if ($state.includes('atencion.receta') && atencionFactory.codigo !== null) {
-                dataFactory.getStock(atencionFactory.localidad);
+                dataFactory.getStock();
             } else {
                 refresh.stop(actualizar);
             }
@@ -397,12 +395,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         })
 
         if (atencionFactory.receta.id === null) {
-            var RecetaRequest = {
-              doctor: atencionFactory.doctor,
+            var data = {
               apadrinado: atencionFactory.codigo
             }
 
-            $http.post("/api/receta", RecetaRequest).then(function success(res) {
+            $http.post("/api/receta", data).then(function success(res) {
                 console.log("Se creo receta", res.data);
                 atencionFactory.receta.id = res.data.id;
                 $scope.receta.id = atencionFactory.receta.id;
@@ -416,18 +413,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $('.modal').modal('hide'); //Se cierra el modal
             actualizar = refresh.go(cargar); //Se empiezan a actualizar las recetas
             $scope.receta.items.push(angular.copy(item)); //Se actualiza la receta con el nuevo item
-            //var obj = angular.copy(item);
-            //console.log("Item copiado ", obj);
-
-            //atencionFactory.receta.items.push(obj);
-            //$scope.receta.items = atencionFactory.receta.items;
-            //console.log("Receta despues de agregar item", $scope.receta.items);
         }
 
         $scope.eliminarItem = function (itemsReceta, index) {
             console.log("Eliminando item");
             itemsReceta.splice(index, 1); //Se elimina el item de $scope.receta.items
-            //atencionFactory.receta.items = itemsReceta;
         }
 
         $scope.select = function (item) {
@@ -468,7 +458,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         function cargar() {
             if ($state.includes('anulaciones')) {
-                dataFactory.getRecetas(atencionFactory.doctor);
+                dataFactory.getRecetas();
             } else {
                 refresh.stop(actualizar);
             }
@@ -513,13 +503,12 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.generar = function (desde, hasta) {
             var data = {
                 desde: date(desde),
-                hasta: date(hasta),
-                doctor: atencionFactory.doctor
+                hasta: date(hasta)
             }
 
             $http({
                 method: "GET",
-                url: "/api/reporte/atencion",
+                url: "/api/reporte/atencion/date",
                 params: data
             }).then(function success(res) {
                 $scope.atenciones.all = res.data;
@@ -543,13 +532,12 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             var data = {
                 desde: date(desde),
-                hasta: date(hasta),
-                doctor: atencionFactory.doctor
+                hasta: date(hasta)
             }
 
             $http({
                 method: "GET",
-                url: "/api/reporte/remision",
+                url: "/api/reporte/remision/date",
                 params: data
             }).then(function success(res) {
                 $scope.remisiones.all = res.data;
@@ -575,13 +563,12 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.generar = function (desde, hasta) {
             var data = {
                 desde: date(desde),
-                hasta: date(hasta),
-                doctor: atencionFactory.doctor
+                hasta: date(hasta)
             }
 
             $http({
                 method: "GET",
-                url: "/api/reporte/receta",
+                url: "/api/reporte/receta/date",
                 params: data
             }).then(function success(res) {
                 $scope.recetas.all = res.data;
@@ -603,13 +590,12 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.generar = function (desde, hasta) {
             var data = {
                 desde: date(desde),
-                hasta: date(hasta),
-                localidad: atencionFactory.localidad
+                hasta: date(hasta)
             }
 
             $http({
                 method: "GET",
-                url: "/api/reporte/enfermedad",
+                url: "/api/reporte/enfermedad/date",
                 params: data
             }).then(function success(res) {
                 $scope.data = [];

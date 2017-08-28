@@ -23,21 +23,22 @@ namespace TheCircle.Models
 
         public void insert (int receta, ItemRecetaRequest i, MyDbContext _context) {
             string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
-              $", @idDiagnostico={i.diagnostico}" +
-              $", @cantidad={i.cantidad}" +
-              $", @receta={receta}" +
-              $", @posologia='{i.posologia}'";
+                $", @idDiagnostico={i.diagnostico}" +
+                $", @cantidad={i.cantidad}" +
+                $", @receta={receta}" +
+                $", @posologia='{i.posologia}'";
 
-              try {
-                  _context.Database.ExecuteSqlCommand(query);
-              } catch (Exception e) {
-              }
+                try {
+                    _context.Database.ExecuteSqlCommand(query);
+                } catch (Exception e) {
+                    throw new Exception("No se pudo insertar el item de Receta at ItemReceta.insert");
+                }
         }
 
         public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {
             try {
-                var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}");
-                return data.ToArray();
+                var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}").ToArray();
+                return data;
             } catch (Exception e) {
                 return null;
             }

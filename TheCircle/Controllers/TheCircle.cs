@@ -28,7 +28,7 @@ namespace TheCircle.Controllers.views
         public IActionResult AsistenteSalud()
         {
             try {
-                _validate.check(Request, "asistenteSalud");
+                _validate.check(Request, new string[] { "asistenteSalud" });
                 return View();
             } catch (Exception e) {
                 return Redirect("/");
@@ -40,7 +40,7 @@ namespace TheCircle.Controllers.views
         public IActionResult Medico()
         {
             try {
-                //_validate.check(Request, "medico");
+                _validate.check(Request, new string[] { "medico" });
                 return View();
             } catch (Exception e) {
                 return Redirect("/");

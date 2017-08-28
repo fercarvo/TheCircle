@@ -20,9 +20,9 @@ namespace TheCircle.Models
 
         public ItemFarmacia() { }
 
-        public ItemFarmacia[] getAllByLocalidad (string localidad, MyDbContext _context)
+        public ItemFarmacia[] getAllByLocalidad (Localidad localidad, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_ItemFarmacia @localidad={localidad}";
+            string query = $"EXEC dbo.select_ItemFarmacia @localidad='{localidad}'";
 
             try {
                 var data = _context.ItemFarmacias.FromSql(query).ToArray();

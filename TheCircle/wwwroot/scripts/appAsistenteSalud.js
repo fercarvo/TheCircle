@@ -92,15 +92,15 @@ angular.module('appAsistente', ['ui.router'])
             }
         };
     }])
-    .factory('dataFac', ['$log', '$http', '$rootScope', function ($log, $http, $rootScope) {
+    .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var dataFac = {
             stock: null,
             compuestos: null,
             recetas: null,
             despachos: null,
-            localidad: "CC2",
-            personal: 0912261476,
+            localidad: "",
+            personal: 0,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos,
@@ -110,8 +110,7 @@ angular.module('appAsistente', ['ui.router'])
         function getCompuestos() {
             $http({
                 method: "GET",
-                url: "/api/itemfarmacia",
-                params: {value: "nombres"}
+                url: "/api/itemnombre"
             }).then(function success(res) {
                 dataFac.compuestos = res.data;
                 $rootScope.$broadcast('dataFac.compuestos'); //Se informa a los controladores que cambio
@@ -120,8 +119,8 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getStock(localidad) { //Se obtiene el stock completo de esa localidad
-            $http.get("/api/itemfarmacia/" + localidad).then(function success(res) {
+        function getStock() { //Se obtiene el stock completo de esa localidad
+            $http.get("/api/itemfarmacia/").then(function success(res) {
                 console.log("Stock de farmacia", res.data);
                 dataFac.stock = res.data;
                 $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
@@ -130,8 +129,12 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getRecetas(localidad) { //Se obtienen todas las recetas a despachar en esa localidad
-            $http.get("/api/receta/" + localidad).then(function success(res) {
+        function getRecetas() { //Se obtienen todas las recetas a despachar en esa localidad
+            $http({
+                method: "GET",
+                url: "/api/receta",
+                params: { status: 0}
+            }).then(function success(res) {
                 console.log("Recetas a despachar", res.data);
                 dataFac.recetas = res.data;
                 $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
@@ -140,8 +143,8 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getDespachos(asistente) { //Se obtienen todos los despachos de la BDD
-            $http.get("api/despacho/receta/" + asistente).then(function success(res) {
+        function getDespachos() { //Se obtienen todos los despachos de la BDD
+            $http.get("api/despacho/receta").then(function success(res) {
                 console.log("Despachos del personal", res.data);
                 dataFac.despachos = res.data;
                 $rootScope.$broadcast('dataFac.despachos'); //Se informa a los controladores que cambio despachos
@@ -224,7 +227,7 @@ angular.module('appAsistente', ['ui.router'])
 
         function cargar() {
             if ($state.includes('despachar')) {
-                dataFac.getRecetas(dataFac.localidad);
+                dataFac.getRecetas();
             } else {
                 refresh.stop(actualizar);
             }
@@ -319,7 +322,7 @@ angular.module('appAsistente', ['ui.router'])
 
         function cargar() {
             if ($state.includes('stock')) {
-                dataFac.getStock(dataFac.localidad);
+                dataFac.getStock();
             } else {
                 refresh.stop(actualizar);
             }

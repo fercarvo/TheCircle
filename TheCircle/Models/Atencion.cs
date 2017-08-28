@@ -21,15 +21,15 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
-        public Atencion crear(AtencionRequest request, MyDbContext _context)
+        public Atencion crear(AtencionRequest request, int doctor, Localidad localidad,MyDbContext _context)
         {
             Atencion atencion;
             Diagnostico d = new Diagnostico();
 
             string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" +
-                $", @doctor={request.doctor}" +
+                $", @doctor={doctor}" +
                 $", @tipo={request.tipo}" +
-                $", @localidad={request.localidad}" +
+                $", @localidad={localidad}" +
                 $", @peso='{request.peso}'" +
                 $", @talla='{request.talla}'" +
                 $", @id = @id OUTPUT";
@@ -46,9 +46,9 @@ namespace TheCircle.Models
             }
         }
 
-        public Atencion[] getBy_doctor_date(ReporteRequest req, MyDbContext _context)
+        public Atencion[] getBy_doctor_date(ReporteRequest req, int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={req.doctor}";
+            string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             try {
                 var data = _context.Atenciones.FromSql(query).ToArray();
                 return data;
@@ -61,11 +61,9 @@ namespace TheCircle.Models
 
     public class AtencionRequest
     {
-        public int doctor { get; set; }
         public int apadrinado { get; set; }
         public string tipo { get; set; }
         public string[] diagnosticos { get; set; }
-        public string localidad { get; set; }
         public int? peso { get; set; }
         public int? talla { get; set; }
 
