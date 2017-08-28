@@ -49,5 +49,11 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        [HttpGet("sistema/")]
+        public IActionResult Sistema()
+        {
+            return View();
+        }
     }
 }
