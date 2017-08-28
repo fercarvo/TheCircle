@@ -47,7 +47,7 @@
 
 
             <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
-                <div style="background-color: rgba(51, 122, 183, 0.74);text-align: center;color: rgb(255, 255, 255);font-size: 150%;">
+                <div style="background-color: rgba(51, 122, 183, 0.74);text-align: center;color: rgb(255, 255, 255);font-size: 120%;">
                     @ViewData["mensaje"]
                 </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
@@ -100,18 +100,18 @@
                         <form id="crearCuenta" action="login/crear" method="post" style="text-align:left;">
                             <div class="form-group">
                                 <div class="browser-default">
-                                    C&eacute;dula de Identidad:
                                     <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    Clave:
                                     <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
                                 </div>
                             </div>
-                            <button type="submit" id="crearButton" class="btn btn-info"><span class="glyphicon glyphicon-envelope"></span> Enviar</button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            <div class="text-center ">
+                                <button type="submit" id="crearButton" class="btn btn-info">Enviar</button>
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
                         </form>
                         <script>
                             $('#crearButton').click(function () {
