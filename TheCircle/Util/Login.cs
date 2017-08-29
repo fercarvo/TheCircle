@@ -19,10 +19,10 @@ namespace TheCircle.Util
 
             Data data = new Data(user, loc);
             Signature _signer = new Signature();
-            string newDataToString = JsonConvert.SerializeObject(data);
+            string data_String = JsonConvert.SerializeObject(data);
 
             this.data = data;
-            this.sign = _signer.sign_HMAC(newDataToString);
+            this.sign = _signer.sign_HMAC(data_String);
         }
 
         public Token() { }
@@ -37,7 +37,7 @@ namespace TheCircle.Util
                 Signature _signer = new Signature();
                 Token token;
 
-                if (string.IsNullOrEmpty(cookieSession) || string.IsNullOrEmpty(cookieSession))
+                if (string.IsNullOrEmpty(cookieSession))
                     throw new TokenException("No existe cookieSession/cargo, at Token.check");
 
                 token = JsonConvert.DeserializeObject<Token>(cookieSession); //Se parcea el string de cookie a Token.
