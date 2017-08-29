@@ -33,8 +33,7 @@ namespace TheCircle.Models
                 return data;
 
             } catch (Exception e) {
-                Console.WriteLine(e);
-                throw new Exception("Error crear remision medica, Remision.crear");
+                throw new Exception("Error crear remision medica at Remision.crear");
             }
         }
     }
@@ -47,5 +46,31 @@ namespace TheCircle.Models
         public string sintomas { get; set; }
 
         public RemisionRequest() { }
+    }
+
+    public class ReporteRemision
+    {
+        [Key]
+        public int id { get; set; }
+        public int codigoApadrinado { get; set; }
+        public string institucion { get; set; }
+        public string especialidad { get; set; }
+        public decimal monto { get; set; }
+        public string sintomas { get; set; }
+        public DateTime fecha { get; set; }
+
+        public ReporteRemision() { }
+
+        public ReporteRemision[] getAll_Doctor_Date(ReporteRequest req, int doctor, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
+            try {
+                var data = _context.ReporteRemision.FromSql(query).ToArray();
+                return data;
+            } catch (Exception e) {
+                throw new Exception("Error al cargar remisiones by doctor, ReporteRemision.getAll");
+            }
+        }
+
     }
 }

@@ -21,7 +21,7 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
-        public Atencion crear(AtencionRequest request, int doctor, Localidad localidad,MyDbContext _context)
+        public Atencion crear(AtencionRequest request, int doctor, Localidad localidad, MyDbContext _context)
         {
             Atencion atencion;
             Diagnostico d = new Diagnostico();
@@ -70,6 +70,7 @@ namespace TheCircle.Models
         public AtencionRequest() { }
     }
 
+    
     public class AtencionResponse
     {
         public Atencion atencion { get; set; }
@@ -77,6 +78,5 @@ namespace TheCircle.Models
 
         public AtencionResponse() { }
     }
-
-
+    
 }

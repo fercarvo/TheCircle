@@ -130,11 +130,7 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         function getRecetas() { //Se obtienen todas las recetas a despachar en esa localidad
-            $http({
-                method: "GET",
-                url: "/api/receta",
-                params: { status: 0}
-            }).then(function success(res) {
+            $http.get("/api/receta/localidad/pordespachar").then(function success(res) {
                 console.log("Recetas a despachar", res.data);
                 dataFac.recetas = res.data;
                 $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
@@ -144,7 +140,7 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         function getDespachos() { //Se obtienen todos los despachos de la BDD
-            $http.get("api/despacho/receta").then(function success(res) {
+            $http.get("api/receta/asistente").then(function success(res) {
                 console.log("Despachos del personal", res.data);
                 dataFac.despachos = res.data;
                 $rootScope.$broadcast('dataFac.despachos'); //Se informa a los controladores que cambio despachos
@@ -157,10 +153,10 @@ angular.module('appAsistente', ['ui.router'])
     }])
     .factory('crearDespacho', ["$log", "dataFac", "$http", "notify", function ($log, dataFac, $http, notify) {
         return function (receta) {
-            var despacho = {}
 
-            despacho.id = receta.receta.id;
-            despacho.items = [];
+            var recetaId = receta.receta.id;
+            //despacho.id = receta.receta.id;
+            items = [];
 
             receta.items.forEach(function (item) {
 
@@ -173,20 +169,20 @@ angular.module('appAsistente', ['ui.router'])
 
                 if (item.nuevaCantidad < item.cantidad) {
                     data.cantidad = item.nuevaCantidad;
-                    despacho.items.push(data);
+                    items.push(data);
 
                 } else if (item.nuevaCantidad > item.cantidad || item.nuevaCantidad <= 0) {
                     console.log("item nuevaCantidad erroneo", item.nuevaCantidad);
-                    notify("Error, a nueva cantidad a despachar es erronea", "danger");
+                    notify("Error, nueva cantidad a despachar es erronea", "danger");
 
                 } else {
                     data.cantidad = item.cantidad;
-                    despacho.items.push(data);
+                    items.push(data);
                 }
             })
 
-            console.log("Despacho", despacho);
-            return $http.post("api/despacho/receta", despacho);
+            console.log("Items", items);
+            return $http.put("api/receta/" + recetaId, items);
 
         }
     }])

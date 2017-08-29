@@ -56,6 +56,7 @@ namespace TheCircle.Models
         public ItemRecetaRequest() { }
     }
 
+    /*
     public class RecetaItemsRequest
     {
         public int idReceta { get; set; }
@@ -63,4 +64,5 @@ namespace TheCircle.Models
 
         public RecetaItemsRequest() { }
     }
+    */
 }

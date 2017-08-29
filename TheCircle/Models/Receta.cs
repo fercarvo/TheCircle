@@ -61,9 +61,9 @@ namespace TheCircle.Models
             }
         }
 
-        public Receta[] getAllByDoctorByDate(ReporteRequest request, int doctor, MyDbContext _context)
+        public Receta[] getAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaByDoctor @doctor={doctor}, @desde='{request.desde}', @hasta='{request.hasta}'";
+            string query = $"EXEC dbo.select_RecetaByDoctor @doctor={doctor}, @desde='{fecha.desde}', @hasta='{fecha.hasta}'";
             try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;
@@ -83,14 +83,13 @@ namespace TheCircle.Models
             }
         }
 
-        public Receta crear (int apadrinado, int doctor, MyDbContext _context) {
-
-            Receta receta;
+        public Receta crear (int apadrinado, int doctor, MyDbContext _context) 
+        {
             string query = $"DECLARE @id int EXEC dbo.insert_Receta @idDoctor={doctor}" +
               $", @idApadrinado={apadrinado}, @id = @id OUTPUT";
 
             try {
-                receta = _context.Recetas.FromSql(query).First();
+                var receta = _context.Recetas.FromSql(query).First();
                 return receta;
             } catch (Exception e) {
                 Console.WriteLine(e);
@@ -164,13 +163,13 @@ namespace TheCircle.Models
             return recetasTotales;
         }
 
-        public List<RecetaTotal> reporteByDoctor (ReporteRequest request, int doctor, MyDbContext _context)
+        public List<RecetaTotal> reporteByDoctor (Fecha fecha, int doctor, MyDbContext _context)
         {
 
             Receta r = new Receta();
             ItemReceta i = new ItemReceta();
 
-            Receta[] recetas = r.getAllByDoctorByDate(request, doctor, _context);
+            Receta[] recetas = r.getAllByDoctorByDate(fecha, doctor, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
             if (recetas != null) {
