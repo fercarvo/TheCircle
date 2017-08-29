@@ -29,8 +29,8 @@ namespace TheCircle.Models
             string q = $"EXEC dbo.select_DiagnosticoByAtencion @atencion={idAtencion}";
 
             try {
-                var data = _context.Diagnosticos.FromSql(q); //Retorna los diagnosticos de esa AtencionM
-                return data.ToArray();
+                var data = _context.Diagnosticos.FromSql(q).ToArray(); //Retorna los diagnosticos de esa AtencionM
+                return data;
             } catch (Exception e) {
                 return null;
             }

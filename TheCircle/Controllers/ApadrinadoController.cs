@@ -8,7 +8,7 @@ using TheCircle.Util;
 namespace TheCircle.Controllers
 {
     [Produces("application/json")]
-    [Route("api/apadrinado")]
+    [Route("api")]
     public class ApadrinadoController : Controller
     {
 
@@ -20,14 +20,14 @@ namespace TheCircle.Controllers
             _validate = new Token();
         }
 
-        [HttpGet("{cod}")]
+        [HttpGet("apadrinado/{cod}")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetApadrinado(int cod)
         {
             Apadrinado apadrinado = new Apadrinado();
 
             try {
-                //_validate.check(Request, "medico");
+                _validate.check(Request, new string[] {"medico"});
 
                 apadrinado = apadrinado.get(cod, _context);
                 return Ok(apadrinado);
@@ -39,14 +39,14 @@ namespace TheCircle.Controllers
         }
 
 
-        [HttpGet("foto/{cod}")]
+        [HttpGet("apadrinado/foto/{cod}")]
         [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
         public IActionResult GetApadrinadoFoto(int cod)
         {
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
             Foto foto;
             try {
-                //_validate.check(Request, "medico");
+                _validate.check(Request, new string[] {"medico" });
 
                 foto = _context.Fotos.FromSql(query).First();
                 var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");

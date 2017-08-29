@@ -44,6 +44,7 @@ namespace TheCircle.Util
             }
         }
 
+        //Recibe un string, retorna la firma de ese string
         public string sign_HMAC(string data) {
             try {
                 byte[] data_Byte = this.encode.GetBytes(data);

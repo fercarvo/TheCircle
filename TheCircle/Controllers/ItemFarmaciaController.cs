@@ -6,7 +6,8 @@ using TheCircle.Util;
 
 namespace TheCircle.Controllers
 {
-
+    [Produces("application/json")]
+    [Route("api")]
     public class ItemFarmaciaController : Controller
     {
         private readonly MyDbContext _context;
@@ -19,7 +20,7 @@ namespace TheCircle.Controllers
         }
 
         // GET: api/ItemFarmacia
-        [HttpGet("api/itemfarmacia")]
+        [HttpGet("itemfarmacia")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetItems()
         {
@@ -31,6 +32,7 @@ namespace TheCircle.Controllers
 
                 ItemFarmacia[] stock = item.getAllByLocalidad(token.data.localidad, _context);
                 return Ok(stock);
+
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
@@ -38,29 +40,28 @@ namespace TheCircle.Controllers
             }
         }
 
-        [HttpGet("api/itemnombre")]
+        [HttpGet("itemnombre")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
         public IActionResult GetNombres() {
 
             var c = new Compuesto();
             var compuestos = new List<Compuesto>();
 
-            try
-            {
+            try {
+
                 var token = _validate.check(Request, new string[] {"asistenteSalud"});
 
                 compuestos = c.getAllBy_Localidad(token.data.localidad, _context);
                 return Ok(compuestos);
-            }
-            catch (Exception e)
-            {
+
+            } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
                 return BadRequest("Something broke");
             }
         }
 
-        [HttpPost("api/itemfarmacia")]
+        [HttpPost("itemfarmacia")]
         public IActionResult PostItem([FromBody]RequestItem item)
         {
             var i = new ItemFarmacia();
@@ -68,14 +69,14 @@ namespace TheCircle.Controllers
             if (item == null)
                 return BadRequest();
 
-            try
-            {
+            try {
+                
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
+
                 i.insert(item, token.data.localidad, token.data.cedula, _context);
                 return Ok();
-            }
-            catch (Exception e)
-            {
+
+            } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
                 return BadRequest("Something broke");

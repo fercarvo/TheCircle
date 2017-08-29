@@ -99,7 +99,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         function getRecetas() {
-            $http.get("/api/reporte/receta").then(function success(res) {
+            $http.get("api/receta/medico/activas").then(function success(res) {
                 console.log("recetas by status", res.data);
                 dataFactory.recetas = res.data;
                 $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
@@ -167,8 +167,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         return {
-            doctor: 0,
-            localidad : "",
+            //doctor: 0,
+            //localidad : "",
             apadrinado : {},
             foto : "/images/ci.png",
             codigo : null,
@@ -394,18 +394,17 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $scope.receta.items = atencionFactory.receta.items;
         })
 
-        if (atencionFactory.receta.id === null) {
-            var data = {
-              apadrinado: atencionFactory.codigo
-            }
+        if (atencionFactory.receta.id === null && atencionFactory.codigo !== null) {
+            var apadrinado = atencionFactory.codigo;
 
-            $http.post("/api/receta", data).then(function success(res) {
+            $http.post("/api/receta/apadrinado/" + apadrinado).then(function success(res) {
                 console.log("Se creo receta", res.data);
                 atencionFactory.receta.id = res.data.id;
                 $scope.receta.id = atencionFactory.receta.id;
-            }, function err(err) {
+            }, function (err) {
                 console.log("No se creo receta", err);
-            });
+                notify("No se pudo crear ID de la receta", "danger");
+            })
 
         }
 
@@ -429,9 +428,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.guardarReceta = function () {
-            var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta.items };
+            //var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta.items };
+            var idReceta = atencionFactory.receta.id;
+            var items = atencionFactory.receta.items;
 
-            $http.post("/api/itemsreceta", JSON.parse(angular.toJson(data))).then(function success(res) {
+            console.log("Items a enviar", JSON.parse(angular.toJson(items)));
+
+            $http.post("/api/receta/" + idReceta, JSON.parse(angular.toJson(items))).then(function success(res) {
                 console.log("Se crearon los items", res.data);
                 notify("Se creo la receta exitosamente", "success");
                 disable.receta = true;
@@ -568,7 +571,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http({
                 method: "GET",
-                url: "/api/reporte/receta/date",
+                url: "/api/receta/medico/fecha",
                 params: data
             }).then(function success(res) {
                 $scope.recetas.all = res.data;

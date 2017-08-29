@@ -8,7 +8,8 @@ using TheCircle.Util;
 
 namespace TheCircle.Models
 {
-    public class RecetaDespacho {
+    public class RecetaDespacho 
+    {
         [Key]
         public Receta receta { get; set; }
         public ItemDespacho[] items { get; set; }
@@ -39,7 +40,8 @@ namespace TheCircle.Models
         }
     }
 
-    public class ItemDespacho {
+    public class ItemDespacho 
+    {
         [Key]
         public int id { get; set; }
         public string nombreItem { get; set; }
@@ -72,12 +74,14 @@ namespace TheCircle.Models
         }
     }
 
+    /*
     public class DespachoRecetaRequest
     {
         public int id { get; set; }
         public ItemsDespachoRequest[] items { get; set; }
 
     }
+    */
 
     public class ItemsDespachoRequest
     {

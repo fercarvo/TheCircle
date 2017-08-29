@@ -39,20 +39,20 @@ namespace TheCircle.Controllers
             Dictionary<string, string> parameters;
             string loginRedirect;
 
-            if (ModelState.IsValid) {
 
-                try {
-                    usuario = usuario.get(request, _context);
-                    Token token = new Token(usuario, request.localidad);
-                    string tokenToString = JsonConvert.SerializeObject(token);
+            if (!ModelState.IsValid) {
+                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Precaucion, data fuera de rangos" } };
+                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(loginRedirect);    
+            }
 
-                    var options = new CookieOptions() {
-                        Expires = token.data.expireAt,
-                        HttpOnly = true
-                    };
 
-                    Response.Cookies.Append("session", tokenToString, options);
+            try {
+                usuario = usuario.get(request, _context);
+                Token token = new Token(usuario, request.localidad);
+                string tokenToString = JsonConvert.SerializeObject(token);
 
+<<<<<<< HEAD
                     if (token.data.cargo == "medico")
                         return Redirect("/medico");
                     else if (token.data.cargo == "asistenteSalud")
@@ -67,20 +67,32 @@ namespace TheCircle.Controllers
                         return Redirect("/contralor");
                     else
                         return Redirect("logout");
+=======
+                var options = new CookieOptions() {
+                    Expires = token.data.expireAt,
+                    HttpOnly = true
+                };
+>>>>>>> 7111e5740a9673c9c1670bd7b34ffc24e94e681c
 
-                } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
+                Response.Cookies.Append("session", tokenToString, options);
 
-                    parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
-                    loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
-                    return Redirect(loginRedirect);
-                }
-            } //Si la data enviada en el formulario esta incorrecta
+                if (token.data.cargo == "medico")
+                    return Redirect("/medico");
+                else if (token.data.cargo == "asistenteSalud")
+                    return Redirect("/asistente");
+                else if (token.data.cargo == "sistema")
+                    return Redirect("/sistema");
+                else
+                    return Redirect("logout");
 
-            parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Precaucion, data fuera de rangos" } };
-            loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 
-            return Redirect(loginRedirect);
+            } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
+                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
+                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(loginRedirect);
+            }
+            
         }
 
         [HttpPost("login/reset")]
