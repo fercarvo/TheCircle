@@ -32,6 +32,7 @@
                         <input ng-disabled="disable" type="text" pattern="[0-9]{5,11}" title="Solo números, mínimo 5, máximo 11" class="form-control" placeholder="código" ng-model="codigo" required>
                     </div>
                     <button data-ripple ng-disabled="disable" type="submit" class="btn btn-info col-sm-1" ng-click="buscarApadrinado(codigo)">Buscar</button>
+                    <button data-toggle="modal" data-target="#myModal_Atencion" class="btn btn-info col-sm-2" style="margin-left:2%;" data-ripple>Atencion Previa</button>
                     <button data-ripple ng-show="disable" id="btn-NuevaAtencion" onClick="document.location.reload();" class="btn btn-info2 col-sm-2" style="float:right;margin-right:2%;">Nueva Atención</button>
                     
                 </div>
@@ -107,6 +108,43 @@
                 <ui-view></ui-view>
             </div><!-- /.tab-content -->
         </div><!-- /.panel-body -->
+
+        <!--Modal Item receta-->
+        <div id="myModal_Atencion" class="modal fade" style="margin-top:10%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Atención Médica Previa</h5>
+                    </div>
+                    <form>
+                        <div class="panel-body" style=" padding-top: 5px;padding-bottom:10px;">
+                            <table class="table table-striped" style="text-align:left;">
+                                <tbody>
+                                    <tr>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">Enfermedad Principal Previa</label></td>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">xxxxxxxx</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">Medicamento Recetado</label></td>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">yyyyyyyyy</label></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">Fue efectivo el medicamento</label></td>
+                                        <td><input type="radio" name="chk_group" value="Si" />Si <input type="radio" name="chk_group" value="No" />No</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!--  -->
+                        <div class="text-center ">
+                            <button data-ripple type="submit" class="btn btn-info">Guardar</button>
+                            <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div><!-- /.form-group -->
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <!--Aqui Termina el modal para el item de remision-->
 
     </div>
 </div>
