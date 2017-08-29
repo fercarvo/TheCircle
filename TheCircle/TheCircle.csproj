@@ -65,7 +65,6 @@
     <Content Include="wwwroot\views\medico\estadistica.remisiones.html" />
     <Content Include="wwwroot\views\sistema\desactivarusuario.html" />
     <Content Include="wwwroot\views\sistema\modificarusuario.html" />
-    <Content Include="wwwroot\views\sistema\personal.cshtml" />
     <Content Include="wwwroot\views\sistema\activarusuario.html" />
   </ItemGroup>
   <ItemGroup>

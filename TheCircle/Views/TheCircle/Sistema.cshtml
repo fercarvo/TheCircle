@@ -46,6 +46,9 @@
             <div class="nav navbar-nav navbar-right" style="color:#901F61;height:50px;width:50px;color:#fff;">
                 <button onClick="document.location.assign('logout');" style="background-color: inherit; border: none; position: relative;height:50px;width:50px;" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
             </div>
+            <div class="nav navbar-nav navbar-right" style="color:#901F61;height:50px;width:50px;color:#fff;">
+                <button data-toggle="modal" data-target="#myModal_Contraseña" style="background-color: inherit; border: none; position: relative;height:50px;width:50px;" data-ripple><span class="glyphicon glyphicon-user"></span></button>
+            </div>
         </div>
     </nav>
     <!-- TOP NAVIGATION ENDS -->
@@ -128,6 +131,37 @@
             <ui-view></ui-view>
         </div>
         <!-- CONTENT ENDS -->
+
+        <!--Modal Item receta-->
+        <div id="myModal_Contraseña" class="modal fade" style="margin-top:10%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modificar su Contraseña de Usuario</h5>
+                    </div>
+                    <form>
+                        <div class="panel-body" style=" padding-top: 5px;padding-bottom:10px;">
+                            <table class="table table-striped" style="text-align:left;">
+                                <tbody>
+                                    <tr>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">Contraseña Actual:</label></td>
+                                        <td><input type="text" class="form-control col-sm-12" placeholder="ingrese la actual contraseña" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="control-label col-sm-12" style="text-align:left;">Nueva Contraseña:</label></td>
+                                        <td><input type="text" class="form-control col-sm-12" placeholder="ingrese la nueva contraseña" /></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div><!--  -->
+                        <div class="text-center ">
+                            <button data-ripple type="submit" class="btn btn-info">Cambiar clave</button>
+                            <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                        </div><!-- /.form-group -->
+                    </form>
+                </div>
+            </div>
+        </div> <!--Aqui Termina el modal para el item de receta-->
 
 
     </div>

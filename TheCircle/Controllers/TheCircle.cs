@@ -51,21 +51,45 @@ namespace TheCircle.Controllers.views
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult CoordinadorSalud()
         {
-            return View();
+            try
+            {
+                _validate.check(Request, new string[] { "coordinador" });
+                return View();
+            }
+            catch (Exception e)
+            {
+                return Redirect("/");
+            }
         }
 
         [HttpGet("contralor/")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Contralor()
         {
-            return View();
+            try
+            {
+                _validate.check(Request, new string[] { "contralor" });
+                return View();
+            }
+            catch (Exception e)
+            {
+                return Redirect("/");
+            }
         }
 
         [HttpGet("bodeguero/")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Bodeguero()
         {
-            return View();
+            try
+            {
+                _validate.check(Request, new string[] { "bodeguero" });
+                return View();
+            }
+            catch (Exception e)
+            {
+                return Redirect("/");
+            }
         }
 
         [HttpGet("sistema/")]

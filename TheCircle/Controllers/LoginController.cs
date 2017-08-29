@@ -59,6 +59,12 @@ namespace TheCircle.Controllers
                         return Redirect("/asistente");
                     else if (token.data.cargo == "sistema")
                         return Redirect("/sistema");
+                    else if (token.data.cargo == "bodeguero")
+                        return Redirect("/bodeguero");
+                    else if (token.data.cargo == "coordinador")
+                        return Redirect("/coordiandor");
+                    else if (token.data.cargo == "contralor")
+                        return Redirect("/contralor");
                     else
                         return Redirect("logout");
 
