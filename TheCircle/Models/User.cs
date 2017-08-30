@@ -75,7 +75,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void activar(string cedula, MyDbContext _context)
+        public void activar(int cedula, MyDbContext _context)
         {
             try {
                 string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
@@ -85,7 +85,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void desactivar(string cedula, MyDbContext _context)
+        public void desactivar(int cedula, MyDbContext _context)
         {
             try {
                 string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
@@ -114,7 +114,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void reset_clave(int cedula, string email, MyDbContext _context)
+        public string nueva_clave(int cedula, MyDbContext _context)
         {
             try {
                 var _signer = new Signature();
@@ -125,13 +125,73 @@ namespace TheCircle.Models
                 string hash = dic["hash"];
                 string salt = dic["salt"];
 
-                string q = $"EXEC dbo.User_Update_reset @cedula={cedula}, @email='{email}', @clave_hash='{hash}', @salt='{salt}'";
+                string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 _context.Database.ExecuteSqlCommand(q);
+
+                return nueva_clave;
                 //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
 
             } catch (Exception e) {
-                throw new Exception("Error al resetear clave de usuario at User.reset_clave");
+                throw new Exception("Error al resetear clave de usuario at User.nueva_clave");
             }
         }
     }
+
+
+    public class UserSafe
+    {
+        [Key]
+        public string id { get; set; }
+        public string nombre { get; set; }
+        public string apellido { get; set; }
+        public string email { get; set; }
+        public string cargo { get; set; }
+        public int cedula { get; set; }
+
+        public UserSafe[] getAll(MyDbContext _context)
+        {
+            string query = $"EXEC dbo.UserSafe_Report_All";
+
+            try {
+                var user = _context.User.FromSql(query).ToArray();
+                return user;
+
+            } catch (Exception e) {
+                throw new Exception("Error cargar UserSafe at UserSafe.getAll");
+            }
+        }
+
+        public UserSafe[] getActivos(MyDbContext _context)
+        {
+            string query = $"EXEC dbo.UserSafe_Report_Activos";
+
+            try {
+                var user = _context.User.FromSql(query).ToArray();
+                return user;
+
+            } catch (Exception e) {
+                throw new Exception("Error cargar UserSafe at UserSafe.getActivos");
+            }
+        }
+
+        public UserSafe[] getInactivos(MyDbContext _context)
+        {
+            string query = $"EXEC dbo.UserSafe_Report_Inactivos";
+
+            try {
+                var user = _context.User.FromSql(query).ToArray();
+                return user;
+
+            } catch (Exception e) {
+                throw new Exception("Error cargar UserSafe at UserSafe.getInactivos");
+            }
+        }
+    }
+
+    public class Clave
+    {
+        public string actual { get; set; }
+        public string nueva { get; set; }
+    }
+
 }

@@ -32,53 +32,28 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>0920155701</td>
-                                <td>Nombre de Usuario v</td>
-                                <td>usuariov@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920175921</td>
-                                <td>Nombre de Usuario w</td>
-                                <td>usuariow@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920177203</td>
-                                <td>Nombre de Usuario x</td>
-                                <td>usuariox@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920198450</td>
-                                <td>Nombre de Usuario y</td>
-                                <td>usuarioy@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920262177</td>
-                                <td>Nombre de Usuario z</td>
-                                <td>usuarioz@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span></button></td>
+                            <tr ng-repeat="u in usuarios">
+                                <td>{{u.cedula}}</td>
+                                <td>{{u.nombre}} {{u.apellido}}</td>
+                                <td>{{u.email}}</td>
+                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="seleccionar(u)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <!--Modal Item receta-->
             <div id="myModal" class="modal fade" style="margin-top:10%;">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Desactivar Personal</h5>
+                            <h5 class="modal-title">Aprobar Personal</h5>
                         </div>
                         <div class="panel-body" style=" padding-top: 5px;">
-                            <label class="control-label col-sm-12" style="text-align:center;">¿Desactivar el personal seleccionado?</label>
+                            <label class="control-label col-sm-12" style="text-align:center;">¿Aprobar el personal seleccionado?</label>
                         </div><!--  -->
                         <div class="text-center ">
-                            <button data-ripple type="submit" class="btn btn-info">Desactivar</button>
+                            <button data-ripple type="submit" ng-click="aceptar()" class="btn btn-info">Aprobar</button>
                             <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         </div><!-- /.form-group -->
                     </div>

@@ -32,65 +32,11 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>0920145295</td>
-                                <td>Nombre de Usuario 1</td>
-                                <td>usuario1@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920223296</td>
-                                <td>Nombre de Usuario 2</td>
-                                <td>usuario2@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920190297</td>
-                                <td>Nombre de Usuario 3</td>
-                                <td>usuario3@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920105958</td>
-                                <td>Nombre de Usuario 4</td>
-                                <td>usuario4@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920119299</td>
-                                <td>Nombre de Usuario 5</td>
-                                <td>usuario5@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920191300</td>
-                                <td>Nombre de Usuario 6</td>
-                                <td>usuario6@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920198301</td>
-                                <td>Nombre de Usuario 7</td>
-                                <td>usuario7@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920150302</td>
-                                <td>Nombre de Usuario 8</td>
-                                <td>usuario8@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920041303</td>
-                                <td>Nombre de Usuario 9</td>
-                                <td>usuario9@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>0920097304</td>
-                                <td>Nombre de Usuario 10</td>
-                                <td>usuario10@guy.children.org.ec</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
+                            <tr ng-repeat="u in usuarios">
+                                <td>{{u.cedula}}</td>
+                                <td>{{u.nombre}} {{u.apellido}}</td>
+                                <td>{{u.email}}</td>
+                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="seleccionar(u)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -108,7 +54,7 @@
                             <label class="control-label col-sm-12" style="text-align:center;">¿Aprobar el personal seleccionado?</label>
                         </div><!--  -->
                         <div class="text-center ">
-                            <button data-ripple type="submit" class="btn btn-info">Aprobar</button>
+                            <button data-ripple type="submit" ng-click="aceptar()" class="btn btn-info">Aprobar</button>
                             <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                         </div><!-- /.form-group -->
                     </div>
