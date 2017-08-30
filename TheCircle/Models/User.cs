@@ -42,7 +42,7 @@ namespace TheCircle.Models
             }
         }
 
-        private void _checkClave(int cedula, string clave, MyDbContext _context) {
+        private void _checkClave(string cedula, string clave, MyDbContext _context) {
             string query = $"EXEC dbo.User_Select @cedula={cedula}";
             var _signer = new Signature();
 
@@ -95,7 +95,7 @@ namespace TheCircle.Models
             }
         }
 
-        public void cambiar_clave(int cedula, string nuevaclave, string antiguaClave, MyDbContext _context)
+        public void cambiar_clave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
         {
             try {
                 var _signer = new Signature();
@@ -190,6 +190,7 @@ namespace TheCircle.Models
 
     public class Clave
     {
+        public string cedula { get; set; }
         public string actual { get; set; }
         public string nueva { get; set; }
     }

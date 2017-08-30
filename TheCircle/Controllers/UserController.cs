@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using System;
 using TheCircle.Util;
+using System.Collections.Generic;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace TheCircle.Controllers
 {
@@ -147,7 +149,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPut("user/clave")]
-        public IActionResult User_CambiarClave([FromBody] Clave req ) 
+        public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {
             var u = new User();
 
@@ -156,10 +158,12 @@ namespace TheCircle.Controllers
 
             try {
 
-                var token = _validate.check(Request, new string[] {"sistema, medico, asistenteSalud, bodeguero"});
+                //var token = _validate.check(Request, new string[] {"sistema, medico, asistenteSalud, bodeguero"});
 
-                u.cambiar_clave(token.data.cedula, req.actual, req.nueva, _context);
-                return Ok();
+                u.cambiar_clave(req.cedula, req.actual, req.nueva, _context);
+                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Contraseña cambiada con exito" } };
+                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(loginRedirect);
 
             } catch (Exception e) {
                 if (e is TokenException)
