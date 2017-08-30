@@ -78,7 +78,7 @@ namespace TheCircle.Controllers.views
         }
 
         [HttpGet("bodeguero/")]
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Bodeguero()
         {
             try
@@ -93,6 +93,7 @@ namespace TheCircle.Controllers.views
         }
 
         [HttpGet("sistema/")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Sistema()
         {
             try

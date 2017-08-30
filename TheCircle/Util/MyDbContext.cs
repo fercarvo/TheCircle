@@ -21,6 +21,8 @@ namespace TheCircle.Util
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<CompuestoNombre> CompuestoNombre { get; set; }
         public virtual DbSet<Item> ItemNombre { get; set; }
+        public virtual DbSet<UserSafe> UserSafe { get; set; }
+        
 
 
 

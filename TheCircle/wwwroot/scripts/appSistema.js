@@ -2,15 +2,15 @@
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('activarusuario', {
-                templateUrl: 'views/medico/activarusuario.html',
+                templateUrl: 'views/sistema/activarusuario.html',
                 controller: 'activarusuario'
             })
             .state('desactivarusuario', {
-                templateUrl: 'views/medico/desactivarusuario.html',
+                templateUrl: 'views/sistema/desactivarusuario.html',
                 controller: 'desactivarusuario'
             })
             .state('modificarusuario', {
-                templateUrl: 'views/medico/modificarusuario.html',
+                templateUrl: 'views/sistema/modificarusuario.html',
                 controller: 'modificarusuario'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo producción

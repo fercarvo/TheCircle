@@ -96,7 +96,7 @@ namespace TheCircle.Controllers
 
             try {
                 var user = new User();
-                user.reset_clave(cedula, email, _context);
+                user.nueva_clave(cedula, _context);
                 var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Reseteo de clave exitoso, verifique su email institucional" } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
 

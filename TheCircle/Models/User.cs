@@ -153,7 +153,7 @@ namespace TheCircle.Models
             string query = $"EXEC dbo.UserSafe_Report_All";
 
             try {
-                var user = _context.User.FromSql(query).ToArray();
+                var user = _context.UserSafe.FromSql(query).ToArray();
                 return user;
 
             } catch (Exception e) {
@@ -166,7 +166,7 @@ namespace TheCircle.Models
             string query = $"EXEC dbo.UserSafe_Report_Activos";
 
             try {
-                var user = _context.User.FromSql(query).ToArray();
+                var user = _context.UserSafe.FromSql(query).ToArray();
                 return user;
 
             } catch (Exception e) {
@@ -179,7 +179,7 @@ namespace TheCircle.Models
             string query = $"EXEC dbo.UserSafe_Report_Inactivos";
 
             try {
-                var user = _context.User.FromSql(query).ToArray();
+                var user = _context.UserSafe.FromSql(query).ToArray();
                 return user;
 
             } catch (Exception e) {

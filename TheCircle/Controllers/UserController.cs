@@ -41,7 +41,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("user/activos")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users()
+        public IActionResult Get_All_Users_Activos()
         {
             var u = new UserSafe();
 
@@ -61,7 +61,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("user/inactivos")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users()
+        public IActionResult Get_All_Users_Inactivos()
         {
             var u = new UserSafe();
 
@@ -81,7 +81,7 @@ namespace TheCircle.Controllers
 
 
         [HttpPut("user/{id}/activar")]
-        public IActionResult PostDespachoReceta(int id) 
+        public IActionResult User_Activar(int id) 
         {
             var u = new User();
 
@@ -103,7 +103,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPut("user/{id}/desactivar")]
-        public IActionResult PostDespachoReceta(int id) 
+        public IActionResult User_Desactivar(int id) 
         {
             var u = new User();
 
@@ -125,7 +125,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPut("user/{id}/clave/set")]
-        public IActionResult PostDespachoReceta(int id) 
+        public IActionResult User_SetClave(int id) 
         {
             var u = new User();
 
@@ -147,7 +147,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpPut("user/clave")]
-        public IActionResult PostDespachoReceta([FromBody] Clave req ) 
+        public IActionResult User_CambiarClave([FromBody] Clave req ) 
         {
             var u = new User();
 
@@ -158,7 +158,7 @@ namespace TheCircle.Controllers
 
                 var token = _validate.check(Request, new string[] {"sistema, medico, asistenteSalud, bodeguero"});
 
-                u.cambiar_clave(token.data.cedula, clave.actual, clave.nueva, _context);
+                u.cambiar_clave(token.data.cedula, req.actual, req.nueva, _context);
                 return Ok();
 
             } catch (Exception e) {

@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using System;
 using TheCircle.Util;
+using System.Collections.Generic;
 
 namespace TheCircle.Controllers
 {
@@ -144,7 +145,7 @@ namespace TheCircle.Controllers
                 foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items
                     itemReceta.insert(id, item, _context);
 
-                var data = itemReceta.getAllByReceta(receta.idReceta, _context);
+                var data = itemReceta.getAllByReceta(id, _context);
                 return Ok(data);
 
             } catch (Exception e) {
