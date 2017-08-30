@@ -86,7 +86,7 @@
         }
 
     }])
-    .controller('desactivarusuario', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('desactivarusuario', ["$scope", "$state", "$http", "usuarios", function ($scope, $state, $http, usuarios) {
         $scope.usuarios = usuarios.activos;
         $scope.usuario = null;
 
