@@ -246,7 +246,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 } else {
                     $scope.status = true;
                 }
-                $scope.foto = "/api/apadrinado/foto/" + codigo;
+                $scope.foto = "/api/apadrinado/" + codigo + "/foto"; 
                 $scope.apadrinado = res.data;
 
             }, function error(err) {

@@ -47,45 +47,38 @@ namespace TheCircle.Controllers
             }
 
 
-            try {
+            try 
+            {
                 usuario = usuario.get(request, _context);
                 Token token = new Token(usuario, request.localidad);
                 string tokenToString = JsonConvert.SerializeObject(token);
 
-<<<<<<< HEAD
-                    if (token.data.cargo == "medico")
-                        return Redirect("/medico");
-                    else if (token.data.cargo == "asistenteSalud")
-                        return Redirect("/asistente");
-                    else if (token.data.cargo == "sistema")
-                        return Redirect("/sistema");
-                    else if (token.data.cargo == "bodeguero")
-                        return Redirect("/bodeguero");
-                    else if (token.data.cargo == "coordinador")
-                        return Redirect("/coordiandor");
-                    else if (token.data.cargo == "contralor")
-                        return Redirect("/contralor");
-                    else
-                        return Redirect("logout");
-=======
                 var options = new CookieOptions() {
                     Expires = token.data.expireAt,
                     HttpOnly = true
                 };
->>>>>>> 7111e5740a9673c9c1670bd7b34ffc24e94e681c
 
                 Response.Cookies.Append("session", tokenToString, options);
 
+                    if (token.data.cargo == "medico")
+                        return Redirect("/medico");
 
-                if (token.data.cargo == "medico")
-                    return Redirect("/medico");
-                else if (token.data.cargo == "asistenteSalud")
-                    return Redirect("/asistente");
-                else if (token.data.cargo == "sistema")
-                    return Redirect("/sistema");
-                else
+                    if (token.data.cargo == "asistenteSalud")
+                        return Redirect("/asistente");
+
+                    if (token.data.cargo == "sistema")
+                        return Redirect("/sistema");
+
+                    if (token.data.cargo == "bodeguero")
+                        return Redirect("/bodeguero");
+
+                    if (token.data.cargo == "coordinador")
+                        return Redirect("/coordiandor");
+
+                    if (token.data.cargo == "contralor")
+                        return Redirect("/contralor");
+                        
                     return Redirect("logout");
-
 
             } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };

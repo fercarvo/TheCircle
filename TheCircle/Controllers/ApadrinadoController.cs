@@ -39,16 +39,16 @@ namespace TheCircle.Controllers
         }
 
 
-        [HttpGet("apadrinado/foto/{cod}")]
+        [HttpGet("apadrinado/{cod}/foto")]
         [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
         public IActionResult GetApadrinadoFoto(int cod)
         {
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
-            Foto foto;
-            try {
-                _validate.check(Request, new string[] {"medico" });
 
-                foto = _context.Fotos.FromSql(query).First();
+            try {
+                _validate.check(Request, new string[] {"medico"});
+
+                var foto = _context.Fotos.FromSql(query).First();
                 var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");
                 return File(image, "image/jpeg");
             } catch (Exception e) {
