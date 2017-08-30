@@ -90,7 +90,7 @@ namespace TheCircle.Util
             var bytes = new Byte[2];
             var randomNumber = new Random();
             randomNumber.NextBytes(bytes);
-            var bytes_int = BitConverter.ToInt32(bytes, 0);
+            var bytes_int = BitConverter.ToUInt16(bytes, 0);
 
             string resultado = $"{bytes_int}";
             return resultado;

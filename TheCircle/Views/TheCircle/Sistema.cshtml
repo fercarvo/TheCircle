@@ -15,7 +15,6 @@
     <link href="~/styles/wiseboard/admin.min.css" rel="stylesheet" type="text/css">
 
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
-    <link href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
@@ -116,7 +115,7 @@
                         <span>Desactivar Usuario</span>
                     </a>
                 </li><!-- ITEM SIDEBAR END 1 -->
-                <li data-ripple class=" open" ui-sref="modificarusuario" ui-sref-active="active">
+                <li data-ripple class=" open" ui-sref="cambiarclave" ui-sref-active="active">
                     <a>
 
                         <span>Modificar Contraseñas</span>
@@ -166,7 +165,7 @@
 
     </div>
     <!-- CONTENT WRAPPER ENDS -->
-    <script src="~/scripts/vendor/wiseboard/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="~/scripts/ripple.js"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
@@ -176,10 +175,7 @@
     <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
 
     <!-- Librerias angular -->
-    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
-    <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
     <script src="~/scripts/appSistema.js"></script>
 
 </body>

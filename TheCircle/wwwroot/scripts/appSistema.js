@@ -9,9 +9,9 @@
                 templateUrl: 'views/sistema/desactivarusuario.html',
                 controller: 'desactivarusuario'
             })
-            .state('modificarusuario', {
-                templateUrl: 'views/sistema/modificarusuario.html',
-                controller: 'modificarusuario'
+            .state('cambiarclave', {
+                templateUrl: 'views/sistema/cambiarclave.html',
+                controller: 'cambiarclave'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo producción
     }])
@@ -30,7 +30,7 @@
         }
 
         function getInactivos() {
-            $http.get("api/user/inactivos/").then(function success(res) {
+            $http.get("api/user/inactivos").then(function success(res) {
                 console.log("usuarios.inactivos", res.data);
                 usuarios.inactivos = res.data;
                 $rootScope.$broadcast('usuarios.inactivos'); //Se informa a los controladores que cambio usuarios.inactivos
@@ -40,7 +40,7 @@
         }
 
         function getActivos() {
-            $http.get("api/user/activos/").then(function success(res) {
+            $http.get("api/user/activos").then(function success(res) {
                 console.log("usuarios.activos", res.data);
                 usuarios.activos = res.data;
                 $rootScope.$broadcast('usuarios.activos'); //Se informa a los controladores que cambio usuarios.activos
@@ -50,7 +50,7 @@
         }
 
         function getAll() {
-            $http.get("api/user/").then(function success(res) {
+            $http.get("api/user").then(function success(res) {
                 console.log("usuarios.all", res.data);
                 usuarios.all = res.data;
                 $rootScope.$broadcast('usuarios.all'); //Se informa a los controladores que cambio usuarios.all
@@ -65,6 +65,7 @@
 
         $scope.usuarios = usuarios.inactivos;
         $scope.usuario = null;
+        $scope.index = null;
 
         usuarios.getInactivos();
 
@@ -72,14 +73,21 @@
             $scope.usuarios = usuarios.inactivos;
         })
 
-        $scope.seleccionar = function(usuario){
+        $scope.$watch('usuarios', function () {
+            usuarios.inactivos = $scope.usuarios;
+        })
+
+        $scope.seleccionar = function(usuario, index){
             $scope.usuario = usuario;
+            $scope.index = index;
         }
 
-        $scope.aceptar = function() {
-            $http.put("api/user/" + usuario.cedula + "/activar").then(function success(res) {
+        $scope.aceptar = function () {
+            $('#modal_activar').modal('hide');
+
+            $http.put("api/user/" + $scope.usuario.cedula + "/activar").then(function success(res) {
                 console.log("Activado con exito");
-                usuarios.getInactivos();
+                $scope.usuarios.splice($scope.index, 1);
             }, function error(err) {
                 console.log("error al activar");
             })
@@ -89,6 +97,7 @@
     .controller('desactivarusuario', ["$scope", "$state", "$http", "usuarios", function ($scope, $state, $http, usuarios) {
         $scope.usuarios = usuarios.activos;
         $scope.usuario = null;
+        $scope.index = null;
 
         usuarios.getActivos();
 
@@ -96,19 +105,50 @@
             $scope.usuarios = usuarios.activos;
         })
 
-        $scope.seleccionar = function(usuario){
+        $scope.$watch('usuarios', function () {
+            usuarios.activos = $scope.usuarios;
+        })
+
+        $scope.seleccionar = function (usuario, index) {
+            $scope.index = index;
             $scope.usuario = usuario;
         }
 
-        $scope.aceptar = function() {
-            $http.put("api/user/" + usuario.cedula + "/desactivar").then(function success(res) {
+        $scope.aceptar = function () {
+            $('#modal_desactivar').modal('hide');
+
+            $http.put("api/user/" + $scope.usuario.cedula + "/desactivar").then(function success(res) {
                 console.log("desActivado con exito");
-                usuarios.getActivos();
+                $scope.usuarios.splice($scope.index, 1);
             }, function error(err) {
                 console.log("error al desactivar");
             })
         }
     }])
-    .controller('modificarusuario', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.casa = "casacasacasa?";
+    .controller('cambiarclave', ["$scope", "$state", "$http", "usuarios", function ($scope, $state, $http, usuarios) {
+        $scope.usuarios = usuarios.all;
+        $scope.usuario = null;
+        $scope.clave = null;
+
+        usuarios.getAll();
+
+        $scope.$on('usuarios.all', function () {
+            $scope.usuarios = usuarios.all;
+        })
+
+        $scope.seleccionar = function (usuario) {
+            $scope.usuario = usuario;
+        }
+
+        $scope.aceptar = function () {
+            $('#cambiar_clave').modal('hide');
+
+            $http.put("api/user/" + $scope.usuario.cedula + "/clave/set").then(function success(res) {
+                console.log("Cambio de clave exitoso", res.data);
+                $scope.clave = res.data.clave;
+                $('#nueva_clave').modal('show');
+            }, function error(err) {
+                console.log("error cambio de clave");
+            })
+        }
     }])

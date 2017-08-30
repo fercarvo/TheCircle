@@ -19,7 +19,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
+        [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users()
         {
             var u = new UserSafe();
@@ -40,7 +40,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user/activos")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
+        [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users_Activos()
         {
             var u = new UserSafe();

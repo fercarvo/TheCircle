@@ -17,7 +17,7 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" placeholder="buscar por cedula" class="form-control">
+                        <input type="text" placeholder="buscar por cedula" ng-model="buscar.cedula" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
@@ -27,16 +27,18 @@
                                 <th>Cédula</th>
                                 <th>Nombre</th>
                                 <th>Correo Institucional</th>
+                                <th>Cargo</th>
                                 <th>Aprobar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="u in usuarios">
+                            <tr ng-repeat="u in usuarios | filter:buscar | orderBy:'cargo'">
                                 <td>{{u.cedula}}</td>
                                 <td>{{u.nombre}} {{u.apellido}}</td>
                                 <td>{{u.email}}</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="seleccionar(u)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
+                                <td>{{u.cargo}}</td>
+                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="seleccionar(u, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-ok"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -44,7 +46,7 @@
             </div>
 
             <!--Modal Item receta-->
-            <div id="myModal" class="modal fade" style="margin-top:10%;">
+            <div id="modal_activar" class="modal fade" style="margin-top:10%;">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
