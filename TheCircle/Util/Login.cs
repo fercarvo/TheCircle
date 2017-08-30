@@ -92,7 +92,7 @@ namespace TheCircle.Util
         [StringLength(10)]
         public string cedula { get; set; }
         [BindRequired]
-        [StringLength(10)]
+        [StringLength(20)]
         public string clave { get; set; }
         [BindRequired]
         public Localidad localidad { get; set; }
