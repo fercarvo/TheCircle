@@ -61,7 +61,7 @@ namespace TheCircle.Models
 
         public ReporteRemision() { }
 
-        public ReporteRemision[] getAll_Doctor_Date(ReporteRequest req, int doctor, MyDbContext _context)
+        public ReporteRemision[] getAll_Doctor_Date(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             try {

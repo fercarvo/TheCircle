@@ -53,7 +53,7 @@ namespace TheCircle.Controllers
         //Ruta que retorna las atenciones medicas de un doctor
         [HttpGet("reporte/atencion/date")]
         //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_ReporteAtencion([FromQuery] ReporteRequest request)
+        public IActionResult Get_ReporteAtencion([FromQuery] Fecha request)
         {
             Atencion a = new Atencion();
 

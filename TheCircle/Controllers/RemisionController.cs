@@ -47,7 +47,7 @@ namespace TheCircle.Controllers
         //ruta que retorna las remisiones medicas de un doctor por rango de fechas
         [HttpGet("reporte/remision/date")]
         //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_ReporteRemision_Date_Doctor([FromQuery] ReporteRequest request)
+        public IActionResult Get_ReporteRemision_Date_Doctor([FromQuery] Fecha request)
         {
             ReporteRemision rr = new ReporteRemision();
 

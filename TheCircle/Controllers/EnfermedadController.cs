@@ -45,7 +45,7 @@ namespace TheCircle.Controllers
                 //Ruta que retorna listade de enfermedades mas comunes por centro comunitario
         [HttpGet("reporte/enfermedad/date")]
         //[ResponseCache(Duration = 60*60*3, Location = ResponseCacheLocation.Client)] //cache de 60*60*3 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_ReporteEnfermedades([FromQuery] ReporteRequest request)
+        public IActionResult Get_ReporteEnfermedades([FromQuery] Fecha request)
         {
             ReporteEnfermedad re = new ReporteEnfermedad();
 

@@ -46,7 +46,7 @@ namespace TheCircle.Models
             }
         }
 
-        public Atencion[] getBy_doctor_date(ReporteRequest req, int doctor, MyDbContext _context)
+        public Atencion[] getBy_doctor_date(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             try {
