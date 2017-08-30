@@ -60,13 +60,22 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group" style="margin-bottom: 10px;">
                             <div class="browser-default">
                                 <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
                             </div>
                         </div>
-                        
-                             <a href="#" data-toggle="modal" data-target="#myModal_cambiar" style="text-decoration:none; font-size:12px;float:right;margin-top:-5px;">Cambiar su Contraseña</a>
+                             <style>
+                                 #texto_cambiar_clave {
+                                     text-decoration: none;
+                                     font-size: 12px;
+                                     float: right;
+                                     margin-top: -5px;
+                                     padding-bottom: 5px;
+                                     color: #c5c5c5;
+                                 } 
+                             </style>
+                             <a href="#" data-toggle="modal" data-target="#myModal_cambiar" id="texto_cambiar_clave">Cambiar su Contraseña</a>
                        
                         <div class="form-group">
                             <select name="localidad" class="form-control myselect" required style="width: 328px;">
@@ -83,8 +92,23 @@
                         <button data-ripple type="submit" class="btn btn-info col-sm-12 rounded" style="width:100%;">Acceder</button>
                     </form>
                 </div>
-                <div data-ripple class="panel-footer" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.85);text-decoration:none;border-color:rgba(0,0,0,0.55);">
-                   <a href="#" data-toggle="modal" data-target="#myModal" style="color:#fff;text-decoration: none; font-size:16px;margin-left:33%;" >Crear una cuenta</a>
+                <style>
+                    #button_crear_cuenta {
+                        border-radius: 6px;
+                        background-color: rgba(144, 31, 97, 0.85);
+                        text-decoration: none;
+                        border-color: rgba(0,0,0,0.55);
+                    }
+
+                    #button_crear_cuenta a {
+                        color: #fff;
+                        text-decoration: none;
+                        font-size: 16px;
+                        margin-left: 33%;
+                    }
+                </style>
+                <div data-ripple id="button_crear_cuenta" class="panel-footer">
+                   <a href="#" data-toggle="modal" data-target="#myModal">Crear una cuenta</a>
                 </div>
 
             </div>
@@ -116,22 +140,6 @@
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
-                        <script>
-                            $('#crearButton').click(function () {
-                                $.ajax({
-                                    url: 'login/crear',
-                                    type: 'post',
-                                    dataType: 'json',
-                                    data: $('#crearCuenta').serialize(),
-                                    success: function (data, textStatus) {
-                                        if (data.redirect) {
-                                            alert("Se redireciconara");
-                                            window.location.href = data.redirect;
-                                        }                                               
-                                    }
-                                })
-                            })
-                        </script>
                     </div><!--  -->
 
                 </div>
@@ -146,23 +154,29 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Modificar su Contraseña de Usuario</h5>
                     </div>
-                    <div class="panel-body" style=" padding-top: 5px;">
+                    <style>
+                        #form_cambiar_clave label {
+                            text-align:left;
+                            padding-left: 5px;
+                        }
+                    </style>
+                    <div class="panel-body" style=" padding-top: 5px;" id="form_cambiar_clave">
                         <form>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <label class="control-label col-sm-4" style="text-align:left;">Cedula</label>
-                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                    <label class="control-label col-sm-4">Cedula</label>
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cedula valida" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <label class="control-label col-sm-4" style="text-align:left;">Contraseña Actual</label>
-                                    <input name="clave" type="text" required class="form-control rounded" placeholder="Ingrese su actual  clave de sesion">
+                                    <label class="control-label col-sm-4">Contraseña Actual</label>
+                                    <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese su actual  clave de sesion">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <label class="control-label col-sm-4" style="text-align:left;">Nueva Contraseña</label>
+                                    <label class="control-label col-sm-4">Nueva Contraseña</label>
                                     <input name="clave" type="text" required class="form-control rounded" placeholder="Ingrese su nueva clave de sesion">
                                 </div>
                             </div>
@@ -188,6 +202,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
     <script>
         $(".myselect").select2();
+
+        $('#crearButton').click(function () {
+            $.ajax({
+                url: 'login/crear',
+                type: 'post',
+                dataType: 'json',
+                data: $('#crearCuenta').serialize(),
+                success: function (data, textStatus) {
+                    if (data.redirect) {
+                        alert("Se redireciconara");
+                        window.location.href = data.redirect;
+                    }
+                }
+            })
+        })
     </script>
 </body>
 </html>
