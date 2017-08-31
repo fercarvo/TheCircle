@@ -635,3 +635,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             }
         };
     }])
+    .controller('transferencias', ['$scope', '$http', function ($scope, $http) {
+
+    }])
