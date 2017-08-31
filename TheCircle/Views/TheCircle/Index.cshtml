@@ -4,20 +4,20 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--Los que se usan en las demas-->
+
     <link href="http://thenextheme.net/wiseboard/dist/main/css/main.min.css" rel="stylesheet" type="text/css" />
-    <!--Aqui acaban-->
     <title>TheCircle : Login</title>
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link rel="stylesheet" href="~/styles/ripple.css" type="text/css">
-    <!-- Login css -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet" />
     <style>
         body {
             font-family: 'Roboto', sans-serif;
             background: url(/images/help-kids-have-a-childhood.jpg) fixed no-repeat 50% 70%;
-            background-size: cover
+            background-size: cover;
+            max-height: 100%;
+            overflow: hidden
         }
 
         .login-wrapper {
@@ -34,11 +34,19 @@
             border-color: #17c092;
             background-color: #28d1a3;
         }
-            .btn-info:hover {
-                color: #fff;
-                background-color: #28d1a3;
-                border-color: #17c092;
-            }
+
+        .btn-info:hover {
+            color: #fff;
+            background-color: #28d1a3;
+            border-color: #17c092;
+        }
+
+        #mensaje_login {
+            background-color: rgba(51, 122, 183, 0.74);
+            text-align: center;
+            color: rgb(255, 255, 255);
+            font-size: 120%;
+        }
     </style>
 </head>
 <body class="page-dashboard" ng-app="appLogin" >
@@ -47,7 +55,7 @@
 
 
             <div ng-controller="login" class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
-                <div style="background-color: rgba(51, 122, 183, 0.74);text-align: center;color: rgb(255, 255, 255);font-size: 120%;">
+                <div id="mensaje_login">
                     @ViewData["mensaje"]
                 </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
@@ -98,6 +106,7 @@
                         background-color: rgba(144, 31, 97, 0.85);
                         text-decoration: none;
                         border-color: rgba(0,0,0,0.55);
+                        cursor: pointer;
                     }
 
                     #button_crear_cuenta a {
@@ -119,8 +128,8 @@
                     }
 
                 </style>
-                <div data-ripple id="button_crear_cuenta" class="panel-footer">
-                   <a href="#" data-toggle="modal" data-target="#modal_crear_cuenta">Crear una cuenta</a>
+                <div  data-ripple id="button_crear_cuenta" class="panel-footer" data-toggle="modal" data-target="#modal_crear_cuenta">
+                   <a >Crear una cuenta</a>
                 </div>
 
             </div>
@@ -150,8 +159,8 @@
                                 </div>
                             </div>
                             <div class="text-center ">
-                                <button type="submit" class="btn btn-info">Enviar</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button data-ripple type="submit" class="btn btn-info">Enviar</button>
+                                <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div><!--  -->
@@ -191,16 +200,15 @@
                             <div class="text-center ">
                                 <button data-ripple type="submit" class="btn btn-info">Cambiar clave</button>
                                 <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                            </div><!-- /.form-group -->
+                            </div>
                         </form>
                     </div>
                  </div>
             </div>
-        </div> <!--Aqui Termina el modal para el item de receta-->
+        </div> 
 
 
-    </div><!-- /.container -->
-    <!-- scritpts -->
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="~/scripts/ripple.js"> </script>
