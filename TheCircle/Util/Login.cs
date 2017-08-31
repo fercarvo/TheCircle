@@ -33,14 +33,15 @@ namespace TheCircle.Util
         */
         internal Token check(HttpRequest request, string[] cargos) {
             try {
-                string cookieSession = request.Cookies["session"]; //Se obtiene el string de la cookie
+                string cookie = request.Cookies["session"]; //Se obtiene el string de la cookie
                 Signature _signer = new Signature();
                 Token token;
 
-                if (string.IsNullOrEmpty(cookieSession))
-                    throw new TokenException("No existe cookieSession/cargo, at Token.check");
+                if (string.IsNullOrEmpty(cookie))
+                    throw new TokenException("No existe cookie/cargo, at Token.check");
 
-                token = JsonConvert.DeserializeObject<Token>(cookieSession); //Se parcea el string de cookie a Token.
+                token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
+                //token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
 
                 if (token.data.expireAt < DateTime.Now)
                     throw new TokenException("Token expirado, at Token.check");

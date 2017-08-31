@@ -17,6 +17,7 @@ namespace TheCircle.Controllers
         public LoginController(MyDbContext context)
         {
             _context = context;
+            _signer = new Signature();
         }
 
 
@@ -58,14 +59,15 @@ namespace TheCircle.Controllers
             {
                 usuario = usuario.get(request, _context);
                 Token token = new Token(usuario, request.localidad);
-                string tokenToString = JsonConvert.SerializeObject(token);
+                string token_string = JsonConvert.SerializeObject(token);
 
                 var options = new CookieOptions() {
                     Expires = token.data.expireAt,
                     HttpOnly = true
                 };
 
-                Response.Cookies.Append("session", tokenToString, options);
+                Response.Cookies.Append("session", token_string, options);
+                //Response.Cookies.Append("session", _signer.toBase(token_string), options);
 
                     if (token.data.cargo == "medico")
                         return Redirect("/medico");
@@ -95,26 +97,6 @@ namespace TheCircle.Controllers
             
         }
 
-        [HttpPost("login/reset")]
-        public IActionResult Login_reset([FromForm]int cedula, [FromForm]string email)
-        {
-            if ( cedula<=0 || string.IsNullOrEmpty(email))
-                return Redirect("/");
-
-            try {
-                var user = new User();
-                user.nueva_clave(cedula, _context);
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Reseteo de clave exitoso, verifique su email institucional" } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-
-                return Redirect(loginRedirect);
-
-            } catch (Exception e) {
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido ejecutar el reseteo de clave, favor verifique datos o contactese con Gerencia de sistemas" } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
-            }
-        }
 
         [HttpPost("login/crear")]
         public IActionResult Login_create([FromForm]string cedula, [FromForm]string clave)
