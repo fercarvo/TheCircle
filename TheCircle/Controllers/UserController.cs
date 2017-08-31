@@ -152,23 +152,24 @@ namespace TheCircle.Controllers
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {
             var u = new User();
+            var parameters;
+            var loginRedirect;
+
 
             if (req == null)
-                return BadRequest("Incorrect Data");
+                return Redirect("/");
 
             try {
-
                 //var token = _validate.check(Request, new string[] {"sistema, medico, asistenteSalud, bodeguero"});
-
                 u.cambiar_clave(req.cedula, req.actual, req.nueva, _context);
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Contraseña cambiada con exito" } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Cambio de contraseña exitoso" } };
+                loginRedirect = QueryHelpers.AddQueryString("/logout", parameters);
                 return Redirect(loginRedirect);
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
-                return BadRequest("Something broke");
+                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido cambiar la contraseña, verifique los datos" } };
+                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(loginRedirect);
             }            
         }
     }

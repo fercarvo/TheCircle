@@ -75,7 +75,7 @@
                                      color: #c5c5c5;
                                  } 
                              </style>
-                             <a href="#" data-toggle="modal" data-target="#myModal_cambiar" id="texto_cambiar_clave">Cambiar su Contraseña</a>
+                             <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambiar su Contraseña</a>
                        
                         <div class="form-group">
                             <select name="localidad" class="form-control myselect" required style="width: 328px;">
@@ -108,7 +108,7 @@
                     }
                 </style>
                 <div data-ripple id="button_crear_cuenta" class="panel-footer">
-                   <a href="#" data-toggle="modal" data-target="#myModal">Crear una cuenta</a>
+                   <a href="#" data-toggle="modal" data-target="#modal_crear_cuenta">Crear una cuenta</a>
                 </div>
 
             </div>
@@ -117,14 +117,14 @@
 
 
         <!--Modal Item receta-->
-        <div id="myModal" class="modal fade" style="margin-top:10%;">
+        <div id="modal_crear_cuenta" class="modal fade" style="margin-top:10%;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">Crear una Cuenta</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
-                        <form id="crearCuenta" action="login/crear" method="post" style="text-align:left;">
+                        <form id="crearCuenta" onsubmit="return crearCuenta()" style="text-align:left;">
                             <div class="form-group">
                                 <div class="browser-default">
                                     <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
@@ -136,7 +136,7 @@
                                 </div>
                             </div>
                             <div class="text-center ">
-                                <button type="submit" id="crearButton" class="btn btn-info">Enviar</button>
+                                <button type="submit" class="btn btn-info">Enviar</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
@@ -148,7 +148,7 @@
         <!--Aqui Termina el modal para el item de remision-->
 
         <!--Modal Item receta-->
-        <div id="myModal_cambiar" class="modal fade" style="margin-top:5%;">
+        <div id="modal_cambiar_clave" class="modal fade" style="margin-top:5%;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -203,20 +203,21 @@
     <script>
         $(".myselect").select2();
 
-        $('#crearButton').click(function () {
+        function crearCuenta() {
             $.ajax({
                 url: 'login/crear',
                 type: 'post',
                 dataType: 'json',
                 data: $('#crearCuenta').serialize(),
                 success: function (data, textStatus) {
-                    if (data.redirect) {
-                        alert("Se redireciconara");
-                        window.location.href = data.redirect;
-                    }
+                    window.location.href = data.redirect;
+                },
+                error: function () {
+                    window.location.reload(true);
                 }
             })
-        })
+            return false;
+        }
 
         function cambiarClave() {
             $.ajax({
@@ -225,16 +226,13 @@
                 dataType: 'json',
                 data: $('#form_cambiar_clave').serialize(),
                 success: function (data, textStatus) {
-                    if (data.redirect) {
-                        alert("Se redireciconara");
-                        window.location.href = data.redirect;
-                    }
+                    window.location.href = data.redirect;
                 },
-                error: function (err) {
-                    console.log(err);
-                    return false;
+                error: function () {
+                    window.location.reload(true);
                 }
             })
+            return false;
         }
 
     </script>

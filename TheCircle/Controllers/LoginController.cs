@@ -21,14 +21,21 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("logout")]
-        public IActionResult Logout()
+        public IActionResult Logout([FromQuery] LoginMessage lm)
         {
             CookieOptions options = new CookieOptions() {
-                Expires = DateTime.Now.AddDays(-5), //Ya han expirado
+                Expires = DateTime.Now.AddDays(-5), 
                 HttpOnly = true
             };
 
-            Response.Cookies.Append("session", "", options); //Se borra la data
+            Response.Cookies.Append("session", "", options);
+
+            if (lm != null) {
+                var parameters = new Dictionary<string, string> { { "flag", lm.flag }, { "msg", lm.msg } };
+                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(loginRedirect);    
+            }
+
             return Redirect("/");
         }
 
