@@ -19,18 +19,15 @@ namespace TheCircle.Controllers
             _validate = new Token();
         }
 
-        // GET: api/ItemFarmacia
         [HttpGet("itemfarmacia")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetItems()
         {
-            ItemFarmacia item = new ItemFarmacia();
-
             try {
 
                 Token token = _validate.check(Request, new string[] {"medico", "asistenteSalud"});
 
-                ItemFarmacia[] stock = item.getAllByLocalidad(token.data.localidad, _context);
+                ItemFarmacia[] stock = new ItemFarmacia().getAllByLocalidad(token.data.localidad, _context);
                 return Ok(stock);
 
             } catch (Exception e) {
@@ -42,16 +39,13 @@ namespace TheCircle.Controllers
 
         [HttpGet("itemnombre")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
-        public IActionResult GetNombres() {
-
-            var c = new Compuesto();
-            var compuestos = new List<Compuesto>();
-
+        public IActionResult GetNombres()
+        {
             try {
 
                 var token = _validate.check(Request, new string[] {"asistenteSalud"});
 
-                compuestos = c.getAllBy_Localidad(token.data.localidad, _context);
+                List<Compuesto> compuestos = new Compuesto().getAllBy_Localidad(token.data.localidad, _context);
                 return Ok(compuestos);
 
             } catch (Exception e) {
@@ -64,8 +58,6 @@ namespace TheCircle.Controllers
         [HttpPost("itemfarmacia")]
         public IActionResult PostItem([FromBody]RequestItem item)
         {
-            var i = new ItemFarmacia();
-
             if (item == null)
                 return BadRequest();
 
@@ -73,7 +65,7 @@ namespace TheCircle.Controllers
                 
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
-                i.insert(item, token.data.localidad, token.data.cedula, _context);
+                new ItemFarmacia().insert(item, token.data.localidad, token.data.cedula, _context);
                 return Ok();
 
             } catch (Exception e) {

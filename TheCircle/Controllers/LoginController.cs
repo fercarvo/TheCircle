@@ -14,12 +14,9 @@ namespace TheCircle.Controllers
     {
 
         private readonly MyDbContext _context;
-        private Signature _signer;
-
         public LoginController(MyDbContext context)
         {
             _context = context;
-            _signer = new Signature();
         }
 
 
@@ -68,8 +65,8 @@ namespace TheCircle.Controllers
                     HttpOnly = true
                 };
 
-                Response.Cookies.Append("session", token_string, options);
-                //Response.Cookies.Append("session", _signer.toBase(token_string), options);
+                //Response.Cookies.Append("session", token_string, options);
+                Response.Cookies.Append("session", new Signature().toBase(token_string), options);
 
                     if (token.data.cargo == "medico")
                         return Redirect("/medico");

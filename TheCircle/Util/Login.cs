@@ -40,8 +40,8 @@ namespace TheCircle.Util
                 if (string.IsNullOrEmpty(cookie))
                     throw new TokenException("No existe cookie/cargo, at Token.check");
 
-                token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
-                //token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
+                //token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
+                token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
 
                 if (token.data.expireAt < DateTime.Now)
                     throw new TokenException("Token expirado, at Token.check");

@@ -76,7 +76,11 @@ namespace TheCircle.Models
         public Atencion atencion { get; set; }
         public Diagnostico[] diagnosticos { get; set; }
 
-        public AtencionResponse() { }
+        public AtencionResponse(Atencion atencion, Diagnostico[] diagnosticos)
+        {
+            this.atencion = atencion;
+            this.diagnosticos = diagnosticos;
+        }
     }
     
 }

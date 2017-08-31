@@ -122,13 +122,13 @@ namespace TheCircle.Models
             }
         }
     }
-
+    /*
     public class RecetaRequest
     {
         public int apadrinado { get; set; }
 
         public RecetaRequest() { }
-    }
+    }*/
 
     public class RecetaTotal
     {
@@ -142,13 +142,12 @@ namespace TheCircle.Models
             this.items = items;
         }
 
-        public List<RecetaTotal> getAllByLocalidad (Localidad localidad, MyDbContext _context) {
-
-            var r = new Receta();
+        public List<RecetaTotal> getAllByLocalidad (Localidad localidad, MyDbContext _context)
+        {
             var i = new ItemReceta();
             var recetasTotales = new List<RecetaTotal>();
 
-            Receta[] recetas = r.getAllByLocalidad(localidad, _context);
+            Receta[] recetas = new Receta().getAllByLocalidad(localidad, _context);
 
             foreach (Receta receta in recetas) {
                 ItemReceta[] items = i.getAllByReceta(receta.id, _context);
@@ -160,7 +159,6 @@ namespace TheCircle.Models
 
         public List<RecetaTotal> getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
-
             var i = new ItemReceta();
 
             var recetas = new Receta().getAll_Localidad_SinDespachar(localidad, _context);
@@ -176,11 +174,9 @@ namespace TheCircle.Models
 
         public List<RecetaTotal> reporteByDoctor (Fecha fecha, int doctor, MyDbContext _context)
         {
-
-            Receta r = new Receta();
             ItemReceta i = new ItemReceta();
 
-            Receta[] recetas = r.getAllByDoctorByDate(fecha, doctor, _context);
+            Receta[] recetas = new Receta().getAllByDoctorByDate(fecha, doctor, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
             if (recetas != null) {
@@ -200,11 +196,9 @@ namespace TheCircle.Models
 
         public List<RecetaTotal> reporteByDoctorByStatus(int doctor, MyDbContext _context)
         {
-
-            Receta r = new Receta();
             ItemReceta i = new ItemReceta();
 
-            Receta[] recetas = r.getAllByDoctorByStatus(doctor, _context);
+            Receta[] recetas = new Receta().getAllByDoctorByStatus(doctor, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
             foreach (Receta receta in recetas)

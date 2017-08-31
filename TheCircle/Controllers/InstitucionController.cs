@@ -22,13 +22,11 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
         public IActionResult GetInstituciones()
         {
-            Institucion institucion = new Institucion();
-
             try {
 
                 _validate.check(Request, new string[] {"medico"});
 
-                Institucion[] instituciones = institucion.getAll(_context);
+                Institucion[] instituciones = new Institucion().getAll(_context);
                 return Ok(instituciones);
                 
             } catch (Exception e) {

@@ -53,16 +53,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('date', [function () {
         return function (date) {
-            try {
-                var format = new Date(date);
-                var day = format.getDate();
-                var month = format.getMonth() + 1;
-                var year = format.getFullYear();
-                return day + '/' + month + '/' + year;
-            } catch (e) {
-                console.log(e);
-                return null;
-            }
+            var format = new Date(date);
+            var day = format.getDate();
+            var month = format.getMonth() + 1;
+            var year = format.getFullYear();
+            return day + '/' + month + '/' + year;
         };
     }])
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
@@ -120,7 +115,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .factory('notify', [function () {
         return function (mensaje, tipo) {
 
-            var icono;
+            var icono = "";
 
             if (tipo === "success") {
                 icono = "glyphicon glyphicon-saved";
@@ -167,8 +162,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         return {
-            //doctor: 0,
-            //localidad : "",
             apadrinado : {},
             foto : "/images/ci.png",
             codigo : null,

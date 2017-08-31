@@ -24,13 +24,11 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult GetApadrinado(int cod)
         {
-            Apadrinado apadrinado = new Apadrinado();
-
             try {
                 _validate.check(Request, new string[] {"medico"});
 
-                apadrinado = apadrinado.get(cod, _context);
-                return Ok(apadrinado);
+                Apadrinado data = new Apadrinado().get(cod, _context);
+                return Ok(data);
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();

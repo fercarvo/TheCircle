@@ -22,22 +22,16 @@ namespace TheCircle.Controllers
         [HttpPost ("atencion")]
         public IActionResult PostAtencion([FromBody] AtencionRequest request)
         {
-            var response = new AtencionResponse();
-            var temp = new Diagnostico();
-            var atencion = new Atencion(); //atencion creada
-
             if (request == null)
                 return BadRequest("Incorrect Data");
 
-
             try {
                 Token token = _validate.check(Request, new string[] { "medico" });
-                atencion = atencion.crear(request, token.data.cedula, token.data.localidad, _context);
 
-                Diagnostico[] diagnosticos = temp.getAllByAtencion(atencion.id, _context);
+                Atencion atencion = new Atencion().crear(request, token.data.cedula, token.data.localidad, _context);
+                Diagnostico[] diagnosticos = new Diagnostico().getAllByAtencion(atencion.id, _context);
 
-                response.atencion = atencion;
-                response.diagnosticos = diagnosticos;
+                var response = new AtencionResponse(atencion, diagnosticos);
 
                 return Ok(response);
 
@@ -55,8 +49,6 @@ namespace TheCircle.Controllers
         //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_ReporteAtencion([FromQuery] Fecha request)
         {
-            Atencion a = new Atencion();
-
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
@@ -64,7 +56,7 @@ namespace TheCircle.Controllers
             {
                 Token token = _validate.check(Request, new string[] { "medico" });
 
-                Atencion[] atenciones = a.getBy_doctor_date(request, token.data.cedula, _context);
+                Atencion[] atenciones = new Atencion().getBy_doctor_date(request, token.data.cedula, _context);
                 return Ok(atenciones);
 
             } catch (Exception e) {

@@ -96,7 +96,7 @@ namespace TheCircle.Util
             return resultado;
         }
 
-        /*
+        
         public string toBase(string text) {
             byte[] text_Byte = this.encode.GetBytes(text);
             string text_Byte_Base = Convert.ToBase64String(text_Byte);
@@ -106,9 +106,9 @@ namespace TheCircle.Util
         public string fromBase(string base64) {
             byte[] base64_Byte = Convert.FromBase64String(base64);
             string base64_Byte_String = this.encode.GetString(base64_Byte);
-            return string;
+            return base64_Byte_String;
         }
-        */
+        
 
     }
 }

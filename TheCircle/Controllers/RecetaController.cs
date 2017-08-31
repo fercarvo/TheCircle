@@ -24,9 +24,6 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_ReporteReceta_Doctor_Date([FromQuery] Fecha fecha)
         {
-            RecetaTotal rt = new RecetaTotal();
-            List<RecetaTotal> recetas;
-
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
@@ -34,11 +31,12 @@ namespace TheCircle.Controllers
 
                 Token token = _validate.check(Request, new string[] { "medico" });
 
-                recetas = rt.reporteByDoctor(fecha, token.data.cedula, _context);
+                List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctor(fecha, token.data.cedula, _context);
                 return Ok(recetas);
-            }
-            catch (Exception e)
-            {
+
+            } catch (Exception e) {
+                if (e is TokenException)
+                    return Unauthorized();
                 return BadRequest("Something broke");
             }
             
@@ -49,15 +47,13 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 40, Location = ResponseCacheLocation.Client)] //cache de 40 segundos, para evitar sobrecarga de la BDD
         public IActionResult GetRecetasByDoctorByStatus()
         {
-            RecetaTotal rt = new RecetaTotal();
-            List<RecetaTotal> recetas;
-
-            try {
-
+            try
+            {
                 Token token = _validate.check(Request, new string[] { "medico" });
 
-                recetas = rt.reporteByDoctorByStatus(token.data.cedula, _context);
+                List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctorByStatus(token.data.cedula, _context);
                 return Ok(recetas);
+
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
@@ -68,10 +64,10 @@ namespace TheCircle.Controllers
         //recetas a despachar por localidad
         [HttpGet("receta/localidad/pordespachar")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        public IActionResult Get_Recetas_Localidad_Status() {
-
-            try {
-
+        public IActionResult Get_Recetas_Localidad_Status()
+        {
+            try
+            {
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
                 var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
@@ -87,16 +83,15 @@ namespace TheCircle.Controllers
         //recetas despachadas por asistente de salud
         [HttpGet("receta/asistente")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        public IActionResult getRecetasDespachadas() {
-
-            RecetaDespacho rd = new RecetaDespacho();
-
-            try {
-
+        public IActionResult getRecetasDespachadas()
+        {
+            try
+            {
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
-                List<RecetaDespacho> recetas = rd.getBy_Asistente(token.data.cedula, _context);
+                List<RecetaDespacho> recetas = new RecetaDespacho().getBy_Asistente(token.data.cedula, _context);
                 return Ok(recetas);
+
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
@@ -108,16 +103,14 @@ namespace TheCircle.Controllers
         [HttpPost("receta/apadrinado/{apadrinado}")]
         public IActionResult PostReceta(int apadrinado)
         {
-            Receta receta = new Receta();
-
             if (apadrinado <= 0)
                 return BadRequest("Incorrect Data");
             
-            try {
-                
+            try
+            {                
                 Token token = _validate.check(Request, new string[] { "medico" });
 
-                receta = receta.crear(apadrinado, token.data.cedula, _context);
+                Receta receta = new Receta().crear(apadrinado, token.data.cedula, _context);
                 return Ok(receta);
 
             } catch (Exception e) {
@@ -137,8 +130,8 @@ namespace TheCircle.Controllers
             if (items == null || id <= 0)
                 return BadRequest("Invalid Data");
 
-            try {
-
+            try
+            {
                 _validate.check(Request, new string[] { "medico" });
 
                 foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items
@@ -159,14 +152,12 @@ namespace TheCircle.Controllers
         [HttpPut("receta/{id}")]
         public IActionResult PostDespachoReceta(int id, [FromBody]ItemsDespachoRequest[] items) {
             ItemsDespachoRequest i = new ItemsDespachoRequest();
-            //ItemDespacho itd = new ItemDespacho();
-            //Receta r = new Receta();
 
             if (id == 0 || items == null)
                 return BadRequest("Incorrect Data");
 
-            try {
-
+            try
+            {
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
                 foreach(ItemsDespachoRequest item in items) { //Se insertan todos los despachos
@@ -174,8 +165,8 @@ namespace TheCircle.Controllers
                 }
 
                 new Receta().update_despachada(id, _context);
-                //itd.update_RecetaDespachada(id, _context); //Se actualiza la receta a despachada
                 return Ok();
+
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
@@ -188,13 +179,11 @@ namespace TheCircle.Controllers
         [HttpDelete("receta/{id}")]
         public IActionResult DeleteReceta(int id)
         {
-            Receta receta = new Receta();
-
-            try {
-
+            try
+            {
                 _validate.check(Request, new string[] {"medico"});
 
-                receta.delete(id, _context);
+                new Receta().delete(id, _context);
                 return Ok();
 
             } catch (Exception e) {
