@@ -106,6 +106,18 @@
                         font-size: 16px;
                         margin-left: 33%;
                     }
+
+                    .modal_form label {
+                        text-align: left;
+                        padding-left: 5px;
+                    }
+
+                    .show_password {
+                        color: rgba(0, 0, 0, 0.52);
+                        border: none;
+                        padding-left: 6px;
+                    }
+
                 </style>
                 <div data-ripple id="button_crear_cuenta" class="panel-footer">
                    <a href="#" data-toggle="modal" data-target="#modal_crear_cuenta">Crear una cuenta</a>
@@ -124,15 +136,17 @@
                         <h5 class="modal-title">Crear una Cuenta</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
-                        <form id="form_crearCuenta" onsubmit="return crearCuenta()" action="api/user" method="post" style="text-align:left;">
+                        <form id="form_crearCuenta" class="modal_form" onsubmit="return crearCuenta()" action="api/user" method="post" style="text-align:left;">
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Cedula incorrecta" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                    <label class="control-label col-sm-4">Cédula de identidad</label>
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cédula válida" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
+                                    <label class="control-label col-sm-4">Contraseña<span class="glyphicon glyphicon-eye-open show_password"></span></label>
+                                    <input name="clave" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
                                 </div>
                             </div>
                             <div class="text-center ">
@@ -154,14 +168,8 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Modificar su Contraseña de Usuario</h5>
                     </div>
-                    <style>
-                        #form_cambiar_clave label {
-                            text-align:left;
-                            padding-left: 5px;
-                        }
-                    </style>
                     <div class="panel-body" style=" padding-top: 5px;" >
-                        <form id="form_cambiar_clave" action="api/user/clave" method="put" onsubmit="return cambiarClave()">
+                        <form id="form_cambiar_clave" class="modal_form" action="api/user/clave" method="put" onsubmit="return cambiarClave()">
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Cedula</label>
@@ -170,14 +178,14 @@
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <label class="control-label col-sm-4">Contraseña Actual</label>
+                                    <label class="control-label col-sm-4">Contraseña</label>
                                     <input name="actual" type="password" required class="form-control rounded" placeholder="Ingrese su actual  clave de sesion">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
-                                    <label class="control-label col-sm-4">Nueva Contraseña</label>
-                                    <input name="nueva" type="text" required class="form-control rounded" placeholder="Ingrese su nueva clave de sesion">
+                                    <label class="control-label col-sm-4">Nueva Contraseña<span class="glyphicon glyphicon-eye-open show_password"></span></label>
+                                    <input id="cambiar_clave_input" name="nueva" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="Ingrese su nueva clave de sesion">
                                 </div>
                             </div>
                             <div class="text-center ">
@@ -193,9 +201,7 @@
 
     </div><!-- /.container -->
     <!-- scritpts -->
-    <script>
 
-    </script>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="~/scripts/ripple.js"> </script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -236,6 +242,12 @@
             })
             return false;
         }
+
+        $(".show_password").on("mouseenter", function () {
+            $(this).parent().next().attr("type", "text");
+        }).on("mouseleave", function () {
+            $(this).parent().next().attr("type", "password");
+        });
 
     </script>
 </body>
