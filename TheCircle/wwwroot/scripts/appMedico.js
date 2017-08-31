@@ -45,6 +45,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             .state('estadisticas.enfermedades', {
                 templateUrl: 'views/medico/estadistica.enfermedades.html',
                 controller: 'estadisticas.enfermedades'
+            })
+            .state('transferencias', {
+                templateUrl: 'views/medico/transferencias.html',
+                controller: 'transferencias'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo producción
     }])
