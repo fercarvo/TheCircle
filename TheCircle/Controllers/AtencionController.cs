@@ -39,7 +39,7 @@ namespace TheCircle.Controllers
                 response.atencion = atencion;
                 response.diagnosticos = diagnosticos;
 
-                return Ok();
+                return Ok(response);
 
             } catch (Exception e) {
                 if (e is TokenException)
@@ -51,7 +51,7 @@ namespace TheCircle.Controllers
 
 
         //Ruta que retorna las atenciones medicas de un doctor
-        [HttpGet("reporte/atencion/date")]
+        [HttpGet("atencion/medico")]
         //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_ReporteAtencion([FromQuery] Fecha request)
         {

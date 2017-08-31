@@ -38,7 +38,7 @@ namespace TheCircle.Models
 
         public Receta[] getBy_Asistente(int asistente, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaBy_Asistente @asistente={asistente}";
+            string query = $"EXEC dbo.Receta_ReportBy_Asistente @asistente={asistente}";
             try {
                 var data = _context.Recetas.FromSql(query).ToArray();
                 return data;
@@ -47,9 +47,9 @@ namespace TheCircle.Models
             }
         }
 
-        public Receta[] getAllByLocalidadByStatus(Localidad localidad, int despachada, MyDbContext _context)
+        public Receta[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaByLocalidad_despachada @localidad='{localidad}', @despachada={despachada}";
+            string query = $"EXEC dbo.Receta_ReportBy_Localidad_Despachada @localidad='{localidad}', @despachada=0";
             try
             {
                 var data = _context.Recetas.FromSql(query).ToArray();
@@ -109,6 +109,18 @@ namespace TheCircle.Models
             }
         }
 
+        internal void update_despachada(int id, MyDbContext _context)
+        {
+            string q = $"EXEC dbo.Receta_Update_despachada @idReceta={id}";
+            try
+            {
+                _context.Database.ExecuteSqlCommand(q);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error update receta a despachada");
+            }
+        }
     }
 
     public class RecetaRequest
@@ -146,13 +158,12 @@ namespace TheCircle.Models
             return recetasTotales;
         }
 
-        public List<RecetaTotal> getAllByLocalidadByStatus(Localidad localidad, int despachada, MyDbContext _context)
+        public List<RecetaTotal> getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
 
-            var r = new Receta();
             var i = new ItemReceta();
 
-            var recetas = r.getAllByLocalidadByStatus(localidad, despachada, _context);
+            var recetas = new Receta().getAll_Localidad_SinDespachar(localidad, _context);
             var recetasTotales = new List<RecetaTotal>();
 
             foreach (Receta receta in recetas) {

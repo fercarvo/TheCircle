@@ -19,10 +19,12 @@
     <style>
         body {
             font-family: 'Roboto', sans-serif;
+            max-height: 100%;
+            overflow: hidden
         }
     </style>
 </head>
-<body class="page-dashboard" ng-app="appMedico" style="max-height:100%;overflow:hidden">
+<body class="page-dashboard" ng-app="appMedico">
     <!-- TOP NAVIGATION STARTS -->
     <nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
         <div class="container-fluid" style="color:#901F61">
@@ -43,11 +45,24 @@
                     }
                 </script>
             </div><!-- /.navbar-header -->
-            <div class="nav navbar-nav navbar-right" style="color:#901F61;height:50px;width:50px;color:#fff;">
-                <button onClick="document.location.assign('logout');" style="background-color: inherit; border: none; position: relative;height:50px;width:50px;" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
-            </div>
-            <div class="nav navbar-nav navbar-right" style="color:#901F61;height:50px;width:50px;color:#fff;">
-                <button data-toggle="modal" data-target="#modal_clave" style="background-color: inherit; border: none; position: relative;height:50px;width:50px;" data-ripple><span class="glyphicon glyphicon-user"></span></button>
+            <style>
+                #logout {
+                    color: #901F61;
+                    height: 50px;
+                    width: 50px;
+                    color: #fff;
+                }
+
+                #logout button {
+                    background-color: inherit;
+                    border: none;
+                    position: relative;
+                    height: 50px;
+                    width: 50px;
+                }
+            </style>
+            <div id="logout" class="nav navbar-nav navbar-right">
+                <button onClick="document.location.replace('logout');" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
             </div>
         </div>
     </nav>
@@ -96,8 +111,16 @@
                     height:600px;
                 }
             }
+
+            #sidebar_menu {
+                min-height: 600px;
+                background-color: #f2f2f2;
+                position: sticky;
+                top: auto;
+                border-right-color: #344868;
+            }
         </style>
-        <div class="sidebar" style="min-height:600px;background-color:#f2f2f2;position:sticky;top:auto;border-right-color:#344868;">
+        <div class="sidebar" id="sidebar_menu">
             <ul class="sidebar-nav">
                 <!--add class dropdown for subitems in lists-->
                 <li data-ripple class=" open" ui-sref="atencion" ui-sref-active="active">
@@ -122,60 +145,28 @@
                 </li><!-- ITEM SIDEBAR END 3 -->
             </ul>
         </div>
-        <!-- SIDEBAR ENDS -->
-        <!-- CONTENT STARTS -->
+
         <div style="overflow-y:auto;max-height:94vh">
             <ui-view></ui-view>
         </div>
-        <!-- CONTENT ENDS -->
-
-        <!--Modal Item receta-->
-        <div id="modal_clave" class="modal fade" style="margin-top:10%;">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Modificar su Contraseña de Usuario</h5>
-                    </div>
-                    <form>
-                        <div class="panel-body" style=" padding-top: 5px;padding-bottom:10px;">
-                            <table class="table table-striped" style="text-align:left;">
-                                <tbody>
-                                    <tr>
-                                        <td><label class="control-label col-sm-12" style="text-align:left;">Contraseña Actual:</label></td>
-                                        <td><input type="text" class="form-control col-sm-12" placeholder="ingrese la actual contraseña" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td><label class="control-label col-sm-12" style="text-align:left;">Nueva Contraseña:</label></td>
-                                        <td><input type="text" class="form-control col-sm-12" placeholder="ingrese la nueva contraseña" /></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div><!--  -->
-                        <div class="text-center ">
-                            <button data-ripple type="submit" class="btn btn-info">Cambiar clave</button>
-                            <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        </div><!-- /.form-group -->
-                    </form>
-                </div>
-            </div>
-        </div> <!--Aqui Termina el modal para el item de receta-->
 
     </div>
     <!-- CONTENT WRAPPER ENDS -->
-    <script src="~/scripts/vendor/wiseboard/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="~/scripts/ripple.js"> </script>   
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.min.js"></script>
-
     <script src="~/scripts/vendor/wiseboard/admin.min.js"></script>
     <script src="~/scripts/vendor/angular.min.js"></script>
-    <script src="~/scripts/appMedico.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
     <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
 
-    <!-- Librerias angular -->
-    <script src="https://unpkg.com/angular-ui-router@1.0.3/release/angular-ui-router.min.js"></script>
+    <!-- NDV3 -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
     <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>
+
+    <script src="~/scripts/appMedico.js"></script>
+
 </body>
 </html>

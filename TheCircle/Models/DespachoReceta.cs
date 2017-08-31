@@ -52,19 +52,9 @@ namespace TheCircle.Models
         public string comentario { get; set; }
         public int idPersonal { get; set; }
 
-        public void update_RecetaDespachada(int idReceta, MyDbContext _context)
-        {
-            string q = $"EXEC dbo.update_Receta_despachada @idReceta={idReceta}";
-            try {
-                _context.Database.ExecuteSqlCommand(q);
-            } catch (Exception e) {
-                throw new Exception("Error update receta a despachada");
-            }
-        }
-
         public ItemDespacho[] getByReceta(int idReceta, MyDbContext _context)
         {
-            string q = $"EXEC dbo.select_DespachoRecetaBy_Receta @idReceta={idReceta}";
+            string q = $"EXEC dbo.DespachoReceta_Report_ByReceta @idReceta={idReceta}";
             try {
                 var data = _context.ItemDespacho.FromSql(q).ToArray();
                 return data;
@@ -90,11 +80,10 @@ namespace TheCircle.Models
         public string comentario { get; set; }
 
         public void insert(ItemsDespachoRequest item, int personal, MyDbContext _context) {
-            string q = $"EXEC dbo.insert_DespachoReceta @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
+            string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             try {
                 _context.Database.ExecuteSqlCommand(q);
             } catch (Exception e) {
-                throw new Exception("Error insertar DespachoReceta, verifique data");
             }
         }
     }

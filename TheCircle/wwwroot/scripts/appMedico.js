@@ -511,7 +511,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             $http({
                 method: "GET",
-                url: "/api/reporte/atencion/date",
+                url: "/api/atencion/medico",
                 params: data
             }).then(function success(res) {
                 $scope.atenciones.all = res.data;

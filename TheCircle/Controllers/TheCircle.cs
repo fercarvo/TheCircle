@@ -28,7 +28,7 @@ namespace TheCircle.Controllers.views
         public IActionResult AsistenteSalud()
         {
             try {
-                _validate.check(Request, new string[] { "asistenteSalud" });
+                //_validate.check(Request, new string[] { "asistenteSalud" });
                 return View();
             } catch (Exception e) {
                 return Redirect("/");
@@ -40,7 +40,7 @@ namespace TheCircle.Controllers.views
         public IActionResult Medico()
         {
             try {
-                _validate.check(Request, new string[] { "medico" });
+                //_validate.check(Request, new string[] { "medico" });
                 return View();
             } catch (Exception e) {
                 return Redirect("/");
@@ -53,7 +53,7 @@ namespace TheCircle.Controllers.views
         {
             try
             {
-                _validate.check(Request, new string[] { "coordinador" });
+                //_validate.check(Request, new string[] { "coordinador" });
                 return View();
             }
             catch (Exception e)
@@ -68,7 +68,7 @@ namespace TheCircle.Controllers.views
         {
             try
             {
-                _validate.check(Request, new string[] { "contralor" });
+                //_validate.check(Request, new string[] { "contralor" });
                 return View();
             }
             catch (Exception e)
@@ -83,7 +83,7 @@ namespace TheCircle.Controllers.views
         {
             try
             {
-                _validate.check(Request, new string[] { "bodeguero" });
+                //_validate.check(Request, new string[] { "bodeguero" });
                 return View();
             }
             catch (Exception e)
@@ -98,7 +98,7 @@ namespace TheCircle.Controllers.views
         {
             try
             {
-                _validate.check(Request, new string[] { "sistema" });
+                //_validate.check(Request, new string[] { "sistema" });
                 return View();
             }
             catch (Exception e)

@@ -81,6 +81,23 @@ namespace TheCircle.Controllers
             }            
         }
 
+        [HttpPost("user")]
+        public IActionResult Login_create([FromForm]string cedula, [FromForm]string clave)
+        {
+            var user = new User();
+
+            if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
+                return BadRequest("Datos incorrectos");
+
+            try {
+                user.crear(cedula, clave, _context);
+                return Ok();
+
+            } catch (Exception e) {
+                return BadRequest("Error al crear usuario");
+            }
+        }
+
 
         [HttpPut("user/{id}/activar")]
         public IActionResult User_Activar(int id) 
@@ -152,24 +169,16 @@ namespace TheCircle.Controllers
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {
             var u = new User();
-            var parameters;
-            var loginRedirect;
-
 
             if (req == null)
-                return Redirect("/");
+                return Ok("Datos incorrectos");
 
             try {
-                //var token = _validate.check(Request, new string[] {"sistema, medico, asistenteSalud, bodeguero"});
                 u.cambiar_clave(req.cedula, req.actual, req.nueva, _context);
-                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Cambio de contraseña exitoso" } };
-                loginRedirect = QueryHelpers.AddQueryString("/logout", parameters);
-                return Redirect(loginRedirect);
+                return Ok();
 
             } catch (Exception e) {
-                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido cambiar la contraseña, verifique los datos" } };
-                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
+                return BadRequest("No se pudo cambiar la contraseña");
             }            
         }
     }

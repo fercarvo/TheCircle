@@ -69,13 +69,12 @@ namespace TheCircle.Controllers
         [HttpGet("receta/localidad/pordespachar")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         public IActionResult Get_Recetas_Localidad_Status() {
-            var rt = new RecetaTotal();
 
             try {
 
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
-                var recetas = rt.getAllByLocalidadByStatus(token.data.localidad, 1, _context);
+                var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
                 return Ok(recetas);
 
             } catch (Exception e) {
@@ -160,7 +159,8 @@ namespace TheCircle.Controllers
         [HttpPut("receta/{id}")]
         public IActionResult PostDespachoReceta(int id, [FromBody]ItemsDespachoRequest[] items) {
             ItemsDespachoRequest i = new ItemsDespachoRequest();
-            ItemDespacho itd = new ItemDespacho();
+            //ItemDespacho itd = new ItemDespacho();
+            //Receta r = new Receta();
 
             if (id == 0 || items == null)
                 return BadRequest("Incorrect Data");
@@ -173,7 +173,8 @@ namespace TheCircle.Controllers
                     i.insert(item, token.data.cedula, _context);
                 }
 
-                itd.update_RecetaDespachada(id, _context); //Se actualiza la receta a despachada
+                new Receta().update_despachada(id, _context);
+                //itd.update_RecetaDespachada(id, _context); //Se actualiza la receta a despachada
                 return Ok();
             } catch (Exception e) {
                 if (e is TokenException)

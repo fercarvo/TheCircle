@@ -14,6 +14,8 @@ namespace TheCircle.Controllers
     {
 
         private readonly MyDbContext _context;
+        private Signature _signer;
+
         public LoginController(MyDbContext context)
         {
             _context = context;
@@ -31,8 +33,8 @@ namespace TheCircle.Controllers
 
             Response.Cookies.Append("session", "", options);
 
-            if (lm != null) {
-                var parameters = new Dictionary<string, string> { { "flag", lm.flag }, { "msg", lm.msg } };
+            if (ModelState.IsValid) {
+                var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);    
             }
@@ -93,30 +95,7 @@ namespace TheCircle.Controllers
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
                 loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
-            }
-            
-        }
-
-
-        [HttpPost("login/crear")]
-        public IActionResult Login_create([FromForm]string cedula, [FromForm]string clave)
-        {
-            if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
-                return Redirect("/");
-
-            try {
-                var user = new User();
-                user.crear(cedula, clave, _context);
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email." } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-
-                return Redirect(loginRedirect);
-
-            } catch (Exception e) {
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas." } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
-            }
+            }            
         }
     }
 }
