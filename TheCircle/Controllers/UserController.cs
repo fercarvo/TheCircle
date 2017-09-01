@@ -24,19 +24,17 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users()
         {
-            var u = new UserSafe();
-
             try {
 
                 _validate.check(Request, new string[] { "sistema" });
 
-                var usuarios = u.getAll(_context);
+                UserSafe[] usuarios = new UserSafe().getAll(_context);
                 return Ok(usuarios);
 
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
-                return NotFound();
+                return BadRequest("Something broke");
             }
             
         }
@@ -45,19 +43,17 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users_Activos()
         {
-            var u = new UserSafe();
-
             try {
 
                 _validate.check(Request, new string[] { "sistema" });
 
-                var usuarios = u.getActivos(_context);
+                UserSafe[] usuarios = new UserSafe().getActivos(_context);
                 return Ok(usuarios);
                 
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
-                return NotFound();
+                return BadRequest("Something broke");
             }            
         }
 
@@ -65,32 +61,28 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users_Inactivos()
         {
-            var u = new UserSafe();
-
             try {
 
                 _validate.check(Request, new string[] {"sistema"});
 
-                var usuarios = u.getInactivos(_context);
+                UserSafe[] usuarios = new UserSafe().getInactivos(_context);
                 return Ok(usuarios);
                 
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
-                return NotFound();
+                return BadRequest("Something broke");
             }            
         }
 
         [HttpPost("user")]
         public IActionResult Login_create([FromForm]string cedula, [FromForm]string clave)
         {
-            var user = new User();
-
             if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
                 return BadRequest("Datos incorrectos");
 
             try {
-                user.crear(cedula, clave, _context);
+                new User().crear(cedula, clave, _context);
                 return Ok();
 
             } catch (Exception e) {
@@ -102,8 +94,6 @@ namespace TheCircle.Controllers
         [HttpPut("user/{id}/activar")]
         public IActionResult User_Activar(int id) 
         {
-            var u = new User();
-
             if (id <= 0)
                 return BadRequest("Incorrect Data");
 
@@ -111,7 +101,7 @@ namespace TheCircle.Controllers
 
                 _validate.check(Request, new string[] {"sistema"});
 
-                u.activar(id, _context);
+                new User().activar(id, _context);
                 return Ok();
 
             } catch (Exception e) {
@@ -124,8 +114,6 @@ namespace TheCircle.Controllers
         [HttpPut("user/{id}/desactivar")]
         public IActionResult User_Desactivar(int id) 
         {
-            var u = new User();
-
             if (id <= 0)
                 return BadRequest("Incorrect Data");
 
@@ -133,7 +121,7 @@ namespace TheCircle.Controllers
 
                 _validate.check(Request, new string[] {"sistema"});
 
-                u.desactivar(id, _context);
+                new User().desactivar(id, _context);
                 return Ok();
 
             } catch (Exception e) {
@@ -146,8 +134,6 @@ namespace TheCircle.Controllers
         [HttpPut("user/{id}/clave/set")]
         public IActionResult User_SetClave(int id) 
         {
-            var u = new User();
-
             if (id <= 0)
                 return BadRequest("Incorrect Data");
 
@@ -155,7 +141,7 @@ namespace TheCircle.Controllers
 
                 _validate.check(Request, new string[] {"sistema"});
 
-                string clave = u.nueva_clave(id, _context);
+                string clave = new User().nueva_clave(id, _context);
                 return Ok( new {clave = clave} );
 
             } catch (Exception e) {
@@ -168,13 +154,11 @@ namespace TheCircle.Controllers
         [HttpPut("user/clave")]
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {
-            var u = new User();
-
             if (req == null)
-                return Ok("Datos incorrectos");
+                return BadRequest("Datos incorrectos");
 
             try {
-                u.cambiar_clave(req.cedula, req.actual, req.nueva, _context);
+                new User().cambiar_clave(req.cedula, req.actual, req.nueva, _context);
                 return Ok();
 
             } catch (Exception e) {

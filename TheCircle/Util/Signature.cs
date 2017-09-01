@@ -108,7 +108,5 @@ namespace TheCircle.Util
             string base64_Byte_String = this.encode.GetString(base64_Byte);
             return base64_Byte_String;
         }
-        
-
     }
 }
