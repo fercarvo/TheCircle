@@ -2,8 +2,6 @@ using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
 using System;
 using TheCircle.Util;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace TheCircle.Controllers
 {
