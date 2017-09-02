@@ -29,9 +29,7 @@ angular.module('appAsistente', ['ui.router'])
         $state.go("despachar");
     }])
     .factory('notify', [function () {
-
         return function (mensaje, tipo) {
-
             var icono;
 
             if (tipo === "success") {
@@ -40,7 +38,7 @@ angular.module('appAsistente', ['ui.router'])
                 icono = "glyphicon glyphicon-ban-circle"
             }
 
-            $.notify(
+            return $.notify(
                 {
                     icon: icono,
                     //title: titulo,
@@ -80,17 +78,13 @@ angular.module('appAsistente', ['ui.router'])
     }])
     .factory('date', [function () {
         return function (date) {
-            try {
-                var format = new Date(date);
-                var day = format.getDate();
-                var month = format.getMonth() + 1;
-                var year = format.getFullYear();
-                return day + '/' + month + '/' + year;
-            } catch (e) {
-                console.log(e);
-                return null;
-            }
-        };
+            var format = new Date(date);
+            var day = format.getDate();
+            var month = format.getMonth() + 1;
+            var year = format.getFullYear();
+
+            return day + '/' + month + '/' + year;
+        }
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -324,11 +318,13 @@ angular.module('appAsistente', ['ui.router'])
             }
         }
     }])
-    .controller('ingresar', ["$scope", "$http", "dataFac", "notify", "date", function ($scope, $http, dataFac, notify, date) {
+    .controller('ingresar', ["$state", "$scope", "$http", "dataFac", "notify", "date", function ($state, $scope, $http, dataFac, notify, date) {
         $scope.compuestos = dataFac.compuestos;
         $scope.items = null;
-        dataFac.getCompuestos();
-        //var actualizar = refresh.go(cargar, 30000);
+
+        if ($scope.compuestos === null) {
+            dataFac.getCompuestos();
+        }
 
         $scope.$on('dataFac.compuestos', function () {
             $scope.compuestos = dataFac.compuestos;
@@ -346,7 +342,7 @@ angular.module('appAsistente', ['ui.router'])
             $http.post("api/itemfarmacia", data).then(function sucess(res) {
                 console.log("Ingreso exitoso", res.data);
                 notify("Ingreso en farmacia exitoso", "success");
-                compuesto = item = fecha = cantidad = {};
+                $state.reload();
             }, function err(err) {
                 console.log("No se pudo guardar el ingreso", err)
                 notify("No se ha podido guardar el ingreso en farmacia", "danger");
@@ -356,6 +352,4 @@ angular.module('appAsistente', ['ui.router'])
         $scope.cambioCompuesto = function (items) {
             $scope.items = items;
         }
-
-
     }])
