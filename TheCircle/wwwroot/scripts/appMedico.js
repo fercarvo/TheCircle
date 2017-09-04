@@ -307,7 +307,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('guardar'); //Guarda y bloquea la atencion medica
-                notify("Apadrinado creado satisfactoriamente", "success");
+                notify("Atención creada satisfactoriamente", "success");
                 $state.go('atencion.receta');
 
             }, function error(err) {
