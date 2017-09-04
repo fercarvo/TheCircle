@@ -21,18 +21,32 @@ namespace TheCircle.Models
 
         public ItemReceta() { }
 
-        public void insert (int receta, ItemRecetaRequest i, MyDbContext _context) {
+        public ItemReceta[] insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
+        {
+            var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items
+                    insertItem(receta, item, _context);
+
+                transaction.Commit();
+
+                return getAllByReceta(receta, _context);
+
+            } catch {
+                transaction.Rollback();
+                throw new Exception("Error al insertar los items de Receta at ItemReceta.insert");
+            }            
+        }
+
+        private void insertItem (int receta, ItemRecetaRequest i, MyDbContext _context) {
             string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
                 $", @idDiagnostico={i.diagnostico}" +
                 $", @cantidad={i.cantidad}" +
                 $", @receta={receta}" +
                 $", @posologia='{i.posologia}'";
 
-                try {
-                    _context.Database.ExecuteSqlCommand(query);
-                } catch (Exception e) {
-                    throw new Exception("No se pudo insertar el item de Receta at ItemReceta.insert");
-                }
+             _context.Database.ExecuteSqlCommand(query);
         }
 
         public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {

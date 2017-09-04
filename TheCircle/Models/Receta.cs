@@ -115,20 +115,11 @@ namespace TheCircle.Models
             try
             {
                 _context.Database.ExecuteSqlCommand(q);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error update receta a despachada");
+            } catch (Exception e) {
+                throw;
             }
         }
     }
-    /*
-    public class RecetaRequest
-    {
-        public int apadrinado { get; set; }
-
-        public RecetaRequest() { }
-    }*/
 
     public class RecetaTotal
     {

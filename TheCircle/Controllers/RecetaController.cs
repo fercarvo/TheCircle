@@ -125,18 +125,14 @@ namespace TheCircle.Controllers
         [HttpPost("receta/{id}")]
         public IActionResult PostItemsReceta(int id, [FromBody]ItemRecetaRequest[] items)
         {
-            ItemReceta itemReceta = new ItemReceta();
-
             if (items == null || id <= 0)
                 return BadRequest("Invalid Data");
 
             try {
                 _validate.check(Request, new string[] { "medico" });
 
-                foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items
-                    itemReceta.insert(id, item, _context);
+                ItemReceta[] data = new ItemReceta().insert(id, items, _context); //Se insertan los items que vienen de la base de datos y se retornan los mismos
 
-                var data = itemReceta.getAllByReceta(id, _context);
                 return Ok(data);
 
             } catch (Exception e) {
@@ -148,30 +144,24 @@ namespace TheCircle.Controllers
 
 
         //Se actualiza una receta a despachada, asistente de salud
-        [HttpPut("receta/{id}")]
-        public IActionResult PostDespachoReceta(int id, [FromBody]ItemsDespachoRequest[] items) {
-            ItemsDespachoRequest i = new ItemsDespachoRequest();
-
-            if (id == 0 || items == null)
+        [HttpPut("receta/{recetaId}")]
+        public IActionResult PostDespachoReceta(int recetaId, [FromBody]ItemsDespachoRequest[] items)
+        {
+            if (recetaId == 0 || items == null)
                 return BadRequest("Incorrect Data");
 
             try
             {
                 Token token = _validate.check(Request, new string[] { "asistenteSalud" });
 
-                foreach(ItemsDespachoRequest item in items) { //Se insertan todos los despachos
-                    i.insert(item, token.data.cedula, _context);
-                }
-
-                new Receta().update_despachada(id, _context);
+                new ItemDespacho().insert(recetaId, items, token.data.cedula, _context);
                 return Ok();
 
             } catch (Exception e) {
                 if (e is TokenException)
                     return Unauthorized();
                 return BadRequest("Something broke");
-            }    
-            
+            }           
         }
 
         //Elimina un receta de farmacia

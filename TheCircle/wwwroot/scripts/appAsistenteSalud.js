@@ -149,7 +149,6 @@ angular.module('appAsistente', ['ui.router'])
         return function (receta) {
 
             var recetaId = receta.receta.id;
-            //despacho.id = receta.receta.id;
             items = [];
 
             receta.items.forEach(function (item) {
@@ -161,13 +160,9 @@ angular.module('appAsistente', ['ui.router'])
                     comentario: item.comentario
                 }
 
-                if (item.nuevaCantidad < item.cantidad) {
+                if (item.nuevaCantidad) {
                     data.cantidad = item.nuevaCantidad;
                     items.push(data);
-
-                } else if (item.nuevaCantidad > item.cantidad || item.nuevaCantidad <= 0) {
-                    console.log("item nuevaCantidad erroneo", item.nuevaCantidad);
-                    notify("Error, nueva cantidad a despachar es erronea", "danger");
 
                 } else {
                     data.cantidad = item.cantidad;
@@ -246,7 +241,7 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         $scope.guardarEgreso = function (receta, recetas, index) {
-            //actualizar = refresh.go(cargar);
+
             var total = receta.items.reduce(function (sum, item) {
                 return sum + item.count;
             }, 0);

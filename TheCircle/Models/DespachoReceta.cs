@@ -62,29 +62,34 @@ namespace TheCircle.Models
                 return null;
             }
         }
-    }
 
-    /*
-    public class DespachoRecetaRequest
-    {
-        public int id { get; set; }
-        public ItemsDespachoRequest[] items { get; set; }
+        public void insert(int receta, ItemsDespachoRequest[] items, int personal, MyDbContext _context)
+        {
+            var transaction = _context.Database.BeginTransaction();
+            try
+            {
+                foreach (ItemsDespachoRequest item in items) //se insertan en la base de datos todos los items
+                    inserItem(item, personal, _context);
 
+                new Receta().update_despachada(receta, _context);
+                transaction.Commit();
+            } catch (Exception e) {
+                transaction.Rollback();
+                throw new Exception("Error al insertar los despacho de items at ItemDespacho.insert");
+            }
+        }
+
+        public void inserItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
+        { //Si ocurre un error se maneja en insert()
+            string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
+            _context.Database.ExecuteSqlCommand(q);
+        }
     }
-    */
 
     public class ItemsDespachoRequest
     {
         public int itemReceta { get; set; }
         public int cantidad { get; set; }
         public string comentario { get; set; }
-
-        public void insert(ItemsDespachoRequest item, int personal, MyDbContext _context) {
-            string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
-            try {
-                _context.Database.ExecuteSqlCommand(q);
-            } catch (Exception e) {
-            }
-        }
     }
 }
