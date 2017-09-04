@@ -73,7 +73,7 @@
                                         <td>{{item.nombre}}</td>
                                         <td>{{item.compuesto}}</td>
                                         <td>{{item.cantidad}}</td>
-                                        <td><input type="number" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control"/></td>
+                                        <td><input type="number" min="1" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control"/></td>
                                         <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
                                         <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-pencil" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
                                         <td ><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
