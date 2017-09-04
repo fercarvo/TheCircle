@@ -49,7 +49,13 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Unidad de Medida<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <input ng-model="form.medida" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
+                            <div class="col-sm-6" style="padding-left:initial">
+                                <select class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.nombre as compuesto.nombre for compuesto in compuestos">
+                                    <option style="display:none;" selected disabled value="">Digite y Seleccione la unidad de Medida</option>
+                                    <option>caja</option>
+                                    <option>unidad</option>
+                                </select>
+                            </div>
                         </div>
                     </div><!-- /.form-group -->
                     <div>
