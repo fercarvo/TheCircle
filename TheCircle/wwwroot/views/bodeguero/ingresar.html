@@ -5,46 +5,50 @@
         .panel-inverse-light > .panel-heading:after {
             height: 0px;
         }
+        #form-crearItem label {
+            text-align: left;
+            width: 20%;
+            padding-right: 0px;
+            margin-left: 10px;
+        }
     </style>
     <div class="panel panel-default-light border-default">
         <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
             <div class="panel-title">
-                Ingreso de Farmacia
+                Ingreso en bodega
             </div>
         </div>
 
         <div class="panel-body" style="padding:25px 20px 10px 20px;">
 
             <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
-                <form class="form-horizontal" ng-submit="send()" ng-init="activar()" style="margin-top:10px;">
+                <form class="form-horizontal" id="form-crearItem" ng-submit="crear(form)" style="margin-top:10px;">
                     <!--"m-bottom-30" para poner margen vertical de 30px-->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Nombre del Ítem<a style="color:red;">(*)</a></label>
+                        <label class="control-label col-sm-2">Nombre del Ítem<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <input class="form-control" type="text" placeholder="Ingresar el nombre">
+                            <input ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
                         </div>
                     </div><!-- /.form-group -->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Compuesto<a style="color:red;">(*)</a></label>
+                        <label class="control-label col-sm-2">Compuesto<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <select class="form-control myselect">
-                                <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo Compuesto</option>
-                                <option selected value="">compuesto 1</option>
-                                <option selected value="">compuesto 2</option>
+                            <select class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.nombre as compuesto.nombre for compuesto in compuestos">
+                                <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo de Compuesto</option>
                             </select>
                         </div>
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Fecha de caducidad</label>
+                        <label class="control-label col-sm-2">Fecha de caducidad</label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <input required type="date" class="form-control">
+                            <input ng-model="form.fecha" required type="date" class="form-control">
                         </div>
                     </div><!-- /.form-group -->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Cantidad<a style="color:red;">(*)</a></label>
+                        <label class="control-label col-sm-2">Cantidad<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <input class="form-control" type="number" placeholder="Ingresar la cantidad" min="1" max="1000">
+                            <input class="form-control" ng-model="form.cantidad" type="number" placeholder="Ingresar la cantidad" min="1" max="1000">
                         </div>
                     </div><!-- /.form-group -->
                     <div>

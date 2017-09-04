@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TheCircle - Medico</title>
     
-    @Html.Partial("Styles")
+    @Html.Partial("Partials/Styles")
     <link rel="stylesheet" type="text/css" href="https://cdn.rawgit.com/novus/nvd3/v1.8.1/build/nv.d3.css" />
 
     <style>
@@ -28,14 +28,15 @@
                     <span style="color:white">TheCircle</span>
                 </a>
                 <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
-                    <span id="spanid" ng-class="class='glyphicon glyphicon-chevron-left'"></span>
+                    <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
                 </button>
                 <script type="text/javascript">
                     function change() {
-                        if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-right")
-                        { document.getElementById("spanid").className = "glyphicon glyphicon-chevron-left"; }
-                        else if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-left")
-                        { document.getElementById("spanid").className = "glyphicon glyphicon-chevron-right"; }
+                        if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-right") {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-left";
+                        } else {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-right";
+                        }
                     }
                 </script>
             </div><!-- /.navbar-header -->
@@ -146,7 +147,7 @@
 
     </div>
     
-    @Html.Partial("Scripts")
+    @Html.Partial("Partials/Scripts")
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/nvd3/1.8.1/nv.d3.min.js"></script>
     <script src="https://rawgit.com/krispo/angular-nvd3/v1.0.5/dist/angular-nvd3.js"></script>

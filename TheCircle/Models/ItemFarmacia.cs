@@ -68,52 +68,6 @@ namespace TheCircle.Models
         }
     }
 
-    public class Compuesto
-    {
-        [Key]
-        public string nombre { get; set; }
-        public Item[] items { get; set; }
-
-        public Compuesto() { }
-
-        public Compuesto(string nombre, Item[] items)
-        {
-            this.nombre = nombre;
-            this.items = items;
-        }
-
-        public List<Compuesto> getAllBy_Localidad(Localidad localidad, MyDbContext _context) {
-            string query = $"EXEC dbo.Compuesto_Select_ByLocalidad @localidad='{localidad}'";
-
-            try {
-                var compuestos = new List<Compuesto>();
-                var i = new Item();
-                var data = _context.CompuestoNombre.FromSql(query).ToArray();
-                
-                foreach (CompuestoNombre compuesto in data) {
-                    var items = i.getBy_Compuesto(compuesto.nombre, _context);
-
-                    if (items.Count() > 0) 
-                        compuestos.Add(new Compuesto(compuesto.nombre, items));
-                }
-
-                return compuestos;
-            } catch (Exception e) {
-                throw new Exception("Error cargar Compuesto at ItemFarmacia.cs Compuesto.getAllBy_Localidad");
-            }
-
-        }
-
-    }
-
-    public class CompuestoNombre
-    {
-        [Key]
-        public string nombre { get; set; }
-
-        public CompuestoNombre() { }
-    }
-
     public class RequestItem
     {
         public string nombre { get; set; }

@@ -130,8 +130,7 @@ namespace TheCircle.Controllers
             if (items == null || id <= 0)
                 return BadRequest("Invalid Data");
 
-            try
-            {
+            try {
                 _validate.check(Request, new string[] { "medico" });
 
                 foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items

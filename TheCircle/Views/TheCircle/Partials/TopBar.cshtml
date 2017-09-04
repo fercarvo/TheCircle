@@ -1,0 +1,42 @@
+<style>
+    #logout {
+        color: #901F61;
+        height: 50px;
+        width: 50px;
+        color: #fff;
+    }
+
+    #logout button {
+        background-color: inherit;
+        border: none;
+        position: relative;
+        height: 50px;
+        width: 50px;
+    }
+</style>
+<nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
+    <div class="container-fluid" style="color:#901F61">
+        <div class="navbar-header">
+            <a onClick="document.location.reload();" class="navbar-brand" href="">
+                <span style="color:white">TheCircle</span>
+            </a>
+            <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
+                <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
+            </button>
+        </div>
+
+        <div id="logout" class="nav navbar-nav navbar-right">
+            <button onClick="document.location.replace('logout');" title="Cerrar sesión" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
+        </div>
+    </div>
+</nav>
+<script type="text/javascript">
+    function change() {
+        if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-right") {
+            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-left";
+        } else {
+            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-right";
+        }
+    }
+</script>
+

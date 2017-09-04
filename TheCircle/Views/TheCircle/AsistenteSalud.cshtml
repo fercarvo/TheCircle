@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>TheCircle - Asistente salud</title>
 
-    @Html.Partial("Styles")
+    @Html.Partial("Partials/Styles")
 
     <style>
         body {
@@ -26,9 +26,18 @@
                     <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
                     <span style="color:white">TheCircle</span>
                 </a>
-                <button type="button" class="sidebar-toggle" style="color:white">
-                    <span ng-class="class='glyphicon glyphicon-chevron-right'"></span>
+                <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
+                    <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
                 </button>
+                <script type="text/javascript">
+                    function change() {
+                        if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-right") {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-left";
+                        } else {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-right";
+                        }
+                    }
+                </script>
             </div><!-- /.navbar-header -->
             <style>
                 #logout_button {
@@ -137,7 +146,7 @@
 
     </div>
 
-    @Html.Partial("Scripts")
+    @Html.Partial("Partials/Scripts")
     <script src="~/scripts/appAsistenteSalud.js"></script>
 </body>
 </html>

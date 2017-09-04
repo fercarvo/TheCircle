@@ -18,11 +18,10 @@ namespace TheCircle.Util
         public Token(User user, Localidad loc) {
 
             Data data = new Data(user, loc);
-            Signature _signer = new Signature();
             string data_String = JsonConvert.SerializeObject(data);
 
             this.data = data;
-            this.sign = _signer.sign_HMAC(data_String);
+            this.sign = new Signature().sign_HMAC(data_String);
         }
 
         public Token() { }

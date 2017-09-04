@@ -1,5 +1,5 @@
 ﻿angular.module('appBodeguero', ['ui.router'])
-    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
+    .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
                 templateUrl: 'views/bodeguero/despachar.html',
@@ -14,12 +14,88 @@
                 controller: 'ingresar'
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
-        //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
     .run(["$state", function ($state) {
         $state.go("despachar");
     }])
-    .controller('despachar', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .factory('notify', [function () {
+        return function (mensaje, tipo) {
+            var icono = "";
+
+            if (tipo === "success") {
+                icono = "glyphicon glyphicon-saved";
+            } else if (tipo === "danger") {
+                icono = "glyphicon glyphicon-ban-circle"
+            }
+
+            return $.notify(
+                {
+                    icon: icono,
+                    //title: titulo,
+                    message: mensaje,
+                    url: '#',
+                    target: '_blank'
+                },
+                {
+                    element: 'body',
+                    position: null,
+                    showProgressbar: false,
+                    type: tipo,
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: { x: 20, y: 70 },
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 1000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: "pause",
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class'
+                });
+        };
+    }])
+    .factory('date', [function () {
+        return function (date) {
+            var format = new Date(date);
+            var day = format.getDate();
+            var month = format.getMonth() + 1;
+            var year = format.getFullYear();
+
+            return day + '/' + month + '/' + year;
+        }
+    }])
+    .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
+
+        var dataFac = {
+            stock: null,
+            compuestos: null,
+            getCompuestos: getCompuestos
+        }
+
+        function getCompuestos() {
+            $http.get("/api/compuesto").then(function success(res) {
+                dataFac.compuestos = res.data;
+                $rootScope.$broadcast('dataFac.compuestos');
+            }, function error(err) {
+                console.log("Error cargar compuestos", err);
+            })
+        }
+
+        return dataFac;
+    }])
+    .controller('despachar', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $scope.casa = "dasdasdasd"
 
 
@@ -27,38 +103,34 @@
     .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
         $scope.casa = "dasdasdasd"
     }])
-    .controller('ingresar', ["$scope", "$http", "dataFac", "notify", "date", function ($scope, $http, dataFac, notify, date) {
+    .controller('ingresar', ["$state", "$scope", "$http", "dataFac", "notify", "date", function ($state, $scope, $http, dataFac, notify, date) {
+        console.log("En controller ingresar");
         $scope.compuestos = dataFac.compuestos;
-        $scope.items = null;
-        dataFac.getCompuestos();
-        //var actualizar = refresh.go(cargar, 30000);
+
+        if ($scope.compuestos === null) {
+            dataFac.getCompuestos();
+        }
 
         $scope.$on('dataFac.compuestos', function () {
             $scope.compuestos = dataFac.compuestos;
         })
 
-        $scope.crear = function (compuesto, item, fecha, cantidad) {
+        $scope.crear = function (form) {
             var data = {
-                compuesto: compuesto,
-                nombre: item,
-                fcaducidad: date(fecha),
-                cantidad: cantidad
+                nombre: form.nombre,
+                compuesto: form.compuesto,
+                fcaducidad: date(form.fecha),
+                cantidad: form.cantidad
             }
             console.log("data a enviar", data);
 
             $http.post("api/itemfarmacia", data).then(function sucess(res) {
                 console.log("Ingreso exitoso", res.data);
-                notify("Ingreso en farmacia exitoso", "success");
-                compuesto = item = fecha = cantidad = {};
+                notify("Ingreso exitoso", "success");
+                $state.reload();
             }, function err(err) {
-                console.log("No se pudo guardar el ingreso", err)
-                notify("No se ha podido guardar el ingreso en farmacia", "danger");
+                console.log("No se pudo guardar", err)
+                notify("No se ha podido guardar el ingreso", "danger");
             })
         }
-
-        $scope.cambioCompuesto = function (items) {
-            $scope.items = items;
-        }
-
-
     }])

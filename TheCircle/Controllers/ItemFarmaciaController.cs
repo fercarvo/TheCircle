@@ -63,7 +63,7 @@ namespace TheCircle.Controllers
 
             try {
                 
-                Token token = _validate.check(Request, new string[] { "asistenteSalud" });
+                Token token = _validate.check(Request, new string[] {"asistenteSalud", "bodeguero"});
 
                 new ItemFarmacia().insert(item, token.data.localidad, token.data.cedula, _context);
                 return Ok();
