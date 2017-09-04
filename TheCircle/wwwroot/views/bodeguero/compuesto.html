@@ -1,0 +1,70 @@
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+
+        #form-crearItem label {
+            text-align: left;
+            width: 20%;
+            padding-right: 0px;
+            margin-left: 10px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Ingreso en bodega
+            </div>
+        </div>
+
+        <div class="panel-body" style="padding:25px 20px 10px 20px;">
+
+            <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+                <form class="form-horizontal" id="form-crearItem" ng-submit="crear(form)" style="margin-top:10px;">
+                    <!--"m-bottom-30" para poner margen vertical de 30px-->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Nombre del Compuesto<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-6" style="padding-left:initial">
+                            <input ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
+                        </div>
+                    </div><!-- /.form-group -->
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Categoría<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-6" style="padding-left:initial">
+                            <select class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.nombre as compuesto.nombre for compuesto in compuestos">
+                                <option style="display:none;" selected disabled value="">Digite y Seleccione la categoría del Compuesto</option>
+                                <option>anti caries</option>
+                                <option>baja lengua</option>
+                                <option>Antirrabico</option>
+                                <option>antinflamatorio</option>
+                                <option>vitaminas</option>
+                                <option>laxante</option>
+                            </select>
+                        </div>
+                    </div><!-- /.form-group -->
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Unidad de Medida<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-6" style="padding-left:initial">
+                            <input ng-model="form.medida" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
+                        </div>
+                    </div><!-- /.form-group -->
+                    <div>
+                        <a style="color:red;margin-left: 10px;">(*) campo obligatorio.</a>
+                    </div>
+                    <div class="text-center">
+                        <button data-ripple type="submit" class="btn btn-info" ng-disabled="disable">Aceptar</button>
+                        <button data-ripple type="reset" class="btn btn-default" ng-click="reset()" ng-disabled="disable">Cancelar</button>
+                    </div><!-- /.form-group -->
+                </form>
+
+                <script type="text/javascript">
+                    $(".myselect").select2();
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

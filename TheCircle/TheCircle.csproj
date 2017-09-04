@@ -45,6 +45,7 @@
     <Content Include="wwwroot\views\asistente\historial.html" />
     <Content Include="wwwroot\views\asistente\ingresar.html" />
     <Content Include="wwwroot\views\asistente\stock.html" />
+    <Content Include="wwwroot\views\bodeguero\compuesto.html" />
     <Content Include="wwwroot\views\bodeguero\despachar.html" />
     <Content Include="wwwroot\views\bodeguero\historial.html" />
     <Content Include="wwwroot\views\bodeguero\ingresar.html" />

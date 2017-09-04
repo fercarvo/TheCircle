@@ -12,6 +12,10 @@
             .state('ingresar', {
                 templateUrl: 'views/bodeguero/ingresar.html',
                 controller: 'ingresar'
+            })
+            .state('compuesto', {
+                templateUrl: 'views/bodeguero/compuesto.html',
+                controller: 'compuesto'
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
     }])
