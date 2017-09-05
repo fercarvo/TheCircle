@@ -1,4 +1,4 @@
-﻿<div class="content">
+﻿<div class="content" style="min-height: 440px;">
     <style>
         .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
         .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
@@ -9,88 +9,38 @@
     <div class="panel panel-default-light border-default">
         <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
             <div class="panel-title">
-                Recetas médicas pendientes de despacho
+                Despachar
             </div><!-- /.panel-title -->
         </div><!-- /.panel-heading -->
-        <div class="panel-body" style="padding:25px 20px 10px 20px;">
+        <style>
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                border-top-color: #901F61;
+                border-right-color: #901F61;
+                border-left-color: #901F61;
+                color: #901F61;
+            }
 
-            <div class="panel panel-default-light border-default" style="padding:0px">
-                <div class="panel-heading">
-                    <div style="text-align:right">
-                        <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
-                    </div>
-                </div>
-                <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
-                    <table class="table table-striped">
-                        <thead>
-                            <tr>
-                                <th>N&uacute;mero</th>
-                                <th>Fecha</th>
-                                <th>Apadrinado</th>
-                                <th>Doctor</th>
-                                <th>Ver &iacute;tems</th>
-                            </tr>
-                        </thead>
+            .nav-tabs, .nav-tabs > li > a:hover {
+                border-bottom-color: #901F61;
+            }
+        </style>
+        <div class="panel-body">
+            <ul class="nav nav-tabs">
+                <li ui-sref="despachar.receta" ui-sref-active="active">
+                    <a>Recetas</a>
+                </li>
+                <li ui-sref="despachar.transferencias" ui-sref-active="active">
+                    <a>Transferencias</a>
+                </li>
+                <li ui-sref="despachar.pedidointerno" ui-sref-active="active">
+                    <a>Pedido interno</a>
+                </li>
+            </ul>
 
-                        <tbody>
-                            <tr ng-repeat="obj in recetas | filter:buscar | orderBy:'receta.fecha'">
-                                <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
-                                <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td>{{obj.receta.idApadrinado}}</td>
-                                <td>{{obj.receta.idDoctor}}</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            <div class="tab-content">
+                <ui-view></ui-view>
             </div>
 
-            <!--Modal Item receta-->
-            <div id="myModal" class="modal fade">
-                <div class="modal-dialog modal-lg">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Receta Nro {{("00000000"+ receta.receta.id).slice(-9)}} - {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - {{receta.receta.idApadrinado}}</h5>
-                        </div>
-                        <div class="panel-body" style=" padding-top: 5px;">
-
-                            <table class="table table-striped" style="text-align:center;">
-                                <thead>
-                                    <tr>
-                                        <th>Despachado</th>
-                                        <th>&Iacute;tem</th>
-                                        <th>Compuesto</th>
-                                        <th>Cantidad</th>
-                                        <th>Nueva cantidad</th>
-                                        <th>Comentario</th>
-                                        <th>Editar cantidad</th>
-                                        <th>Despachar</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="item in receta.items">
-                                        <td style="padding-top: 15px" ng-class="item.class"></td>
-                                        <td>{{item.nombre}}</td>
-                                        <td>{{item.compuesto}}</td>
-                                        <td>{{item.cantidad}}</td>
-                                        <td><input type="number" min="1" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control"/></td>
-                                        <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
-                                        <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-pencil" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
-                                        <td ><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div><!--  -->
-                        <div class="text-center ">
-                            <button data-ripple type="submit" ng-click="guardarEgreso(receta, recetas, index)" class="btn btn-info">Guardar Egreso de Farmacia</button>
-                            <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                        </div><!-- /.form-group -->
-                    </div>
-                </div>
-            </div> <!--Aqui Termina el modal para el item de receta-->
-
         </div>
-
     </div>
 </div>

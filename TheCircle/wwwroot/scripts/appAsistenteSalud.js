@@ -10,6 +10,18 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/despachar.html',
                 controller: 'despachar'
             })
+            .state('despachar.receta', {
+                templateUrl: 'views/asistente/despachar.receta.html',
+                controller: 'despachar.receta'
+            })
+            .state('despachar.transferencias', {
+                templateUrl: 'views/asistente/despachar.transferencias.html',
+                controller: 'despachar.transferencias'
+            })
+            .state('despachar.pedidointerno', {
+                templateUrl: 'views/asistente/despachar.pedidointerno.html',
+                controller: 'despachar.pedidointerno'
+            })
             .state('historial', {
                 templateUrl: 'views/asistente/historial.html',
                 controller: 'historial'
@@ -194,7 +206,10 @@ angular.module('appAsistente', ['ui.router'])
             goTime: goTime
         }
     }])
-    .controller('despachar', ["$log", "$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($log, $scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+    .controller('despachar', ["$state", function ($state) {
+        $state.go("despachar.receta");
+    }])
+    .controller('despachar.receta', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
@@ -262,6 +277,12 @@ angular.module('appAsistente', ['ui.router'])
                 notify("No se han despachado todos los items", "danger");
             }
         }
+    }])
+    .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+
+    }])
+    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+
     }])
     .controller('historial', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
         $scope.despachos = dataFac.despachos;

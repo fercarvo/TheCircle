@@ -46,6 +46,9 @@
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js.descarga" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js.descarga" />
     <Content Include="wwwroot\views\asistente\despachar.html" />
+    <Content Include="wwwroot\views\asistente\despachar.pedidointerno.html" />
+    <Content Include="wwwroot\views\asistente\despachar.receta.html" />
+    <Content Include="wwwroot\views\asistente\despachar.transferencias.html" />
     <Content Include="wwwroot\views\asistente\historial.html" />
     <Content Include="wwwroot\views\asistente\ingresar.html" />
     <Content Include="wwwroot\views\asistente\stock.html" />

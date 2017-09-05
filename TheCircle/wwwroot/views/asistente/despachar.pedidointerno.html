@@ -1,0 +1,124 @@
+﻿<div class="panel-body" style="padding:25px 20px 10px 20px;">
+    <div class="panel panel-default-light border-default" style="padding:0px">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+            </div>
+        </div>
+        <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha</th>
+                        <th>Nombre</th>
+                        <th>Compuesto</th>
+                        <th>Cantidad</th>
+                        <th>Ver informacion</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>12312</td>
+                        <td>1/1/2018</td>
+                        <td>Paracetamol</td>
+                        <td>No se</td>
+                        <td>321</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>12312</td>
+                        <td>1/1/2018</td>
+                        <td>Paracetamol</td>
+                        <td>No se</td>
+                        <td>321</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>12312</td>
+                        <td>1/1/2018</td>
+                        <td>Paracetamol</td>
+                        <td>No se</td>
+                        <td>321</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>12312</td>
+                        <td>1/1/2018</td>
+                        <td>Paracetamol</td>
+                        <td>No se</td>
+                        <td>321</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos de la transferencia</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-striped" style="text-align:center;">
+
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>Numero: </td>
+                                <td>1083334</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre: </td>
+                                <td>Paracetamol forte maximizado</td>
+                            </tr>
+                            <tr>
+                                <td>Compuesto: </td>
+                                <td>Paracetamol 0.5</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad: </td>
+                                <td> <label style="width:20%">123</label> <button title="Cambiar cantidad a despachar" style="background-color:inherit;border:none;" onclick="foo()"><span class="glyphicon glyphicon-pencil"></span></button> <input id="input2" style="float:right" type="number" min="1" disabled /></td>
+                            </tr>
+                            <tr>
+                                <td>Comentario: </td>
+                                <td><input type="text" maxlength="100" style="width:100%;" /></td>
+                            </tr>
+                            <tr>
+                                <td>Solicitante: </td>
+                                <td>0998843766</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha: </td>
+                                <td>DD/MM/YYYY</td>
+                            </tr>
+                            <tr>
+                                <td>Destino: </td>
+                                <td>CC5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" class="btn btn-info">Despachar</button>
+                    <button data-ripple type="button" class="btn btn-default">Cancelar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function foo() {
+            var a = document.getElementById("input2");
+            if (a.disabled === true) {
+                a.disabled = false;
+            } else {
+                a.disabled = true;
+            }
+        }
+    </script>
+
+</div>

@@ -11,7 +11,7 @@ namespace TheCircle.Models
         [Key]
         public int id { get; set; }
         public int idItemFarmacia { get; set; }
-        public DateTime fcaducidad { get; set; }
+        public DateTime? fcaducidad { get; set; }
         public string nombre { get; set; }
         public string compuesto { get; set; }
         public Int32 diagnostico { get; set; }
@@ -60,7 +60,7 @@ namespace TheCircle.Models
                 var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}").ToArray();
                 return data;
             } catch (Exception e) {
-                return null;
+                throw new Exception("Error al cargar Items de Receta at ItemReceta.getAllByReceta");
             }
         }
     }

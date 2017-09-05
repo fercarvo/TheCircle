@@ -148,7 +148,7 @@ namespace TheCircle.Models
             return recetasTotales;
         }
 
-        public List<RecetaTotal> getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
+        public RecetaTotal[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
             var i = new ItemReceta();
 
@@ -156,11 +156,10 @@ namespace TheCircle.Models
             var recetasTotales = new List<RecetaTotal>();
 
             foreach (Receta receta in recetas) {
-                var items = i.getAllByReceta(receta.id, _context);
-                if (items != null)                    
-                    recetasTotales.Add(new RecetaTotal(receta, items));                    
+                var items = i.getAllByReceta(receta.id, _context);                 
+                recetasTotales.Add(new RecetaTotal(receta, items));                    
             }
-            return recetasTotales;
+            return recetasTotales.ToArray();
         }
 
         public List<RecetaTotal> reporteByDoctor (Fecha fecha, int doctor, MyDbContext _context)
