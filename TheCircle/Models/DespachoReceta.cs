@@ -22,19 +22,17 @@ namespace TheCircle.Models
 
         public RecetaDespacho() { }
 
-        public List<RecetaDespacho> getBy_Asistente (int asistente, MyDbContext _context) {
-
-            Receta r = new Receta();
+        public List<RecetaDespacho> getBy_Asistente (int asistente, MyDbContext _context) 
+        {
             ItemDespacho i = new ItemDespacho();
 
-            Receta[] recetas = r.getBy_Asistente(asistente, _context);
+            Receta[] recetas = new Receta().getBy_Asistente(asistente, _context);
             List<RecetaDespacho> recetasDespacho = new List<RecetaDespacho>();
 
             foreach (Receta receta in recetas) {
                 ItemDespacho[] items = i.getByReceta(receta.id, _context);
-                if (items != null) {
+                if (items != null) 
                     recetasDespacho.Add(new RecetaDespacho(receta, items));
-                }
             }
             return recetasDespacho;
         }
@@ -69,7 +67,7 @@ namespace TheCircle.Models
             try
             {
                 foreach (ItemsDespachoRequest item in items) //se insertan en la base de datos todos los items
-                    inserItem(item, personal, _context);
+                    insertItem(item, personal, _context);
 
                 new Receta().update_despachada(receta, _context);
                 transaction.Commit();
@@ -79,8 +77,8 @@ namespace TheCircle.Models
             }
         }
 
-        public void inserItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
-        { //Si ocurre un error se maneja en insert()
+        private void insertItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
+        {
             string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             _context.Database.ExecuteSqlCommand(q);
         }

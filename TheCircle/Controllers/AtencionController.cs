@@ -40,7 +40,6 @@ namespace TheCircle.Controllers
                     return Unauthorized();
                 return BadRequest("Something broke");
             }
-
         }
 
 

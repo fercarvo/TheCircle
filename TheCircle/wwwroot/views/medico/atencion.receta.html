@@ -1,4 +1,4 @@
-<div class="panel-body" style="padding:0px 20px 20px 20px;" ng-init="activar()">
+<div class="panel-body" style="padding:0px 20px 20px 20px;">
 
     <div class="panel panel-default-light border-default col-sm-6" style="padding:0px">
         <div class="panel-heading">
@@ -20,7 +20,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="item in stock | filter:buscar" ng-disabled="disable" ng-click="select(item)" data-toggle="modal" data-target="#myModal">
+                    <tr ng-repeat="item in stock | filter:buscar" ng-disabled="disable" ng-click="select(item)" data-toggle="modal" data-target="#modal_crearItem">
                         <td>{{item.stock}}</td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.compuesto}}</td>
@@ -70,8 +70,7 @@
     </div><!--  -->
 
 
-    <!--Modal Item receta-->
-    <div id="myModal" class="modal fade">
+    <div id="modal_crearItem" class="modal fade">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
@@ -116,10 +115,8 @@
                         </div>
                     </form>
                 </div>
+            </div>
         </div>
-    </div>
-
+    </div>   
+    <script type="text/javascript">$(".myselect").select2();</script>
 </div>
-    <!--Aqui Termina el modal para el item de receta-->
-
-</div><!-- /.tab-pane 3 -->

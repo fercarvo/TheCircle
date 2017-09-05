@@ -21,32 +21,38 @@ namespace TheCircle.Models
 
         public ItemReceta() { }
 
-        public ItemReceta[] insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
+        /*
+            Metodo que recibe una lista de items y se los inserta en la BDD
+            En caso de haber un error por datos incorrectos o cualquier cosa, se hace rollback
+        */
+        public void insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
         {
             var transaction = _context.Database.BeginTransaction();
             try
             {
-                foreach (ItemRecetaRequest item in items) //se insertan en la base de datos todos los items
+                foreach (ItemRecetaRequest item in items)
                     insertItem(receta, item, _context);
 
                 transaction.Commit();
-
-                return getAllByReceta(receta, _context);
-
+                //return getAllByReceta(receta, _context);
             } catch {
                 transaction.Rollback();
                 throw new Exception("Error al insertar los items de Receta at ItemReceta.insert");
             }            
         }
 
-        private void insertItem (int receta, ItemRecetaRequest i, MyDbContext _context) {
+        /*
+            Recibe un id de Receta y un ItemRequest, se los inserta en la BDD
+        */
+        private void insertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
+        {
             string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
                 $", @idDiagnostico={i.diagnostico}" +
                 $", @cantidad={i.cantidad}" +
                 $", @receta={receta}" +
                 $", @posologia='{i.posologia}'";
 
-             _context.Database.ExecuteSqlCommand(query);
+            _context.Database.ExecuteSqlCommand(query);
         }
 
         public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {
@@ -69,14 +75,4 @@ namespace TheCircle.Models
 
         public ItemRecetaRequest() { }
     }
-
-    /*
-    public class RecetaItemsRequest
-    {
-        public int idReceta { get; set; }
-        public ItemRecetaRequest[] items { get; set; }
-
-        public RecetaItemsRequest() { }
-    }
-    */
 }

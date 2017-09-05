@@ -61,6 +61,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             var day = format.getDate();
             var month = format.getMonth() + 1;
             var year = format.getFullYear();
+
             return day + '/' + month + '/' + year;
         };
     }])
@@ -264,12 +265,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.tipos = dataFactory.tipos;
         $scope.atencion = atencionFactory.atencion;
 
-
-        $scope.activar = function () {
-            $(".myselect").select2();
-        }
-
-
         if (dataFactory.enfermedades === null) {
             dataFactory.getEnfermedades().then(function success(res) {
                 dataFactory.enfermedades = res.data;
@@ -324,10 +319,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.instituciones = dataFactory.instituciones;
         $scope.diagnosticos = atencionFactory.diagnosticos
 
-        $scope.activar = function () {
-            $(".myselect").select2();
-        }
-
         if (dataFactory.instituciones === null) {
             dataFactory.getInstituciones().then(function success(res) {
                 dataFactory.instituciones = res.data;
@@ -355,7 +346,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             }, function (err) {
                 console.log("error crear remision", err);
-                notify("No se pudo generar la remision", "danger");
+                notify("No se pudo generar la remision, por favor verifique los datos", "danger");
             });
         }
 
@@ -370,9 +361,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.diagnosticos = atencionFactory.diagnosticos;
         var actualizar = refresh.go(cargar);
 
-        $scope.activar = function () {
-            $(".myselect").select2();
-        }
 
         $scope.$on('dataFactory.stock', function () {
             $scope.stock = dataFactory.stock;
@@ -406,7 +394,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
 
         $scope.addItenReceta = function (item) {
-            $('.modal').modal('hide'); //Se cierra el modal
+            $('#modal_crearItem').modal('hide'); //Se cierra el modal
             actualizar = refresh.go(cargar); //Se empiezan a actualizar las recetas
             $scope.receta.items.push(angular.copy(item)); //Se actualiza la receta con el nuevo item
         }
@@ -446,7 +434,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
     }])
     .controller('anulaciones', ["$scope", "$state", "$http", "atencionFactory", "notify", "dataFactory", "refresh", function ($scope, $state, $http, atencionFactory, notify, dataFactory, refresh) {
-        console.log("en anulaciones");
 
         $scope.recetas = dataFactory.recetas;
         $scope.receta = null;

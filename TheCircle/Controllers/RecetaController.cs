@@ -29,7 +29,7 @@ namespace TheCircle.Controllers
 
             try {
 
-                Token token = _validate.check(Request, new string[] { "medico" });
+                Token token = _validate.check(Request, new[] { "medico" });
 
                 List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctor(fecha, token.data.cedula, _context);
                 return Ok(recetas);
@@ -49,7 +49,7 @@ namespace TheCircle.Controllers
         {
             try
             {
-                Token token = _validate.check(Request, new string[] { "medico" });
+                Token token = _validate.check(Request, new[] { "medico" });
 
                 List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctorByStatus(token.data.cedula, _context);
                 return Ok(recetas);
@@ -68,7 +68,7 @@ namespace TheCircle.Controllers
         {
             try
             {
-                Token token = _validate.check(Request, new string[] { "asistenteSalud" });
+                Token token = _validate.check(Request, new[] { "asistenteSalud" });
 
                 var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
                 return Ok(recetas);
@@ -87,7 +87,7 @@ namespace TheCircle.Controllers
         {
             try
             {
-                Token token = _validate.check(Request, new string[] { "asistenteSalud" });
+                Token token = _validate.check(Request, new[] { "asistenteSalud" });
 
                 List<RecetaDespacho> recetas = new RecetaDespacho().getBy_Asistente(token.data.cedula, _context);
                 return Ok(recetas);
@@ -108,7 +108,7 @@ namespace TheCircle.Controllers
             
             try
             {                
-                Token token = _validate.check(Request, new string[] { "medico" });
+                Token token = _validate.check(Request, new[] { "medico" });
 
                 Receta receta = new Receta().crear(apadrinado, token.data.cedula, _context);
                 return Ok(receta);
@@ -128,12 +128,12 @@ namespace TheCircle.Controllers
             if (items == null || id <= 0)
                 return BadRequest("Invalid Data");
 
-            try {
-                _validate.check(Request, new string[] { "medico" });
+            try 
+            {
+                _validate.check(Request, new[] { "medico" });
 
-                ItemReceta[] data = new ItemReceta().insert(id, items, _context); //Se insertan los items que vienen de la base de datos y se retornan los mismos
-
-                return Ok(data);
+                new ItemReceta().insert(id, items, _context); //Se insertan los items que vienen del front
+                return Ok();
 
             } catch (Exception e) {
                 if (e is TokenException)
@@ -152,7 +152,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                Token token = _validate.check(Request, new string[] { "asistenteSalud" });
+                Token token = _validate.check(Request, new[] { "asistenteSalud" });
 
                 new ItemDespacho().insert(recetaId, items, token.data.cedula, _context);
                 return Ok();
@@ -170,7 +170,7 @@ namespace TheCircle.Controllers
         {
             try
             {
-                _validate.check(Request, new string[] {"medico"});
+                _validate.check(Request, new[] {"medico"});
 
                 new Receta().delete(id, _context);
                 return Ok();
