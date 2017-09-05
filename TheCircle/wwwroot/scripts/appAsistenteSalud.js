@@ -99,10 +99,7 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         function getCompuestos() {
-            $http({
-                method: "GET",
-                url: "/api/itemnombre"
-            }).then(function success(res) {
+            $http.get("/api/compuesto").then(function success(res) {
                 dataFac.compuestos = res.data;
                 $rootScope.$broadcast('dataFac.compuestos'); //Se informa a los controladores que cambio
             }, function error(err) {
@@ -337,9 +334,5 @@ angular.module('appAsistente', ['ui.router'])
                 console.log("No se pudo guardar el ingreso", err)
                 notify("No se ha podido guardar el ingreso en farmacia", "danger");
             })
-        }
-
-        $scope.cambioCompuesto = function (items) {
-            $scope.items = items;
         }
     }])

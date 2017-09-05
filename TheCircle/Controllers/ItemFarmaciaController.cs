@@ -25,7 +25,7 @@ namespace TheCircle.Controllers
         {
             try {
 
-                Token token = _validate.check(Request, new string[] {"medico", "asistenteSalud"});
+                Token token = _validate.check(Request, new[] {"medico", "asistenteSalud"});
 
                 ItemFarmacia[] stock = new ItemFarmacia().getAllByLocalidad(token.data.localidad, _context);
                 return Ok(stock);
@@ -43,7 +43,7 @@ namespace TheCircle.Controllers
         {
             try {
 
-                var token = _validate.check(Request, new string[] {"asistenteSalud"});
+                var token = _validate.check(Request, new[] {"asistenteSalud"});
 
                 List<Compuesto> compuestos = new Compuesto().getAllBy_Localidad(token.data.localidad, _context);
                 return Ok(compuestos);
@@ -63,7 +63,7 @@ namespace TheCircle.Controllers
 
             try {
                 
-                Token token = _validate.check(Request, new string[] {"asistenteSalud", "bodeguero"});
+                Token token = _validate.check(Request, new[] {"asistenteSalud", "bodeguero"});
 
                 new ItemFarmacia().insert(item, token.data.localidad, token.data.cedula, _context);
                 return Ok();

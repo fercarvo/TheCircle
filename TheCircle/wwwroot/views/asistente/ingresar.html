@@ -21,17 +21,15 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Compuesto<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <select class="form-control myselect" ng-change="cambioCompuesto(compuesto.items)" ng-model="compuesto" ng-options="compuesto as compuesto.nombre for compuesto in compuestos">
+                            <select class="form-control myselect" ng-model="compuesto" ng-options="compuesto as compuesto.nombre for compuesto in compuestos">
                                 <option style="display:none;" selected disabled value="">Digite y Seleccione el tipo Compuesto</option>
                             </select>
                         </div>
                     </div><!-- /.form-group -->
                     <div class="form-group">
-                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Nombre del Ítem<a style="color:red;">(*)</a></label>
+                        <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Nombre de item<a style="color:red;">(*)</a></label>
                         <div class="col-sm-6" style="padding-left:initial">
-                            <select class="form-control myselect" ng-model="item" ng-options="item.nombre as item.nombre for item in items">
-                                <option style="display:none;" selected disabled value="">Digite y Seleccione el nombre del Ítem</option>
-                            </select>
+                            <input ng-model="item" class="form-control" type="text" placeholder="Ingresar la cantidad">
                         </div>
                     </div><!-- /.form-group -->
 

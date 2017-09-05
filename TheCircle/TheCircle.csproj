@@ -11,12 +11,16 @@
   <ItemGroup>
     <Compile Remove="wwwroot\views\anulaciones\**" />
     <Compile Remove="wwwroot\views\atencion\**" />
+    <Compile Remove="wwwroot\views\directive\**" />
     <Content Remove="wwwroot\views\anulaciones\**" />
     <Content Remove="wwwroot\views\atencion\**" />
+    <Content Remove="wwwroot\views\directive\**" />
     <EmbeddedResource Remove="wwwroot\views\anulaciones\**" />
     <EmbeddedResource Remove="wwwroot\views\atencion\**" />
+    <EmbeddedResource Remove="wwwroot\views\directive\**" />
     <None Remove="wwwroot\views\anulaciones\**" />
     <None Remove="wwwroot\views\atencion\**" />
+    <None Remove="wwwroot\views\directive\**" />
   </ItemGroup>
 
   <ItemGroup>

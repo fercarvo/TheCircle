@@ -16,7 +16,7 @@ namespace TheCircle.Models
         public string categoria { get; set; }
         public string grupo { get; set; }
         public int stock { get; set; }
-        public DateTime fcaducidad { get; set; }
+        public DateTime? fcaducidad { get; set; }
 
         public ItemFarmacia() { }
 
