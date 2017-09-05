@@ -104,10 +104,21 @@ angular.module('appAsistente', ['ui.router'])
             compuestos: null,
             recetas: null,
             despachos: null,
+            transferencias: null,
+            getTransferenciasPendientes: getTransferenciasPendientes,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos,
             getCompuestos: getCompuestos
+        }
+
+        function getTransferenciasPendientes() {
+            $http.get("/api/transferencia").then(function success(res) {
+                dataFac.transferencias = res.data;
+                $rootScope.$broadcast('dataFac.transferencias');
+            }, function error(err) {
+                console.log("Error cargar transferencias", err);
+            })
         }
 
         function getCompuestos() {
@@ -278,10 +289,57 @@ angular.module('appAsistente', ['ui.router'])
             }
         }
     }])
-    .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+    .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+        
 
     }])
-    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+        $scope.transferencias = dataFac.transferencias;
+        $scope.transferencia = null;
+
+        var actualizar = refresh.go(cargar);
+
+        function cargar() {
+            if ($state.includes('despachar.transferencias')) {
+                dataFac.getTransferenciasPendientes();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }        
+
+        $scope.$on('dataFac.transferencias', function () {
+            $scope.transferencias = dataFac.transferencias;
+        })
+
+        $scope.ver = function (transferencia) {
+            $scope.transferencia = transferencia;
+        }
+
+        $scope.guardarEgreso = function (nuevaCantidad, comentario) {
+            var data = {
+                idTransferencia: $scope.transferencia.id,
+                cantidad: (function () {
+                    if (nuevaCantidad) {
+                        return nuevaCantidad
+                    } return $scope.transferencia.cantidad
+                })(),
+                comentario: (function () {
+                    if (comentario) {
+                        return comentario
+                    } return ""
+                })()
+            }
+
+            $http.put("api/transferencia", data).then(function success() {
+                $('#ver_transferencia').modal('hide');
+                actualizar = refresh.go(cargar);
+                notify("Transferencia despachada exitosamente", "success");
+            }, function error(e) {
+                $('#ver_transferencia').modal('hide');
+                console.log("No se despacho la transferencia", e)
+                notify("No se pudo despachar la transferencia", "danger")
+            })
+        }
 
     }])
     .controller('historial', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {

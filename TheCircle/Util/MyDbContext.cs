@@ -23,7 +23,7 @@ namespace TheCircle.Util
         public virtual DbSet<Item> ItemNombre { get; set; }
         public virtual DbSet<UserSafe> UserSafe { get; set; }
         public virtual DbSet<Compuesto2> Compuesto2 { get; set; }
-
+        public virtual DbSet<Transferencia> Transferencia { get; set; }
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)

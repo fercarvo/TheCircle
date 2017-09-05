@@ -19,44 +19,20 @@
                 </thead>
 
                 <tbody>
-                    <tr >
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    <tr ng-repeat="t in transferencias">
+                        <td>{{t.id}}</td>
+                        <td>{{t.fecha}}</td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.compuesto}}</td>
+                        <td>{{t.cantidad}}</td>
+                        <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="myModal" class="modal fade">
+    <div id="ver_transferencia" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -68,42 +44,42 @@
                         <tbody style="text-align:left;">
                             <tr>
                                 <td>Numero: </td>
-                                <td>1083334</td>
+                                <td>{{transferencia.id}}</td>
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>Paracetamol forte maximizado</td>
+                                <td>{{transferencia.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>Paracetamol 0.5</td>
+                                <td>{{transferencia.compuesto}}</td>
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
-                                <td> <label style="width:20%">123</label> <button title="Cambiar cantidad a despachar" style="background-color:inherit;border:none;" onclick="foo()"><span class="glyphicon glyphicon-pencil"></span></button> <input id="input2" style="float:right" type="number" min="1" disabled /></td>
+                                <td> <label style="width:20%">{{transferencia.cantidad}}</label> <button title="Cambiar cantidad a despachar" style="background-color:inherit;border:none;" onclick="foo()"><span class="glyphicon glyphicon-pencil"></span></button> <input id="input2" ng-model="nuevaCantidad" style="float:right" type="number" min="1" disabled /></td>
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input type="text" maxlength="100" style="width:100%;" /></td>
+                                <td><input ng-model="comentario" type="text" maxlength="100" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>0998843766</td>
+                                <td>{{transferencia.solicitante}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha: </td>
-                                <td>DD/MM/YYYY</td>
+                                <td>{{transferencia.fecha}}</td>
                             </tr>
                             <tr>
                                 <td>Destino: </td>
-                                <td>CC5</td>
+                                <td>{{transferencia.destino}}</td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
                 <div class="text-center" style="margin-bottom: 5px;">
-                    <button data-ripple type="submit" class="btn btn-info">Despachar</button>
+                    <button ng-click="guardarEgreso(nuevaCantidad, comentario)" data-ripple type="submit" class="btn btn-info">Despachar</button>
                     <button data-ripple type="button" class="btn btn-default">Cancelar</button>
                 </div>
             </div>
