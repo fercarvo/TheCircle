@@ -4,7 +4,7 @@
  Children International
 */
 angular.module('appAsistente', ['ui.router'])
-    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
+    .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
                 templateUrl: 'views/asistente/despachar.html',
@@ -23,14 +23,13 @@ angular.module('appAsistente', ['ui.router'])
                 controller: 'ingresar'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
-        $logProvider.debugEnabled(true); //Activar en modo produccion
     }])
     .run(["$state", function ($state){
         $state.go("despachar");
     }])
     .factory('notify', [function () {
         return function (mensaje, tipo) {
-            var icono;
+            var icono = "";
 
             if (tipo === "success") {
                 icono = "glyphicon glyphicon-saved";
@@ -93,8 +92,6 @@ angular.module('appAsistente', ['ui.router'])
             compuestos: null,
             recetas: null,
             despachos: null,
-            localidad: "",
-            personal: 0,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos,
@@ -247,19 +244,17 @@ angular.module('appAsistente', ['ui.router'])
             }, 0);
 
             if (total === receta.items.length) {
-                console.log("Se han despachado todos los items", total);
-
                 crearDespacho(receta).then(function success(res) {
 
                     console.log("Despacho exitoso");
                     notify("Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
-                    recetas.splice(index, 1);
+                    //recetas.splice(index, 1);
                     actualizar = refresh.go(cargar);
 
                 }, function error(e) {
                     console.log("Error despacho", e);
-                    $('#myModal').modal('hide'); //Se cierra el modal
+                    $('#myModal').modal('hide');
                     notify("No se ha podido despachar", "danger");
                     actualizar = refresh.go(cargar);
                 })
