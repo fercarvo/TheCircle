@@ -26,6 +26,18 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/historial.html',
                 controller: 'historial'
             })
+            .state('historial.recetas', {
+                templateUrl: 'views/asistente/historial.recetas.html',
+                controller: 'historial.recetas'
+            })
+            .state('historial.transferencias', {
+                templateUrl: 'views/asistente/historial.transferencias.html',
+                controller: 'historial.transferencias'
+            })
+            .state('historial.pedidointerno', {
+                templateUrl: 'views/asistente/historial.pedidointerno.html',
+                controller: 'historial.pedidointerno'
+            })
             .state('stock', {
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
@@ -350,7 +362,10 @@ angular.module('appAsistente', ['ui.router'])
         }
 
     }])
-    .controller('historial', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
+    .controller('historial', ["$state", function ($state) {
+        $state.go("historial.recetas")
+    }])
+    .controller('historial.recetas', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
         $scope.despachos = dataFac.despachos;
         $scope.receta = null;
         var actualizar = refresh.go(cargar, 30000);
@@ -375,6 +390,12 @@ angular.module('appAsistente', ['ui.router'])
         $scope.close = function () {
             actualizar = refresh.go(cargar, 30000); //Se reanuda la carga de despachos al cerrar modal
         }
+    }])
+    .controller('historial.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+
+    }])
+    .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+
     }])
     .controller('stock', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
         $scope.stock = dataFac.stock;

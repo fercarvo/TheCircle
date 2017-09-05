@@ -1,0 +1,80 @@
+﻿<style>
+    #historial_recetas_panel, #historial_recetas_form, #historial_recetas_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_recetas_panel" ng-init="activar()">
+
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_recetas_table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input class="form-control" type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por c&oacute;digo">
+            </div>
+        </div>
+        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha creacion</th>
+                        <th>Fecha despacho</th>
+                        <th>Apadrinado</th>
+                        <th>Doctor</th>
+                        <th>Ver &iacute;tems</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="obj in despachos | filter:buscar | orderBy:'receta.fDespacho'">
+                        <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
+                        <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{obj.receta.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{obj.receta.idApadrinado}}</td>
+                        <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal Item receta-->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Receta Nro 000000{{receta.receta.id}} - {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - {{receta.receta.idApadrinado}}</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+
+                    <table class="table table-striped" style="text-align:center;">
+                        <thead>
+                            <tr>
+                                <th>&Iacute;tem</th>
+                                <th>Compuesto</th>
+                                <th>Cantidad recetada</th>
+                                <th>Cantidad despachada</th>
+                                <th>Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in receta.items">
+                                <td>{{item.nombreItem}}</td>
+                                <td>{{item.compuesto}}</td>
+                                <td>{{item.cantidadRecetada}}</td>
+                                <td>{{item.cantidadDespachada}}</td>
+                                <td>{{item.comentario}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--  -->
+                <div class="text-center ">
+                    <button data-ripple type="button" ng-click="close()" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div><!-- /.form-group -->
+            </div>
+        </div>
+    </div>
+
+
+</div>

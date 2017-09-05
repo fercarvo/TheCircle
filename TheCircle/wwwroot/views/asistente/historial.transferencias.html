@@ -1,0 +1,118 @@
+﻿<style>
+    #historial_transferencias_panel, #historial_transferencias_form, #historial_transferencias_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_transferencias_panel">
+
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_transferencias_table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input class="form-control" type="text" placeholder="buscar por c&oacute;digo">
+            </div>
+        </div>
+        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha creacion</th>
+                        <th>Fecha despacho</th>
+                        <th>Apadrinado</th>
+                        <th>Doctor</th>
+                        <th>Ver &iacute;tems</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>000000374</td>
+                        <td>06/09/2017 - 09:35</td>
+                        <td>06/09/2017 - 09:50</td>
+                        <td>1083335</td>
+                        <td>ROCIO DORA AVELLAN GUILLEN</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>000000375</td>
+                        <td>06/09/2017 - 10:05</td>
+                        <td>06/09/2017 - 10:20</td>
+                        <td>1083331</td>
+                        <td>ROCIO DORA AVELLAN GUILLEN</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>000000376</td>
+                        <td>06/09/2017 - 10:55</td>
+                        <td>06/09/2017 - 11:10</td>
+                        <td>1083336</td>
+                        <td>ROCIO DORA AVELLAN GUILLEN</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                    <tr>
+                        <td>000000377</td>
+                        <td>06/09/2017 - 12:10</td>
+                        <td>06/09/2017 - 12:30</td>
+                        <td>1083330</td>
+                        <td>ROCIO DORA AVELLAN GUILLEN</td>
+                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal Item receta-->
+    <div id="myModal" class="modal fade">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Transferencia Nro 000000X</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+
+                    <table class="table table-striped" style="text-align:center;">
+                        <thead>
+                            <tr>
+                                <th>&Iacute;tem</th>
+                                <th>Compuesto</th>
+                                <th>Cantidad recetada</th>
+                                <th>Cantidad despachada</th>
+                                <th>Comentario</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>analgan bayern</td>
+                                <td>Ibuprofeno 0.5g	</td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>emulsion de naranja</td>
+                                <td>emulsion scott 6.5oz</td>
+                                <td>7</td>
+                                <td>6</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>emulsion Scott frasco</td>
+                                <td>emulsion scott 6.5oz</td>
+                                <td>5</td>
+                                <td>3</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div><!--  -->
+                <div class="text-center ">
+                    <button data-ripple type="button" ng-click="close()" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div><!-- /.form-group -->
+            </div>
+        </div>
+    </div>
+
+
+</div>
