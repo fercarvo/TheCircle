@@ -33,6 +33,14 @@ angular.module('appAsistente', ['ui.router'])
             .state('ingresar', {
                 templateUrl: 'views/asistente/ingresar.html',
                 controller: 'ingresar'
+            })
+            .state('ingresar.items', {
+                templateUrl: 'views/asistente/ingresar.items.html',
+                controller: 'ingresar.items'
+            })
+            .state('ingresar.transferencias', {
+                templateUrl: 'views/asistente/ingresar.transferencias.html',
+                controller: 'ingresar.transferencias'
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
     }])
@@ -384,7 +392,10 @@ angular.module('appAsistente', ['ui.router'])
             }
         }
     }])
-    .controller('ingresar', ["$state", "$scope", "$http", "dataFac", "notify", "date", function ($state, $scope, $http, dataFac, notify, date) {
+    .controller('ingresar', ["$state", function ($state) {
+        $state.go("ingresar.items")        
+    }])
+    .controller('ingresar.items', ["$scope", "$state", "$http", "dataFac", "notify","date",  function ($scope, $state, $http, dataFac, notify,date) {
         $scope.compuestos = dataFac.compuestos;
         $scope.items = null;
 
@@ -401,7 +412,7 @@ angular.module('appAsistente', ['ui.router'])
                 compuesto: compuesto,
                 nombre: item,
                 fcaducidad: date(fecha),
-                cantidad: cantidad                
+                cantidad: cantidad
             }
             console.log("data a enviar", data);
 
@@ -414,4 +425,7 @@ angular.module('appAsistente', ['ui.router'])
                 notify("No se ha podido guardar el ingreso en farmacia", "danger");
             })
         }
+    }])
+    .controller('ingresar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+
     }])
