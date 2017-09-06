@@ -1,4 +1,4 @@
-﻿angular.module('appSistema', ['ui.router'])
+﻿angular.module('appSistema', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('activarusuario', {
@@ -15,7 +15,14 @@
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo producción
     }])
-    .run(["$state", function ($state) {
+    .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
+        $rootScope.session_name = (function () {
+            var c = $cookies.get('session_nombre')
+            if (c) {
+                return c
+            } return ""
+        })() 
+
         $state.go("activarusuario");
     }])
     .factory('usuarios', ['$http', '$rootScope', function ($http, $rootScope) {

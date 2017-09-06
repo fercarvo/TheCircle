@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
 using System;
@@ -11,42 +10,41 @@ namespace TheCircle.Controllers
     public class TransferenciaController : Controller
     {
         private readonly MyDbContext _context;
-        private readonly Token _validate;
         public TransferenciaController(MyDbContext context)
         {
             _context = context;
-            _validate = new Token();
         }
 
 
         [HttpGet("transferencia")]
-        public IActionResult Get_transferencias_pendientes()
+        [Allow("asistenteSalud")]
+        public IActionResult Get_transferencias_pendientes(Token token)
         {
+            if (token is null)
+                return Unauthorized();
+
             try
             {
-                Token token = _validate.check(Request, new[] { "asistenteSalud" });
-
                 Transferencia[] data = new Transferencia().getPendientes(token.data.localidad, _context);
                 return Ok(data);
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
         }
 
 
         [HttpPut("transferencia")]
-        public IActionResult Despacho_Transferencia([FromBody]TransferenciaRequest req)
+        [Allow("asistenteSalud, bodeguero")]
+        public IActionResult Despacho_Transferencia(Token token, [FromBody]TransferenciaRequest req)
         {
-            if (req == null)
+            if (req is null)
                 return BadRequest();
+            if (token is null)
+                return Unauthorized();
 
             try
             {
-                Token token = _validate.check(Request, new[] { "asistenteSalud", "bodeguero" });
-
                 new Transferencia().despachar(token.data.cedula, req, _context);
                 return Ok();
 

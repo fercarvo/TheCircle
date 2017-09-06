@@ -10,65 +10,62 @@ namespace TheCircle.Controllers
     public class UserController : Controller
     {
         private readonly MyDbContext _context;
-        private Token _validate;
-
         public UserController (MyDbContext context)
         {
             _context = context;
-            _validate = new Token();
         }
 
         [HttpGet("user")]
-        [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users()
+        [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)]
+        [Allow("sistema")]
+        public IActionResult Get_All_Users(Token token)
         {
-            try {
+            if (token is null)
+                return Unauthorized();
 
-                _validate.check(Request, new string[] { "sistema" });
-
+            try
+            {
                 UserSafe[] usuarios = new UserSafe().getAll(_context);
                 return Ok(usuarios);
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
             
         }
 
         [HttpGet("user/activos")]
+        [Allow("sistema")]
         [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users_Activos()
+        public IActionResult Get_All_Users_Activos(Token token)
         {
-            try {
+            if (token is null)
+                return Unauthorized();
 
-                _validate.check(Request, new string[] { "sistema" });
-
+            try
+            {
                 UserSafe[] usuarios = new UserSafe().getActivos(_context);
                 return Ok(usuarios);
                 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }            
         }
 
         [HttpGet("user/inactivos")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users_Inactivos()
+        [Allow("sistema")]
+        public IActionResult Get_All_Users_Inactivos(Token token)
         {
-            try {
+            if (token is null)
+                return Unauthorized();
 
-                _validate.check(Request, new string[] {"sistema"});
-
+            try
+            {
                 UserSafe[] usuarios = new UserSafe().getInactivos(_context);
                 return Ok(usuarios);
                 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }            
         }
@@ -90,61 +87,58 @@ namespace TheCircle.Controllers
 
 
         [HttpPut("user/{id}/activar")]
-        public IActionResult User_Activar(int id) 
+        [Allow("sistema")]
+        public IActionResult User_Activar(Token token, int id) 
         {
             if (id <= 0)
                 return BadRequest("Incorrect Data");
+            if (token is null)
+                return Unauthorized();
 
-            try {
-
-                _validate.check(Request, new string[] {"sistema"});
-
+            try
+            {
                 new User().activar(id, _context);
                 return Ok();
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }            
         }
 
         [HttpPut("user/{id}/desactivar")]
-        public IActionResult User_Desactivar(int id) 
+        [Allow("sistema")]
+        public IActionResult User_Desactivar(Token token, int id) 
         {
             if (id <= 0)
                 return BadRequest("Incorrect Data");
+            if (token is null)
+                return Unauthorized();
 
-            try {
-
-                _validate.check(Request, new string[] {"sistema"});
-
+            try
+            {
                 new User().desactivar(id, _context);
                 return Ok();
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }            
         }
 
         [HttpPut("user/{id}/clave/set")]
-        public IActionResult User_SetClave(int id) 
+        [Allow("sistema")]
+        public IActionResult User_SetClave(Token token, int id) 
         {
             if (id <= 0)
                 return BadRequest("Incorrect Data");
+            if (token is null)
+                return Unauthorized();
 
-            try {
-
-                _validate.check(Request, new string[] {"sistema"});
-
+            try
+            {
                 string clave = new User().nueva_clave(id, _context);
                 return Ok( new {clave = clave} );
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }            
         }
@@ -152,7 +146,7 @@ namespace TheCircle.Controllers
         [HttpPut("user/clave")]
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {
-            if (req == null)
+            if (req is null)
                 return BadRequest("Datos incorrectos");
 
             try {

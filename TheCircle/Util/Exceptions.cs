@@ -1,19 +1,38 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace TheCircle.Util
 {
     internal class TokenException : Exception
     {
-        public TokenException()
+        public TokenException() { }
+
+        public TokenException(string message) : base(message) { }
+
+        public TokenException(string message, Exception innerException) : base(message, innerException) { }
+    }
+}
+
+
+
+
+namespace TheCircle.Controllers
+{
+    [Produces("application/json")]
+    public class ErrorController : Controller
+    {
+        public ErrorController() { }
+
+        [Route("error")]
+        public IActionResult Error()
         {
+            return BadRequest("Something Broke");
         }
 
-        public TokenException(string message) : base(message)
+        [Route("error/unauth")]
+        public IActionResult Unauth()
         {
-        }
-
-        public TokenException(string message, Exception innerException) : base(message, innerException)
-        {
+            return Unauthorized();
         }
     }
 }

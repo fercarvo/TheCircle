@@ -1,4 +1,4 @@
-﻿angular.module('appBodeguero', ['ui.router'])
+﻿angular.module('appBodeguero', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -19,7 +19,14 @@
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
     }])
-    .run(["$state", function ($state) {
+    .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
+        $rootScope.session_name = (function () {
+            var c = $cookies.get('session_nombre')
+            if (c) {
+                return c
+            } return ""
+        })()
+
         $state.go("despachar");
     }])
     .factory('notify', [function () {

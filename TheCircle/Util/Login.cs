@@ -31,33 +31,28 @@ namespace TheCircle.Util
             En caso de no cumplir alguna validacion, se dispara un exception
         */
         internal Token check(HttpRequest request, string[] cargos) {
-            try {
-                string cookie = request.Cookies["session"]; //Se obtiene el string de la cookie
-                Signature _signer = new Signature();
-                Token token;
+            string cookie = request.Cookies["session"]; //Se obtiene el string de la cookie
+            Signature _signer = new Signature();
+            Token token;
 
-                if (string.IsNullOrEmpty(cookie))
-                    throw new TokenException("No existe cookie/cargo, at Token.check");
+            if (string.IsNullOrEmpty(cookie))
+                throw new TokenException("No existe cookie/cargo, at Token.check");
 
-                //token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
-                token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
+            //token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
+            token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
 
-                if (token.data.expireAt < DateTime.Now)
-                    throw new TokenException("Token expirado, at Token.check");
+            if (token.data.expireAt < DateTime.Now)
+                throw new TokenException("Token expirado, at Token.check");
 
-                if(!cargos.Contains(token.data.cargo))
-                    throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
+            if(!cargos.Contains(token.data.cargo))
+                throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
 
-                string dataToString = JsonConvert.SerializeObject(token.data);
+            string dataToString = JsonConvert.SerializeObject(token.data);
 
-                if (_signer.checkHMAC(dataToString, token.sign) == false)
-                    throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
+            if (_signer.checkHMAC(dataToString, token.sign) == false)
+                throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
 
-                return token;
-
-            } catch (Exception e) {
-                throw new TokenException("Algo salio mal at Token.check");
-            }
+            return token;
         }
 
     }
