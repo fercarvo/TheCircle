@@ -106,5 +106,20 @@ namespace TheCircle.Controllers.views
                 return Redirect("/");
             }
         }
+
+        [HttpGet("coordinadorCC")]
+        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult CoordinadorCC()
+        {
+            try
+            {
+                //_validate.check(Request, new string[] { "sistema" });
+                return View();
+            }
+            catch (Exception e)
+            {
+                return Redirect("/");
+            }
+        }
     }
 }

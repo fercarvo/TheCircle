@@ -1,0 +1,124 @@
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Ver Recetas
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+        <div class="panel-body" style="padding:25px 20px 10px 20px;">
+            <style>
+                #estadistica-recetas-panel, #estadistica-recetas-form, #estadistica-recetas-table {
+                    padding: 0px 0px 0px 0px;
+                }
+            </style>
+            <div class="panel-body" id="estadistica-recetas-panel">
+                <div class="form-group" id="estadistica-recetas-form">
+                    <form class="form-horizontal" ng-submit="generar(recetas.desde, recetas.hasta)">
+                        <!--"m-bottom-30" para poner margen vertical de 30px-->
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <label class="/control-label">Desde<a style="color:red;">(*)</a></label>
+                            <input ng-model="recetas.desde" required type="date" class="form-control">
+                        </div>
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                            <input ng-model="recetas.hasta" required type="date" class="form-control">
+                        </div>
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+                        </div>
+                    </form>
+                </div><!--acaba el form group de generar por fecha-->
+
+                <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
+                    <div style="overflow-y:auto;max-height:45vh">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>N&uacute;mero</th>
+                                    <th>Fecha</th>
+                                    <th>Codigo</th>
+                                    <th>Nombre apadrinado</th>
+                                    <th>Ver &iacute;tems</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>numero #1</td>
+                                    <td>05/08/2017</td>
+                                    <td>1083336</td>
+                                    <td>Nombre generico A</td>
+                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>numero #2</td>
+                                    <td>15/07/2017</td>
+                                    <td>1083334</td>
+                                    <td>Nombre generico B</td>
+                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>numero #3</td>
+                                    <td>31/12/2017</td>
+                                    <td>1083335</td>
+                                    <td>Nombre generico C</td>
+                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                </tr>
+                                <tr>
+                                    <td>numero #4</td>
+                                    <td>28/08/2017</td>
+                                    <td>1083331</td>
+                                    <td>Nombre generico D</td>
+                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div><!--la tabla presente-->
+                </div><!--acaba el panel de la tabla con su buscador-->
+
+                <!--Modal Item receta-->
+                <div id="recetaModal" class="modal fade">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Receta Nro ###</h5>
+                            </div>
+                            <div class="panel-body" style=" padding-top: 5px;">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Nombre</th>
+                                            <th>Compuesto</th>
+                                            <th>Cantidad</th>
+                                            <th>Posologia</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Nombre 1</td>
+                                            <td>Compuesto 1</td>
+                                            <td>Cantidad pedida</td>
+                                            <td>Posologia escrita</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div><!--acaba el panel body del modal-->
+                            <div class="text-center ">
+                                <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div><!-- /.form-group -->
+                        </div>
+                    </div>
+                </div><!--Aqui acaba el modal-->
+
+
+            </div><!--fin del panel body-->
+        </div><!--div del panel con paddings-->
+    </div>
+</div>
