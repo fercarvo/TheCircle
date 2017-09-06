@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TheCircle - Coordinador salud</title>
+
+    @Html.Partial("Partials/Styles")
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            max-height: 100%;
+            overflow: hidden
+        }
+    </style>
+</head>
+<body class="page-dashboard" ng-app="appCoordinadorCC">
+    <!-- TOP NAVIGATION STARTS -->
+    <nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
+        <div class="container-fluid" style="color:#901F61">
+            <div class="navbar-header" style="color:#901F61">
+                <a onClick="document.location.reload();" class="navbar-brand" href="" style="color:#901F61">
+                    <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
+                    <span style="color:white">The Circle</span>
+                </a>
+                <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
+                    <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
+                </button>
+                <script type="text/javascript">
+                    function change() {
+                        if (document.getElementById("spanid").className == "glyphicon glyphicon-chevron-right") {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-left";
+                        } else {
+                            document.getElementById("spanid").className = "glyphicon glyphicon-chevron-right";
+                        }
+                    }
+                </script>
+            </div><!-- /.navbar-header -->
+            <style>
+                #logout {
+                    color: #901F61;
+                    height: 50px;
+                    width: 50px;
+                    color: #fff;
+                }
+
+                    #logout button {
+                        background-color: inherit;
+                        border: none;
+                        position: relative;
+                        height: 50px;
+                        width: 50px;
+                    }
+            </style>
+            <div id="logout" class="nav navbar-nav navbar-right">
+                <button onClick="document.location.replace('logout');" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
+            </div>
+            <div id="logout" class="nav navbar-nav navbar-right" style="width:auto;padding-top:15px;padding-bottom:15px;">
+                <span style="color:white;font-family: 'Roboto', sans-serif;font-size: 14px;">Alejandro Espinsa Erazo</span>
+            </div>
+        </div>
+    </nav>
+    <!-- TOP NAVIGATION ENDS -->
+    <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+    <div class="content-wrapper">
+        <!-- SIDEBAR STARTS -->
+        <style>
+            .sidebar .sidebar-nav > li > a {
+                color: #901f61;
+                font-size: 16px;
+                font-weight: 600;
+            }
+
+            .sidebar .sidebar-nav > .open > a:hover, .sidebar .sidebar-nav > .open > a:focus {
+                background-color: #d7d3d4;
+            }
+
+            .sidebar .sidebar-nav > .active > a {
+                color: #f2f2f2;
+            }
+
+                .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
+                    /*background-color: #706f6f*/
+                    background-color: #344868
+                }
+
+            .btn-info {
+                color: #fff;
+                border-color: #17c092;
+                background-color: #28d1a3;
+            }
+
+            .table > tbody > tr > td {
+                padding: 8px 10px;
+            }
+
+            @@media (max-width: 991px) {
+                .sidebar {
+                    height: 160px;
+                    max-height: 160px;
+                    border-right-color: inherit;
+                }
+            }
+
+            @@media (min-width: 991px) {
+                .sidebar {
+                    border-right-color: #344868;
+                    min-height: 600px;
+                    height: 600px;
+                }
+            }
+
+            #sidebar_menu {
+                min-height: 600px;
+                background-color: #f2f2f2;
+                position: sticky;
+                top: auto;
+                border-right-color: #344868;
+            }
+        </style>
+
+        <div class="sidebar" id="sidebar_menu">
+            <ul class="sidebar-nav">
+                <li data-ripple class=" open" ui-sref="recetas" ui-sref-active="active">
+                    <a>
+                        <span>Ver Recetas</span>
+                    </a>
+                </li>
+                <li data-ripple class=" open" ui-sref="egresos" ui-sref-active="active">
+                    <a>
+                        <span>Ver Egresos</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div style="overflow-y:auto;max-height:94vh">
+            <ui-view></ui-view>
+        </div>
+
+    </div>
+
+    @Html.Partial("Partials/Scripts")
+    <script src="~/scripts/appCoordinadorCC.js"></script>
+
+</body>
+</html>

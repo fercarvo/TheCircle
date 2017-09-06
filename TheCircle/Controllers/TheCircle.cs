@@ -83,5 +83,16 @@ namespace TheCircle.Controllers.views
 
             return View();
         }
+
+        [HttpGet("coordinadorcc")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [Allow("cordinadorCC")]
+        public IActionResult CoordinadorCC(Token token)
+        {
+            if (token is null)
+                return Redirect("/");
+
+            return View();
+        }
     }
 }

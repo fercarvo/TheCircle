@@ -92,8 +92,11 @@ namespace TheCircle.Controllers
 
                     if (token.data.cargo == "contralor")
                         return Redirect("/contralor");
-                        
-                    return Redirect("logout");
+
+                    if (token.data.cargo == "coordinadorCC")
+                        return Redirect("/coordinadorCC");
+
+                return Redirect("logout");
 
             } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };

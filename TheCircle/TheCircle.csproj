@@ -29,6 +29,7 @@
     <Content Include="wwwroot\scripts\appBodeguero.js" />
     <Content Include="wwwroot\scripts\appContralor.js" />
     <Content Include="wwwroot\scripts\appCoordinador.js" />
+    <Content Include="wwwroot\scripts\appCoordinadorCC.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
     <Content Include="wwwroot\scripts\appSistema.js" />
     <Content Include="wwwroot\scripts\ripple.js" />
@@ -65,6 +66,8 @@
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="wwwroot\views\coordinadorCC\egresos.html" />
+    <Content Include="wwwroot\views\coordinadorCC\recetas.html" />
     <Content Include="wwwroot\views\coordinador\historial.html" />
     <Content Include="wwwroot\views\coordinador\validar.html" />
     <Content Include="wwwroot\views\medico\anulaciones.html" />
