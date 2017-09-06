@@ -3,7 +3,7 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appContralor', ['ui.router'])
+angular.module('appContralor', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
         $stateProvider
             .state('aprobar', {
@@ -17,7 +17,14 @@ angular.module('appContralor', ['ui.router'])
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
         //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
-    .run(["$state", function ($state) {
+    .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
+        $rootScope.session_name = (function () {
+            var c = $cookies.get('session_nombre')
+            if (c) {
+                return c
+            } return ""
+        })() 
+
         $state.go("aprobar");
     }])
     .factory('dataFac', ['$http', function ($http) {

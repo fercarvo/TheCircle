@@ -75,7 +75,7 @@ namespace TheCircle.Models
                 var data = _context.Compuesto2.FromSql(query).ToArray();
                 return data;
             } catch (Exception e) {
-                throw new Exception("Error cargar Compuesto2 at Compuesto.cs Compuesto2.getAll");
+                return null;
             }
         }
 

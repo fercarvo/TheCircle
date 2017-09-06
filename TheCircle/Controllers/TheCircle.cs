@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using TheCircle.Util;
 
 namespace TheCircle.Controllers.views
@@ -7,11 +6,7 @@ namespace TheCircle.Controllers.views
     public class TheCircle : Controller
     {
 
-        private readonly Token _validate;
-        public TheCircle()
-        {
-            _validate = new Token();
-        }
+        public TheCircle() { }
 
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
@@ -25,101 +20,79 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("asistente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult AsistenteSalud()
+        [Allow("asistente")]
+        public IActionResult AsistenteSalud(Token token)
         {
-            try {
-                //_validate.check(Request, new string[] { "asistenteSalud" });
-                return View();
-            } catch (Exception e) {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
         [HttpGet ("medico")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Medico()
+        [Allow("medico")]
+        public IActionResult Medico(Token token)
         {
-            try {
-                //_validate.check(Request, new string[] { "medico" });
-                return View();
-            } catch (Exception e) {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
         [HttpGet("coordinador")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult CoordinadorSalud()
+        [Allow("coordinador")]
+        public IActionResult CoordinadorSalud(Token token)
         {
-            try
-            {
-                //_validate.check(Request, new string[] { "coordinador" });
-                return View();
-            }
-            catch (Exception e)
-            {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
-        [HttpGet("contralor/")]
+        [HttpGet("contralor")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Contralor()
+        [Allow("contralor")]
+        public IActionResult Contralor(Token token)
         {
-            try
-            {
-                //_validate.check(Request, new string[] { "contralor" });
-                return View();
-            }
-            catch (Exception e)
-            {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
-        [HttpGet("bodeguero/")]
+        [HttpGet("bodeguero")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Bodeguero()
+        [Allow("bodeguero")]
+        public IActionResult Bodeguero(Token token)
         {
-            try
-            {
-                //_validate.check(Request, new string[] { "bodeguero" });
-                return View();
-            }
-            catch (Exception e)
-            {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
-        [HttpGet("sistema/")]
+        [HttpGet("sistema")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Sistema()
+        [Allow("sistema")]
+        public IActionResult Sistema(Token token)
         {
-            try
-            {
-                //_validate.check(Request, new string[] { "sistema" });
-                return View();
-            }
-            catch (Exception e)
-            {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
 
-        [HttpGet("coordinadorCC")]
-        //[ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult CoordinadorCC()
+        [HttpGet("coordinadorcc")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [Allow("cordinadorCC")]
+        public IActionResult CoordinadorCC(Token token)
         {
-            try
-            {
-                //_validate.check(Request, new string[] { "sistema" });
-                return View();
-            }
-            catch (Exception e)
-            {
+            if (token is null)
                 return Redirect("/");
-            }
+
+            return View();
         }
     }
 }

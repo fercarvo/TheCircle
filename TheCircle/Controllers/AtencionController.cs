@@ -10,34 +10,29 @@ namespace TheCircle.Controllers
     public class AtencionController : Controller
     {
         private readonly MyDbContext _context;
-        private Token _validate;
-
         public AtencionController (MyDbContext context)
         {
             _context = context;
-            _validate = new Token();
         }
 
         //Crea una atencion medica
         [HttpPost ("atencion")]
-        public IActionResult PostAtencion([FromBody] AtencionRequest request)
+        [Allow("medico")]
+        public IActionResult PostAtencion(Token token, [FromBody] AtencionRequest request)
         {
-            if (request == null)
-                return BadRequest("Incorrect Data");
+            if (token is null)
+                return Unauthorized();
+            if (request is null)
+                return BadRequest();
 
             try {
-                Token token = _validate.check(Request, new string[] { "medico" });
-
                 Atencion atencion = new Atencion().crear(request, token.data.cedula, token.data.localidad, _context);
                 Diagnostico[] diagnosticos = new Diagnostico().getAllByAtencion(atencion.id, _context);
 
                 var response = new AtencionResponse(atencion, diagnosticos);
-
                 return Ok(response);
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
         }
@@ -45,22 +40,21 @@ namespace TheCircle.Controllers
 
         //Ruta que retorna las atenciones medicas de un doctor
         [HttpGet("atencion/medico")]
-        //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_ReporteAtencion([FromQuery] Fecha request)
+        //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [Allow("medico")]
+        public IActionResult Get_ReporteAtencion(Token token, [FromQuery] Fecha request)
         {
+            if (token is null)
+                return Unauthorized();
             if (!ModelState.IsValid)
-                return BadRequest("Incorrect data");
+                return BadRequest();
 
             try
             {
-                Token token = _validate.check(Request, new string[] { "medico" });
-
                 Atencion[] atenciones = new Atencion().getBy_doctor_date(request, token.data.cedula, _context);
                 return Ok(atenciones);
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
             

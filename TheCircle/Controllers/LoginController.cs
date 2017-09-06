@@ -29,6 +29,7 @@ namespace TheCircle.Controllers
             };
 
             Response.Cookies.Append("session", "", options);
+            Response.Cookies.Append("session_nombre", "", options);
 
             if (ModelState.IsValid) {
                 var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
@@ -65,10 +66,16 @@ namespace TheCircle.Controllers
                     HttpOnly = true
                 };
 
-                //Response.Cookies.Append("session", token_string, options);
-                Response.Cookies.Append("session", new Signature().toBase(token_string), options);
+                var optionsNombre = new CookieOptions() {
+                    Expires = token.data.expireAt,
+                    HttpOnly = false
+                };
 
-                    if (token.data.cargo == "medico")
+                Response.Cookies.Append("session", new Signature().toBase(token_string), options);
+                Response.Cookies.Append("session_nombre", $"{token.data.nombres} {token.data.apellidos}", optionsNombre);
+
+
+                if (token.data.cargo == "medico")
                         return Redirect("/medico");
 
                     if (token.data.cargo == "asistenteSalud")

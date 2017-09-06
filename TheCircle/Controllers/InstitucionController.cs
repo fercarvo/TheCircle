@@ -10,34 +10,27 @@ namespace TheCircle.Controllers
     public class InstitucionController : Controller
     {
         private readonly MyDbContext _context;
-        private Token _validate;
-
         public InstitucionController (MyDbContext context)
         {
             _context = context;
-            _validate = new Token();
         }
 
         [HttpGet("institucion")]
-        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
-        public IActionResult GetInstituciones()
+        [ResponseCache(Duration = 60*60*48, Location = ResponseCacheLocation.Client)]
+        [Allow("medico")]
+        public IActionResult GetInstituciones(Token token)
         {
-            try {
+            if (token is null)
+                return Unauthorized();
 
-                _validate.check(Request, new string[] {"medico"});
-
+            try
+            {
                 Institucion[] instituciones = new Institucion().getAll(_context);
                 return Ok(instituciones);
                 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
         }
-
-
-
-
     }
 }

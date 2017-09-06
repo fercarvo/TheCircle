@@ -3,7 +3,7 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appAsistente', ['ui.router'])
+angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -56,7 +56,14 @@ angular.module('appAsistente', ['ui.router'])
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
     }])
-    .run(["$state", function ($state){
+    .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
+        $rootScope.session_name = (function () {
+            var c = $cookies.get('session_nombre')
+            if (c) {
+                return c
+            } return ""
+        })() 
+
         $state.go("despachar");
     }])
     .factory('notify', [function () {

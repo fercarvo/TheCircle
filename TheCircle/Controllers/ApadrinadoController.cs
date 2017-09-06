@@ -11,47 +11,47 @@ namespace TheCircle.Controllers
     [Route("api")]
     public class ApadrinadoController : Controller
     {
-
         private readonly MyDbContext _context;
-        private readonly Token _validate;
         public ApadrinadoController(MyDbContext context)
         {
             _context = context;
-            _validate = new Token();
         }
 
         [HttpGet("apadrinado/{cod}")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        public IActionResult GetApadrinado(int cod)
+        [Allow("medico")]
+        public IActionResult GetApadrinado(Token token, int cod)
         {
-            try {
-                _validate.check(Request, new string[] {"medico"});
+            if (token is null)
+                return Unauthorized();
 
+            try
+            {
                 Apadrinado data = new Apadrinado().get(cod, _context);
                 return Ok(data);
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return NotFound();
             }
         }
 
 
         [HttpGet("apadrinado/{cod}/foto")]
-        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)] //cache de 60 * 60 * 48 segundos = 48 horas
-        public IActionResult GetApadrinadoFoto(int cod)
+        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)]
+        [Allow("medico")]
+        public IActionResult GetApadrinadoFoto(Token token, int cod)
         {
+            if (token is null)
+                return Unauthorized();
+
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
 
-            try {
-                _validate.check(Request, new string[] {"medico"});
-
+            try
+            {
                 var foto = _context.Fotos.FromSql(query).First();
                 var image = System.IO.File.OpenRead($"\\\\Guysrv08\\aptifyphoto\\DPHOTO\\Images\\{foto.path}\\{foto.name}");
                 return File(image, "image/jpeg");
+
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return Redirect("/images/ci.png");
             }
         }

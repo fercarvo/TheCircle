@@ -30,7 +30,6 @@
     <Content Include="wwwroot\scripts\appContralor.js" />
     <Content Include="wwwroot\scripts\appCoordinador.js" />
     <Content Include="wwwroot\scripts\appCoordinadorCC.js" />
-    <Content Include="wwwroot\scripts\appCoordinador_CC.js" />
     <Content Include="wwwroot\scripts\appMedico.js" />
     <Content Include="wwwroot\scripts\appSistema.js" />
     <Content Include="wwwroot\scripts\ripple.js" />
