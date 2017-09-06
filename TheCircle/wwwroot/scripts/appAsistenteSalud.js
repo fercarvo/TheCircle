@@ -182,7 +182,7 @@ angular.module('appAsistente', ['ui.router'])
 
         return dataFac;
     }])
-    .factory('crearDespacho', ["$log", "dataFac", "$http", "notify", function ($log, dataFac, $http, notify) {
+    .factory('crearDespacho', ["$http", function ($http) {
         return function (receta) {
 
             var recetaId = receta.receta.id;
@@ -193,7 +193,6 @@ angular.module('appAsistente', ['ui.router'])
                 var data = {
                     itemReceta: item.id,
                     cantidad: null,
-                    personal: dataFac.personal,
                     comentario: item.comentario
                 }
 
@@ -212,7 +211,7 @@ angular.module('appAsistente', ['ui.router'])
 
         }
     }])
-    .factory('refresh', ["$log", function ($log) { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
 
         function go(fn) {
             fn();
@@ -397,7 +396,7 @@ angular.module('appAsistente', ['ui.router'])
     .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
 
     }])
-    .controller('stock', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
+    .controller('stock', ["$scope", "$state", "dataFac", "refresh", function ($scope, $state, dataFac, refresh) {
         $scope.stock = dataFac.stock;
         var actualizar = refresh.go(cargar, 30000);
 
@@ -416,7 +415,7 @@ angular.module('appAsistente', ['ui.router'])
     .controller('ingresar', ["$state", function ($state) {
         $state.go("ingresar.items")        
     }])
-    .controller('ingresar.items', ["$scope", "$state", "$http", "dataFac", "notify","date",  function ($scope, $state, $http, dataFac, notify,date) {
+    .controller('ingresar.items', ["$scope", "$state", "$http", "dataFac", "notify", "date",  function ($scope, $state, $http, dataFac, notify,date) {
         $scope.compuestos = dataFac.compuestos;
         $scope.items = null;
 
