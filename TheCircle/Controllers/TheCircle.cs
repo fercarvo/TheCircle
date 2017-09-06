@@ -89,8 +89,8 @@ namespace TheCircle.Controllers.views
         [Allow("cordinadorCC")]
         public IActionResult CoordinadorCC(Token token)
         {
-            if (token is null)
-                return Redirect("/");
+            //if (token is null)
+                //return Redirect("/");
 
             return View();
         }
