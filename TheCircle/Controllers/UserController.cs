@@ -20,9 +20,6 @@ namespace TheCircle.Controllers
         [APIauth("sistema")]
         public IActionResult Get_All_Users(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 UserSafe[] usuarios = new UserSafe().getAll(_context);
@@ -30,8 +27,22 @@ namespace TheCircle.Controllers
 
             } catch (Exception e) {
                 return BadRequest("Something broke");
+            }            
+        }
+
+        [HttpGet("user/photo")]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
+        public IActionResult Get_Foto(Token token)
+        {
+            try
+            {
+                var image = System.IO.File.OpenRead($"\\\\Guysrv11\\Programs\\G_Fotos\\TheCircle\\{token.data.cedula}.jpg");
+                return File(image, "image/jpeg");
+
+            } catch (Exception e) {
+                return LocalRedirect("/images/ci.png");
             }
-            
         }
 
         [HttpGet("user/activos")]
@@ -39,9 +50,6 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users_Activos(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 UserSafe[] usuarios = new UserSafe().getActivos(_context);
@@ -57,9 +65,6 @@ namespace TheCircle.Controllers
         [APIauth("sistema")]
         public IActionResult Get_All_Users_Inactivos(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 UserSafe[] usuarios = new UserSafe().getInactivos(_context);

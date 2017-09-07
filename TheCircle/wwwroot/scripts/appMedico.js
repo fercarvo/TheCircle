@@ -54,11 +54,18 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     }])
     .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
         $rootScope.session_name = (function () {
-            var c = $cookies.get('session_nombre')
+            var c = $cookies.get('session_name')
             if (c) {
                 return c
             } return ""
         })() 
+
+        $rootScope.session_email = (function () {
+            var c = $cookies.get('session_email')
+            if (c) {
+                return c
+            } return ""
+        })()
 
         $state.go("atencion");
     }])

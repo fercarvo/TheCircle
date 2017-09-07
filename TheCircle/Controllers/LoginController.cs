@@ -23,13 +23,9 @@ namespace TheCircle.Controllers
         [HttpGet("logout")]
         public IActionResult Logout([FromQuery] LoginMessage lm)
         {
-            CookieOptions options = new CookieOptions() {
-                Expires = DateTime.Now.AddDays(-5), 
-                HttpOnly = true
-            };
-
-            Response.Cookies.Append("session", "", options);
-            Response.Cookies.Append("session_nombre", "", options);
+            Response.Cookies.Delete("session");
+            Response.Cookies.Delete("session_name");
+            Response.Cookies.Delete("session_email");
 
             if (ModelState.IsValid) {
                 var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
@@ -66,14 +62,14 @@ namespace TheCircle.Controllers
                     HttpOnly = true
                 };
 
-                var optionsNombre = new CookieOptions() {
+                var publicOptions = new CookieOptions() {
                     Expires = token.data.expireAt,
                     HttpOnly = false
                 };
 
                 Response.Cookies.Append("session", new Signature().toBase(token_string), options);
-                Response.Cookies.Append("session_nombre", $"{token.data.nombres} {token.data.apellidos}", optionsNombre);
-
+                Response.Cookies.Append("session_name", $"{token.data.nombres} {token.data.apellidos}", publicOptions);
+                Response.Cookies.Append("session_email", token.data.email, publicOptions);
 
                 if (token.data.cargo == "medico")
                         return Redirect("/medico");

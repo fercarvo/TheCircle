@@ -63,6 +63,7 @@ namespace TheCircle.Util
         public string nombres { get; set; }
         public string apellidos { get; set; }
         public string cargo { get; set; }
+        public string email { get; set; }
         public Localidad localidad { get; set; }
         public DateTime issueAt { get; set; }
         public DateTime expireAt { get; set; }
@@ -74,6 +75,7 @@ namespace TheCircle.Util
             nombres = usr.nombre;
             apellidos = usr.apellido;
             cargo = usr.cargo;
+            email = usr.email;
             localidad = lc;
             issueAt = DateTime.Now;
             expireAt = DateTime.Now.AddHours(10);

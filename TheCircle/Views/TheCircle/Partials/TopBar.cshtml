@@ -1,10 +1,11 @@
-<nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
+<nav data-ripple class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
     <style>
         #logout {
             color: #901F61;
             height: 50px;
             width: 50px;
             color: #fff;
+            font-size: 20px;
         }
         #logout button {
             background-color: inherit;
@@ -33,24 +34,23 @@
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
                 <div id="logout" class="dropdown-toggle" data-toggle="dropdown">
-                    <button data-ripple><span class="glyphicon glyphicon-user"></span></button>
+                    <span class="glyphicon glyphicon-user" style="cursor: pointer;"></span>
                 </div>
 
-                <ul class="dropdown-menu dropdown-menu-profile">
-                    <li class="dropdown-header">Detalles de la cuenta</li>
-                    <li>
-                        <div class="media">
+                <ul style="width: 330px; right:10px; margin-top:5px;" class="dropdown-menu dropdown-menu-profile">
+                    <li style="background-color:#901F61; color:white;" class="dropdown-header">Detalles de la cuenta</li>
+                    <li style="background-color:#e2e1e1; color: black;">
+                        <div class="media" style="margin-bottom:1px;">
                             <div class="media-left">
-                                <img ng-src="{{session_foto}}" alt="avatar" class="media-object img-circle">
+                                <img src="/api/user/photo" alt="avatar" class="media-object img-circle">
                             </div>
                             <div class="media-body">
-                                <h5 class="media-heading">Edgar Fernando C U{{session_name}}</h5>
-                                <p>blabla@childre.org{{session_email}}</p>
+                                <h5 class="media-heading">{{session_name}}</h5>
+                                <p>{{session_email}}</p>
                             </div>
                         </div>
                     </li>
-                    <li class="divider"></li>
-                    <li>
+                    <li style="background-color: #ececec;">
                         <a data-ripple onClick="document.location.replace('logout');" style="cursor: pointer;">
                             Log out  <span class="glyphicon glyphicon-log-out"></span>
                         </a>
