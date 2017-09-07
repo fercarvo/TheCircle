@@ -17,11 +17,9 @@ namespace TheCircle.Controllers
 
         //Crea una atencion medica
         [HttpPost ("atencion")]
-        [Allow("medico")]
+        [APIauth("medico")]
         public IActionResult PostAtencion(Token token, [FromBody] AtencionRequest request)
         {
-            if (token is null)
-                return Unauthorized();
             if (request is null)
                 return BadRequest();
 
@@ -33,19 +31,17 @@ namespace TheCircle.Controllers
                 return Ok(response);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
 
 
         //Ruta que retorna las atenciones medicas de un doctor
         [HttpGet("atencion/medico")]
-        //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
-        [Allow("medico")]
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico")]
         public IActionResult Get_ReporteAtencion(Token token, [FromQuery] Fecha request)
         {
-            if (token is null)
-                return Unauthorized();
             if (!ModelState.IsValid)
                 return BadRequest();
 
@@ -55,9 +51,8 @@ namespace TheCircle.Controllers
                 return Ok(atenciones);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
-            
         }
     }
 }

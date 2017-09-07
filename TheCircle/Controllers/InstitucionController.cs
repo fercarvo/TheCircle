@@ -17,19 +17,16 @@ namespace TheCircle.Controllers
 
         [HttpGet("institucion")]
         [ResponseCache(Duration = 60*60*48, Location = ResponseCacheLocation.Client)]
-        [Allow("medico")]
-        public IActionResult GetInstituciones(Token token)
+        [APIauth("medico")]
+        public IActionResult GetInstituciones()
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 Institucion[] instituciones = new Institucion().getAll(_context);
                 return Ok(instituciones);
                 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
     }

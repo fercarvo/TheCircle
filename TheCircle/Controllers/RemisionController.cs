@@ -17,7 +17,7 @@ namespace TheCircle.Controllers
 
         //Crea una remision medica
         [HttpPost ("remision")]
-        [Allow("medico")]
+        [APIauth("medico")]
         public IActionResult PostRemision(Token token, [FromBody] RemisionRequest request)
         {
             if (token is null)
@@ -31,7 +31,7 @@ namespace TheCircle.Controllers
                 return Ok(remision);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
             
         }
@@ -39,12 +39,10 @@ namespace TheCircle.Controllers
 
         //ruta que retorna las remisiones medicas de un doctor por rango de fechas
         [HttpGet("reporte/remision/date")]
-        //[ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
-        [Allow("medico")]
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico")]
         public IActionResult Get_ReporteRemision_Date_Doctor(Token token, [FromQuery] Fecha request)
         {
-            if (token is null)
-                return Unauthorized();
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
@@ -54,7 +52,7 @@ namespace TheCircle.Controllers
                 return Ok(response);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
     }

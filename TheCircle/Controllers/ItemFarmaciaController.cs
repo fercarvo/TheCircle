@@ -19,46 +19,38 @@ namespace TheCircle.Controllers
 
         [HttpGet("itemfarmacia")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        [Allow("medico", "asistenteSalud")]
+        [APIauth("medico", "asistenteSalud")]
         public IActionResult GetItems(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 ItemFarmacia[] stock = new ItemFarmacia().getAllByLocalidad(token.data.localidad, _context);
                 return Ok(stock);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
 
         [HttpGet("itemnombre")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
-        [Allow("asistenteSalud")]
+        [APIauth("asistenteSalud")]
         public IActionResult GetNombres(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 List<Compuesto> compuestos = new Compuesto().getAllBy_Localidad(token.data.localidad, _context);
                 return Ok(compuestos);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
 
         [HttpPost("itemfarmacia")]
-        [Allow("asistenteSalud", "bodeguero")]
+        [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult PostItem(Token token, [FromBody]RequestItem item)
         {
-            if (token is null)
-                return Unauthorized();
             if (item is null)
                 return BadRequest();
 
@@ -68,7 +60,7 @@ namespace TheCircle.Controllers
                 return Ok();
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
     }    

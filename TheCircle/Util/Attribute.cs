@@ -4,37 +4,12 @@ using System;
 
 namespace TheCircle.Util
 {
-    internal class AllowAttribute : ActionFilterAttribute
-    {
-        private string[] cargos;
-
-        public AllowAttribute(params string[] cargos) {
-            this.cargos = cargos;
-        }
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            var http = filterContext.HttpContext;
-
-            try
-            {
-                filterContext.ActionArguments["token"] = new Token().check(http.Request, cargos);
-                base.OnActionExecuting(filterContext);
-            }
-            catch (Exception e)
-            {
-                filterContext.ActionArguments["token"] = null;
-                base.OnActionExecuting(filterContext);
-            }
-        }
-    }
-
 
     internal class VIEWauthAttribute : ActionFilterAttribute
     {
         private string[] cargos;
 
-        public AllowAttribute(params string[] cargos) {
+        public VIEWauthAttribute(params string[] cargos) {
             this.cargos = cargos;
         }
 
@@ -46,7 +21,7 @@ namespace TheCircle.Util
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido se setea null
-                //aec.Result = new Redirect("/");
+                aec.Result = new LocalRedirectResult("/");
                 base.OnActionExecuting(aec);
             }
         }
@@ -57,7 +32,7 @@ namespace TheCircle.Util
     {
         private string[] cargos;
 
-        public AllowAttribute(params string[] cargos) {
+        public APIauthAttribute(params string[] cargos) {
             this.cargos = cargos;
         }
 
@@ -71,7 +46,7 @@ namespace TheCircle.Util
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido, termina la conexión.
-                //aec.Result = new Unauthorize();
+                aec.Result = new UnauthorizedResult();
                 base.OnActionExecuting(aec);
             }
         }

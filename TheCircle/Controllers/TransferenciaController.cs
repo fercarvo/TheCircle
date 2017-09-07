@@ -17,31 +17,26 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("transferencia")]
-        [Allow("asistenteSalud")]
+        [APIauth("asistenteSalud")]
         public IActionResult Get_transferencias_pendientes(Token token)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 Transferencia[] data = new Transferencia().getPendientes(token.data.localidad, _context);
                 return Ok(data);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
         }
 
 
         [HttpPut("transferencia")]
-        [Allow("asistenteSalud, bodeguero")]
+        [APIauth("asistenteSalud, bodeguero")]
         public IActionResult Despacho_Transferencia(Token token, [FromBody]TransferenciaRequest req)
         {
             if (req is null)
                 return BadRequest();
-            if (token is null)
-                return Unauthorized();
 
             try
             {
@@ -49,8 +44,6 @@ namespace TheCircle.Controllers
                 return Ok();
 
             } catch (Exception e) {
-                if (e is TokenException)
-                    return Unauthorized();
                 return BadRequest("Something broke");
             }
         }

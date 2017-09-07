@@ -20,79 +20,57 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("asistente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("asistente")]
-        //[VIEWauth("asistente")]
-        public IActionResult AsistenteSalud(Token token)
+        [VIEWauth("asistente")]
+        public IActionResult AsistenteSalud()
         {
-            if (token is null)
-                return Redirect("/");
-
             return View();
         }
 
         [HttpGet ("medico")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("medico")]
-        public IActionResult Medico(Token token)
+        [VIEWauth("medico")]
+        public IActionResult Medico()
         {
-            if (token is null)
-                return Redirect("/");
-
             return View();
         }
 
         [HttpGet("coordinador")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("coordinador")]
-        public IActionResult CoordinadorSalud(Token token)
+        [VIEWauth("coordinador")]
+        public IActionResult CoordinadorSalud()
         {
-            if (token is null)
-                return Redirect("/");
-
             return View();
         }
 
         [HttpGet("contralor")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("contralor")]
-        public IActionResult Contralor(Token token)
+        [VIEWauth("contralor")]
+        public IActionResult Contralor()
         {
-            if (token is null)
-                return Redirect("/");
-
             return View();
         }
 
         [HttpGet("bodeguero")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("bodeguero")]
-        public IActionResult Bodeguero(Token token)
+        [VIEWauth("bodeguero")]
+        public IActionResult Bodeguero()
         {
-            if (token is null)
-                return Redirect("/");
-
             return View();
         }
 
         [HttpGet("sistema")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("sistema")]
-        public IActionResult Sistema(Token token)
-        {
-            if (token is null)
-                return Redirect("/");
-
+        [VIEWauth("sistema")]
+        public IActionResult Sistema()
+        {         
             return View();
         }
 
         [HttpGet("coordinadorcc")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [Allow("cordinadorCC")]
-        public IActionResult CoordinadorCC(Token token)
+        [VIEWauth("cordinadorCC")]
+        public IActionResult CoordinadorCC()
         {
-            //if (token is null)
-                //return Redirect("/");
-
             return View();
         }
     }

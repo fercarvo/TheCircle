@@ -21,18 +21,15 @@ namespace TheCircle.Controllers
         // GET: api/Enfermedad
         [HttpGet("enfermedad")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*120 segundos = 120 horas
-        [Allow("medico")]
-        public IActionResult GetEnfermedades(Token token)
+        [APIauth("medico")]
+        public IActionResult GetEnfermedades()
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 var data = _context.Enfermedades.FromSql("EXEC dbo.select_Enfermedad").ToArray();
                 return Ok(data);
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
 
         }
@@ -40,11 +37,9 @@ namespace TheCircle.Controllers
         //Ruta que retorna listade de enfermedades mas comunes por centro comunitario
         [HttpGet("reporte/enfermedad/date")]
         //[ResponseCache(Duration = 60*60*3, Location = ResponseCacheLocation.Client)] //cache de 60*60*3 segundos, para evitar sobrecarga de la BDD
-        [Allow("medico")]
+        [APIauth("medico")]
         public IActionResult Get_ReporteEnfermedades(Token token, [FromQuery] Fecha request)
         {
-            if (token is null)
-                return Unauthorized();
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
@@ -54,9 +49,8 @@ namespace TheCircle.Controllers
                 return Ok(response);
 
             } catch (Exception e) {
-                return BadRequest("Something broke");
+                return StatusCode(500);
             }
-            
         }
     }
 }

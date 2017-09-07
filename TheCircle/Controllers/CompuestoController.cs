@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using TheCircle.Models;
 using TheCircle.Util;
 
@@ -15,14 +16,17 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("compuesto")]
-        [Allow("medico", "asistente")]
-        public IActionResult Get_Compuestos(Token token)
+        [APIauth("medico", "asistente")]
+        public IActionResult Get_Compuestos()
         {
-            if (token is null)
-                return Unauthorized();
+            try
+            {
+                Compuesto2[] compuestos = new Compuesto2().getAll(_context);
+                return Ok(compuestos);
 
-            Compuesto2[] compuestos = new Compuesto2().getAll(_context);
-            return Ok(compuestos);
+            } catch (Exception e) {
+                return StatusCode(500);
+            }
         }
     }
 }

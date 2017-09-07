@@ -19,12 +19,9 @@ namespace TheCircle.Controllers
 
         [HttpGet("apadrinado/{cod}")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        [Allow("medico")]
-        public IActionResult GetApadrinado(Token token, int cod)
+        [APIauth("medico")]
+        public IActionResult GetApadrinado(int cod)
         {
-            if (token is null)
-                return Unauthorized();
-
             try
             {
                 Apadrinado data = new Apadrinado().get(cod, _context);
@@ -36,14 +33,10 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("apadrinado/{cod}/foto")]
-        [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)]
-        [Allow("medico")]
-        //[APIauth("medico")]
-        public IActionResult GetApadrinadoFoto(Token token, int cod)
+        [ResponseCache(Duration = 60*60*48, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico")]
+        public IActionResult GetApadrinadoFoto(int cod)
         {
-            if (token is null)
-                return Unauthorized();
-
             string query = $"EXEC dbo.select_Apadrinado_foto @cod={cod}";
 
             try
@@ -53,7 +46,7 @@ namespace TheCircle.Controllers
                 return File(image, "image/jpeg");
 
             } catch (Exception e) {
-                return Redirect("/images/ci.png");
+                return RedirectPermanent("/images/ci.png");
             }
         }
     }

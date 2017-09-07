@@ -17,7 +17,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("user")]
         [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)]
-        [Allow("sistema")]
+        [APIauth("sistema")]
         public IActionResult Get_All_Users(Token token)
         {
             if (token is null)
@@ -35,7 +35,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user/activos")]
-        [Allow("sistema")]
+        [APIauth("sistema")]
         [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         public IActionResult Get_All_Users_Activos(Token token)
         {
@@ -54,7 +54,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("user/inactivos")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        [Allow("sistema")]
+        [APIauth("sistema")]
         public IActionResult Get_All_Users_Inactivos(Token token)
         {
             if (token is null)
@@ -86,18 +86,33 @@ namespace TheCircle.Controllers
         }
 
 
-        [HttpPut("user/{id}/activar")]
-        [Allow("sistema")]
-        public IActionResult User_Activar(Token token, int id) 
+        [HttpPut("user/{cedula}/activar")]
+        [APIauth("sistema")]
+        public IActionResult User_Activar(int cedula) 
         {
-            if (id <= 0)
+            if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
-            if (token is null)
-                return Unauthorized();
 
             try
             {
-                new User().activar(id, _context);
+                new User().activar(cedula, _context);
+                return Ok();
+
+            } catch (Exception e) {
+                return StatusCode(500);
+            }            
+        }
+
+        [HttpPut("user/{cedula}/desactivar")]
+        [APIauth("sistema")]
+        public IActionResult User_Desactivar(Token token, int cedula) 
+        {
+            if (cedula <= 10000)
+                return BadRequest("Incorrect Data");
+
+            try
+            {
+                new User().desactivar(cedula, _context);
                 return Ok();
 
             } catch (Exception e) {
@@ -105,37 +120,16 @@ namespace TheCircle.Controllers
             }            
         }
 
-        [HttpPut("user/{id}/desactivar")]
-        [Allow("sistema")]
-        public IActionResult User_Desactivar(Token token, int id) 
+        [HttpPut("user/{cedula}/clave/set")]
+        [APIauth("sistema")]
+        public IActionResult User_SetClave(int cedula) 
         {
-            if (id <= 0)
+            if (cedula <= 0)
                 return BadRequest("Incorrect Data");
-            if (token is null)
-                return Unauthorized();
 
             try
             {
-                new User().desactivar(id, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
-        }
-
-        [HttpPut("user/{id}/clave/set")]
-        [Allow("sistema")]
-        public IActionResult User_SetClave(Token token, int id) 
-        {
-            if (id <= 0)
-                return BadRequest("Incorrect Data");
-            if (token is null)
-                return Unauthorized();
-
-            try
-            {
-                string clave = new User().nueva_clave(id, _context);
+                string clave = new User().nueva_clave(cedula, _context);
                 return Ok( new {clave = clave} );
 
             } catch (Exception e) {
