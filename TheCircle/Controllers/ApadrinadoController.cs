@@ -38,6 +38,7 @@ namespace TheCircle.Controllers
         [HttpGet("apadrinado/{cod}/foto")]
         [ResponseCache(Duration = 60 * 60 * 48, Location = ResponseCacheLocation.Client)]
         [Allow("medico")]
+        //[APIauth("medico")]
         public IActionResult GetApadrinadoFoto(Token token, int cod)
         {
             if (token is null)

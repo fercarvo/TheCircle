@@ -21,6 +21,7 @@ namespace TheCircle.Controllers.views
         [HttpGet ("asistente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [Allow("asistente")]
+        //[VIEWauth("asistente")]
         public IActionResult AsistenteSalud(Token token)
         {
             if (token is null)
