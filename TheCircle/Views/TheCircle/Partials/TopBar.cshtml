@@ -6,31 +6,59 @@
             width: 50px;
             color: #fff;
         }
+        #logout button {
+            background-color: inherit;
+            border: none;
+            position: relative;
+            height: 50px;
+            width: 50px;
+        }
 
-            #logout button {
-                background-color: inherit;
-                border: none;
-                position: relative;
-                height: 50px;
-                width: 50px;
-            }
+        #contenedor {
+            color: #901F61;
+        }
+
     </style>
-    <div class="container-fluid" style="color:#901F61">
-        <div class="navbar-header" style="color:#901F61">
-            <a onClick="document.location.reload();" class="navbar-brand" href="" style="color:#901F61">
-                <!--<img src="~/images/wiseboard/logo.svg" alt="logo">-->
+    <div id="contenedor" class="container-fluid">
+
+        <div class="navbar-header" >
+            <a onClick="document.location.reload();" class="navbar-brand">
                 <span style="color:white">TheCircle</span>
             </a>
             <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
                 <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
             </button>
-        </div><!-- /.navbar-header -->
-        <div id="logout" class="nav navbar-nav navbar-right">
-            <button onClick="document.location.replace('logout');" data-ripple><span class="glyphicon glyphicon-log-out"></span></button>
         </div>
-        <div id="logout" class="nav navbar-nav navbar-right" style="width:auto;padding-top:15px;padding-bottom:15px;">
-            <span style="color:white;font-family: 'Roboto', sans-serif;font-size: 14px;">{{session_name}}</span>
-        </div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <div id="logout" class="dropdown-toggle" data-toggle="dropdown">
+                    <button data-ripple><span class="glyphicon glyphicon-user"></span></button>
+                </div>
+
+                <ul class="dropdown-menu dropdown-menu-profile">
+                    <li class="dropdown-header">Detalles de la cuenta</li>
+                    <li>
+                        <div class="media">
+                            <div class="media-left">
+                                <img ng-src="{{session_foto}}" alt="avatar" class="media-object img-circle">
+                            </div>
+                            <div class="media-body">
+                                <h5 class="media-heading">Edgar Fernando C U{{session_name}}</h5>
+                                <p>blabla@childre.org{{session_email}}</p>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="divider"></li>
+                    <li>
+                        <a data-ripple onClick="document.location.replace('logout');" style="cursor: pointer;">
+                            Log out  <span class="glyphicon glyphicon-log-out"></span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+
     </div>
     <script type="text/javascript">
         function change() {
