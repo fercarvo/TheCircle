@@ -23,46 +23,27 @@ namespace TheCircle.Models
 
         public User get(LoginRequest req, MyDbContext _context)
         {
-            string query = $"EXEC dbo.User_select @cedula={req.cedula}";
-            var _signer = new Signature();
+            var user = _context.User.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
 
-            try {
-                var user = _context.User.FromSql(query).First();
+            new Signature().check_hashing(req.clave, user.clave_hash, user.salt);
 
-                var clave = req.clave;
-                var hash = user.clave_hash;
-                var salt = user.salt;
-
-                _signer.check_hashing(clave, hash, salt);
-
-                return user;
-
-            } catch (Exception e) {
-                throw new Exception("Error cargar User at User.get");
-            }
+            return user;
         }
 
         private void _checkClave(string cedula, string clave, MyDbContext _context) {
             string query = $"EXEC dbo.User_Select @cedula={cedula}";
-            var _signer = new Signature();
 
-            try {
-                var user = _context.User.FromSql(query).First();
+            var user = _context.User.FromSql(query).First();
 
-                var hash = user.clave_hash;
-                var salt = user.salt;
+            var hash = user.clave_hash;
+            var salt = user.salt;
 
-                _signer.check_hashing(clave, hash, salt);
-
-            } catch (Exception e) {
-                throw new Exception("Clave/Usuario incorrecto");
-            }
+            new Signature().check_hashing(clave, hash, salt);
         }
 
         public void crear(string cedula, string clave, MyDbContext _context)
         {
-            var _signer = new Signature();
-            var dic = _signer.hashing_SHA256(clave);
+            var dic = new Signature().hashing_SHA256(clave);
             string hash = dic["hash"];
             string salt = dic["salt"];
 
@@ -84,43 +65,31 @@ namespace TheCircle.Models
 
         public void cambiar_clave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
         {
-            try {
-                var _signer = new Signature();
+            _checkClave(cedula, antiguaClave, _context);
 
-                _checkClave(cedula, antiguaClave, _context);
-
-                var dic = _signer.hashing_SHA256(nuevaclave);
-                string hash = dic["hash"];
-                string salt = dic["salt"];
-                string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+            var dic = new Signature().hashing_SHA256(nuevaclave);
+            string hash = dic["hash"];
+            string salt = dic["salt"];
+            string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 
-                _context.Database.ExecuteSqlCommand(q);
-
-            } catch (Exception e) {
-                throw new Exception("Error al cambiar clave de usuario at User.cambiar_clave");
-            }
+            _context.Database.ExecuteSqlCommand(q);
         }
 
         public string nueva_clave(int cedula, MyDbContext _context)
         {
-            try {
-                var _signer = new Signature();
-                //var _mailer = new EmailTC(email);
+            var _signer = new Signature();
+            //var _mailer = new EmailTC(email);
 
-                string nueva_clave = _signer.random();
-                var dic = _signer.hashing_SHA256(nueva_clave);
-                string hash = dic["hash"];
-                string salt = dic["salt"];
+            string nueva_clave = _signer.random();
+            var dic = _signer.hashing_SHA256(nueva_clave);
+            string hash = dic["hash"];
+            string salt = dic["salt"];
 
-                string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-                _context.Database.ExecuteSqlCommand(q);
+            string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+            _context.Database.ExecuteSqlCommand(q);
 
-                return nueva_clave;
-                //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
-
-            } catch (Exception e) {
-                throw new Exception("Error al resetear clave de usuario at User.nueva_clave");
-            }
+            return nueva_clave;
+            //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
         }
     }
 

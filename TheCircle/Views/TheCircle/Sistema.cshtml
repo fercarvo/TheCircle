@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -9,21 +9,12 @@
     
     @Html.Partial("Partials/Styles")
 
-    <style>
-        body {
-            font-family: 'Roboto', sans-serif;
-            max-height: 100%;
-            overflow: hidden
-        }
-    </style>
 </head>
-<body class="page-dashboard" ng-app="appSistema">
-    <!-- TOP NAVIGATION STARTS -->
+<body class="page-dashboard" ng-app="sistema">
+
     @Html.Partial("Partials/TopBar")
-    <!-- TOP NAVIGATION ENDS -->
-    <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+
     <div class="content-wrapper" style="height:100%;">
-        <!-- SIDEBAR STARTS -->
         <style>
             .sidebar .sidebar-nav > li > a {
                 color: #901f61;
@@ -39,10 +30,9 @@
                 color: #f2f2f2;
             }
 
-                .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
-                    /*background-color: #706f6f*/
-                    background-color: #344868
-                }
+            .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
+                background-color: #344868
+            }
 
             .btn-info {
                 color: #fff;
@@ -80,26 +70,24 @@
         </style>
         <div class="sidebar" id="sidebar_menu">
             <ul class="sidebar-nav">
-                <!--add class dropdown for subitems in lists-->
                 <li data-ripple class=" open" ui-sref="activarusuario" ui-sref-active="active">
                     <a>
 
                         <span>Activar Usuarios</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
                 <li data-ripple class=" open" ui-sref="desactivarusuario" ui-sref-active="active">
                     <a>
 
                         <span>Desactivar Usuario</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
                 <li data-ripple class=" open" ui-sref="cambiarclave" ui-sref-active="active">
                     <a>
 
                         <span>Modificar Contraseñas</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
-                <!--add class dropdown for subitems in lists-->
+                </li>
             </ul>
         </div>
 
@@ -110,7 +98,10 @@
     </div>
 
     @Html.Partial("Partials/Scripts")
-    <script src="~/scripts/appSistema.js"></script>
+
+
+
+    <script src="~/scripts/app/sistema.js"></script>
 
 </body>
 </html>

@@ -536,18 +536,20 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $state.go('estadisticas.enfermedades');
 
     }])
-    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
         $scope.atenciones = dataFactory.estadisticas.atenciones;
 
         $scope.$watch('atenciones', function () {
             dataFactory.estadisticas.atenciones = $scope.atenciones;
-        });
+        })
 
         $scope.generar = function (desde, hasta) {
             var data = {
                 desde: date(desde),
                 hasta: date(hasta)
             }
+
+            NProgress.start();
 
             $http({
                 method: "GET",
@@ -556,20 +558,22 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }).then(function success(res) {
                 $scope.atenciones.all = res.data;
                 console.log($scope.atenciones.all);
+                NProgress.done();
+
             }, function error(err) {
                 console.log("error cargar atenciones", err);
-                alert("error cargar atenciones")
-            });
+                notify("No se pudo cargar atenciones médicas", "danger");
+                NProgress.done();
+            })
         }
 
     }])
-    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
         $scope.remisiones = dataFactory.estadisticas.remisiones;
 
         $scope.$watch('remisiones', function () {
             dataFactory.estadisticas.remisiones = $scope.remisiones;
-        });
-        
+        })        
 
         $scope.generar = function (desde, hasta) {
 
@@ -578,25 +582,29 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 hasta: date(hasta)
             }
 
+            NProgress.start();
+
             $http({
                 method: "GET",
                 url: "/api/reporte/remision/date",
                 params: data
             }).then(function success(res) {
                 $scope.remisiones.all = res.data;
+                NProgress.done();
             }, function error(err) {
                 console.log("error cargar remisiones", err);
-                alert("error cargar remisiones")
-            });
+                notify("No se pudo cargar remisiones", "danger");
+                NProgress.done();
+            })
         }
 
     }])
-    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "notify", "date", function ($scope, $state, $http, dataFactory, atencionFactory, notify, date) {
+    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
         $scope.recetas = dataFactory.estadisticas.recetas;
         
         $scope.$watch('recetas', function () {
             dataFactory.estadisticas.recetas = $scope.recetas;
-        });
+        })
         
 
         $scope.select = function (receta) {
@@ -608,21 +616,23 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 desde: date(desde),
                 hasta: date(hasta)
             }
-
+            NProgress.start()
             $http({
                 method: "GET",
                 url: "/api/receta/medico/fecha",
                 params: data
             }).then(function success(res) {
+                NProgress.done();
                 $scope.recetas.all = res.data;
             }, function error(err) {
                 console.log("error cargar recetas")
                 notify("No se pudo cargar recetas", "danger");
-            });
+                NProgress.done();
+            })
         }
 
     }])
-    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "date", function ($scope, $state, $http, dataFactory, atencionFactory, date) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "date", "notify", function ($scope, $state, $http, dataFactory, date, notify) {
 
         $scope.enfermedades = dataFactory.estadisticas.enfermedades;
 
@@ -635,6 +645,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 desde: date(desde),
                 hasta: date(hasta)
             }
+            NProgress.start();
 
             $http({
                 method: "GET",
@@ -646,11 +657,12 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 for (i = 0; i < res.data.length; i++) {
                     $scope.data.push({ key: res.data[i].codigo + ' ' + res.data[i].nombre, y: res.data[i].veces, color: color[i] });
                 }
-
+                NProgress.done();
             }, function error(err) {
                 console.log("Error cargar estadisticas", err);
-                alert("Error cargar estadisticas");
-            });
+                notify("No se pudo cargar las enfermedades", "danger");
+                NProgress.done();
+            })
 
         }
 
@@ -676,7 +688,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                     }
                 }
             }
-        };
+        }
     }])
     .controller('transferencias', ['$scope', '$http', function ($scope, $http) {
 

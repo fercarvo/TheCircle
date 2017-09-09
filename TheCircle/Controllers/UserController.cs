@@ -16,8 +16,8 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user")]
-        [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)]
-        //[APIauth("sistema")]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
+        [APIauth("sistema")]
         public IActionResult Get_All_Users()
         {
             UserSafe[] usuarios = new UserSafe().getAll(_context);
@@ -25,7 +25,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user/{cedula}/photo")]
-        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
         public IActionResult Get_Foto(Token token, int cedula)
         {
@@ -44,7 +44,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("user/activos")]
         [APIauth("sistema")]
-        [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         public IActionResult Get_All_Users_Activos()
         {
             UserSafe[] usuarios = new UserSafe().getActivos(_context);
@@ -52,8 +52,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user/inactivos")]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        [APIauth("sistema")]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)] 
         public IActionResult Get_All_Users_Inactivos()
         {
             UserSafe[] usuarios = new UserSafe().getInactivos(_context);
@@ -84,7 +83,9 @@ namespace TheCircle.Controllers
                 return BadRequest("Incorrect Data");
 
             new User().activar(cedula, _context);
-            return Ok();          
+
+            UserSafe[] usuarios = new UserSafe().getInactivos(_context);
+            return Ok(usuarios);
         }
 
         [HttpPut("user/{cedula}/desactivar")]
@@ -94,14 +95,10 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            try
-            {
-                new User().desactivar(cedula, _context);
-                return Ok();
+            new User().desactivar(cedula, _context);
 
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
+            UserSafe[] usuarios = new UserSafe().getActivos(_context);
+            return Ok(usuarios);
         }
 
         [HttpPut("user/{cedula}/clave/set")]

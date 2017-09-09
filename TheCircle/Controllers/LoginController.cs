@@ -26,8 +26,7 @@ namespace TheCircle.Controllers
             foreach (var cookie in Request.Cookies.Keys)
                 Response.Cookies.Delete(cookie);
 
-            if (ModelState.IsValid)
-            {
+            if (ModelState.IsValid) {
                 var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
@@ -40,7 +39,6 @@ namespace TheCircle.Controllers
         public IActionResult login([FromForm] LoginRequest request)
         {
 
-            User usuario = new User();
             Dictionary<string, string> parameters;
             string loginRedirect;
 
@@ -55,7 +53,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                usuario = usuario.get(request, _context);
+                User usuario = new User().get(request, _context);
                 Token token = new Token(usuario, request.localidad);
                 string token_string = JsonConvert.SerializeObject(token);
 
@@ -99,9 +97,7 @@ namespace TheCircle.Controllers
 
                 return Redirect("logout");
 
-            }
-            catch (Exception e)
-            { //Si el usuario es invalido o se evidencia algun error
+            } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
                 loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);

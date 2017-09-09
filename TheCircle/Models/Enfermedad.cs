@@ -1,7 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Linq;
 using TheCircle.Util;
 
@@ -28,13 +26,8 @@ namespace TheCircle.Models
 
         public ReporteEnfermedad[] getAll(Fecha req, Localidad localidad, MyDbContext _context)
         {
-            try {
-                string query = $"EXEC dbo.report_EnfermedadByFecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad='{localidad}'";
-                return _context.ReporteEnfermedad.FromSql(query).ToArray();
-            } catch (Exception e) {
-                throw new Exception("Error al cargar reporte de enfermedades, ReporteEnfermedad.getAll");
-            }
+            string query = $"EXEC Enfermedad_Report_Fecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad='{localidad}'";
+            return _context.ReporteEnfermedad.FromSql(query).ToArray();
         }
-
     }
 }

@@ -26,13 +26,12 @@ namespace TheCircle.Models
             Atencion atencion;
             Diagnostico d = new Diagnostico();
 
-            string query = $"DECLARE @id int EXEC dbo.insert_Atencion @apadrinado={request.apadrinado}" +
+            string query = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
                 $", @doctor={doctor}" +
                 $", @tipo={request.tipo}" +
                 $", @localidad={localidad}" +
                 $", @peso='{request.peso}'" +
-                $", @talla='{request.talla}'" +
-                $", @id = @id OUTPUT";
+                $", @talla='{request.talla}'";
 
             atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
             foreach (string diagnostico in request.diagnosticos) { //Se ingresan los diagnosticos en la atencion
@@ -44,7 +43,7 @@ namespace TheCircle.Models
 
         public Atencion[] getBy_doctor_date(Fecha req, int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
+            string query = $"EXEC Atencion_Report_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             var data = _context.Atenciones.FromSql(query).ToArray();
 
             return data;

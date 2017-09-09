@@ -1,4 +1,4 @@
-﻿angular.module('appSistema', ['ui.router', 'ngCookies'])
+﻿angular.module('sistema', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('activarusuario', {
@@ -50,6 +50,79 @@
 
         $state.go("activarusuario");
     }])
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+
+        function go(fn) {
+            fn();
+            console.log("Go refresh");
+            return setInterval(fn, 10000);
+        }
+
+        function goTime(fn, time) {
+            fn();
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time);
+        }
+
+        function stop(repeater) {
+            console.log("Stop refresh");
+            clearInterval(repeater);
+        }
+
+        return {
+            go: go,
+            stop: stop,
+            goTime: goTime
+        }
+    }])
+    .factory('notify', [function () {
+        return function (mensaje, tipo) {
+
+            var icono = "";
+
+            if (tipo === "success") {
+                icono = "glyphicon glyphicon-saved";
+            } else if (tipo === "danger") {
+                icono = "glyphicon glyphicon-ban-circle"
+            }
+
+            return $.notify(
+                {
+                    icon: icono,
+                    message: mensaje,
+                    url: '#',
+                    target: '_blank'
+                },
+                {
+                    element: 'body',
+                    position: null,
+                    showProgressbar: false,
+                    type: tipo,
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: { x: 20, y: 70 },
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 1000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: "pause",
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class'
+                })
+        }
+    }])
     .factory('usuarios', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var usuarios = {
@@ -93,11 +166,10 @@
 
         return usuarios;
     }])
-    .controller('activarusuario', ["$scope", "$state", "$http", "usuarios", function ($scope, $state, $http, usuarios) {
+    .controller('activarusuario', ["$scope", "$state", "$http", "usuarios", "notify", function ($scope, $state, $http, usuarios, notify) {
 
         $scope.usuarios = usuarios.inactivos;
         $scope.usuario = null;
-        $scope.index = null;
 
         usuarios.getInactivos();
 
@@ -109,27 +181,29 @@
             usuarios.inactivos = $scope.usuarios;
         })
 
-        $scope.seleccionar = function(usuario, index){
+        $scope.seleccionar = function(usuario){
             $scope.usuario = usuario;
-            $scope.index = index;
         }
 
         $scope.aceptar = function () {
             $('#modal_activar').modal('hide');
-
+            NProgress.start();
             $http.put("api/user/" + $scope.usuario.cedula + "/activar").then(function success(res) {
                 console.log("Activado con exito");
-                $scope.usuarios.splice($scope.index, 1);
+                $scope.usuarios = res.data;
+                notify("Usuario activado exitosamente", "success");
+                NProgress.done();
             }, function error(err) {
                 console.log("error al activar");
+                notify("No se ha podido activar el usuario", "danger");
+                NProgress.done();
             })
         }
 
     }])
-    .controller('desactivarusuario', ["$scope", "$state", "$http", "usuarios", function ($scope, $state, $http, usuarios) {
+    .controller('desactivarusuario', ["$scope", "$state", "$http", "usuarios", "notify", function ($scope, $state, $http, usuarios, notify) {
         $scope.usuarios = usuarios.activos;
         $scope.usuario = null;
-        $scope.index = null;
 
         usuarios.getActivos();
 
@@ -141,19 +215,22 @@
             usuarios.activos = $scope.usuarios;
         })
 
-        $scope.seleccionar = function (usuario, index) {
-            $scope.index = index;
+        $scope.seleccionar = function (usuario) {
             $scope.usuario = usuario;
         }
 
         $scope.aceptar = function () {
             $('#modal_desactivar').modal('hide');
-
+            NProgress.start();
             $http.put("api/user/" + $scope.usuario.cedula + "/desactivar").then(function success(res) {
                 console.log("desActivado con exito");
-                $scope.usuarios.splice($scope.index, 1);
+                $scope.usuarios = res.data;
+                notify("No se ha podido activar el usuario", "success");
+                NProgress.done();
             }, function error(err) {
                 console.log("error al desactivar");
+                notify("No se ha podido activar el usuario", "danger");
+                NProgress.done();
             })
         }
     }])
@@ -174,13 +251,17 @@
 
         $scope.aceptar = function () {
             $('#cambiar_clave').modal('hide');
-
+            NProgress.start();
             $http.put("api/user/" + $scope.usuario.cedula + "/clave/set").then(function success(res) {
+                NProgress.done();
                 console.log("Cambio de clave exitoso", res.data);
                 $scope.clave = res.data.clave;
                 $('#nueva_clave').modal('show');
+                notify("Reseteo de clave exitoso", "success");
             }, function error(err) {
                 console.log("error cambio de clave");
+                NProgress.done();
+                notify("No se ha podido cambiar la clave del usuario", "danger");
             })
         }
     }])

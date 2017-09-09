@@ -51,7 +51,7 @@ namespace TheCircle
                 new StaticFileOptions() {
                     OnPrepareResponse = ctx =>
                     {
-                        int cache = 60 * 1; //60sg * n minutes
+                        int cache = 2 * 1; //60sg * n minutes
                         ctx.Context.Response.Headers.Append("Cache-Control", "private,max-age="+cache);
                     }
                 }
