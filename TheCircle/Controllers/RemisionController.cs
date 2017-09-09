@@ -18,22 +18,19 @@ namespace TheCircle.Controllers
         //Crea una remision medica
         [HttpPost ("remision")]
         [APIauth("medico")]
-        public IActionResult PostRemision(Token token, [FromBody] RemisionRequest request)
+        public IActionResult PostRemision([FromBody] RemisionRequest request)
         {
-            if (token is null)
-                return Unauthorized();
             if (request is null)
                 return BadRequest("Incorrect Data"); 
 
             try
             {
-                Remision remision = new Remision().crear(request, _context);
-                return Ok(remision);
+                new Remision().crear(request, _context);
+                return Ok();
 
             } catch (Exception e) {
                 return StatusCode(500);
-            }
-            
+            }            
         }
 
 

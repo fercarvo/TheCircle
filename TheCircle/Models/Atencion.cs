@@ -34,27 +34,20 @@ namespace TheCircle.Models
                 $", @talla='{request.talla}'" +
                 $", @id = @id OUTPUT";
 
-            try {
-                atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
-                foreach (string diagnostico in request.diagnosticos) { //Se ingresan los diagnosticos en la atencion
-                    d.insert(diagnostico, atencion.id, _context);
-                }
-                return atencion;
-
-            } catch (Exception e) {
-                throw new Exception("Error crear/cargar atencion medica, Atencion.crear");
+            atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
+            foreach (string diagnostico in request.diagnosticos) { //Se ingresan los diagnosticos en la atencion
+                d.insert(diagnostico, atencion.id, _context);
             }
+
+            return atencion;
         }
 
         public Atencion[] getBy_doctor_date(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.report_Atencion_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
-            try {
-                var data = _context.Atenciones.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error cargar atenciones by doctor, Atencion.getBy_doctor");
-            }
+            var data = _context.Atenciones.FromSql(query).ToArray();
+
+            return data;
         }
 
     }

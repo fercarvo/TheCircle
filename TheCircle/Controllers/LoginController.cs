@@ -23,46 +23,50 @@ namespace TheCircle.Controllers
         [HttpGet("logout")]
         public IActionResult Logout([FromQuery] LoginMessage lm)
         {
-            Response.Cookies.Delete("session");
-            Response.Cookies.Delete("session_name");
-            Response.Cookies.Delete("session_email");
+            foreach (var cookie in Request.Cookies.Keys)
+                Response.Cookies.Delete(cookie);
 
-            if (ModelState.IsValid) {
+            if (ModelState.IsValid)
+            {
                 var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
                 var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);    
+                return Redirect(loginRedirect);
             }
 
             return Redirect("/");
         }
 
         [HttpPost("login")]
-        public IActionResult login([FromForm] LoginRequest request) {
+        public IActionResult login([FromForm] LoginRequest request)
+        {
 
             User usuario = new User();
             Dictionary<string, string> parameters;
             string loginRedirect;
 
 
-            if (!ModelState.IsValid) {
+            if (!ModelState.IsValid)
+            {
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Precaucion, data fuera de rangos" } };
                 loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);    
+                return Redirect(loginRedirect);
             }
 
 
-            try 
+            try
             {
                 usuario = usuario.get(request, _context);
                 Token token = new Token(usuario, request.localidad);
                 string token_string = JsonConvert.SerializeObject(token);
 
-                var options = new CookieOptions() {
+                var options = new CookieOptions()
+                {
                     Expires = token.data.expireAt,
                     HttpOnly = true
                 };
 
-                var publicOptions = new CookieOptions() {
+                var publicOptions = new CookieOptions()
+                {
                     Expires = token.data.expireAt,
                     HttpOnly = false
                 };
@@ -70,35 +74,45 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session", new Signature().toBase(token_string), options);
                 Response.Cookies.Append("session_name", $"{token.data.nombres} {token.data.apellidos}", publicOptions);
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
+                Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
                 if (token.data.cargo == "medico")
-                        return Redirect("/medico");
+                    return Redirect("/medico");
 
-                    if (token.data.cargo == "asistenteSalud")
-                        return Redirect("/asistente");
+                if (token.data.cargo == "asistenteSalud")
+                    return Redirect("/asistente");
 
-                    if (token.data.cargo == "sistema")
-                        return Redirect("/sistema");
+                if (token.data.cargo == "sistema")
+                    return Redirect("/sistema");
 
-                    if (token.data.cargo == "bodeguero")
-                        return Redirect("/bodeguero");
+                if (token.data.cargo == "bodeguero")
+                    return Redirect("/bodeguero");
 
-                    if (token.data.cargo == "coordinador")
-                        return Redirect("/coordiandor");
+                if (token.data.cargo == "coordinador")
+                    return Redirect("/coordiandor");
 
-                    if (token.data.cargo == "contralor")
-                        return Redirect("/contralor");
+                if (token.data.cargo == "contralor")
+                    return Redirect("/contralor");
 
-                    if (token.data.cargo == "coordinadorCC")
-                        return Redirect("/coordinadorCC");
+                if (token.data.cargo == "coordinadorCC")
+                    return Redirect("/coordinadorCC");
 
                 return Redirect("logout");
 
-            } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
+            }
+            catch (Exception e)
+            { //Si el usuario es invalido o se evidencia algun error
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
                 loginRedirect = QueryHelpers.AddQueryString("/", parameters);
                 return Redirect(loginRedirect);
-            }            
+            }
+        }
+
+        [HttpGet("login")]
+        [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
+        public IActionResult loginCheck(Token token)
+        {
+            return Ok(token);
         }
     }
 }

@@ -9,16 +9,16 @@ namespace TheCircle.Util
     {
         private byte[] key { get; set; }
         private Byte[] salt { get; set; } //= new Byte[50];
-        private HMACSHA256 sign_algorithm { get; set; }
-        private SHA256 hash_algorithm { get; set; }
+        private HMACSHA512 sign_algorithm { get; set; }
+        private SHA256 hash_algorithm { get; set; } //Cambiar el algoritmo invalida TODAS LAS CLAVES EN LA BDD, INCLUSO SISTEMA
         private Encoding encode { get; set; }
 
         //ALERTA, cambiar el string del key generado deriva en anulacion de todos los tokens generados
         public Signature(){
             this.encode = Encoding.Unicode;
-            this.key = this.encode.GetBytes("ThECircle_signUnik3");
+            this.key = this.encode.GetBytes("ThECircle_signUnik3afsasdaqwdasd");
             this.salt = new Byte[10];
-            this.sign_algorithm = new HMACSHA256(key);
+            this.sign_algorithm = new HMACSHA512(key);
             this.hash_algorithm = SHA256.Create();            
         }
 

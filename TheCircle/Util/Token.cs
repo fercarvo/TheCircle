@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using TheCircle.Models;
 using System.Linq;
+using System.Collections.Generic;
 
 namespace TheCircle.Util
 {
@@ -78,7 +79,7 @@ namespace TheCircle.Util
             email = usr.email;
             localidad = lc;
             issueAt = DateTime.Now;
-            expireAt = DateTime.Now.AddHours(10);
+            expireAt = new DateTime(issueAt.Year, issueAt.Month, issueAt.Day, 22, 0, 0); 
         }
     }
 

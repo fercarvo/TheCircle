@@ -1,4 +1,4 @@
-<nav data-ripple class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61">
+<nav class="navbar navbar-fixed-top navbar-top" style="background-color:#901F61;margin-top: 2px;">
     <style>
         #logout {
             color: #901F61;
@@ -26,15 +26,15 @@
             <a onClick="document.location.reload();" class="navbar-brand">
                 <span style="color:white">TheCircle</span>
             </a>
-            <button type="button" class="sidebar-toggle" style="color:white" onclick="change()">
+            <button data-ripple type="button" class="sidebar-toggle" style="color:white" onclick="change()">
                 <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
             </button>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
-                <div id="logout" class="dropdown-toggle" data-toggle="dropdown">
-                    <span class="glyphicon glyphicon-user" style="cursor: pointer;margin-top:15px;margin-left:15px;"></span>
+                <div data-ripple id="logout" class="dropdown-toggle" data-toggle="dropdown" style="cursor: pointer">
+                    <span class="glyphicon glyphicon-user" style="margin-top:15px;margin-left:15px;"></span>
                 </div>
 
                 <ul style="width: 330px; right:10px; margin-top:5px;" class="dropdown-menu dropdown-menu-profile">
@@ -42,7 +42,7 @@
                     <li style="background-color:#e2e1e1; color: black;">
                         <div class="media" style="margin-bottom:1px;">
                             <div class="media-left">
-                                <img src="/api/user/photo" alt="avatar" class="media-object img-circle">
+                                <img ng-src="{{session_photo}}" alt="avatar" class="media-object img-circle">
                             </div>
                             <div class="media-body">
                                 <h5 class="media-heading">{{session_name}}</h5>

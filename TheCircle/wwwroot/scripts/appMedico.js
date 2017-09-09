@@ -52,7 +52,18 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo producción
     }])
-    .run(["$state", "$rootScope", "$cookies", function ($state, $rootScope, $cookies) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+
+        refresh.goTime(function () {
+            $http.get("login").then(function () {
+            }, function (response) {
+                if (response.status === 401) {
+                    alert("Su sesion ha caducado");
+                    document.location.replace('logout');
+                }
+            })
+        }, 1000 * 60 * 20)       
+
         $rootScope.session_name = (function () {
             var c = $cookies.get('session_name')
             if (c) {
@@ -65,6 +76,13 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             if (c) {
                 return c
             } return ""
+        })()
+
+        $rootScope.session_photo = (function () {
+            var c = $cookies.get('session_photo')
+            if (c) {
+                return c
+            } return "/images/ci.png"
         })()
 
         $state.go("atencion");
@@ -148,11 +166,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
     }])
     .factory('notify', [function () {
-        return {
-            
-        }
-
-        function notificacion(mensaje, tipo) {
+        return function (mensaje, tipo) {
 
             var icono = "";
 
@@ -270,14 +284,15 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
 
 
-        $scope.buscarApadrinado = dfac.getApadrinado(codigo).then(function success(res) {
+        $scope.buscarApadrinado = function (codigo) {
+            dfac.getApadrinado(codigo).then(function success(res) {
 
                 if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
                 } else {
                     $scope.status = true;
                 }
-                $scope.foto = "/api/apadrinado/" + codigo + "/foto"; 
+                $scope.foto = "/api/apadrinado/" + codigo + "/foto";
                 $scope.apadrinado = res.data;
 
             }, function error(err) {
@@ -287,7 +302,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $scope.codigo = null;
                 $scope.apadrinado = {};
             })
-        }
+        } 
 
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
@@ -377,7 +392,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 NProgress.done();
                 console.log("se creo remision", res.data);
                 disable.remision = true;
-                atencionFactory.remision = res.data; //Se guarda la remision en la factory
+                atencionFactory.remision = $scope.remision; //Se guarda la remision en la factory
                 $scope.disable = disable.remision; //Se desactiva atencion.remision.html
                 notify("Se creo la remision exitosamente", "success");
 

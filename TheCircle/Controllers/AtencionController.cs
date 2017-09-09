@@ -23,16 +23,11 @@ namespace TheCircle.Controllers
             if (request is null)
                 return BadRequest();
 
-            try {
-                Atencion atencion = new Atencion().crear(request, token.data.cedula, token.data.localidad, _context);
-                Diagnostico[] diagnosticos = new Diagnostico().getAllByAtencion(atencion.id, _context);
+            Atencion atencion = new Atencion().crear(request, token.data.cedula, token.data.localidad, _context);
+            Diagnostico[] diagnosticos = new Diagnostico().getAllByAtencion(atencion.id, _context);
 
-                var response = new AtencionResponse(atencion, diagnosticos);
-                return Ok(response);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            var response = new AtencionResponse(atencion, diagnosticos);
+            return Ok(response);
         }
 
 
@@ -45,14 +40,8 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            try
-            {
-                Atencion[] atenciones = new Atencion().getBy_doctor_date(request, token.data.cedula, _context);
-                return Ok(atenciones);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Atencion[] atenciones = new Atencion().getBy_doctor_date(request, token.data.cedula, _context);
+            return Ok(atenciones);
         }
     }
 }

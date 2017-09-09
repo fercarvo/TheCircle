@@ -17,24 +17,21 @@ namespace TheCircle.Controllers
 
         [HttpGet("user")]
         [ResponseCache(Duration = 60*10, Location = ResponseCacheLocation.Client)]
-        [APIauth("sistema")]
-        public IActionResult Get_All_Users(Token token)
+        //[APIauth("sistema")]
+        public IActionResult Get_All_Users()
         {
-            try
-            {
-                UserSafe[] usuarios = new UserSafe().getAll(_context);
-                return Ok(usuarios);
-
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
+            UserSafe[] usuarios = new UserSafe().getAll(_context);
+            return Ok(usuarios);           
         }
 
-        [HttpGet("user/photo")]
-        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
+        [HttpGet("user/{cedula}/photo")]
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
-        public IActionResult Get_Foto(Token token)
+        public IActionResult Get_Foto(Token token, int cedula)
         {
+            if (cedula != token.data.cedula)
+                return BadRequest();
+
             try
             {
                 var image = System.IO.File.OpenRead($"\\\\Guysrv11\\Programs\\G_Fotos\\TheCircle\\{token.data.cedula}.jpg");
@@ -48,31 +45,19 @@ namespace TheCircle.Controllers
         [HttpGet("user/activos")]
         [APIauth("sistema")]
         [ResponseCache(Duration = 1, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
-        public IActionResult Get_All_Users_Activos(Token token)
+        public IActionResult Get_All_Users_Activos()
         {
-            try
-            {
-                UserSafe[] usuarios = new UserSafe().getActivos(_context);
-                return Ok(usuarios);
-                
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
+            UserSafe[] usuarios = new UserSafe().getActivos(_context);
+            return Ok(usuarios);          
         }
 
         [HttpGet("user/inactivos")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 60*60 segundos, para evitar sobrecarga de la BDD
         [APIauth("sistema")]
-        public IActionResult Get_All_Users_Inactivos(Token token)
+        public IActionResult Get_All_Users_Inactivos()
         {
-            try
-            {
-                UserSafe[] usuarios = new UserSafe().getInactivos(_context);
-                return Ok(usuarios);
-                
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
+            UserSafe[] usuarios = new UserSafe().getInactivos(_context);
+            return Ok(usuarios);          
         }
 
         [HttpPost("user")]
@@ -98,19 +83,13 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            try
-            {
-                new User().activar(cedula, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }            
+            new User().activar(cedula, _context);
+            return Ok();          
         }
 
         [HttpPut("user/{cedula}/desactivar")]
         [APIauth("sistema")]
-        public IActionResult User_Desactivar(Token token, int cedula) 
+        public IActionResult User_Desactivar(int cedula) 
         {
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");

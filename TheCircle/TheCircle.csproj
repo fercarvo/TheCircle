@@ -33,8 +33,11 @@
     <Content Include="wwwroot\scripts\appMedico.js" />
     <Content Include="wwwroot\scripts\appSistema.js" />
     <Content Include="wwwroot\scripts\ripple.js" />
+    <Content Include="wwwroot\scripts\vendor\angular-ndv3.min.js" />
     <Content Include="wwwroot\scripts\vendor\angular.min.js" />
     <Content Include="wwwroot\scripts\vendor\bootstrap-notify.min.js" />
+    <Content Include="wwwroot\scripts\vendor\d3.min.js" />
+    <Content Include="wwwroot\scripts\vendor\nv.d3.min.js" />
     <Content Include="wwwroot\scripts\vendor\select2.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js" />

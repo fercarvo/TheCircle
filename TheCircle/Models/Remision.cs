@@ -21,20 +21,10 @@ namespace TheCircle.Models
 
         public Remision() { }
 
-        public Remision crear(RemisionRequest request, MyDbContext _context)
+        public void crear(RemisionRequest request, MyDbContext _context)
         {
-            string query = $"DECLARE @id int EXEC dbo.insert_Remision @atencionM={request.atencionM}" +
-              $", @institucion={request.institucion}" +
-              $", @monto='{request.monto}'" +
-              $", @sintomas='{request.sintomas}', @id=@id OUTPUT";
-
-            try {
-                var data = _context.Remisiones.FromSql(query).First();
-                return data;
-
-            } catch (Exception e) {
-                throw new Exception("Error crear remision medica at Remision.crear");
-            }
+            string query = $"EXEC dbo.Remision_insert @atencionM={request.atencionM}, @institucion={request.institucion}, @monto='{request.monto}', @sintomas='{request.sintomas}'";
+            _context.Database.ExecuteSqlCommand(query);
         }
     }
 
@@ -43,6 +33,7 @@ namespace TheCircle.Models
         public int atencionM { get; set; }
         public int institucion { get; set; }
         public int monto { get; set; }
+        [StringLength(50)]
         public string sintomas { get; set; }
 
         public RemisionRequest() { }

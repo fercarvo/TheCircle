@@ -26,7 +26,7 @@ namespace TheCircle.Controllers
         [Route("error")]
         public IActionResult Error()
         {
-            return BadRequest("Something Broke");
+            return StatusCode(500);
         }
 
         [Route("error/unauth")]

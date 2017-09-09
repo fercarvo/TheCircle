@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TheCircle.Util;
+using Microsoft.AspNetCore.Http;
 
 namespace TheCircle
 {
@@ -38,28 +39,23 @@ namespace TheCircle
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            
-            //env.EnvironmentName = EnvironmentName.Production;
-            //if (env.IsDevelopment())
-            //{
-                //app.UseDeveloperExceptionPage();
-            //}
-            //else
-            //{
+            env.EnvironmentName = EnvironmentName.Development;
+            if (env.IsDevelopment()) {
+                app.UseDeveloperExceptionPage();
+                app.UseStatusCodePages();
+            } else {
                 app.UseExceptionHandler("/error");
-            //}
-
-            //app.UseStaticFiles();
-            app.UseStaticFiles(
-                /*new StaticFileOptions()
-            {
-                OnPrepareResponse = ctx =>
-                {
-                    int cache = 60 * 0; //60sg * n minutes
-                    ctx.Context.Response.Headers.Append("Cache-Control", "public,max-age="+cache);
-                }
             }
-            */);
+
+            app.UseStaticFiles(
+                new StaticFileOptions() {
+                    OnPrepareResponse = ctx =>
+                    {
+                        int cache = 60 * 1; //60sg * n minutes
+                        ctx.Context.Response.Headers.Append("Cache-Control", "private,max-age="+cache);
+                    }
+                }
+            );
 
             app.UseMvc();
         }

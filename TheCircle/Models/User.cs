@@ -61,38 +61,25 @@ namespace TheCircle.Models
 
         public void crear(string cedula, string clave, MyDbContext _context)
         {
-            try {
-                var _signer = new Signature();
-                var dic = _signer.hashing_SHA256(clave);
-                string hash = dic["hash"];
-                string salt = dic["salt"];
+            var _signer = new Signature();
+            var dic = _signer.hashing_SHA256(clave);
+            string hash = dic["hash"];
+            string salt = dic["salt"];
 
-                string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-                _context.Database.ExecuteSqlCommand(q);
-
-            } catch (Exception e) {
-                throw new Exception("Error al crear usuario at User.create");
-            }
+            string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+            _context.Database.ExecuteSqlCommand(q);
         }
 
         public void activar(int cedula, MyDbContext _context)
         {
-            try {
-                string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
-                _context.Database.ExecuteSqlCommand(q);
-            } catch (Exception e) {
-                throw new Exception("Error al activar usuario at User.activar");
-            }
+            string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
+            _context.Database.ExecuteSqlCommand(q);
         }
 
         public void desactivar(int cedula, MyDbContext _context)
         {
-            try {
-                string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
-                _context.Database.ExecuteSqlCommand(q);
-            } catch (Exception e) {
-                throw new Exception("Error al desactivar usuario at User.desactivar");
-            }
+            string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
+            _context.Database.ExecuteSqlCommand(q);
         }
 
         public void cambiar_clave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
@@ -152,39 +139,24 @@ namespace TheCircle.Models
         {
             string query = $"EXEC dbo.UserSafe_Report_All";
 
-            try {
-                var user = _context.UserSafe.FromSql(query).ToArray();
-                return user;
-
-            } catch (Exception e) {
-                throw new Exception("Error cargar UserSafe at UserSafe.getAll");
-            }
+            var user = _context.UserSafe.FromSql(query).ToArray();
+            return user;
         }
 
         public UserSafe[] getActivos(MyDbContext _context)
         {
             string query = $"EXEC dbo.UserSafe_Report_Activos";
 
-            try {
-                var user = _context.UserSafe.FromSql(query).ToArray();
-                return user;
-
-            } catch (Exception e) {
-                throw new Exception("Error cargar UserSafe at UserSafe.getActivos");
-            }
+            var user = _context.UserSafe.FromSql(query).ToArray();
+            return user;
         }
 
         public UserSafe[] getInactivos(MyDbContext _context)
         {
             string query = $"EXEC dbo.UserSafe_Report_Inactivos";
 
-            try {
-                var user = _context.UserSafe.FromSql(query).ToArray();
-                return user;
-
-            } catch (Exception e) {
-                throw new Exception("Error cargar UserSafe at UserSafe.getInactivos");
-            }
+            var user = _context.UserSafe.FromSql(query).ToArray();
+            return user;
         }
     }
 
@@ -194,5 +166,4 @@ namespace TheCircle.Models
         public string actual { get; set; }
         public string nueva { get; set; }
     }
-
 }
