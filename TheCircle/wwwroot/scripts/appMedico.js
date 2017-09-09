@@ -91,7 +91,8 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             getInstituciones: getInstituciones,
             getEnfermedades: getEnfermedades,
             getStock: getStock,
-            getRecetas: getRecetas
+            getRecetas: getRecetas,
+            getApadrinado: getApadrinado
         }
 
         function getInstituciones() {
@@ -123,6 +124,20 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             })
         }
 
+        function getApadrinado(codigo) {
+            NProgress.start();
+            var promise = $http.get("/api/apadrinado/" + codigo, {cache: true});            
+
+            promise.then(function(){
+                NProgress.done();
+            }, function(err){
+                console.log("No existe apadrinado", err);
+                NProgress.done();
+            })
+
+            return promise;
+        }
+
         return dataFactory;
     }])
     .factory('disable', [function () {
@@ -133,7 +148,11 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
     }])
     .factory('notify', [function () {
-        return function (mensaje, tipo) {
+        return {
+            
+        }
+
+        function notificacion(mensaje, tipo) {
 
             var icono = "";
 
@@ -220,7 +239,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             goTime: goTime
         }
     }])
-    .controller('atencion', ["$scope", "$state", "$http", "atencionFactory", "disable", function ($scope, $state, $http, atencionFactory, disable) {
+    .controller('atencion', ["$scope", "$state", "atencionFactory", "dataFactory", "disable", function ($scope, $state, atencionFactory, dfac, disable) {
 
         $state.go('atencion.registro');
         $scope.codigo = atencionFactory.codigo;
@@ -251,11 +270,8 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
 
 
-        $scope.buscarApadrinado = function (codigo) {
-            NProgress.start();
-            $http.get("/api/apadrinado/" + codigo, {cache: true}).then(function success(res) {
+        $scope.buscarApadrinado = dfac.getApadrinado(codigo).then(function success(res) {
 
-                NProgress.done();
                 if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
                 } else {
@@ -266,14 +282,12 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
             }, function error(err) {
 
-                NProgress.done();
-                console.log("No existe apadrinado", err);                
                 $scope.foto = "/images/ci.png";
                 $scope.status = true
                 $scope.codigo = null;
                 $scope.apadrinado = {};
-            });
-        };
+            })
+        }
 
     }])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
