@@ -103,6 +103,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
         function getStock() {
+            //NProgress.start();
             $http.get("/api/itemfarmacia").then(function success(res) {
                 console.log("Actualizando Stock by localidad");
                 dataFactory.stock = res.data;
@@ -251,8 +252,10 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
 
         $scope.buscarApadrinado = function (codigo) {
+            NProgress.start();
             $http.get("/api/apadrinado/" + codigo, {cache: true}).then(function success(res) {
 
+                NProgress.done();
                 if (res.data.status === "D" || res.data.status === "E") {
                     $scope.status = false;
                 } else {
@@ -263,6 +266,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
             }, function error(err) {
 
+                NProgress.done();
                 console.log("No existe apadrinado", err);                
                 $scope.foto = "/images/ci.png";
                 $scope.status = true
@@ -308,8 +312,10 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 talla: atencionFactory.atencion.talla
             }
 
+            NProgress.start();
             $http.post("/api/atencion", AtencionNueva).then(function success(res){
 
+                NProgress.done();
                 console.log("Se creo atencion", res.data);
                 disable.atencion = true;
                 atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
@@ -320,6 +326,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $state.go('atencion.receta');
 
             }, function error(err) {
+                NProgress.done();
                 notify("Intento fallido de atencion medica", "danger");
                 console.log("error atencion", err);
             });
@@ -350,8 +357,10 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 sintomas: remision.sintomas
             }
 
+            NProgress.start();
             $http.post("/api/remision", RemisionRequest).then(function success(res) {
 
+                NProgress.done();
                 console.log("se creo remision", res.data);
                 disable.remision = true;
                 atencionFactory.remision = res.data; //Se guarda la remision en la factory
@@ -359,6 +368,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 notify("Se creo la remision exitosamente", "success");
 
             }, function (err) {
+                NProgress.done();
                 console.log("error crear remision", err);
                 notify("No se pudo generar la remision, por favor verifique los datos", "danger");
             });
@@ -431,9 +441,11 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             var idReceta = atencionFactory.receta.id;
             var items = atencionFactory.receta.items;
 
-            console.log("Items a enviar", JSON.parse(angular.toJson(items)));
-
+            //console.log("Items a enviar", JSON.parse(angular.toJson(items)));
+            NProgress.start();
             $http.post("/api/receta/" + idReceta, JSON.parse(angular.toJson(items))).then(function success(res) {
+                
+                NProgress.done();
                 console.log("Se crearon los items", res.data);
                 notify("Se creo la receta exitosamente", "success");
                 disable.receta = true;
@@ -441,9 +453,10 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 refresh.stop(actualizar); //Se detiene la actualizacion de receta
                 cargar(); //Se carga por ultima vez la data
             }, function err(err){
+                NProgress.done();
                 console.log("No se pudieron crear los items", err);
                 notify("No se pudo crear la receta", "danger");
-            });
+            })
         }
 
     }])
