@@ -47,6 +47,7 @@
     <Content Include="wwwroot\scripts\app\coordinadorSalud.js" />
     <Content Include="wwwroot\scripts\app\medico.js" />
     <Content Include="wwwroot\scripts\app\sistema.js" />
+    <Content Include="wwwroot\scripts\app\sistema.min.js" />
     <Content Include="wwwroot\scripts\ripple.js" />
     <Content Include="wwwroot\scripts\vendor\angular-ndv3.min.js" />
     <Content Include="wwwroot\scripts\vendor\angular.min.js" />

@@ -1,4 +1,5 @@
-﻿angular.module('sistema', ['ui.router', 'ngCookies'])
+﻿/*sistema v1.0 - Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec - Children International*/
+angular.module('sistema', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('activarusuario', {
