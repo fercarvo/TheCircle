@@ -61,16 +61,17 @@ namespace TheCircle.Models
             }
         }
 
-        public void insert(int receta, ItemsDespachoRequest[] items, int personal, MyDbContext _context)
+        public static void Insert(int receta, ItemsDespachoRequest[] items, int personal, MyDbContext _context)
         {
             var transaction = _context.Database.BeginTransaction();
-            try
-            {
+            try {
+                
                 foreach (ItemsDespachoRequest item in items) //se insertan en la base de datos todos los items
                     insertItem(item, personal, _context);
 
-                new Receta().update_despachada(receta, _context);
+                Receta.UpdateDespachada(receta, _context);
                 transaction.Commit();
+
             } catch (Exception e) {
                 transaction.Rollback();
                 throw new Exception("Error al insertar los despacho de items at ItemDespacho.insert");

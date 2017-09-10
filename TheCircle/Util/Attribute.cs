@@ -17,7 +17,7 @@ namespace TheCircle.Util
         {
             try
             {
-                new Token().check(aec.HttpContext.Request, cargos);
+                Token.Check(aec.HttpContext.Request, cargos);
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido se setea null
@@ -42,7 +42,7 @@ namespace TheCircle.Util
 
             try
             {
-                aec.ActionArguments["token"] = new Token().check(http.Request, cargos);
+                aec.ActionArguments["token"] = Token.Check(http.Request, cargos);
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido, termina la conexión.

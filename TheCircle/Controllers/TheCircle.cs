@@ -72,7 +72,6 @@ namespace TheCircle.Controllers.views
         [VIEWauth("cordinadorCC")]
         public IActionResult CoordinadorCC()
         {
-            throw new Exception("Hey there");
             return View();
         }
     }

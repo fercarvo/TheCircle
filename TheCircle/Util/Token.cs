@@ -15,31 +15,32 @@ namespace TheCircle.Util
         public Data data { get; set; }
         public string sign { get; set; }
 
-        public Token(User user, Localidad loc) {
+        public Token(User usuario, Localidad localidad) 
+        {
+            data = new Data(usuario, localidad);
 
-            Data data = new Data(user, loc);
             string data_String = JsonConvert.SerializeObject(data);
 
-            this.data = data;
-            this.sign = new Signature().sign_HMAC(data_String);
+            sign = Signature.Sign(data_String);
         }
 
         public Token() { }
+
+
 
         /*  @request: el requerimiento de donde se extraerá el cookie de session
             @cargo: El cargo que deberia tener el cookie de session
             En caso de no cumplir alguna validacion, se dispara un exception
         */
-        internal Token check(HttpRequest request, string[] cargos) {
+        internal static Token Check(HttpRequest request, string[] cargos) {
             string cookie = request.Cookies["session"]; //Se obtiene el string de la cookie
-            Signature _signer = new Signature();
             Token token;
 
             if (string.IsNullOrEmpty(cookie))
                 throw new TokenException("No existe cookie/cargo, at Token.check");
 
             //token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
-            token = JsonConvert.DeserializeObject<Token>(_signer.fromBase(cookie)); //Se parcea el string de cookie a Token.
+            token = JsonConvert.DeserializeObject<Token>(Signature.FromBase(cookie)); //Se parcea el string de cookie a Token.
 
             if (token.data.expireAt < DateTime.Now)
                 throw new TokenException("Token expirado, at Token.check");
@@ -49,8 +50,7 @@ namespace TheCircle.Util
 
             string dataToString = JsonConvert.SerializeObject(token.data);
 
-            if (_signer.checkHMAC(dataToString, token.sign) == false)
-                throw new TokenException("Alerta, Token alterado, at Token.check"); //Se validara cuando un tercero intente hackear el sistema
+            Signature.CheckHMAC(dataToString, token.sign);
 
             return token;
         }

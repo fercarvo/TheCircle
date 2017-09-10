@@ -7,6 +7,7 @@ using TheCircle.Util;
 
 namespace TheCircle.Models
 {
+    /*
     public class Compuesto
     {
         [Key]
@@ -48,17 +49,18 @@ namespace TheCircle.Models
 
         }
 
-    }
+    }*/
 
+    /*
     public class CompuestoNombre
     {
         [Key]
         public string nombre { get; set; }
 
         public CompuestoNombre() { }
-    }
+    }*/
 
-    public class Compuesto2
+    public class Compuesto
     {
         [Key]
         public string nombre { get; set; }
@@ -67,28 +69,24 @@ namespace TheCircle.Models
         public string categoriaCodigo { get; set; }
         public string grupo { get; set; }
 
-        public Compuesto2[] getAll(MyDbContext _context) {
-            string query = $"EXEC dbo.Compuesto_Report";
-
-            try
-            {
-                var data = _context.Compuesto2.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                return null;
-            }
+        public Compuesto(CompuestoRequest c, MyDbContext _context) {
+            throw new Exception("Algo salio mal por aqui ahhhhhh");
         }
 
-        public void crear() {
-
+        public static Compuesto[] Report(MyDbContext _context) 
+        {
+            var data = _context.Compuesto.FromSql("EXEC dbo.Compuesto_Report").ToArray();
+            return data;
         }
+
+
 
     }
 
     public class CompuestoRequest
     {
         public string nombre { get; set; }
-        public string cateroria { get; set; }
+        public string categoria { get; set; }
         public string unidad { get; set; }
     }
 }

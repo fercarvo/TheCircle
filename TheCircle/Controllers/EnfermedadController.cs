@@ -35,8 +35,8 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            var response = new ReporteEnfermedad().getAll(request, token.data.localidad, _context);
-            return Ok(response);
+            var data = ReporteEnfermedad.Report(request, token.data.localidad, _context);
+            return Ok(data);
         }
     }
 }

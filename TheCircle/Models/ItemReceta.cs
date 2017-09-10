@@ -25,7 +25,7 @@ namespace TheCircle.Models
             Metodo que recibe una lista de items y se los inserta en la BDD
             En caso de haber un error por datos incorrectos o cualquier cosa, se hace rollback
         */
-        public void insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
+        public static void Insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
         {
             var transaction = _context.Database.BeginTransaction();
             try
@@ -34,7 +34,7 @@ namespace TheCircle.Models
                     insertItem(receta, item, _context);
 
                 transaction.Commit();
-                //return getAllByReceta(receta, _context);
+                
             } catch {
                 transaction.Rollback();
                 throw new Exception("Error al insertar los items de Receta at ItemReceta.insert");
@@ -55,13 +55,9 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(query);
         }
 
-        public ItemReceta[] getAllByReceta(int receta, MyDbContext _context) {
-            try {
-                var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}").ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error al cargar Items de Receta at ItemReceta.getAllByReceta");
-            }
+        public static ItemReceta[] GetAllByReceta(int receta, MyDbContext _context) {
+            var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}").ToArray();
+            return data;
         }
     }
 

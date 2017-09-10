@@ -19,31 +19,11 @@ namespace TheCircle.Models
         public string salt { get; set; }
         public Boolean? activo { get; set; }
 
-        public User() {}
+        public User () {}
 
-        public User get(LoginRequest req, MyDbContext _context)
+        public User (string cedula, string clave, MyDbContext _context) 
         {
-            var user = _context.User.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
-
-            new Signature().check_hashing(req.clave, user.clave_hash, user.salt);
-
-            return user;
-        }
-
-        private void _checkClave(string cedula, string clave, MyDbContext _context) {
-            string query = $"EXEC dbo.User_Select @cedula={cedula}";
-
-            var user = _context.User.FromSql(query).First();
-
-            var hash = user.clave_hash;
-            var salt = user.salt;
-
-            new Signature().check_hashing(clave, hash, salt);
-        }
-
-        public void crear(string cedula, string clave, MyDbContext _context)
-        {
-            var dic = new Signature().hashing_SHA256(clave);
+            var dic = Signature.HashingSHA256(clave);
             string hash = dic["hash"];
             string salt = dic["salt"];
 
@@ -51,11 +31,45 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(q);
         }
 
-        public void activar(int cedula, MyDbContext _context)
+        public static User Get(LoginRequest req, MyDbContext _context)
+        {
+            var user = _context.User.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
+            Signature.CheckHashing(req.clave, user.clave_hash, user.salt);
+
+            return user;
+        }
+
+
+        private void _checkClave(string cedula, string clave, MyDbContext _context) 
+        {
+            string query = $"EXEC dbo.User_Select @cedula={cedula}";
+
+            var user = _context.User.FromSql(query).First();
+
+            var hash = user.clave_hash;
+            var salt = user.salt;
+
+            Signature.CheckHashing(clave, hash, salt);
+        }
+
+
+        /*public static void New(string cedula, string clave, MyDbContext _context)
+        {
+            var dic = Signature.HashingSHA256(clave);
+            string hash = dic["hash"];
+            string salt = dic["salt"];
+
+            string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+            _context.Database.ExecuteSqlCommand(q);
+        }*/
+
+
+        public static void Activar(int cedula, MyDbContext _context)
         {
             string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
             _context.Database.ExecuteSqlCommand(q);
         }
+
 
         public void desactivar(int cedula, MyDbContext _context)
         {
@@ -63,25 +77,25 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(q);
         }
 
+
         public void cambiar_clave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
         {
             _checkClave(cedula, antiguaClave, _context);
 
-            var dic = new Signature().hashing_SHA256(nuevaclave);
+            var dic = Signature.HashingSHA256(nuevaclave);
             string hash = dic["hash"];
             string salt = dic["salt"];
             string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 
             _context.Database.ExecuteSqlCommand(q);
         }
+        
 
-        public string nueva_clave(int cedula, MyDbContext _context)
+        public static string NuevaClave(int cedula, MyDbContext _context)
         {
-            var _signer = new Signature();
             //var _mailer = new EmailTC(email);
-
-            string nueva_clave = _signer.random();
-            var dic = _signer.hashing_SHA256(nueva_clave);
+            string nueva_clave = Signature.Random();
+            var dic = Signature.HashingSHA256(nueva_clave);
             string hash = dic["hash"];
             string salt = dic["salt"];
 
@@ -104,7 +118,7 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
-        public UserSafe[] getAll(MyDbContext _context)
+        public static UserSafe[] GetAll(MyDbContext _context)
         {
             string query = $"EXEC dbo.UserSafe_Report_All";
 
@@ -112,7 +126,7 @@ namespace TheCircle.Models
             return user;
         }
 
-        public UserSafe[] getActivos(MyDbContext _context)
+        public static UserSafe[] GetActivos(MyDbContext _context)
         {
             string query = $"EXEC dbo.UserSafe_Report_Activos";
 
@@ -120,7 +134,7 @@ namespace TheCircle.Models
             return user;
         }
 
-        public UserSafe[] getInactivos(MyDbContext _context)
+        public static UserSafe[] GetInactivos(MyDbContext _context)
         {
             string query = $"EXEC dbo.UserSafe_Report_Inactivos";
 

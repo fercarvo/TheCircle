@@ -19,33 +19,29 @@ namespace TheCircle.Models
 
         public ItemFarmacia() { }
 
-        public ItemFarmacia[] getAllByLocalidad (Localidad localidad, MyDbContext _context)
+        public static ItemFarmacia[] ReportLocalidad (Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_ItemFarmacia @localidad='{localidad}'";
 
-            try {
-                var data = _context.ItemFarmacias.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                throw new Exception("Error cargar ItemsFarmacia, ItemFarmacia.getAllByLocalidad");
-            }
+            var data = _context.ItemFarmacias.FromSql(query).ToArray();
+            return data;
         }
 
-        public void insert(RequestItem item, Localidad localidad, int personal, MyDbContext _context) {
-            string query = $"EXEC dbo.ItemFarmacia_insert @nombre='{item.nombre}', @compuesto='{item.compuesto}' , @fcaducidad='{item.fcaducidad}' , @cantidad={item.cantidad} ,@localidad='{localidad}' , @personal={personal} ";
-
-            try
-            {
-                _context.Database.ExecuteSqlCommand(query);
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error al crear ItemsFarmacia at ItemFarmacia.insert");
-            }
+        public static void New (RequestItem item, Localidad localidad, int personal, MyDbContext _context) 
+        {
+            string query = $"EXEC dbo.ItemFarmacia_insert @nombre='{item.nombre}', 
+                @compuesto='{item.compuesto}', 
+                @fcaducidad='{item.fcaducidad}', 
+                @cantidad={item.cantidad},
+                @localidad='{localidad}',
+                @personal={personal}";
+                
+            _context.Database.ExecuteSqlCommand(query);
         }
     }
 
+
+    /*
     public class Item
     {
         public int id { get; set; }
@@ -57,15 +53,10 @@ namespace TheCircle.Models
         {
             string query = $"EXEC dbo.ItemFarmacia_Select_ByCompuesto @compuesto='{compuesto}'";
 
-            try {
-                var data = _context.ItemNombre.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error cargar Item at Item.getBy_Compuesto");
-            }
-
+            var data = _context.ItemNombre.FromSql(query).ToArray();
+            return data;
         }
-    }
+    }*/
 
     public class RequestItem
     {

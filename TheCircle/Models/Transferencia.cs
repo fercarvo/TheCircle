@@ -28,15 +28,12 @@ namespace TheCircle.Models
         {
             string q = $"EXEC ItemTransferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
 
-            try {
-                var data = _context.Transferencia.FromSql(q).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw;
-            }
+            var data = _context.Transferencia.FromSql(q).ToArray();
+            return data;
         }
 
-        public void despachar(int personal, TransferenciaRequest req, MyDbContext _context) {
+        public void despachar(int personal, TransferenciaRequest req, MyDbContext _context) 
+        {
             string q = $"EXEC ItemTransferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
             _context.Database.ExecuteSqlCommand(q);   
         }

@@ -28,96 +28,63 @@ namespace TheCircle.Models
         public Receta[] getAllByLocalidad(Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByLocalidad @localidad='{localidad}'";
-            try {
-                var data = _context.Recetas.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error al cargar recetas, Receta.getAllByLocalidad");
-            }
+
+            var data = _context.Recetas.FromSql(query).ToArray();
+            return data;
         }
 
         public Receta[] getBy_Asistente(int asistente, MyDbContext _context)
         {
             string query = $"EXEC dbo.Receta_ReportBy_Asistente @asistente={asistente}";
-            try {
-                var data = _context.Recetas.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error al cargar recetas getBy_Asistente");
-            }
+
+            var data = _context.Recetas.FromSql(query).ToArray();
+            return data;
         }
 
         public Receta[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC dbo.Receta_ReportBy_Localidad_Despachada @localidad='{localidad}', @despachada=0";
-            try
-            {
-                var data = _context.Recetas.FromSql(query).ToArray();
-                return data;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error al cargar Receta[] at Receta.getAllByLocalidadByStatus");
-            }
+
+            var data = _context.Recetas.FromSql(query).ToArray();
+            return data;
         }
 
-        public Receta[] getAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
+        public static Receta[] GetAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByDoctor @doctor={doctor}, @desde='{fecha.desde}', @hasta='{fecha.hasta}'";
-            try {
-                var data = _context.Recetas.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                return null;
-            }
+
+            var data = _context.Recetas.FromSql(query).ToArray();
+            return data;
         }
 
         public Receta[] getAllByDoctorByStatus(int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByDoctorByStatus @doctor={doctor}";
-            try {
-                var data = _context.Recetas.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                return null;
-            }
+
+            var data = _context.Recetas.FromSql(query).ToArray();
+            return data;
         }
 
-        public Receta crear (int apadrinado, int doctor, MyDbContext _context) 
+        public static Receta New (int apadrinado, int doctor, MyDbContext _context) 
         {
-            string query = $"DECLARE @id int EXEC dbo.insert_Receta @idDoctor={doctor}" +
-              $", @idApadrinado={apadrinado}, @id = @id OUTPUT";
+            string query = $"EXEC dbo.insert_Receta @idDoctor={doctor}, @idApadrinado={apadrinado}";
 
-            try {
-                var receta = _context.Recetas.FromSql(query).First();
-                return receta;
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                throw new Exception("Error al crear/cargar receta medica");
-            }
+            var receta = _context.Recetas.FromSql(query).First();
+            return receta;
         }
 
-        public void delete(int id, MyDbContext _context)
+        public static void Delete(int id, MyDbContext _context)
         {
             string query = $"EXEC dbo.delete_Receta @id={id}";
 
-            try {
-                _context.Database.ExecuteSqlCommand(query);
-            } catch (Exception e) {
-                Console.WriteLine(e);
-                throw new Exception("Error borrar Receta, Receta.delete");
-            }
+            _context.Database.ExecuteSqlCommand(query);
         }
 
-        internal void update_despachada(int id, MyDbContext _context)
+        public static void UpdateDespachada(int id, MyDbContext _context)
         {
             string q = $"EXEC dbo.Receta_Update_despachada @idReceta={id}";
-            try
-            {
-                _context.Database.ExecuteSqlCommand(q);
-            } catch (Exception e) {
-                throw;
-            }
+
+            _context.Database.ExecuteSqlCommand(q);
         }
     }
 
@@ -135,71 +102,58 @@ namespace TheCircle.Models
 
         public List<RecetaTotal> getAllByLocalidad (Localidad localidad, MyDbContext _context)
         {
-            var i = new ItemReceta();
             var recetasTotales = new List<RecetaTotal>();
 
             Receta[] recetas = new Receta().getAllByLocalidad(localidad, _context);
 
             foreach (Receta receta in recetas) {
-                ItemReceta[] items = i.getAllByReceta(receta.id, _context);
-                if (items != null) 
-                    recetasTotales.Add(new RecetaTotal(receta, items));
+                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
+                recetasTotales.Add(new RecetaTotal(receta, items));
             }
+
             return recetasTotales;
         }
 
         public RecetaTotal[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
         {
-            var i = new ItemReceta();
-
             var recetas = new Receta().getAll_Localidad_SinDespachar(localidad, _context);
             var recetasTotales = new List<RecetaTotal>();
 
             foreach (Receta receta in recetas) {
-                var items = i.getAllByReceta(receta.id, _context);                 
+                var items = ItemReceta.GetAllByReceta(receta.id, _context);                 
                 recetasTotales.Add(new RecetaTotal(receta, items));                    
             }
             return recetasTotales.ToArray();
         }
 
-        public List<RecetaTotal> reporteByDoctor (Fecha fecha, int doctor, MyDbContext _context)
+        public static List<RecetaTotal> ReportByDoctor (Fecha fecha, int doctor, MyDbContext _context)
         {
-            ItemReceta i = new ItemReceta();
-
-            Receta[] recetas = new Receta().getAllByDoctorByDate(fecha, doctor, _context);
+            Receta[] recetas = Receta.GetAllByDoctorByDate(fecha, doctor, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
-            if (recetas != null) {
-                foreach (Receta receta in recetas)
-                { //se insertan en la base de datos todos los items
+            foreach (Receta receta in recetas) 
+            { //se insertan en la base de datos todos los items
+                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
 
-                    ItemReceta[] items = i.getAllByReceta(receta.id, _context);
-                    if (items.Count() > 0)
-                    {
-                        recetasTotales.Add(new RecetaTotal(receta, items));
-                    }
-                }
-            }
+                if (items.Count() > 0)
+                    recetasTotales.Add(new RecetaTotal(receta, items));
+            }            
 
             return recetasTotales;
         }
 
         public List<RecetaTotal> reporteByDoctorByStatus(int doctor, MyDbContext _context)
         {
-            ItemReceta i = new ItemReceta();
-
             Receta[] recetas = new Receta().getAllByDoctorByStatus(doctor, _context);
             List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
 
-            foreach (Receta receta in recetas)
-            {
+            foreach (Receta receta in recetas) {
 
-                ItemReceta[] items = i.getAllByReceta(receta.id, _context);
+                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
                 if (items.Count() > 0)
-                {
                     recetasTotales.Add(new RecetaTotal(receta, items));
-                }
             }
+            
             return recetasTotales;
         }
     }

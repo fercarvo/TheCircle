@@ -6,7 +6,7 @@ using TheCircle.Util;
 
 namespace TheCircle.Models
 {
-    public class Remision
+    /*public class Remision
     {
         [Key]
         public int id { get; set; }
@@ -21,12 +21,12 @@ namespace TheCircle.Models
 
         public Remision() { }
 
-        public void crear(RemisionRequest request, MyDbContext _context)
+        public static void New (RemisionRequest request, MyDbContext _context)
         {
             string query = $"EXEC dbo.Remision_insert @atencionM={request.atencionM}, @institucion={request.institucion}, @monto='{request.monto}', @sintomas='{request.sintomas}'";
             _context.Database.ExecuteSqlCommand(query);
         }
-    }
+    }*/
 
     public class RemisionRequest
     {
@@ -39,7 +39,7 @@ namespace TheCircle.Models
         public RemisionRequest() { }
     }
 
-    public class ReporteRemision
+    public class Remision
     {
         [Key]
         public int id { get; set; }
@@ -50,17 +50,21 @@ namespace TheCircle.Models
         public string sintomas { get; set; }
         public DateTime fecha { get; set; }
 
-        public ReporteRemision() { }
+        public Remision() { }
 
-        public ReporteRemision[] getAll_Doctor_Date(Fecha req, int doctor, MyDbContext _context)
+        public static void New (RemisionRequest request, MyDbContext _context)
+        {
+            string query = $"EXEC dbo.Remision_insert @atencionM={request.atencionM}, @institucion={request.institucion}, @monto='{request.monto}', @sintomas='{request.sintomas}'";
+            _context.Database.ExecuteSqlCommand(query);
+        }
+        
+
+        public static Remision[] ReportByDoctorDate(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC dbo.report_RemisionByDoctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
-            try {
-                var data = _context.ReporteRemision.FromSql(query).ToArray();
-                return data;
-            } catch (Exception e) {
-                throw new Exception("Error al cargar remisiones by doctor, ReporteRemision.getAll");
-            }
+
+            var data = _context.Remision.FromSql(query).ToArray();
+            return data;
         }
 
     }

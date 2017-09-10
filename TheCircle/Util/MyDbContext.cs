@@ -5,7 +5,7 @@ namespace TheCircle.Util
 {
     public class MyDbContext : DbContext
     {
-        public virtual DbSet<Remision> Remisiones { get; set; }
+        public virtual DbSet<Remision> Remision { get; set; }
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
         public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
         public virtual DbSet<Foto> Fotos { get; set; }
@@ -16,13 +16,13 @@ namespace TheCircle.Util
         public virtual DbSet<ItemReceta> ItemsReceta { get; set; }
         public virtual DbSet<Diagnostico> Diagnosticos { get; set; }
         public virtual DbSet<ReporteEnfermedad> ReporteEnfermedad { get; set; }
-        public virtual DbSet<ReporteRemision> ReporteRemision { get; set; }
+        //public virtual DbSet<ReporteRemision> ReporteRemision { get; set; }
         public virtual DbSet<ItemDespacho> ItemDespacho { get; set; }
         public virtual DbSet<User> User { get; set; }
-        public virtual DbSet<CompuestoNombre> CompuestoNombre { get; set; }
-        public virtual DbSet<Item> ItemNombre { get; set; }
+        //public virtual DbSet<CompuestoNombre> CompuestoNombre { get; set; }
+        //public virtual DbSet<Item> ItemNombre { get; set; }
         public virtual DbSet<UserSafe> UserSafe { get; set; }
-        public virtual DbSet<Compuesto2> Compuesto2 { get; set; }
+        public virtual DbSet<Compuesto> Compuesto { get; set; }
         public virtual DbSet<Transferencia> Transferencia { get; set; }
 
 

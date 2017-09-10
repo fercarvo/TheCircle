@@ -20,7 +20,7 @@ namespace TheCircle.Controllers
         [APIauth("sistema")]
         public IActionResult Get_All_Users()
         {
-            UserSafe[] usuarios = new UserSafe().getAll(_context);
+            UserSafe[] usuarios = UserSafe.GetAll(_context);
             return Ok(usuarios);           
         }
 
@@ -47,7 +47,7 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         public IActionResult Get_All_Users_Activos()
         {
-            UserSafe[] usuarios = new UserSafe().getActivos(_context);
+            UserSafe[] usuarios = UserSafe.GetActivos(_context);
             return Ok(usuarios);          
         }
 
@@ -55,7 +55,7 @@ namespace TheCircle.Controllers
         [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)] 
         public IActionResult Get_All_Users_Inactivos()
         {
-            UserSafe[] usuarios = new UserSafe().getInactivos(_context);
+            UserSafe[] usuarios = UserSafe.GetInactivos(_context);
             return Ok(usuarios);          
         }
 
@@ -65,13 +65,12 @@ namespace TheCircle.Controllers
             if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
                 return BadRequest("Datos incorrectos");
 
-            try {
-                new User().crear(cedula, clave, _context);
-                return Ok();
+            User user = new User(cedula, clave, _context);
 
-            } catch (Exception e) {
-                return BadRequest("Error al crear usuario");
-            }
+            if (user is null)
+                return BadRequest()
+
+            return Ok();
         }
 
 
@@ -82,9 +81,9 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            new User().activar(cedula, _context);
+            User.Activar(cedula, _context);
 
-            UserSafe[] usuarios = new UserSafe().getInactivos(_context);
+            UserSafe[] usuarios = UserSafe.GetInactivos(_context);
             return Ok(usuarios);
         }
 
@@ -95,9 +94,9 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            new User().desactivar(cedula, _context);
+            User.Desactivar(cedula, _context);
 
-            UserSafe[] usuarios = new UserSafe().getActivos(_context);
+            UserSafe[] usuarios = UserSafe.GetActivos(_context);
             return Ok(usuarios);
         }
 
@@ -105,12 +104,12 @@ namespace TheCircle.Controllers
         [APIauth("sistema")]
         public IActionResult User_SetClave(int cedula) 
         {
-            if (cedula <= 0)
+            if (cedula <= 10000000)
                 return BadRequest("Incorrect Data");
 
             try
             {
-                string clave = new User().nueva_clave(cedula, _context);
+                string clave = User.Nueva_clave(cedula, _context);
                 return Ok( new {clave = clave} );
 
             } catch (Exception e) {
@@ -125,7 +124,7 @@ namespace TheCircle.Controllers
                 return BadRequest("Datos incorrectos");
 
             try {
-                new User().cambiar_clave(req.cedula, req.actual, req.nueva, _context);
+                User.NuevaClave(req.cedula, req.actual, req.nueva, _context);
                 return Ok();
 
             } catch (Exception e) {

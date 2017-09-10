@@ -21,11 +21,8 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
-        public Atencion crear(AtencionRequest request, int doctor, Localidad localidad, MyDbContext _context)
+        public static Atencion New (AtencionRequest request, int doctor, Localidad localidad, MyDbContext _context)
         {
-            Atencion atencion;
-            Diagnostico d = new Diagnostico();
-
             string query = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
                 $", @doctor={doctor}" +
                 $", @tipo={request.tipo}" +
@@ -33,15 +30,15 @@ namespace TheCircle.Models
                 $", @peso='{request.peso}'" +
                 $", @talla='{request.talla}'";
 
-            atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
-            foreach (string diagnostico in request.diagnosticos) { //Se ingresan los diagnosticos en la atencion
-                d.insert(diagnostico, atencion.id, _context);
-            }
+            Atencion atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
+            
+            foreach (var dg in request.diagnosticos) //Se crean los diagnosticos de la atencion
+                new Diagnostico(dg, atencion.id, _context);
 
             return atencion;
         }
 
-        public Atencion[] getBy_doctor_date(Fecha req, int doctor, MyDbContext _context)
+        public static Atencion[] ReportByDoctorDate(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC Atencion_Report_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
             var data = _context.Atenciones.FromSql(query).ToArray();

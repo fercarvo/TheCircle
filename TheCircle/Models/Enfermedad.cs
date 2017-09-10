@@ -24,7 +24,7 @@ namespace TheCircle.Models
 
         public ReporteEnfermedad() { }
 
-        public ReporteEnfermedad[] getAll(Fecha req, Localidad localidad, MyDbContext _context)
+        public static ReporteEnfermedad[] Report(Fecha req, Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC Enfermedad_Report_Fecha @desde='{req.desde}', @hasta='{req.hasta}', @localidad='{localidad}'";
             return _context.ReporteEnfermedad.FromSql(query).ToArray();

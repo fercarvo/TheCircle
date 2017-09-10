@@ -23,14 +23,8 @@ namespace TheCircle.Controllers
             if (request is null)
                 return BadRequest("Incorrect Data"); 
 
-            try
-            {
-                new Remision().crear(request, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }            
+            Remision.New(request, _context);
+            return Ok();         
         }
 
 
@@ -43,14 +37,8 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            try
-            {
-                ReporteRemision[] response = new ReporteRemision().getAll_Doctor_Date(request, token.data.cedula, _context);
-                return Ok(response);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Remision[] response = Remision.ReportByDoctorDate(request, token.data.cedula, _context);
+            return Ok(response);
         }
     }
 }

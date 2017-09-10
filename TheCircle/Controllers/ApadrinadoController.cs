@@ -24,7 +24,7 @@ namespace TheCircle.Controllers
         {
             try
             {
-                Apadrinado data = new Apadrinado().get(cod, _context);
+                Apadrinado data = Apadrinado.Get(cod, _context);
                 return Ok(data);
             } catch (Exception e) {
                 return NotFound();

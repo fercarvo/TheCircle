@@ -14,6 +14,17 @@ namespace TheCircle.Models
 
         public Diagnostico() { }
 
+        public Diagnostico (string enfermedadCod, int atencion, MyDbContext _context)
+        {
+            string q = $"EXEC dbo.insert_Diagnostico @enfermedad='{enfermedadCod}', @atencion={atencion}";
+
+            try {
+                _context.Database.ExecuteSqlCommand(q); //Se inserta en la BD el diagnostico
+            } catch (Exception e) {
+            }  
+        }
+
+        /*
         public void insert (string enfermedadCod, int atencion, MyDbContext _context)
         {
             string q = $"EXEC dbo.insert_Diagnostico @enfermedad='{enfermedadCod}', @atencion={atencion}";
@@ -22,9 +33,9 @@ namespace TheCircle.Models
                 _context.Database.ExecuteSqlCommand(q); //Se inserta en la BD el diagnostico
             } catch (Exception e) {
             }
-        }
+        }*/
 
-        public Diagnostico[] getAllByAtencion (int idAtencion, MyDbContext _context)
+        public static Diagnostico[] ReportByAtencion (int idAtencion, MyDbContext _context)
         {
             string q = $"EXEC dbo.select_DiagnosticoByAtencion @atencion={idAtencion}";
 

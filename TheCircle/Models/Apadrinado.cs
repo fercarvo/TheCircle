@@ -25,15 +25,11 @@ namespace TheCircle.Models
 
         public Apadrinado() { }
 
-        public Apadrinado get (int codigo, MyDbContext _context) {
-            try {
-                string query = $"EXEC dbo.select_Apadrinado @cod={codigo}";
-                var data = _context.Apadrinados.FromSql(query).First();
-                return data;
-
-            } catch (Exception e) {
-                throw new Exception("Error cargar apadrinado, Apadrinado.get");
-            }
+        public static Apadrinado Get (int codigo, MyDbContext _context) 
+        {
+            string query = $"EXEC dbo.select_Apadrinado @cod={codigo}";
+            var data = _context.Apadrinados.FromSql(query).First();
+            return data;
         }
     }
 

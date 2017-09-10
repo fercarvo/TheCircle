@@ -23,8 +23,8 @@ namespace TheCircle.Controllers
             if (request is null)
                 return BadRequest();
 
-            Atencion atencion = new Atencion().crear(request, token.data.cedula, token.data.localidad, _context);
-            Diagnostico[] diagnosticos = new Diagnostico().getAllByAtencion(atencion.id, _context);
+            Atencion atencion = Atencion.New(request, token.data.cedula, token.data.localidad, _context);
+            Diagnostico[] diagnosticos = Diagnostico.ReportByAtencion(atencion.id, _context);
 
             var response = new AtencionResponse(atencion, diagnosticos);
             return Ok(response);
@@ -40,7 +40,7 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            Atencion[] atenciones = new Atencion().getBy_doctor_date(request, token.data.cedula, _context);
+            Atencion[] atenciones = Atencion.ReportByDoctorDate(request, token.data.cedula, _context);
             return Ok(atenciones);
         }
     }

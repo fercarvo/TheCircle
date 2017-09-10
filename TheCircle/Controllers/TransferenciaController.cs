@@ -20,14 +20,8 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult Get_transferencias_pendientes(Token token)
         {
-            try
-            {
-                Transferencia[] data = new Transferencia().getPendientes(token.data.localidad, _context);
-                return Ok(data);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Transferencia[] data = new Transferencia().getPendientes(token.data.localidad, _context);
+            return Ok(data);
         }
 
 
@@ -38,14 +32,8 @@ namespace TheCircle.Controllers
             if (req is null)
                 return BadRequest();
 
-            try
-            {
-                new Transferencia().despachar(token.data.cedula, req, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }
+            new Transferencia().despachar(token.data.cedula, req, _context);
+            return Ok();
         }
     }
 }

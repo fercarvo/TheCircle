@@ -20,14 +20,8 @@ namespace TheCircle.Controllers
         [APIauth("medico")]
         public IActionResult GetInstituciones()
         {
-            try
-            {
-                Institucion[] instituciones = new Institucion().getAll(_context);
-                return Ok(instituciones);
-                
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Institucion[] instituciones = Institucion.Report(_context);
+            return Ok(instituciones);
         }
     }
 }

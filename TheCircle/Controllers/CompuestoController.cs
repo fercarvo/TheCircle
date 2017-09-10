@@ -16,17 +16,11 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("compuesto")]
-        [APIauth("medico", "asistente")]
+        [APIauth("medico", "asistente", "bodeguero")]
         public IActionResult Get_Compuestos()
         {
-            try
-            {
-                Compuesto2[] compuestos = new Compuesto2().getAll(_context);
-                return Ok(compuestos);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Compuesto[] compuestos = Compuesto.Report(_context);
+            return Ok(compuestos);
         }
     }
 }

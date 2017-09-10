@@ -16,6 +16,7 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
+
         //recetas medicas emitidas por un doctor
         [HttpGet("receta/medico/fecha")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
@@ -25,15 +26,10 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            try
-            {
-                List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctor(fecha, token.data.cedula, _context);
-                return Ok(recetas);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            List<RecetaTotal> recetas = RecetaTotal.ReportByDoctor(fecha, token.data.cedula, _context);
+            return Ok(recetas);
         }
+
 
         //recetas medicas no eliminadas y no despachadas de un doctor.
         [HttpGet("receta/medico/activas")]
@@ -41,15 +37,10 @@ namespace TheCircle.Controllers
         [APIauth("medico")]
         public IActionResult GetRecetasByDoctorByStatus(Token token)
         {
-            try
-            {
-                List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctorByStatus(token.data.cedula, _context);
-                return Ok(recetas);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctorByStatus(token.data.cedula, _context);
+            return Ok(recetas);
         }
+
 
         //recetas a despachar por localidad
         [HttpGet("receta/localidad/pordespachar")]
@@ -57,15 +48,10 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult Get_Recetas_Localidad_Status(Token token)
         {
-            try
-            {
-                var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
-                return Ok(recetas);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
+            return Ok(recetas);
         }
+
 
         //recetas despachadas por asistente de salud
         [HttpGet("receta/asistente")]
@@ -73,32 +59,21 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult getRecetasDespachadas(Token token)
         {
-            try
-            {
-                List<RecetaDespacho> recetas = new RecetaDespacho().getBy_Asistente(token.data.cedula, _context);
-                return Ok(recetas);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            List<RecetaDespacho> recetas = new RecetaDespacho().getBy_Asistente(token.data.cedula, _context);
+            return Ok(recetas);
         }
+
 
         //Crea una receta de farmacia
         [HttpPost("receta/apadrinado/{apadrinado}")]
         [APIauth("medico")]
         public IActionResult PostReceta(Token token, int apadrinado)
         {
-            if (apadrinado <= 0)
+            if (apadrinado <= 10000)
                 return BadRequest("Incorrect Data");
-            
-            try
-            {                
-                Receta receta = new Receta().crear(apadrinado, token.data.cedula, _context);
-                return Ok(receta);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+           
+            Receta receta = Receta.New(apadrinado, token.data.cedula, _context);
+            return Ok(receta);
         }
 
 
@@ -110,14 +85,8 @@ namespace TheCircle.Controllers
             if (items is null || id <= 0)
                 return BadRequest("Invalid Data");
 
-            try 
-            {
-                new ItemReceta().insert(id, items, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            ItemReceta.Insert(id, items, _context);
+            return Ok();
         }
 
 
@@ -129,29 +98,18 @@ namespace TheCircle.Controllers
             if (recetaId <= 0 || items is null)
                 return BadRequest("Incorrect Data");
 
-            try
-            {
-                new ItemDespacho().insert(recetaId, items, token.data.cedula, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            ItemDespacho.Insert(recetaId, items, token.data.cedula, _context);
+            return Ok();
         }
+
 
         //Elimina un receta de farmacia
         [HttpDelete("receta/{id}")]
         [APIauth("medico")]
         public IActionResult DeleteReceta(int id)
         {
-            try
-            {
-                new Receta().delete(id, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            Receta.Delete(id, _context);
+            return Ok();
         }
     }
 }

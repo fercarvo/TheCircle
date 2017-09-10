@@ -22,30 +22,11 @@ namespace TheCircle.Controllers
         [APIauth("medico", "asistenteSalud")]
         public IActionResult GetItems(Token token)
         {
-            try
-            {
-                ItemFarmacia[] stock = new ItemFarmacia().getAllByLocalidad(token.data.localidad, _context);
-                return Ok(stock);
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            ItemFarmacia[] stock = ItemFarmacia.ReportLocalidad(token.data.localidad, _context);
+            return Ok(stock);
         }
 
-        [HttpGet("itemnombre")]
-        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
-        [APIauth("asistenteSalud")]
-        public IActionResult GetNombres(Token token)
-        {
-            try
-            {
-                List<Compuesto> compuestos = new Compuesto().getAllBy_Localidad(token.data.localidad, _context);
-                return Ok(compuestos);
 
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
-        }
 
         [HttpPost("itemfarmacia")]
         [APIauth("asistenteSalud", "bodeguero")]
@@ -53,15 +34,10 @@ namespace TheCircle.Controllers
         {
             if (item is null)
                 return BadRequest();
+            
+            ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
 
-            try
-            {                
-                new ItemFarmacia().insert(item, token.data.localidad, token.data.cedula, _context);
-                return Ok();
-
-            } catch (Exception e) {
-                return StatusCode(500);
-            }
+            return Ok();
         }
     }    
 }
