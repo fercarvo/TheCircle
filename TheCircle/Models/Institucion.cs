@@ -19,7 +19,7 @@ namespace TheCircle.Models
 
         public Institucion() { }
 
-        public Institucion[] Report(MyDbContext _context) 
+        public static Institucion[] Report(MyDbContext _context) 
         {
             var data = _context.Instituciones.FromSql("EXEC dbo.select_Institucion").ToArray();
             return data;

@@ -73,6 +73,8 @@ namespace TheCircle.Models
             throw new Exception("Algo salio mal por aqui ahhhhhh");
         }
 
+        public Compuesto() { }
+
         public static Compuesto[] Report(MyDbContext _context) 
         {
             var data = _context.Compuesto.FromSql("EXEC dbo.Compuesto_Report").ToArray();

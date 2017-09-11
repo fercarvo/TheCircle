@@ -50,7 +50,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 templateUrl: 'views/medico/transferencias.html',
                 controller: 'transferencias'
             });
-        //$compileProvider.debugInfoEnabled(false); //Activar en modo producción
+        $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
 

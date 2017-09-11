@@ -25,24 +25,9 @@
 
   <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
-    <Content Include="wwwroot\scripts\appAsistenteSalud.js" />
-    <Content Include="wwwroot\scripts\appBodeguero.js" />
-    <Content Include="wwwroot\scripts\appContralor.js" />
-    <Content Include="wwwroot\scripts\appCoordinador.js" />
-    <Content Include="wwwroot\scripts\appCoordinadorCC.js" />
-    <Content Include="wwwroot\scripts\appMedico.js" />
-    <Content Include="wwwroot\scripts\appSistema.js" />
-    <Content Include="wwwroot\scripts\app\appAsistenteSalud.js" />
-    <Content Include="wwwroot\scripts\app\appBodeguero.js" />
-    <Content Include="wwwroot\scripts\app\appContralor.js" />
-    <Content Include="wwwroot\scripts\app\appCoordinador.js" />
-    <Content Include="wwwroot\scripts\app\appCoordinadorCC.js" />
-    <Content Include="wwwroot\scripts\app\appMedico.js" />
-    <Content Include="wwwroot\scripts\app\appSistema.js" />
     <Content Include="wwwroot\scripts\app\asistenteSalud.js" />
     <Content Include="wwwroot\scripts\app\bodeguero.js" />
     <Content Include="wwwroot\scripts\app\contralor.js" />
-    <Content Include="wwwroot\scripts\app\coordinador.js" />
     <Content Include="wwwroot\scripts\app\coordinadorCC.js" />
     <Content Include="wwwroot\scripts\app\coordinadorSalud.js" />
     <Content Include="wwwroot\scripts\app\medico.js" />

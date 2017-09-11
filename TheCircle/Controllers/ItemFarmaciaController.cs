@@ -28,13 +28,26 @@ namespace TheCircle.Controllers
 
 
 
+        [HttpPost("itemfarmacia/transferencia")]
+        [APIauth("asistenteSalud", "bodeguero")]
+        public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.IngresoTransferencia item)
+        {
+            if (item.idTransferencia <= 0)
+                return BadRequest();
+
+            ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
+
+            return Ok();
+        }
+
+
         [HttpPost("itemfarmacia")]
         [APIauth("asistenteSalud", "bodeguero")]
-        public IActionResult PostItem(Token token, [FromBody]RequestItem item)
+        public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.Ingreso item)
         {
-            if (item is null)
+            if (!ModelState.IsValid)
                 return BadRequest();
-            
+
             ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
 
             return Ok();

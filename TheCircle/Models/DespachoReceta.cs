@@ -67,7 +67,7 @@ namespace TheCircle.Models
             try {
                 
                 foreach (ItemsDespachoRequest item in items) //se insertan en la base de datos todos los items
-                    insertItem(item, personal, _context);
+                    InsertItem(item, personal, _context);
 
                 Receta.UpdateDespachada(receta, _context);
                 transaction.Commit();
@@ -78,7 +78,7 @@ namespace TheCircle.Models
             }
         }
 
-        private void insertItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
+        static void InsertItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
         {
             string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             _context.Database.ExecuteSqlCommand(q);

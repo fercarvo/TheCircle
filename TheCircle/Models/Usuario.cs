@@ -6,7 +6,7 @@ using TheCircle.Util;
 
 namespace TheCircle.Models
 {
-    public class User
+    public class Usuario
     {
         [Key]
         public string id { get; set; }
@@ -19,9 +19,9 @@ namespace TheCircle.Models
         public string salt { get; set; }
         public Boolean? activo { get; set; }
 
-        public User () {}
+        public Usuario () {}
 
-        public User (string cedula, string clave, MyDbContext _context) 
+        public Usuario (string cedula, string clave, MyDbContext _context) 
         {
             var dic = Signature.HashingSHA256(clave);
             string hash = dic["hash"];
@@ -31,20 +31,20 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(q);
         }
 
-        public static User Get(LoginRequest req, MyDbContext _context)
+        public static Usuario Get(LoginRequest req, MyDbContext _context)
         {
-            var user = _context.User.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
-            Signature.CheckHashing(req.clave, user.clave_hash, user.salt);
+            var data = _context.Usuario.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
+            Signature.CheckHashing(req.clave, data.clave_hash, data.salt);
 
-            return user;
+            return data;
         }
 
 
-        private void _checkClave(string cedula, string clave, MyDbContext _context) 
+        static void _checkClave(string cedula, string clave, MyDbContext _context) 
         {
             string query = $"EXEC dbo.User_Select @cedula={cedula}";
 
-            var user = _context.User.FromSql(query).First();
+            var user = _context.Usuario.FromSql(query).First();
 
             var hash = user.clave_hash;
             var salt = user.salt;
@@ -71,14 +71,14 @@ namespace TheCircle.Models
         }
 
 
-        public void desactivar(int cedula, MyDbContext _context)
+        public static void Desactivar(int cedula, MyDbContext _context)
         {
             string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
             _context.Database.ExecuteSqlCommand(q);
         }
 
 
-        public void cambiar_clave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
+        public static void CambiarClave(string cedula, string antiguaClave, string nuevaclave, MyDbContext _context)
         {
             _checkClave(cedula, antiguaClave, _context);
 

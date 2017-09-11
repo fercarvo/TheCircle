@@ -63,7 +63,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    //document.location.replace('logout');
                 }
             })
         }, 1000 * 60 * 20)
@@ -157,11 +157,22 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             recetas: null,
             despachos: null,
             transferencias: null,
+            transferenciasPorIngresar: null,
+            getTransferenciasPorIngresar: getTransferenciasPorIngresar,
             getTransferenciasPendientes: getTransferenciasPendientes,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos,
             getCompuestos: getCompuestos
+        }
+
+        function getTransferenciasPorIngresar() {
+            $http.get("/api/transferencia/despachada").then(function success(res) {
+                dataFac.transferenciasPorIngresar = res.data;
+                $rootScope.$broadcast('dataFac.transferenciasPorIngresar');
+            }, function error(err) {
+                console.log("Error cargar transferencias", err);
+            })
         }
 
         function getTransferenciasPendientes() {
@@ -479,5 +490,47 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
         }
     }])
     .controller('ingresar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+        $scope.transferencias = dataFac.transferenciasPorIngresar;
+        $scope.transferencia = null;
 
+        var actualizar = refresh.go(cargar);
+
+        function cargar() {
+            if ($state.includes('ingresar.transferencias')) {
+                dataFac.getTransferenciasPorIngresar();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.$on('dataFac.transferenciasPorIngresar', function () {
+            $scope.transferencias = dataFac.transferenciasPorIngresar;
+        })
+
+        $scope.ver = function (transferencia) {
+            $scope.transferencia = transferencia;
+        }
+
+        $scope.guardarIngreso = function (comentario) {
+            var data = {
+                idTransferencia: $scope.transferencia.id,
+                comentario: (function () {
+                    if (comentario) {
+                        return comentario
+                    } return ""
+                })()
+            }
+
+            NProgress.start();
+            $http.post("/api/itemfarmacia/transferencia", data).then(function success(res) {
+                $('#ver_transferencia').modal('hide');
+                actualizar = refresh.go(cargar);
+                notify("Transferencia ingresada exitosamente", "success");
+                NProgress.done();
+            }, function error(err) {
+                console.log("Error ingresar transferencia", err);
+                notify("No se pudo ingresar la transferencia", "danger");
+                NProgress.done();
+            })
+        }
     }])

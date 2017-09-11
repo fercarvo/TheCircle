@@ -16,7 +16,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("compuesto")]
-        [APIauth("medico", "asistente", "bodeguero")]
+        [APIauth("medico", "asistenteSalud", "bodeguero")]
         public IActionResult Get_Compuestos()
         {
             Compuesto[] compuestos = Compuesto.Report(_context);

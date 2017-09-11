@@ -15,7 +15,7 @@ namespace TheCircle.Util
         public Data data { get; set; }
         public string sign { get; set; }
 
-        public Token(User usuario, Localidad localidad) 
+        public Token(Usuario usuario, Localidad localidad) 
         {
             data = new Data(usuario, localidad);
 
@@ -70,7 +70,7 @@ namespace TheCircle.Util
 
         public Data() { }
 
-        public Data(User usr, Localidad lc) {
+        public Data(Usuario usr, Localidad lc) {
             cedula = usr.cedula;
             nombres = usr.nombre;
             apellidos = usr.apellido;

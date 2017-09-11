@@ -53,7 +53,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                User usuario = User.Get(request, _context);
+                Usuario usuario = Usuario.Get(request, _context);
                 Token token = new Token(usuario, request.localidad);
                 string token_string = JsonConvert.SerializeObject(token);
 
@@ -69,7 +69,7 @@ namespace TheCircle.Controllers
                     HttpOnly = false
                 };
 
-                Response.Cookies.Append("session", new Signature().toBase(token_string), options);
+                Response.Cookies.Append("session", Signature.ToBase(token_string), options);
                 Response.Cookies.Append("session_name", $"{token.data.nombres} {token.data.apellidos}", publicOptions);
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);

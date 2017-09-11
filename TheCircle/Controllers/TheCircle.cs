@@ -21,7 +21,7 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("asistente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("asistente")]
+        [VIEWauth("asistenteSalud")]
         public IActionResult AsistenteSalud()
         {
             return View();

@@ -31,7 +31,7 @@ namespace TheCircle.Models
             try
             {
                 foreach (ItemRecetaRequest item in items)
-                    insertItem(receta, item, _context);
+                    InsertItem(receta, item, _context);
 
                 transaction.Commit();
                 
@@ -44,7 +44,7 @@ namespace TheCircle.Models
         /*
             Recibe un id de Receta y un ItemRequest, se los inserta en la BDD
         */
-        private void insertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
+        static void InsertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
         {
             string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
                 $", @idDiagnostico={i.diagnostico}" +

@@ -3,6 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
+using TheCircle.Controllers;
 
 namespace TheCircle.Models
 {
@@ -27,45 +28,34 @@ namespace TheCircle.Models
             return data;
         }
 
-        public static void New (RequestItem item, Localidad localidad, int personal, MyDbContext _context) 
+        public static void New(Ingreso item, Localidad localidad, int personal, MyDbContext _context) 
         {
-            string query = $"EXEC dbo.ItemFarmacia_insert @nombre='{item.nombre}', 
-                @compuesto='{item.compuesto}', 
-                @fcaducidad='{item.fcaducidad}', 
-                @cantidad={item.cantidad},
-                @localidad='{localidad}',
-                @personal={personal}";
-                
+            string query = $"EXEC dbo.ItemFarmacia_insert @nombre='{item.nombre}', @compuesto='{item.compuesto}', @fcaducidad='{item.fcaducidad}', @cantidad={item.cantidad}, @localidad='{localidad}', @personal={personal}";
             _context.Database.ExecuteSqlCommand(query);
         }
-    }
 
-
-    /*
-    public class Item
-    {
-        public int id { get; set; }
-        public string nombre { get; set; }
-
-        public Item() { }
-
-        public Item[] getBy_Compuesto(string compuesto, MyDbContext _context)
+        internal static void New(IngresoTransferencia it, Localidad localidad, int personal, MyDbContext _context)
         {
-            string query = $"EXEC dbo.ItemFarmacia_Select_ByCompuesto @compuesto='{compuesto}'";
-
-            var data = _context.ItemNombre.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC ItemFarmacia_Insert_Transferencia @idTransferencia={it.idTransferencia}, @comentario='{it.comentario}', @localidad='{localidad}', @personal={personal}";
+            _context.Database.ExecuteSqlCommand(query);
         }
-    }*/
 
-    public class RequestItem
-    {
-        public string nombre { get; set; }
-        public string compuesto { get; set; }
-        public string fcaducidad { get; set; }
-        public int cantidad { get; set; }
+        public class IngresoTransferencia
+        {
+            public int idTransferencia { get; set; }
+            public string comentario { get; set; }
 
-        public RequestItem() { }
+            public IngresoTransferencia() { }
+        }
 
+        public class Ingreso
+        {
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public string fcaducidad { get; set; }
+            public int cantidad { get; set; }
+
+            public Ingreso() { }
+        }
     }
 }

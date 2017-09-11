@@ -65,10 +65,10 @@ namespace TheCircle.Controllers
             if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
                 return BadRequest("Datos incorrectos");
 
-            User user = new User(cedula, clave, _context);
+            Usuario user = new Usuario(cedula, clave, _context);
 
             if (user is null)
-                return BadRequest()
+                return BadRequest();
 
             return Ok();
         }
@@ -81,7 +81,7 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            User.Activar(cedula, _context);
+            Usuario.Activar(cedula, _context);
 
             UserSafe[] usuarios = UserSafe.GetInactivos(_context);
             return Ok(usuarios);
@@ -94,7 +94,7 @@ namespace TheCircle.Controllers
             if (cedula <= 10000)
                 return BadRequest("Incorrect Data");
 
-            User.Desactivar(cedula, _context);
+            Usuario.Desactivar(cedula, _context);
 
             UserSafe[] usuarios = UserSafe.GetActivos(_context);
             return Ok(usuarios);
@@ -109,7 +109,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                string clave = User.Nueva_clave(cedula, _context);
+                string clave = Usuario.NuevaClave(cedula, _context);
                 return Ok( new {clave = clave} );
 
             } catch (Exception e) {
@@ -123,13 +123,9 @@ namespace TheCircle.Controllers
             if (req is null)
                 return BadRequest("Datos incorrectos");
 
-            try {
-                User.NuevaClave(req.cedula, req.actual, req.nueva, _context);
-                return Ok();
+            Usuario.CambiarClave(req.cedula, req.actual, req.nueva, _context);
 
-            } catch (Exception e) {
-                return BadRequest("No se pudo cambiar la contraseña");
-            }            
+            return Ok();         
         }
     }
 }

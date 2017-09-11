@@ -20,19 +20,27 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult Get_transferencias_pendientes(Token token)
         {
-            Transferencia[] data = new Transferencia().getPendientes(token.data.localidad, _context);
+            Transferencia[] data = Transferencia.GetPendientes(token.data.localidad, _context);
+            return Ok(data);
+        }
+
+        [HttpGet("transferencia/despachada")]
+        [APIauth("asistenteSalud")]
+        public IActionResult Get_transferencias_despachadas(Token token)
+        {
+            Transferencia[] data = Transferencia.GetDespachadas(token.data.localidad, _context);
             return Ok(data);
         }
 
 
         [HttpPut("transferencia")]
-        [APIauth("asistenteSalud, bodeguero")]
+        [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult Despacho_Transferencia(Token token, [FromBody]TransferenciaRequest req)
         {
             if (req is null)
                 return BadRequest();
 
-            new Transferencia().despachar(token.data.cedula, req, _context);
+            Transferencia.Despachar(token.data.cedula, req, _context);
             return Ok();
         }
     }

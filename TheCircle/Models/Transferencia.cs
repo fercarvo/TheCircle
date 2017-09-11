@@ -24,7 +24,7 @@ namespace TheCircle.Models
         public int? personalDespacho { get; set; }
         public string comentarioDespacho { get; set; } = null;
 
-        public Transferencia[] getPendientes(Localidad localidad, MyDbContext _context)
+        public static Transferencia[] GetPendientes(Localidad localidad, MyDbContext _context)
         {
             string q = $"EXEC ItemTransferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
 
@@ -32,7 +32,15 @@ namespace TheCircle.Models
             return data;
         }
 
-        public void despachar(int personal, TransferenciaRequest req, MyDbContext _context) 
+        internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
+        {
+            string q = $"EXEC ItemTransferencia_Report_Despachadas @destino={destino}";
+
+            var data = _context.Transferencia.FromSql(q).ToArray();
+            return data;
+        }
+
+        public static void Despachar(int personal, TransferenciaRequest req, MyDbContext _context) 
         {
             string q = $"EXEC ItemTransferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
             _context.Database.ExecuteSqlCommand(q);   
