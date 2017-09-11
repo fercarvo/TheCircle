@@ -131,6 +131,31 @@
 
         return dataFac;
     }])
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+
+        function go(fn) {
+            fn();
+            console.log("Go refresh");
+            return setInterval(fn, 10000);
+        }
+
+        function goTime(fn, time) {
+            fn();
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time);
+        }
+
+        function stop(repeater) {
+            console.log("Stop refresh");
+            clearInterval(repeater);
+        }
+
+        return {
+            go: go,
+            stop: stop,
+            goTime: goTime
+        }
+    }])
     .controller('despachar', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $scope.casa = "dasdasdasd"
 

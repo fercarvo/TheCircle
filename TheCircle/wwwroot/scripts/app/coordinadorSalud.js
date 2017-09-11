@@ -66,6 +66,31 @@ angular.module('appCoordinador', ['ui.router', 'ngCookies'])
 
         return dataFactory;
     }])
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+
+        function go(fn) {
+            fn();
+            console.log("Go refresh");
+            return setInterval(fn, 10000);
+        }
+
+        function goTime(fn, time) {
+            fn();
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time);
+        }
+
+        function stop(repeater) {
+            console.log("Stop refresh");
+            clearInterval(repeater);
+        }
+
+        return {
+            go: go,
+            stop: stop,
+            goTime: goTime
+        }
+    }])
     .controller('validar', ["$log", "$scope", "$state", "$http", "dataFac", function ($log, $scope, $state, $http, dataFac) {
         $log.info("En Validar");
 

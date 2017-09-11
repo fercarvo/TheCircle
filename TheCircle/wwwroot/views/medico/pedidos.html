@@ -1,0 +1,43 @@
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Pedidos
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+        <style>
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                border-top-color: #901F61;
+                border-right-color: #901F61;
+                border-left-color: #901F61;
+                color: #901F61;
+            }
+
+            .nav-tabs, .nav-tabs > li > a:hover {
+                border-bottom-color: #901F61;
+            }
+        </style>
+        <div class="panel-body" style="padding:25px 20px 10px 20px;" ng-init="activar()">
+            <ul class="nav nav-tabs">
+                <li ui-sref="pedidos.transferencia" ui-sref-active="active">
+                    <a>Transferencia</a>
+                </li>
+                <li ui-sref="pedidos.interno" ui-sref-active="active">
+                    <a>Pedido Interno</a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <ui-view></ui-view>
+            </div>
+
+        </div><!-- /.tab-pane 3 -->
+
+    </div>
+</div>

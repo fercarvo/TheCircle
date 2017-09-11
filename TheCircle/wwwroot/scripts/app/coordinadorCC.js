@@ -60,11 +60,36 @@ angular.module('appCoordinadorCC', ['ui.router', 'ngCookies'])
 
         return dataFactory;
     }])
-    .controller('recetas', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+
+        function go(fn) {
+            fn();
+            console.log("Go refresh");
+            return setInterval(fn, 10000);
+        }
+
+        function goTime(fn, time) {
+            fn();
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time);
+        }
+
+        function stop(repeater) {
+            console.log("Stop refresh");
+            clearInterval(repeater);
+        }
+
+        return {
+            go: go,
+            stop: stop,
+            goTime: goTime
+        }
+    }])
+    .controller('recetas', ["$log", "$scope", "$state", "$http", "dataFac", function ($log, $scope, $state, $http, dataFac) {
         cosole.log("En Recetas");
 
     }])
-    .controller('egresos', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('egresos', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
         console.log("En Egresos");
 
     }])

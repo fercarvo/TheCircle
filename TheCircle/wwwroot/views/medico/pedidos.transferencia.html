@@ -1,0 +1,80 @@
+﻿<div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+    <div class="panel-heading">
+        <div class="panel-title" style="padding-top:0px;">
+            Pedidos de Transferencia
+        </div>
+        <div style="text-align:right">
+            <input type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto" class="form-control">
+        </div>
+    </div>
+    <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                    <th>Solicitante</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr data-toggle="modal" data-target="#myModal">
+                    <td>nombre #1</td>
+                    <td>1000</td>
+                    <td>908191349</td>
+                    <td><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                </tr>
+                <tr data-toggle="modal" data-target="#myModal">
+                    <td>nombre #1</td>
+                    <td>254</td>
+                    <td>908191349</td>
+                    <td><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                </tr>
+                <tr data-toggle="modal" data-target="#myModal">
+                    <td>nombre #1</td>
+                    <td>317</td>
+                    <td>908362247</td>
+                    <td><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<!--Modal Item receta-->
+<div id="myModal" class="modal fade" style="margin-top:5%;">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Detalle del Item Seleccionado</h5>
+            </div>
+            <div class="modal-body panel-body">
+                <form class="form-horizontal" ng-submit="addItenReceta(ItemRecetaNuevo)">
+                    <div class="form-group" style="height:36px;">
+                        <label class="col-sm-2 control-label">Item</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group" style="height:36px;">
+                        <label class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
+                        <div class="col-sm-9">
+                            <input ng-disabled="disable" required type="number" min="1" max="200" class="form-control" ng-model="ItemRecetaNuevo.cantidad" placeholder="">
+                        </div>
+                    </div>
+                    <div>
+                        <a style="color:red;">(*) campo obligatorio.</a>
+                    </div>
+                    <div class="text-center">
+                        <button data-ripple type="submit" ng-disabled="disable" class="btn btn-info">Agregar a Receta</button>
+                        <button data-ripple type="button" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--Aqui Termina el modal para el item de receta-->

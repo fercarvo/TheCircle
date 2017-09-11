@@ -46,9 +46,17 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 templateUrl: 'views/medico/estadistica.enfermedades.html',
                 controller: 'estadisticas.enfermedades'
             })
-            .state('transferencias', {
-                templateUrl: 'views/medico/transferencias.html',
-                controller: 'transferencias'
+            .state('pedidos', {
+                templateUrl: 'views/medico/pedidos.html',
+                controller: 'pedidos'
+            })
+            .state('pedidos.transferencia', {
+                templateUrl: 'views/medico/pedidos.transferencia.html',
+                controller: 'pedidos.transferencia'
+            })
+            .state('pedidos.interno', {
+                templateUrl: 'views/medico/pedidos.interno.html',
+                controller: 'pedidos.interno'
             });
         $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
@@ -690,6 +698,12 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }
         }
     }])
-    .controller('transferencias', ['$scope', '$http', function ($scope, $http) {
+    .controller('pedidos', ['$scope', "$state", '$http', function ($scope,$state, $http) {
+        $state.go('pedidos.transferencia');
+    }])
+    .controller('pedidos.transferencia', ['$scope', '$http', function ($scope, $http) {
+
+    }])
+    .controller('pedidos.interno', ['$scope', '$http', function ($scope, $http) {
 
     }])
