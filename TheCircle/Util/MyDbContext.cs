@@ -16,14 +16,13 @@ namespace TheCircle.Util
         public virtual DbSet<ItemReceta> ItemsReceta { get; set; }
         public virtual DbSet<Diagnostico> Diagnosticos { get; set; }
         public virtual DbSet<ReporteEnfermedad> ReporteEnfermedad { get; set; }
-        //public virtual DbSet<ReporteRemision> ReporteRemision { get; set; }
         public virtual DbSet<ItemDespacho> ItemDespacho { get; set; }
         public virtual DbSet<Usuario> Usuario { get; set; }
-        //public virtual DbSet<CompuestoNombre> CompuestoNombre { get; set; }
-        //public virtual DbSet<Item> ItemNombre { get; set; }
         public virtual DbSet<UserSafe> UserSafe { get; set; }
         public virtual DbSet<Compuesto> Compuesto { get; set; }
-        public virtual DbSet<Transferencia> Transferencia { get; set; }
+        public virtual DbSet<Transferencia> Transferencia { get; set; }        
+        public virtual DbSet<PedidoInterno> PedidoInterno { get; set; }
+
 
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
