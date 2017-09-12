@@ -699,11 +699,54 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
     }])
     .controller('pedidos', ['$scope', "$state", '$http', function ($scope,$state, $http) {
-        $state.go('pedidos.transferencia');
+        $state.go('pedidos.interno');
     }])
     .controller('pedidos.transferencia', ['$scope', '$http', function ($scope, $http) {
 
     }])
-    .controller('pedidos.interno', ['$scope', '$http', function ($scope, $http) {
+    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', 'refresh', 'notify', function ($scope, $http, $state, dataFactory, refresh, notify) {
 
+        $scope.stock = dataFactory.stock;
+        $scope.item = null;
+
+        var actualizar = refresh.go(cargar, 30000);
+
+        $scope.$on('dataFactory.stock', function () {
+            $scope.stock = dataFactory.stock;
+        })
+
+        function cargar() {
+            if ($state.includes('pedidos.interno')) {
+                dataFactory.getStock();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.seleccionar = function (item) {
+            $scope.item = item;
+            $('#despachar').modal('show');
+        }
+
+        $scope.solicitar = function (cantidad) {
+            data = {
+                item: $scope.item,
+                cantidad: cantidad
+            }
+
+            NProgress.start();
+            $http.post("/api/pedidointerno", data).then(function success(res) {
+                NProgress.done();
+                $('#despachar').modal('hide');
+                console.log("Se creo el pedido interno", res);
+                notify("El pedido interno se creo exitosamente", "success");
+                actualizar = refresh.go(cargar, 30000);
+            }, function error(e) {
+                NProgress.done();
+                console.log("No se pudo crear el pedido interno", e);
+                notify("No se pudo crear el pedido interno", "danger");
+                $('#despachar').modal('hide');
+                actualizar = refresh.go(cargar, 30000);
+            })
+        }
     }])

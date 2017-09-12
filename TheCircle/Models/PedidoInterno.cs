@@ -36,9 +36,10 @@ namespace TheCircle.Models
 
         public static PedidoInterno[] GetPendientes(Localidad localidad, MyDbContext _c)
         {
-            string q = $"EXEC PedidoInterno_Report_Pendientes @localidad={localidad}";
+            string q = $"EXEC dbo.PedidoInterno_Report_Pendientes @localidad='{localidad}'";
 
-            return _c.PedidoInterno.FromSql(q).ToArray();
+            var data = _c.PedidoInterno.FromSql(q).ToArray();
+            return data;
         }
 
         internal static PedidoInterno[] GetDespachadas(Localidad destino, MyDbContext _c)
@@ -55,21 +56,20 @@ namespace TheCircle.Models
             return _c.PedidoInterno.FromSql(q).ToArray();
         }
 
-        public static void Despachar(Data req, MyDbContext _c)
+        public static void Despachar(int idPedido, Data req, MyDbContext _c)
         {
-            string q = $"EXEC PedidoInterno_Despachar @id={req.idPedido} @personal={req.personal}, @cantidad={req.cantidad}, @comentario='{req.comentario}'";
+            string q = $"EXEC PedidoInterno_Despachar @id={idPedido} @personal={req.personal}, @cantidad={req.cantidad}, @comentario='{req.comentario}'";
             _c.Database.ExecuteSqlCommand(q);
         }
 
-        public static void Recepcion(int idPedido, string comentario, MyDbContext _c)
+        public static void Recepcion(int idPedido, string comentario, int personal, MyDbContext _c)
         {
-            string q = $"EXEC PedidoInterno_Recepcion @id={idPedido}, @comentario={comentario}";
+            string q = $"EXEC PedidoInterno_Recepcion @id={idPedido}, @comentario='{comentario}', @solicitante={personal}";
             _c.Database.ExecuteSqlCommand(q);
         }
 
         public class Data
         {
-            public int idPedido { get; set; }
             public int personal { get; set; }
             public int cantidad { get; set; }
             public string comentario { get; set; } = null;
