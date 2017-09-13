@@ -52,8 +52,7 @@ namespace TheCircle.Models
 
         public ItemDespacho () {}
 
-        public ItemDespacho (Data item, int personal, MyDbContext _context) 
-        {
+        public ItemDespacho (Data item, int personal, MyDbContext _context) {
             try {
                 string q = $"EXEC DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
                 _context.Database.ExecuteSqlCommand(q);
@@ -74,7 +73,7 @@ namespace TheCircle.Models
             }
         }
 
-        public static void Insert(int receta, ItemsDespachoRequest[] items, int personal, MyDbContext _context)
+        /*public static void Insert(int receta, ItemsDespachoRequest[] items, int personal, MyDbContext _context)
         {
             var transaction = _context.Database.BeginTransaction();
             try {
@@ -89,13 +88,13 @@ namespace TheCircle.Models
                 transaction.Rollback();
                 throw new Exception("Error al insertar los despacho de items at ItemDespacho.insert");
             }
-        }
+        }*/
 
-        static void InsertItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
+        /*static void InsertItem(ItemsDespachoRequest item, int personal, MyDbContext _context)
         {
             string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             _context.Database.ExecuteSqlCommand(q);
-        }
+        }*/
 
         public class Data
         {
@@ -105,10 +104,10 @@ namespace TheCircle.Models
         }
     }
 
-    public class ItemsDespachoRequest
+    /*public class ItemsDespachoRequest
     {
         public int itemReceta { get; set; }
         public int cantidad { get; set; }
         public string comentario { get; set; }
-    }
+    }*/
 }

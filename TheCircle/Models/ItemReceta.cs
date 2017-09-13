@@ -37,7 +37,7 @@ namespace TheCircle.Models
             Metodo que recibe una lista de items y se los inserta en la BDD
             En caso de haber un error por datos incorrectos o cualquier cosa, se hace rollback
         */
-        public static void Insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
+        /*public static void Insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
         {
             var transaction = _context.Database.BeginTransaction();
             try
@@ -52,12 +52,12 @@ namespace TheCircle.Models
                 transaction.Rollback();
                 throw new Exception("Error al insertar los items de Receta at ItemReceta.insert");
             }            
-        }
+        }*/
 
         /*
             Recibe un id de Receta y un ItemRequest, se los inserta en la BDD
         */
-        static void InsertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
+        /*static void InsertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
         {
             string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
                 $", @idDiagnostico={i.diagnostico}" +
@@ -66,7 +66,7 @@ namespace TheCircle.Models
                 $", @posologia='{i.posologia}'";
 
             _context.Database.ExecuteSqlCommand(query);
-        }
+        }*/
 
         public static ItemReceta[] GetAllByReceta(int receta, MyDbContext _context) 
         {
@@ -84,16 +84,5 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
             public string posologia { get; set; }
         }
-    }
-
-    public class ItemRecetaRequest
-    {
-        [Key]
-        public ItemFarmacia itemFarmacia { get; set; }
-        public string diagnostico { get; set; }
-        public int cantidad { get; set; }
-        public string posologia { get; set; }
-
-        public ItemRecetaRequest() { }
     }
 }

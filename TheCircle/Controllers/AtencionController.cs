@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Models;
-using System;
 using TheCircle.Util;
 
 namespace TheCircle.Controllers
@@ -16,7 +15,7 @@ namespace TheCircle.Controllers
         }
 
         //Crea una atencion medica
-        [HttpPost("atencion2")]
+        [HttpPost("atencion")]
         [APIauth("medico")]
         public IActionResult PostAtencion(Token token, [FromBody] Atencion.Data request)
         {

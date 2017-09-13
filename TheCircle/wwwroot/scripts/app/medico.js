@@ -350,7 +350,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }
 
             NProgress.start();
-            $http.post("/api/atencion2", AtencionNueva).then(function success(res){
+            $http.post("/api/atencion", AtencionNueva).then(function success(res){
 
                 NProgress.done();
                 console.log("Se creo atencion", res.data);

@@ -78,7 +78,7 @@ namespace TheCircle.Controllers
 
 
         //Crea una receta de farmacia con sus items
-        [HttpPost("receta/{id}")]
+        /*[HttpPost("receta/{id}")]
         [APIauth("medico")]
         public IActionResult PostItemsReceta(int id, [FromBody]ItemRecetaRequest[] items)
         {
@@ -87,13 +87,13 @@ namespace TheCircle.Controllers
 
             ItemReceta.Insert(id, items, _context);
             return Ok();      
-        }
+        }*/
 
 
         //Crea una receta de farmacia con sus items
-        [HttpPost("receta2/{id}")]
+        [HttpPost("receta/{id}")]
         [APIauth("medico")]
-        public IActionResult PostItemsReceta2(int id, [FromBody]ItemReceta.Data[] items)
+        public IActionResult PostItemsReceta(int id, [FromBody]ItemReceta.Data[] items)
         {
             if (items is null)
                 return BadRequest();
@@ -115,7 +115,7 @@ namespace TheCircle.Controllers
 
 
         //Se actualiza una receta a despachada, asistente de salud
-        [HttpPut("receta/{recetaId}")]
+        /*[HttpPut("receta/{recetaId}")]
         [APIauth("asistenteSalud")]
         public IActionResult PostDespachoReceta(Token token, int recetaId, [FromBody]ItemsDespachoRequest[] items)
         {
@@ -125,13 +125,13 @@ namespace TheCircle.Controllers
 
             ItemDespacho.Insert(recetaId, items, token.data.cedula, _context);
             return Ok();
-        }
+        }*/
 
 
         //Se actualiza una receta a despachada, asistente de salud
-        [HttpPut("receta2/{id}")]
+        [HttpPut("receta/{id}")]
         [APIauth("asistenteSalud")]
-        public IActionResult PostDespachoReceta2(Token token, int id, [FromBody]ItemDespacho.Data[] items)
+        public IActionResult PostDespachoReceta(Token token, int id, [FromBody]ItemDespacho.Data[] items)
         {
             if (items is null)
                 return BadRequest();
