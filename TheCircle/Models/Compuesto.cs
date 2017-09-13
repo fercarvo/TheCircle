@@ -69,8 +69,14 @@ namespace TheCircle.Models
         public string categoriaCodigo { get; set; }
         public string grupo { get; set; }
 
-        public Compuesto(CompuestoRequest c, MyDbContext _context) {
-            throw new Exception("Algo salio mal por aqui ahhhhhh");
+        public Compuesto(Data data, MyDbContext _context) {
+            try {
+                string q = $"EXEC Compuesto_Insert @nombre='{data.nombre}', @categoria='{data.categoria}', @unidad='{data.unidad}'";
+                _context.Database.ExecuteSqlCommand(q);
+
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear el compuesto");
+            }            
         }
 
         public Compuesto() { }
@@ -81,14 +87,11 @@ namespace TheCircle.Models
             return data;
         }
 
-
-
-    }
-
-    public class CompuestoRequest
-    {
-        public string nombre { get; set; }
-        public string categoria { get; set; }
-        public string unidad { get; set; }
+        public class Data
+        {
+            public string nombre { get; set; }
+            public string categoria { get; set; }
+            public string unidad { get; set; }
+        }
     }
 }

@@ -17,10 +17,19 @@ namespace TheCircle.Controllers
 
         [HttpGet("compuesto")]
         [APIauth("medico", "asistenteSalud", "bodeguero")]
-        public IActionResult Get_Compuestos()
+        public IActionResult GetAll()
         {
             Compuesto[] compuestos = Compuesto.Report(_context);
             return Ok(compuestos);
+        }
+
+
+        [HttpPost("compuesto")]
+        [APIauth("bodeguero")]
+        public IActionResult New([FromBody] Compuesto.Data req)
+        {
+            new Compuesto(req, _context);
+            return Ok();
         }
     }
 }

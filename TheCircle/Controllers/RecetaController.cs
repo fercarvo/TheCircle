@@ -73,6 +73,7 @@ namespace TheCircle.Controllers
                 return BadRequest("Incorrect Data");
            
             Receta receta = Receta.New(apadrinado, token.data.cedula, _context);
+            //Receta receta = new Receta(apadrinado, token,data.cedula, _context);
             return Ok(receta);
         }
 
@@ -86,7 +87,31 @@ namespace TheCircle.Controllers
                 return BadRequest("Invalid Data");
 
             ItemReceta.Insert(id, items, _context);
-            return Ok();
+            return Ok();      
+        }
+
+
+        //Crea una receta de farmacia con sus items
+        [HttpPost("receta2/{id}")]
+        [APIauth("medico")]
+        public IActionResult PostItemsReceta2(int id, [FromBody]ItemReceta.Data[] items)
+        {
+            if (items is null)
+                return BadRequest();
+
+            var tran = _context.Database.BeginTransaction(); //Se inicia transacción en la BDD
+            try 
+            {
+                foreach (ItemReceta.Data item in items)
+                    new ItemReceta(id, item, _context);
+
+                tran.Commit(); //Si todos los items se ingresan correctamente se hace commit
+                return Ok();
+
+            } catch (Exception e) {
+                tran.Rollback();
+                return BadRequest("Error al ingresar los itemsReceta");
+            }            
         }
 
 
@@ -95,11 +120,36 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult PostDespachoReceta(Token token, int recetaId, [FromBody]ItemsDespachoRequest[] items)
         {
+            //if (items is null)
             if (recetaId <= 0 || items is null)
                 return BadRequest("Incorrect Data");
 
             ItemDespacho.Insert(recetaId, items, token.data.cedula, _context);
             return Ok();
+        }
+
+
+        //Se actualiza una receta a despachada, asistente de salud
+        [HttpPut("receta2/{id}")]
+        [APIauth("asistenteSalud")]
+        public IActionResult PostDespachoReceta2(Token token, int id, [FromBody]ItemsDespacho.Data[] items)
+        {
+            if (items is null)
+                return BadRequest();
+
+            var tran = _context.Database.BeginTransaction();
+            try {                
+                foreach (ItemsDespacho.Data item in items) //se insertan en la base de datos todos los items
+                    new ItemDespacho(item, token.data.cedula, _context);
+
+                Receta.UpdateDespachada(id, _context);
+                tran.Commit();
+                return Ok();
+
+            } catch (Exception e) {
+                tran.Rollback();
+                return BadRequest("Error al despachar la receta");
+            }
         }
 
 

@@ -50,6 +50,19 @@ namespace TheCircle.Models
         public string comentario { get; set; }
         public int idPersonal { get; set; }
 
+        public ItemDespacho () {}
+
+        public ItemDespacho (Data item, int personal, MyDbContext _context) 
+        {
+            try {
+                string q = $"EXEC DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
+                _context.Database.ExecuteSqlCommand(q);
+                
+            } catch (Exception e) {
+                throw new Exception ("No se pudo ingresar el ItemDespacho", e);
+            }            
+        }
+
         public ItemDespacho[] getByReceta(int idReceta, MyDbContext _context)
         {
             string q = $"EXEC dbo.DespachoReceta_Report_ByReceta @idReceta={idReceta}";
@@ -82,6 +95,13 @@ namespace TheCircle.Models
         {
             string q = $"EXEC dbo.DespachoReceta_Insert @id_itemReceta={item.itemReceta}, @cantidad={item.cantidad}, @personal={personal}, @comentario='{item.comentario}'";
             _context.Database.ExecuteSqlCommand(q);
+        }
+
+        public class Data
+        {
+            public int itemReceta { get; set; }
+            public int cantidad { get; set; }
+            public string comentario { get; set; }
         }
     }
 

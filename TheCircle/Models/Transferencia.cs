@@ -24,9 +24,20 @@ namespace TheCircle.Models
         public int? personalDespacho { get; set; }
         public string comentarioDespacho { get; set; } = null;
 
+        public Transferencia (int item, Localidad destino, int cantidad, int personal, MyDbContext _c) {
+            try {
+                string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @personal={personal}, @localidad='{localidad}'";
+                _c.Database.ExecuteSqlCommand(q);
+
+            } catch (Exception e) {
+                throw new Exception("Error al crear transferencia");
+            }             
+        }
+
         public static Transferencia[] GetPendientes(Localidad localidad, MyDbContext _context)
         {
             string q = $"EXEC ItemTransferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
+            //string q = $"EXEC Transferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
 
             var data = _context.Transferencia.FromSql(q).ToArray();
             return data;
@@ -35,6 +46,7 @@ namespace TheCircle.Models
         internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
         {
             string q = $"EXEC ItemTransferencia_Report_Despachadas @destino={destino}";
+            //string q = $"EXEC Transferencia_Report_Despachadas @destino={destino}";
 
             var data = _context.Transferencia.FromSql(q).ToArray();
             return data;
@@ -43,6 +55,8 @@ namespace TheCircle.Models
         public static void Despachar(int personal, TransferenciaRequest req, MyDbContext _context) 
         {
             string q = $"EXEC ItemTransferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
+            //string q = $"EXEC Transferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
+
             _context.Database.ExecuteSqlCommand(q);   
         }
     }

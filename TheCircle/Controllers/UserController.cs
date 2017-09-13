@@ -65,11 +65,8 @@ namespace TheCircle.Controllers
             if (string.IsNullOrEmpty(cedula) || string.IsNullOrEmpty(clave))
                 return BadRequest("Datos incorrectos");
 
-            Usuario user = new Usuario(cedula, clave, _context);
-
-            if (user is null)
-                return BadRequest();
-
+            new Usuario(cedula, clave, _context);
+            
             return Ok();
         }
 

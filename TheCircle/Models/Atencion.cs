@@ -21,6 +21,27 @@ namespace TheCircle.Models
 
         public Atencion () { }
 
+        public Atencion (Data request, int doctor, Localidad localidad, MyDbContext _context) {
+            try {
+                string q = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
+                    $", @doctor={doctor}" +
+                    $", @tipo={request.tipo}" +
+                    $", @localidad={localidad}" +
+                    $", @peso='{request.peso}'" +
+                    $", @talla='{request.talla}'";
+
+                var data = _context.Atenciones.FromSql(q).First();
+                
+                foreach (var dg in request.diagnosticos) //Se crean los diagnosticos de la atencion
+                    new Diagnostico(dg, data.id, _context);
+
+                this.id = data.id;
+
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear la atencion medica");
+            }
+        }
+
         public static Atencion New (AtencionRequest request, int doctor, Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
@@ -44,6 +65,15 @@ namespace TheCircle.Models
             var data = _context.Atenciones.FromSql(query).ToArray();
 
             return data;
+        }
+
+        public class Data
+        {
+            public int apadrinado { get; set; }
+            public string tipo { get; set; }
+            public string[] diagnosticos { get; set; }
+            public int? peso { get; set; }
+            public int? talla { get; set; }
         }
 
     }

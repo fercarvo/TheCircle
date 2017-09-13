@@ -25,6 +25,13 @@ namespace TheCircle.Models
 
         public Receta () { }
 
+        public Receta (int apadrinado, int doctor, MyDbContext _context) { 
+            var q = $"EXEC Receta_Insert @doctor={doctor}, @apadrinado={apadrinado}";
+
+            var receta = _context.Recetas.FromSql(q).First();
+            id = receta.id;
+        }
+
         public Receta[] getAllByLocalidad(Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC dbo.select_RecetaByLocalidad @localidad='{localidad}'";

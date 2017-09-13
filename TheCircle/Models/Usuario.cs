@@ -21,14 +21,18 @@ namespace TheCircle.Models
 
         public Usuario () {}
 
-        public Usuario (string cedula, string clave, MyDbContext _context) 
-        {
-            var dic = Signature.HashingSHA256(clave);
-            string hash = dic["hash"];
-            string salt = dic["salt"];
+        public Usuario (string cedula, string clave, MyDbContext _context) {
+            try {
+                var dic = Signature.HashingSHA256(clave);
+                string hash = dic["hash"];
+                string salt = dic["salt"];
 
-            string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-            _context.Database.ExecuteSqlCommand(q);
+                string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+                _context.Database.ExecuteSqlCommand(q);
+
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear el usuario", e);
+            }            
         }
 
         public static Usuario Get(LoginRequest req, MyDbContext _context)

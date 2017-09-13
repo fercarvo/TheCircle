@@ -31,6 +31,21 @@ namespace TheCircle.Controllers
         }
 
 
+        //Crea una atencion medica
+        [HttpPost("atencion2")]
+        [APIauth("medico")]
+        public IActionResult PostAtencion(Token token, [FromBody] AtencionRequest request)
+        {
+            if (request is null)
+                return BadRequest();
+
+            var atencion = new Atencion(request, token.data.cedula, token.data.localidad, _context);
+            var diagnosticos = Diagnostico.ReportByAtencion(atencion.id, _context);
+
+            return Ok(new {atencion = atencion, diagnosticos = diagnosticos});
+        }
+
+
         //Ruta que retorna las atenciones medicas de un doctor
         [HttpGet("atencion/medico")]
         [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]

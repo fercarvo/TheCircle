@@ -21,6 +21,18 @@ namespace TheCircle.Models
 
         public ItemReceta() { }
 
+        public ItemReceta (int receta, Data i, MyDbContext _context) {
+            try {
+                var q = $"EXEC ItemReceta_Insert @idItemFarmacia={i.itemFarmacia.id}" +
+                $", @idDiagnostico={i.diagnostico}, @cantidad={i.cantidad}" +
+                $", @receta={receta}, @posologia='{i.posologia}'";
+
+                _context.Database.ExecuteSqlCommand(q); 
+            } catch (Exception e) {
+                throw new Exception("Error al insertar ItemReceta", e);
+            }            
+        }
+
         /*
             Metodo que recibe una lista de items y se los inserta en la BDD
             En caso de haber un error por datos incorrectos o cualquier cosa, se hace rollback
@@ -32,6 +44,7 @@ namespace TheCircle.Models
             {
                 foreach (ItemRecetaRequest item in items)
                     InsertItem(receta, item, _context);
+                    //new ItemReceta(receta, item, _context);
 
                 transaction.Commit();
                 
@@ -55,9 +68,21 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(query);
         }
 
-        public static ItemReceta[] GetAllByReceta(int receta, MyDbContext _context) {
-            var data = _context.ItemsReceta.FromSql($"EXEC dbo.select_ItemRecetaByReceta @receta={receta}").ToArray();
-            return data;
+        public static ItemReceta[] GetAllByReceta(int receta, MyDbContext _context) 
+        {
+            string q = $"EXEC dbo.select_ItemRecetaByReceta @receta={receta}";
+            //string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
+
+            return _context.ItemsReceta.FromSql(q).ToArray();
+        }
+
+        public class Data
+        {
+            [Key]
+            public ItemFarmacia itemFarmacia { get; set; }
+            public string diagnostico { get; set; }
+            public int cantidad { get; set; }
+            public string posologia { get; set; }
         }
     }
 
