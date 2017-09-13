@@ -24,47 +24,42 @@ namespace TheCircle.Models
         public int? personalDespacho { get; set; }
         public string comentarioDespacho { get; set; } = null;
 
+        public Transferencia() { }
+
         public Transferencia (int item, Localidad destino, int cantidad, int personal, MyDbContext _c) {
             try {
-                string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @personal={personal}, @localidad='{destino}'";
+                string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @solicitante={personal}, @destino='{destino}'";
                 _c.Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {
-                throw new Exception("Error al crear transferencia");
+                throw new Exception("Error al crear transferencia", e);
             }             
         }
 
         public static Transferencia[] GetPendientes(Localidad localidad, MyDbContext _context)
         {
-            string q = $"EXEC ItemTransferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
-            //string q = $"EXEC Transferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
-
-            var data = _context.Transferencia.FromSql(q).ToArray();
-            return data;
+            string q = $"EXEC Transferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
+            return _context.Transferencia.FromSql(q).ToArray();
         }
 
         internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
         {
-            string q = $"EXEC ItemTransferencia_Report_Despachadas @destino={destino}";
-            //string q = $"EXEC Transferencia_Report_Despachadas @destino={destino}";
-
-            var data = _context.Transferencia.FromSql(q).ToArray();
-            return data;
+            string q = $"EXEC Transferencia_Report_Despachadas @destino={destino}";
+            return _context.Transferencia.FromSql(q).ToArray();
         }
 
-        public static void Despachar(int personal, TransferenciaRequest req, MyDbContext _context) 
+        public static void Despachar(int personal, Data req, MyDbContext _context)
         {
-            string q = $"EXEC ItemTransferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
-            //string q = $"EXEC Transferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
-
+            var q = $"EXEC Transferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
             _context.Database.ExecuteSqlCommand(q);   
         }
+
+        public class Data
+        {
+            public int idTransferencia { get; set; }
+            public int cantidad { get; set; }
+            public string comentario { get; set; }
+        }
     }
 
-    public class TransferenciaRequest
-    {
-        public int idTransferencia { get; set; }
-        public int cantidad { get; set; }
-        public string comentario { get; set; }
-    }
 }

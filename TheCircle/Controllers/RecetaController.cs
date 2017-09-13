@@ -26,7 +26,7 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            List<RecetaTotal> recetas = RecetaTotal.ReportByDoctor(fecha, token.data.cedula, _context);
+            var recetas = Receta.ReportByDoctor(fecha, token.data.cedula, _context);
             return Ok(recetas);
         }
 
@@ -37,7 +37,7 @@ namespace TheCircle.Controllers
         [APIauth("medico")]
         public IActionResult GetRecetasByDoctorByStatus(Token token)
         {
-            List<RecetaTotal> recetas = new RecetaTotal().reporteByDoctorByStatus(token.data.cedula, _context);
+            var recetas = Receta.ReportByDoctorByStatus(token.data.cedula, _context);
             return Ok(recetas);
         }
 
@@ -48,8 +48,13 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult Get_Recetas_Localidad_Status(Token token)
         {
-            var recetas = new RecetaTotal().getAll_Localidad_SinDespachar(token.data.localidad, _context);
-            return Ok(recetas);
+            var recetas = Receta.ReportLocalidadSinDespachar( token.data.localidad, _context);
+            var data = new List<object>();
+
+            foreach (Receta receta in recetas) 
+                data.Add( new { receta = receta, items = ItemReceta.ReportReceta(receta.id, _context) });
+            
+            return Ok(data);
         }
 
 
@@ -59,8 +64,16 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult getRecetasDespachadas(Token token)
         {
-            List<RecetaDespacho> recetas = new RecetaDespacho().getBy_Asistente(token.data.cedula, _context);
-            return Ok(recetas);
+            Receta[] recetas = Receta.ReportAsistente(token.data.cedula, _context);
+            List<object> data = new List<object>();
+
+            foreach (Receta receta in recetas) 
+                data.Add( new {
+                    receta = receta,
+                    items = ItemDespacho.GetByReceta(receta.id, _context)
+                });
+            
+            return Ok(data); 
         }
 
 
@@ -75,19 +88,6 @@ namespace TheCircle.Controllers
             Receta receta = new Receta(apadrinado, token.data.cedula, _context);
             return Ok(receta);
         }
-
-
-        //Crea una receta de farmacia con sus items
-        /*[HttpPost("receta/{id}")]
-        [APIauth("medico")]
-        public IActionResult PostItemsReceta(int id, [FromBody]ItemRecetaRequest[] items)
-        {
-            if (items is null || id <= 0)
-                return BadRequest("Invalid Data");
-
-            ItemReceta.Insert(id, items, _context);
-            return Ok();      
-        }*/
 
 
         //Crea una receta de farmacia con sus items
@@ -112,21 +112,6 @@ namespace TheCircle.Controllers
                 return BadRequest("Error al ingresar los itemsReceta");
             }            
         }
-
-
-        //Se actualiza una receta a despachada, asistente de salud
-        /*[HttpPut("receta/{recetaId}")]
-        [APIauth("asistenteSalud")]
-        public IActionResult PostDespachoReceta(Token token, int recetaId, [FromBody]ItemsDespachoRequest[] items)
-        {
-            //if (items is null)
-            if (recetaId <= 0 || items is null)
-                return BadRequest("Incorrect Data");
-
-            ItemDespacho.Insert(recetaId, items, token.data.cedula, _context);
-            return Ok();
-        }*/
-
 
         //Se actualiza una receta a despachada, asistente de salud
         [HttpPut("receta/{id}")]

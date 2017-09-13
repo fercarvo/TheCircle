@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
-using System;
 using TheCircle.Models;
 
 namespace TheCircle.Controllers
@@ -35,7 +34,7 @@ namespace TheCircle.Controllers
 
         [HttpPut("transferencia")]
         [APIauth("asistenteSalud", "bodeguero")]
-        public IActionResult Despacho_Transferencia(Token token, [FromBody]TransferenciaRequest req)
+        public IActionResult Despacho_Transferencia(Token token, [FromBody]Transferencia.Data req)
         {
             if (req is null)
                 return BadRequest();

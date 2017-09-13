@@ -25,135 +25,91 @@ namespace TheCircle.Models
 
         public Receta () { }
 
-        public Receta (int apadrinado, int doctor, MyDbContext _context) { 
-            var q = $"EXEC Receta_Insert @doctor={doctor}, @apadrinado={apadrinado}";
-
-            var receta = _context.Recetas.FromSql(q).First();
-            id = receta.id;
+        public Receta (int apadrinado, int doctor, MyDbContext _context) {
+            try {
+                var q = $"EXEC Receta_Insert @doctor={doctor}, @apadrinado={apadrinado}";
+                var data = _context.Recetas.FromSql(q).First();
+                id = data.id;
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear la receta con su ID", e);
+            }            
         }
 
-        public Receta[] getAllByLocalidad(Localidad localidad, MyDbContext _context)
+        /*public static Receta[] ReportLocalidad( Localidad localidad, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaByLocalidad @localidad='{localidad}'";
+            string query = $"EXEC Receta_Report_Localidad @localidad='{localidad}'";
+            return _context.Recetas.FromSql(query).ToArray();
+        }*/
 
-            var data = _context.Recetas.FromSql(query).ToArray();
-            return data;
-        }
 
-        public Receta[] getBy_Asistente(int asistente, MyDbContext _context)
+        public static Receta[] ReportAsistente(int asistente, MyDbContext _context)
         {
-            string query = $"EXEC dbo.Receta_ReportBy_Asistente @asistente={asistente}";
-
-            var data = _context.Recetas.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC Receta_ReportBy_Asistente @asistente={asistente}";
+            return _context.Recetas.FromSql(query).ToArray();
         }
 
-        public Receta[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
+
+        public static Receta[] ReportLocalidadSinDespachar (Localidad localidad, MyDbContext _context)
         {
-            string query = $"EXEC dbo.Receta_ReportBy_Localidad_Despachada @localidad='{localidad}', @despachada=0";
-
-            var data = _context.Recetas.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC Receta_Report_Localidad_Despachada @localidad='{localidad}', @despachada=0";
+            return _context.Recetas.FromSql(query).ToArray();
         }
+
 
         public static Receta[] GetAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaByDoctor @doctor={doctor}, @desde='{fecha.desde}', @hasta='{fecha.hasta}'";
-
-            var data = _context.Recetas.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC Receta_Report_Doctor @doctor={doctor}, @desde='{fecha.desde}', @hasta='{fecha.hasta}'";
+            return _context.Recetas.FromSql(query).ToArray();
         }
 
-        public Receta[] getAllByDoctorByStatus(int doctor, MyDbContext _context)
+
+        public static Receta[] GetAllByDoctorByStatus(int doctor, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_RecetaByDoctorByStatus @doctor={doctor}";
-
-            var data = _context.Recetas.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC Receta_Report_DoctorStatus @doctor={doctor}";
+            return _context.Recetas.FromSql(query).ToArray();
         }
+
 
         public static void Delete(int id, MyDbContext _context)
         {
-            string query = $"EXEC dbo.delete_Receta @id={id}";
-
+            string query = $"EXEC Receta_Delete @id={id}";
             _context.Database.ExecuteSqlCommand(query);
         }
 
+
         public static void UpdateDespachada(int id, MyDbContext _context)
         {
-            string q = $"EXEC dbo.Receta_Update_despachada @idReceta={id}";
-
+            string q = $"EXEC Receta_Update_despachada @idReceta={id}";
             _context.Database.ExecuteSqlCommand(q);
         }
-    }
 
-    public class RecetaTotal
-    {
-        public Receta receta { get; set; }
-        public ItemReceta[] items { get; set; }
-
-        public RecetaTotal() { }
-        public RecetaTotal(Receta receta, ItemReceta[] items)
+        public static List<object> ReportByDoctor(Fecha fecha, int doctor, MyDbContext _context)
         {
-            this.receta = receta;
-            this.items = items;
-        }
-
-        public List<RecetaTotal> getAllByLocalidad (Localidad localidad, MyDbContext _context)
-        {
-            var recetasTotales = new List<RecetaTotal>();
-
-            Receta[] recetas = new Receta().getAllByLocalidad(localidad, _context);
+            Receta[] recetas = GetAllByDoctorByDate(fecha, doctor, _context);
+            var data = new List<object>();
 
             foreach (Receta receta in recetas) {
-                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
-                recetasTotales.Add(new RecetaTotal(receta, items));
-            }
-
-            return recetasTotales;
-        }
-
-        public RecetaTotal[] getAll_Localidad_SinDespachar(Localidad localidad, MyDbContext _context)
-        {
-            var recetas = new Receta().getAll_Localidad_SinDespachar(localidad, _context);
-            var recetasTotales = new List<RecetaTotal>();
-
-            foreach (Receta receta in recetas) {
-                var items = ItemReceta.GetAllByReceta(receta.id, _context);                 
-                recetasTotales.Add(new RecetaTotal(receta, items));                    
-            }
-            return recetasTotales.ToArray();
-        }
-
-        public static List<RecetaTotal> ReportByDoctor (Fecha fecha, int doctor, MyDbContext _context)
-        {
-            Receta[] recetas = Receta.GetAllByDoctorByDate(fecha, doctor, _context);
-            List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
-
-            foreach (Receta receta in recetas) 
-            { //se insertan en la base de datos todos los items
-                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
+                var items = ItemReceta.ReportReceta(receta.id, _context);
 
                 if (items.Count() > 0)
-                    recetasTotales.Add(new RecetaTotal(receta, items));
-            }            
+                    data.Add(new { receta = receta, items = items });
+            }
 
-            return recetasTotales;
+            return data;
         }
 
-        public List<RecetaTotal> reporteByDoctorByStatus(int doctor, MyDbContext _context)
+        public static List<object> ReportByDoctorByStatus(int doctor, MyDbContext _context)
         {
-            Receta[] recetas = new Receta().getAllByDoctorByStatus(doctor, _context);
-            List<RecetaTotal> recetasTotales = new List<RecetaTotal>();
+            Receta[] recetas = GetAllByDoctorByStatus(doctor, _context);
+            var data = new List<object>();
 
             foreach (Receta receta in recetas) {
-
-                ItemReceta[] items = ItemReceta.GetAllByReceta(receta.id, _context);
+                var items = ItemReceta.ReportReceta(receta.id, _context);
                 if (items.Count() > 0)
-                    recetasTotales.Add(new RecetaTotal(receta, items));
+                    data.Add(new { receta = receta, items = items });
             }
-            
-            return recetasTotales;
+
+            return data;
         }
     }
 }

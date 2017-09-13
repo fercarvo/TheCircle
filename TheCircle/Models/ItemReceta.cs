@@ -33,46 +33,9 @@ namespace TheCircle.Models
             }            
         }
 
-        /*
-            Metodo que recibe una lista de items y se los inserta en la BDD
-            En caso de haber un error por datos incorrectos o cualquier cosa, se hace rollback
-        */
-        /*public static void Insert(int receta, ItemRecetaRequest[] items, MyDbContext _context)
+        public static ItemReceta[] ReportReceta( int receta, MyDbContext _context) 
         {
-            var transaction = _context.Database.BeginTransaction();
-            try
-            {
-                foreach (ItemRecetaRequest item in items)
-                    InsertItem(receta, item, _context);
-                    //new ItemReceta(receta, item, _context);
-
-                transaction.Commit();
-                
-            } catch {
-                transaction.Rollback();
-                throw new Exception("Error al insertar los items de Receta at ItemReceta.insert");
-            }            
-        }*/
-
-        /*
-            Recibe un id de Receta y un ItemRequest, se los inserta en la BDD
-        */
-        /*static void InsertItem (int receta, ItemRecetaRequest i, MyDbContext _context) 
-        {
-            string query = $"EXEC dbo.insert_ItemReceta @idItemFarmacia={i.itemFarmacia.id}" +
-                $", @idDiagnostico={i.diagnostico}" +
-                $", @cantidad={i.cantidad}" +
-                $", @receta={receta}" +
-                $", @posologia='{i.posologia}'";
-
-            _context.Database.ExecuteSqlCommand(query);
-        }*/
-
-        public static ItemReceta[] GetAllByReceta(int receta, MyDbContext _context) 
-        {
-            string q = $"EXEC dbo.select_ItemRecetaByReceta @receta={receta}";
-            //string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
-
+            string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
             return _context.ItemsReceta.FromSql(q).ToArray();
         }
 
