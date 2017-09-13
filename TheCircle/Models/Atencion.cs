@@ -42,23 +42,6 @@ namespace TheCircle.Models
             }
         }
 
-        public static Atencion New (AtencionRequest request, int doctor, Localidad localidad, MyDbContext _context)
-        {
-            string query = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
-                $", @doctor={doctor}" +
-                $", @tipo={request.tipo}" +
-                $", @localidad={localidad}" +
-                $", @peso='{request.peso}'" +
-                $", @talla='{request.talla}'";
-
-            Atencion atencion = _context.Atenciones.FromSql(query).First(); //atencion medica creada
-            
-            foreach (var dg in request.diagnosticos) //Se crean los diagnosticos de la atencion
-                new Diagnostico(dg, atencion.id, _context);
-
-            return atencion;
-        }
-
         public static Atencion[] ReportByDoctorDate(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC Atencion_Report_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
@@ -76,30 +59,5 @@ namespace TheCircle.Models
             public int? talla { get; set; }
         }
 
-    }
-
-    public class AtencionRequest
-    {
-        public int apadrinado { get; set; }
-        public string tipo { get; set; }
-        public string[] diagnosticos { get; set; }
-        public int? peso { get; set; }
-        public int? talla { get; set; }
-
-        public AtencionRequest() { }
-    }
-
-    
-    public class AtencionResponse
-    {
-        public Atencion atencion { get; set; }
-        public Diagnostico[] diagnosticos { get; set; }
-
-        public AtencionResponse(Atencion atencion, Diagnostico[] diagnosticos)
-        {
-            this.atencion = atencion;
-            this.diagnosticos = diagnosticos;
-        }
-    }
-    
+    }    
 }

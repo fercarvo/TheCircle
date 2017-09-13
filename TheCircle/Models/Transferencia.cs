@@ -26,7 +26,7 @@ namespace TheCircle.Models
 
         public Transferencia (int item, Localidad destino, int cantidad, int personal, MyDbContext _c) {
             try {
-                string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @personal={personal}, @localidad='{localidad}'";
+                string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @personal={personal}, @localidad='{destino}'";
                 _c.Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {

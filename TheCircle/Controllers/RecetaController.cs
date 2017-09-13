@@ -72,8 +72,7 @@ namespace TheCircle.Controllers
             if (apadrinado <= 10000)
                 return BadRequest("Incorrect Data");
            
-            Receta receta = Receta.New(apadrinado, token.data.cedula, _context);
-            //Receta receta = new Receta(apadrinado, token,data.cedula, _context);
+            Receta receta = new Receta(apadrinado, token.data.cedula, _context);
             return Ok(receta);
         }
 
@@ -132,14 +131,14 @@ namespace TheCircle.Controllers
         //Se actualiza una receta a despachada, asistente de salud
         [HttpPut("receta2/{id}")]
         [APIauth("asistenteSalud")]
-        public IActionResult PostDespachoReceta2(Token token, int id, [FromBody]ItemsDespacho.Data[] items)
+        public IActionResult PostDespachoReceta2(Token token, int id, [FromBody]ItemDespacho.Data[] items)
         {
             if (items is null)
                 return BadRequest();
 
             var tran = _context.Database.BeginTransaction();
             try {                
-                foreach (ItemsDespacho.Data item in items) //se insertan en la base de datos todos los items
+                foreach (ItemDespacho.Data item in items) //se insertan en la base de datos todos los items
                     new ItemDespacho(item, token.data.cedula, _context);
 
                 Receta.UpdateDespachada(id, _context);

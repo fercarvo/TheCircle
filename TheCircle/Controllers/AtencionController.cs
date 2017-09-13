@@ -16,25 +16,9 @@ namespace TheCircle.Controllers
         }
 
         //Crea una atencion medica
-        [HttpPost ("atencion")]
-        [APIauth("medico")]
-        public IActionResult PostAtencion(Token token, [FromBody] AtencionRequest request)
-        {
-            if (request is null)
-                return BadRequest();
-
-            Atencion atencion = Atencion.New(request, token.data.cedula, token.data.localidad, _context);
-            Diagnostico[] diagnosticos = Diagnostico.ReportByAtencion(atencion.id, _context);
-
-            var response = new AtencionResponse(atencion, diagnosticos);
-            return Ok(response);
-        }
-
-
-        //Crea una atencion medica
         [HttpPost("atencion2")]
         [APIauth("medico")]
-        public IActionResult PostAtencion(Token token, [FromBody] AtencionRequest request)
+        public IActionResult PostAtencion(Token token, [FromBody] Atencion.Data request)
         {
             if (request is null)
                 return BadRequest();

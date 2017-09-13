@@ -72,14 +72,6 @@ namespace TheCircle.Models
             return data;
         }
 
-        public static Receta New (int apadrinado, int doctor, MyDbContext _context) 
-        {
-            string query = $"EXEC dbo.insert_Receta @idDoctor={doctor}, @idApadrinado={apadrinado}";
-
-            var receta = _context.Recetas.FromSql(query).First();
-            return receta;
-        }
-
         public static void Delete(int id, MyDbContext _context)
         {
             string query = $"EXEC dbo.delete_Receta @id={id}";
