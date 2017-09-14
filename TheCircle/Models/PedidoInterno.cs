@@ -24,11 +24,11 @@ namespace TheCircle.Models
 
         public PedidoInterno() { }
 
-        public PedidoInterno(int idItem, int cantidad, int solicitante, MyDbContext _c) {
-            try
-            {
+        public PedidoInterno(int idItem, int cantidad, int solicitante) {
+            try {
                 string q = $"EXEC PedidoInterno_Insert @idItemFarmacia={idItem}, @solicitante={solicitante}, @cantidad={cantidad}";
-                _c.Database.ExecuteSqlCommand(q);
+                new MyDbContext().Database.ExecuteSqlCommand(q);
+
             } catch (Exception e) {
                 throw new Exception("No se pudo crear el pedido interno", e);
             }            

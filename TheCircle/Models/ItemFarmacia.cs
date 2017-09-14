@@ -3,7 +3,6 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
-using TheCircle.Controllers;
 
 namespace TheCircle.Models
 {
@@ -17,28 +16,72 @@ namespace TheCircle.Models
         public string grupo { get; set; }
         public int stock { get; set; }
         public DateTime? fcaducidad { get; set; }
+        public string localidad { get; set; }
 
         public ItemFarmacia() { }
 
+        public ItemFarmacia(Ingreso item, Localidad localidad, int personal) {
+            try {
+                string query = $"EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
+                    $"@compuesto='{item.compuesto}', " +
+                    $"@fcaducidad='{item.fcaducidad}', " +
+                    $"@cantidad={item.cantidad}, " +
+                    $"@localidad='{localidad}', " +
+                    $"@personal={personal}";
+
+                new MyDbContext().Database.ExecuteSqlCommand(query);
+
+                nombre = item.nombre;
+                compuesto = item.compuesto;
+                stock = item.cantidad;
+
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear el itemFarmacia", e);
+            }
+        }
+
+        public ItemFarmacia(int idTransferencia, string comentario, Localidad localidad, int personal) {
+            try {
+                string query = $"EXEC ItemFarmacia_Insert_Transferencia @idTransferencia={idTransferencia}, " +
+                    $"@comentario='{comentario}', " +
+                    $"@localidad='{localidad}', " +
+                    $"@personal={personal}";
+
+                new MyDbContext().Database.ExecuteSqlCommand(query);
+
+            } catch (Exception e) {
+                throw new Exception("No se pudo crear el itemFarmacia", e);
+            }
+        }
+
         public static ItemFarmacia[] ReportLocalidad (Localidad localidad, MyDbContext _context)
         {
-            string query = $"EXEC dbo.select_ItemFarmacia @localidad='{localidad}'";
-
-            var data = _context.ItemFarmacias.FromSql(query).ToArray();
-            return data;
+            string query = $"EXEC ItemFarmacia_Report_Localidad @localidad='{localidad}'";
+            return _context.ItemFarmacias.FromSql(query).ToArray();
         }
 
-        public static void New(Ingreso item, Localidad localidad, int personal, MyDbContext _context) 
+        /*public static void New(Ingreso item, Localidad localidad, int personal, MyDbContext _context) 
         {
-            string query = $"EXEC dbo.ItemFarmacia_insert @nombre='{item.nombre}', @compuesto='{item.compuesto}', @fcaducidad='{item.fcaducidad}', @cantidad={item.cantidad}, @localidad='{localidad}', @personal={personal}";
+            string query = $"EXEC ItemFarmacia_Insert @nombre='{item.nombre}', @compuesto='{item.compuesto}', @fcaducidad='{item.fcaducidad}', @cantidad={item.cantidad}, @localidad='{localidad}', @personal={personal}";
             _context.Database.ExecuteSqlCommand(query);
+        }*/
+
+        public static ItemFarmacia[] ReportLocalidadInsumos(Localidad localidad)
+        {
+            string query = $"EXEC ItemFarmacia_Report_InsumosM @localidad='{localidad}'";
+            return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
-        internal static void New(IngresoTransferencia it, Localidad localidad, int personal, MyDbContext _context)
+        public static ItemFarmacia[] Report()
+        {
+            return new MyDbContext().ItemFarmacias.FromSql("ItemFarmacia_Report_Total").ToArray();
+        }
+
+        /*public static void New(IngresoTransferencia it, Localidad localidad, int personal, MyDbContext _context)
         {
             string query = $"EXEC ItemFarmacia_Insert_Transferencia @idTransferencia={it.idTransferencia}, @comentario='{it.comentario}', @localidad='{localidad}', @personal={personal}";
             _context.Database.ExecuteSqlCommand(query);
-        }
+        }*/
 
         public class IngresoTransferencia
         {

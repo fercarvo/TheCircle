@@ -1,6 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
 using TheCircle.Models;
 using TheCircle.Util;
 
@@ -26,7 +24,24 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        [HttpGet("itemfarmacia/insumos")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("medico", "asistenteSalud")]
+        public IActionResult GetItemsByTipo(Token token)
+        {
+            ItemFarmacia[] stock = ItemFarmacia.ReportLocalidadInsumos(token.data.localidad);
+            return Ok(stock);
+        }
 
+        [HttpGet("itemfarmacia/report")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("medico", "asistenteSalud")]
+        public IActionResult GetAll(Token token)
+        {
+            ItemFarmacia[] stock = ItemFarmacia.Report();
+            return Ok(stock);
+        }
+        
 
         [HttpPost("itemfarmacia/transferencia")]
         [APIauth("asistenteSalud", "bodeguero")]
@@ -35,8 +50,8 @@ namespace TheCircle.Controllers
             if (item.idTransferencia <= 0)
                 return BadRequest();
 
-            ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
-
+            new ItemFarmacia(item.idTransferencia, item.comentario, token.data.localidad, token.data.cedula);
+            //ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
             return Ok();
         }
 
@@ -48,9 +63,9 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
-
-            return Ok();
+            var data = new ItemFarmacia(item, token.data.localidad, token.data.cedula);
+            //ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
+            return Ok(data);
         }
     }    
 }

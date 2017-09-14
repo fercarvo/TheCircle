@@ -110,15 +110,37 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         var dataFactory = {
             enfermedades: null,
             instituciones: null,
+            stockChildren: null,
             stock: null,
+            stockInsumos: null,
             recetas: null,
             estadisticas: {},
             tipos: ["curativo", "seguimiento", "control"],
+            getStockChildren: getStockChildren,
             getInstituciones: getInstituciones,
             getEnfermedades: getEnfermedades,
             getStock: getStock,
+            getStockInsumos: getStockInsumos,
             getRecetas: getRecetas,
             getApadrinado: getApadrinado
+        }
+
+        function getStockChildren() {
+            $http.get("/api/itemfarmacia/report").then(function success(res) {
+                dataFactory.stockChildren = res.data;
+                $rootScope.$broadcast('dataFactory.stockChildren');
+            }, function error(e) {
+                console.log("Error cargar Stock", e);
+            })
+        }
+
+        function getStockInsumos() {
+            $http.get("/api/itemfarmacia/insumos").then(function success(res) {
+                dataFactory.stockInsumos = res.data;
+                $rootScope.$broadcast('dataFactory.stockInsumos');
+            }, function error(e) {
+                console.log("Error cargar Stock de farmacia", e);
+            })
         }
 
         function getInstituciones() {
@@ -130,7 +152,6 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
         function getStock() {
-            //NProgress.start();
             $http.get("/api/itemfarmacia").then(function success(res) {
                 console.log("Actualizando Stock by localidad");
                 dataFactory.stock = res.data;
@@ -702,22 +723,18 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $state.go('pedidos.interno');
     }])
     .controller('pedidos.transferencia', ['$scope', '$http', function ($scope, $http) {
-
-    }])
-    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', 'refresh', 'notify', function ($scope, $http, $state, dataFactory, refresh, notify) {
-
-        $scope.stock = dataFactory.stock;
+        $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
-        var actualizar = refresh.go(cargar, 30000);
+        var actualizar = refresh.goTime(cargar, 30000);
 
-        $scope.$on('dataFactory.stock', function () {
-            $scope.stock = dataFactory.stock;
+        $scope.$on('dataFactory.stockChildren', function () {
+            $scope.stock = dataFactory.stockChildren;
         })
 
         function cargar() {
-            if ($state.includes('pedidos.interno')) {
-                dataFactory.getStock();
+            if ($state.includes('pedidos.transferencia')) {
+                dataFactory.getStockChildren();
             } else {
                 refresh.stop(actualizar);
             }
@@ -730,7 +747,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
         $scope.solicitar = function (cantidad) {
             data = {
-                item: $scope.item,
+                item: $scope.item.id,
                 cantidad: cantidad
             }
 
@@ -740,13 +757,63 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $('#despachar').modal('hide');
                 console.log("Se creo el pedido interno", res);
                 notify("El pedido interno se creo exitosamente", "success");
-                actualizar = refresh.go(cargar, 30000);
+                actualizar = refresh.goTime(cargar, 30000);
+                cantidad = 1;
             }, function error(e) {
                 NProgress.done();
                 console.log("No se pudo crear el pedido interno", e);
                 notify("No se pudo crear el pedido interno", "danger");
                 $('#despachar').modal('hide');
-                actualizar = refresh.go(cargar, 30000);
+                actualizar = refresh.goTime(cargar, 30000);
+                cantidad = 1;
+            })
+        }
+    }])
+    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', 'refresh', 'notify', function ($scope, $http, $state, dataFactory, refresh, notify) {
+
+        $scope.stock = dataFactory.stockInsumos;
+        $scope.item = null;
+
+        var actualizar = refresh.goTime(cargar, 30000);
+
+        $scope.$on('dataFactory.stockInsumos', function () {
+            $scope.stock = dataFactory.stockInsumos;
+        })
+
+        function cargar() {
+            if ($state.includes('pedidos.interno')) {
+                dataFactory.getStockInsumos();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.seleccionar = function (item) {
+            $scope.item = item;
+            $('#despachar').modal('show');
+        }
+
+        $scope.solicitar = function (cantidad) {
+            data = {
+                item: $scope.item.id,
+                cantidad: cantidad
+            }
+
+            NProgress.start();
+            $http.post("/api/pedidointerno", data).then(function success(res) {
+                NProgress.done();
+                $('#despachar').modal('hide');
+                console.log("Se creo el pedido interno", res);
+                notify("El pedido interno se creo exitosamente", "success");
+                actualizar = refresh.goTime(cargar, 30000);
+                cantidad = 1;
+            }, function error(e) {
+                NProgress.done();
+                console.log("No se pudo crear el pedido interno", e);
+                notify("No se pudo crear el pedido interno", "danger");
+                $('#despachar').modal('hide');
+                actualizar = refresh.goTime(cargar, 30000);
+                cantidad = 1;
             })
         }
     }])
