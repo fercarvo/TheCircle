@@ -35,13 +35,13 @@
 
 
 <div id="despachar" class="modal fade" style="margin-top:5%;">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Detalle del Item Seleccionado</h5>
             </div>
             <div class="modal-body panel-body">
-                <form class="form-horizontal" ng-submit="solicitar(cantidad)">
+                <!--<form class="form-horizontal" ng-submit="solicitar(cantidad)">
                     <div class="form-group" style="height:36px;">
                         <label class="col-sm-2 control-label">Item</label>
                         <div class="col-sm-9" style="padding-top: 7px;">
@@ -61,7 +61,32 @@
                         <button data-ripple type="submit" class="btn btn-info">Guardar</button>
                         <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
                     </div>
-                </form>
+                </form>-->
+                <table class="table table-striped" style="text-align:center;">
+
+                    <tbody style="text-align:left;">
+                        <tr>
+                            <td>Item: </td>
+                            <td>{{item.nombre}}</td>
+                        </tr>
+                        <tr>
+                            <td>Localidad: </td>
+                            <td>{{item.localidad}}</td>
+                        </tr>
+                        <tr>
+                            <td>Stock: </td>
+                            <td>{{item.stock}}</td>
+                        </tr>
+                        <tr>
+                            <td>Compuesto: </td>
+                            <td>{{item.compuesto}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-center">
+                    <button data-ripple type="submit" class="btn btn-info">Guardar</button>
+                    <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                </div>
             </div>
         </div>
     </div>
