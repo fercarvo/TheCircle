@@ -38,7 +38,7 @@ namespace TheCircle.Controllers
         [APIauth("medico", "asistenteSalud")]
         public IActionResult GetAll(Token token)
         {
-            ItemFarmacia[] stock = ItemFarmacia.Report();
+            ItemFarmacia[] stock = ItemFarmacia.Report(token.data.localidad);
             return Ok(stock);
         }
         

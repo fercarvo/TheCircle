@@ -26,10 +26,10 @@ namespace TheCircle.Models
 
         public Transferencia() { }
 
-        public Transferencia (int item, Localidad destino, int cantidad, int personal, MyDbContext _c) {
+        public Transferencia (int item, Localidad destino, int cantidad, int personal) {
             try {
                 string q = $"EXEC Transferencia_Insert @item={item}, @cantidad={cantidad}, @solicitante={personal}, @destino='{destino}'";
-                _c.Database.ExecuteSqlCommand(q);
+                new MyDbContext().Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {
                 throw new Exception("Error al crear transferencia", e);

@@ -72,9 +72,10 @@ namespace TheCircle.Models
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
-        public static ItemFarmacia[] Report()
+        public static ItemFarmacia[] Report(Localidad localidad)
         {
-            return new MyDbContext().ItemFarmacias.FromSql("ItemFarmacia_Report_Total").ToArray();
+            string query = $"ItemFarmacia_Report_Total @localidadActual='{localidad}'";
+            return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
         /*public static void New(IngresoTransferencia it, Localidad localidad, int personal, MyDbContext _context)
@@ -99,6 +100,12 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
 
             public Ingreso() { }
+        }
+
+        public class Data
+        {
+            public int item { get; set; }
+            public int cantidad { get; set; }
         }
     }
 }

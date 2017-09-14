@@ -719,10 +719,10 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }
         }
     }])
-    .controller('pedidos', ['$scope', "$state", '$http', function ($scope,$state, $http) {
+    .controller('pedidos', ["$state", function ($state) {
         $state.go('pedidos.interno');
     }])
-    .controller('pedidos.transferencia', ['$scope', '$http', function ($scope, $http) {
+    .controller('pedidos.transferencia', ['$scope', '$state', '$http', 'refresh', 'dataFactory', 'notify', function ($scope, $state, $http, refresh, dataFactory, notify) {
         $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
@@ -742,7 +742,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
         $scope.seleccionar = function (item) {
             $scope.item = item;
-            $('#despachar').modal('show');
+            $('#modal_transferencia').modal('show');
         }
 
         $scope.solicitar = function (cantidad) {
@@ -752,18 +752,18 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }
 
             NProgress.start();
-            $http.post("/api/pedidointerno", data).then(function success(res) {
+            $http.post("/api/transferencia", data).then(function success(res) {
                 NProgress.done();
-                $('#despachar').modal('hide');
-                console.log("Se creo el pedido interno", res);
-                notify("El pedido interno se creo exitosamente", "success");
+                $('#modal_transferencia').modal('hide');
+                console.log("Se creo la transferencia", res.data);
+                notify("Transferencia creada exitosamente", "success");
                 actualizar = refresh.goTime(cargar, 30000);
                 cantidad = 1;
             }, function error(e) {
                 NProgress.done();
-                console.log("No se pudo crear el pedido interno", e);
-                notify("No se pudo crear el pedido interno", "danger");
-                $('#despachar').modal('hide');
+                console.log("No se pudo crear la transferencia", e);
+                notify("No se pudo crear la transferencia", "danger");
+                $('#modal_transferencia').modal('hide');
                 actualizar = refresh.goTime(cargar, 30000);
                 cantidad = 1;
             })

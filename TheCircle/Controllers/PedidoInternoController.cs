@@ -40,7 +40,7 @@ namespace TheCircle.Controllers
 
         [HttpPost("pedidointerno")]
         [APIauth("medico")]
-        public IActionResult New(Token token, [FromBody] Req req)
+        public IActionResult New(Token token, [FromBody] ItemFarmacia.Data req)
         {
             new PedidoInterno(req.item, req.cantidad, token.data.cedula);
             return Ok();
@@ -61,13 +61,5 @@ namespace TheCircle.Controllers
             PedidoInterno.Recepcion(id, comentario, token.data.cedula, _c);
             return Ok();
         }
-
-        public class Req {
-            public int item { get; set; }
-            public int cantidad { get; set; }
-
-            public Req() { }
-        }
-
     }
 }
