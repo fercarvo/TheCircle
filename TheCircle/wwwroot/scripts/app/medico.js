@@ -3,6 +3,80 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
+
+//retorna la fecha en un formato especifico
+function date(date) {
+    var format = new Date(date);
+    var day = format.getDate();
+    var month = format.getMonth() + 1;
+    var year = format.getFullYear();
+
+    return day + '/' + month + '/' + year;
+}
+
+//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
+var refresh = {
+    go: function (fn) {
+        fn();
+        return setInterval(fn, 10000);
+    },
+    stop: function (repeater) {
+        clearInterval(repeater);
+    },
+    goTime: function (fn, time) {
+        fn();
+        console.log("Go refresh by ", time);
+        return setInterval(fn, time);
+    }
+}
+
+//Notificaciones bootstrap
+function notify(mensaje, tipo) {
+
+    var icono = "";
+
+    if (tipo === "success") {
+        icono = "glyphicon glyphicon-saved";
+    } else if (tipo === "danger") {
+        icono = "glyphicon glyphicon-ban-circle"
+    }
+
+    return $.notify(
+        {
+            icon: icono,
+            message: mensaje,
+            url: '#',
+            target: '_blank'
+        }, {
+            element: 'body',
+            position: null,
+            showProgressbar: false,
+            type: tipo,
+            allow_dismiss: true,
+            newest_on_top: false,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            offset: { x: 20, y: 70 },
+            spacing: 10,
+            z_index: 1031,
+            delay: 1000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: "pause",
+            animate: {
+                enter: 'animated bounceIn',
+                exit: 'animated bounceOut'
+            },
+            onShow: null,
+            onShown: null,
+            onClose: null,
+            onClosed: null,
+            icon_type: 'class'
+        })
+}
+
 angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -60,7 +134,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             });
         $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
 
         refresh.goTime(function () {
             $http.get("login").then(function () {
@@ -70,40 +144,19 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                     document.location.replace('logout');
                 }
             })
-        }, 1000 * 60 * 20)       
+        }, 1000 * 60 * 20)
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })() 
+        var name = $cookies.get('session_name')
+        var email = $cookies.get('session_email')
+        var photo = $cookies.get('session_photo')
 
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
+        $rootScope.session_photo = "#"
 
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        if (name) { $rootScope.session_name = name }
+        if (email) { $rootScope.session_email = email }
+        if (photo) { $rootScope.session_photo = photo }
 
         $state.go("atencion");
-    }])
-    .factory('date', [function () {
-        return function (date) {
-            var format = new Date(date);
-            var day = format.getDate();
-            var month = format.getMonth() + 1;
-            var year = format.getFullYear();
-
-            return day + '/' + month + '/' + year;
-        };
     }])
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -194,54 +247,6 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             receta : false
         }
     }])
-    .factory('notify', [function () {
-        return function (mensaje, tipo) {
-
-            var icono = "";
-
-            if (tipo === "success") {
-                icono = "glyphicon glyphicon-saved";
-            } else if (tipo === "danger") {
-                icono = "glyphicon glyphicon-ban-circle"
-            }
-
-            return $.notify(
-                {
-                    icon: icono,
-                    message: mensaje,
-                    url: '#',
-                    target: '_blank'
-                },
-                {
-                    element: 'body',
-                    position: null,
-                    showProgressbar: false,
-                    type: tipo,
-                    allow_dismiss: true,
-                    newest_on_top: false,
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: {x:20,y:70},
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 1000,
-                    timer: 1000,
-                    url_target: '_blank',
-                    mouse_over: "pause",
-                    animate: {
-                        enter: 'animated bounceIn',
-                        exit: 'animated bounceOut'
-                    },
-                    onShow: null,
-                    onShown: null,
-                    onClose: null,
-                    onClosed: null,
-                    icon_type: 'class'
-                });
-        }
-    }])
     .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
         return {
             apadrinado : {},
@@ -255,31 +260,6 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 id: null
             },
             status : true
-        }
-    }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
-
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 10000);
-        }
-
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
-        }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
         }
     }])
     .controller('atencion', ["$scope", "$state", "atencionFactory", "dataFactory", "disable", function ($scope, $state, atencionFactory, dfac, disable) {
@@ -334,7 +314,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         } 
 
     }])
-    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", "notify", function ($scope, $state, $http, dataFactory, atencionFactory, disable, notify) {
+    .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
         $scope.disable = disable.atencion;
         $scope.enfermedades = dataFactory.enfermedades;
@@ -391,7 +371,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory","notify", function ($scope, $state, $http, disable, dataFactory, atencionFactory,notify) {
+    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
@@ -433,7 +413,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('atencion.receta', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", "notify", "refresh", function ($scope, $state, $http, disable, dataFactory, atencionFactory, notify, refresh) {
+    .controller('atencion.receta', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
 
         $scope.disable = disable.receta;
         $scope.stock = dataFactory.stock;
@@ -495,11 +475,9 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
         $scope.guardarReceta = function () {
-            //var data = { idReceta: atencionFactory.receta.id, items: atencionFactory.receta.items };
             var idReceta = atencionFactory.receta.id;
             var items = atencionFactory.receta.items;
 
-            //console.log("Items a enviar", JSON.parse(angular.toJson(items)));
             NProgress.start();
             $http.post("/api/receta/" + idReceta, JSON.parse(angular.toJson(items))).then(function success(res) {
                 
@@ -518,7 +496,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('anulaciones', ["$scope", "$state", "$http", "atencionFactory", "notify", "dataFactory", "refresh", function ($scope, $state, $http, atencionFactory, notify, dataFactory, refresh) {
+    .controller('anulaciones', ["$scope", "$state", "$http", "atencionFactory",  "dataFactory", "refresh", function ($scope, $state, $http, atencionFactory,  dataFactory, refresh) {
 
         $scope.recetas = dataFactory.recetas;
         $scope.receta = null;
@@ -565,7 +543,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $state.go('estadisticas.enfermedades');
 
     }])
-    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
+    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
         $scope.atenciones = dataFactory.estadisticas.atenciones;
 
         $scope.$watch('atenciones', function () {
@@ -597,7 +575,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
+    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
         $scope.remisiones = dataFactory.estadisticas.remisiones;
 
         $scope.$watch('remisiones', function () {
@@ -628,7 +606,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", "notify", "date", function ($scope, $state, $http, dataFactory, notify, date) {
+    .controller('estadisticas.recetas', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
         $scope.recetas = dataFactory.estadisticas.recetas;
         
         $scope.$watch('recetas', function () {
@@ -661,7 +639,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", "date", "notify", function ($scope, $state, $http, dataFactory, date, notify) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http, dataFactory) {
 
         $scope.enfermedades = dataFactory.estadisticas.enfermedades;
 
@@ -722,7 +700,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     .controller('pedidos', ["$state", function ($state) {
         $state.go('pedidos.interno');
     }])
-    .controller('pedidos.transferencia', ['$scope', '$state', '$http', 'refresh', 'dataFactory', 'notify', function ($scope, $state, $http, refresh, dataFactory, notify) {
+    .controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
         $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
@@ -769,7 +747,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             })
         }
     }])
-    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', 'refresh', 'notify', function ($scope, $http, $state, dataFactory, refresh, notify) {
+    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', function ($scope, $http, $state, dataFactory) {
 
         $scope.stock = dataFactory.stockInsumos;
         $scope.item = null;

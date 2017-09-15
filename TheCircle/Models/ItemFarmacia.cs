@@ -60,12 +60,6 @@ namespace TheCircle.Models
             return _context.ItemFarmacias.FromSql(query).ToArray();
         }
 
-        /*public static void New(Ingreso item, Localidad localidad, int personal, MyDbContext _context) 
-        {
-            string query = $"EXEC ItemFarmacia_Insert @nombre='{item.nombre}', @compuesto='{item.compuesto}', @fcaducidad='{item.fcaducidad}', @cantidad={item.cantidad}, @localidad='{localidad}', @personal={personal}";
-            _context.Database.ExecuteSqlCommand(query);
-        }*/
-
         public static ItemFarmacia[] ReportLocalidadInsumos(Localidad localidad)
         {
             string query = $"EXEC ItemFarmacia_Report_InsumosM @localidad='{localidad}'";
@@ -74,15 +68,9 @@ namespace TheCircle.Models
 
         public static ItemFarmacia[] Report(Localidad localidad)
         {
-            string query = $"ItemFarmacia_Report_Total @localidadActual='{localidad}'";
+            string query = $"EXEC ItemFarmacia_Report_Total @localidadActual='{localidad}'";
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
-
-        /*public static void New(IngresoTransferencia it, Localidad localidad, int personal, MyDbContext _context)
-        {
-            string query = $"EXEC ItemFarmacia_Insert_Transferencia @idTransferencia={it.idTransferencia}, @comentario='{it.comentario}', @localidad='{localidad}', @personal={personal}";
-            _context.Database.ExecuteSqlCommand(query);
-        }*/
 
         public class IngresoTransferencia
         {
