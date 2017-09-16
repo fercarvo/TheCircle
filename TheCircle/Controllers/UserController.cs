@@ -25,7 +25,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("user/{cedula}/photo")]
-        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60*2, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
         public IActionResult Get_Foto(Token token, int cedula)
         {

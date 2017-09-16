@@ -7,7 +7,7 @@
                 <option value="OC">Oficina central</option>
                 <option value="CC0">Centro Comunitario 0 - Durán</option>
                 <option value="CC2">Centro Comunitario 2 - Phelan</option>
-                <option value="CC3">Centro Comunitario 3 - BUDS"</option>
+                <option value="CC3">Centro Comunitario 3 - BUDS</option>
                 <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
                 <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
                 <option value="HEE">Centro Hacia El Empleo</option>
@@ -34,7 +34,7 @@
             </thead>
 
             <tbody>
-                <tr ng-repeat="item in stock | orderBy:'fcaducidad' | filter:buscar">
+                <tr ng-repeat="item in stock | orderBy:'compuesto' | filter:buscar">
                     <td>{{item.nombre}}</td>
                     <td>{{item.compuesto}}</td>
                     <td>{{item.categoria}}</td>
@@ -54,34 +54,17 @@
             <div class="modal-header">
                 <h5 class="modal-title">Detalle del Item Seleccionado</h5>
             </div>
-            <div class="modal-body panel-body"><!--
-                <form class="form-horizontal" ng-submit="solicitar(cantidad)">
-                    <div class="form-group" style="height:36px;">
-                        <label class="col-sm-2 control-label">Item</label>
-                        <div class="col-sm-9" style="padding-top: 7px;">
-                            {{item.nombre}} {{item.compuesto}} | localidad: {{item.localidad}}
-                        </div>
-                    </div>
-                    <div class="form-group" style="height:36px;">
-                        <label class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
-                        <div class="col-sm-9">
-                            <input required type="number" min="1" max="200" class="form-control" ng-model="cantidad">
-                        </div>
-                    </div>
-                    <div>
-                        <a style="color:red;">(*) campo obligatorio.</a>
-                    </div>
-                    <div class="text-center">
-                        <button data-ripple type="submit" class="btn btn-info">Guardar</button>
-                        <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
-                    </div>
-                </form>-->
+            <div class="modal-body">
                 <table class="table table-striped" style="text-align:center;">
 
                     <tbody style="text-align:left;">
                         <tr>
-                            <td>Item: </td>
+                            <td>Nombre Ítem: </td>
                             <td>{{item.nombre}}</td>
+                        </tr>
+                        <tr>
+                            <td>Compuesto: </td>
+                            <td>{{item.compuesto}}</td>
                         </tr>
                         <tr>
                             <td>Localidad: </td>
@@ -92,15 +75,15 @@
                             <td>{{item.stock}}</td>
                         </tr>
                         <tr>
-                            <td>Compuesto: </td>
-                            <td>{{item.compuesto}}</td>
+                            <td>Cantidad a solicitar: </td>
+                            <td><input form="transferencia" required type="number" min="1" title="La cantidad no puede ser mayor al stock" class="form-control" ng-model="cantidad"></td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="text-center">
+                <form style="padding-top:15px;text-align:center" id="transferencia" ng-submit="solicitar(cantidad)">
                     <button data-ripple type="submit" class="btn btn-info">Guardar</button>
                     <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
-                </div>
+                </form>                    
             </div>
         </div>
     </div>

@@ -1,38 +1,35 @@
-﻿
-        <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
-            <div class="panel-heading">
-                <div style="text-align:right">
-                    <input class="form-control" type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto">
-                </div>
-            </div>
-            <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
-
-                <table class="table table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Compuesto</th>
-                            <th>Categor&iacute;a</th>
-                            <th>Disponible</th>
-                            <th>Caducidad</th>
-                            <th>Solicitar</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="item in stock | orderBy:'fcaducidad' | filter:buscar">
-                            <td>{{item.nombre}}</td>
-                            <td>{{item.compuesto}}</td>
-                            <td>{{item.categoria}}</td>
-                            <td>{{item.stock}}</td>
-                            <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
-                            <td><button ng-click="seleccionar(item)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
+﻿<div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+    <div class="panel-heading">
+        <div style="text-align:right">
+            <input class="form-control" type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto">
         </div>
+    </div>
+    <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
 
-
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Compuesto</th>
+                    <th>Categor&iacute;a</th>
+                    <th>Disponible</th>
+                    <th>Caducidad</th>
+                    <th>Solicitar</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in stock | orderBy:'nombre' | filter:buscar">
+                    <td>{{item.nombre}}</td>
+                    <td>{{item.compuesto}}</td>
+                    <td>{{item.categoria}}</td>
+                    <td>{{item.stock}}</td>
+                    <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                    <td><button ng-click="seleccionar(item)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 <div id="despachar" class="modal fade" style="margin-top:5%;">
     <div class="modal-dialog">
@@ -40,53 +37,31 @@
             <div class="modal-header">
                 <h5 class="modal-title">Detalle del Item Seleccionado</h5>
             </div>
-            <div class="modal-body panel-body">
-                <!--<form class="form-horizontal" ng-submit="solicitar(cantidad)">
-                    <div class="form-group" style="height:36px;">
-                        <label class="col-sm-2 control-label">Item</label>
-                        <div class="col-sm-9" style="padding-top: 7px;">
-                            {{item.nombre}} {{item.compuesto}}
-                        </div>
-                    </div>
-                    <div class="form-group" style="height:36px;">
-                        <label class="col-sm-2 control-label">Cantidad <a style="color:red;">(*)</a></label>
-                        <div class="col-sm-9">
-                            <input required type="number" min="1" max="200" class="form-control" ng-model="cantidad" placeholder="">
-                        </div>
-                    </div>
-                    <div>
-                        <a style="color:red;">(*) campo obligatorio.</a>
-                    </div>
-                    <div class="text-center">
-                        <button data-ripple type="submit" class="btn btn-info">Guardar</button>
-                        <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
-                    </div>
-                </form>-->
+            <div class="modal-body">
                 <table class="table table-striped" style="text-align:center;">
-
                     <tbody style="text-align:left;">
                         <tr>
-                            <td>Item: </td>
+                            <td>Nombre Ítem: </td>
                             <td>{{item.nombre}}</td>
-                        </tr>
-                        <tr>
-                            <td>Localidad: </td>
-                            <td>{{item.localidad}}</td>
-                        </tr>
-                        <tr>
-                            <td>Stock: </td>
-                            <td>{{item.stock}}</td>
                         </tr>
                         <tr>
                             <td>Compuesto: </td>
                             <td>{{item.compuesto}}</td>
                         </tr>
+                        <tr>
+                            <td>Cantidad disponible: </td>
+                            <td>{{item.stock}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cantidad a solicitar: </td>
+                            <td><input form="pedidoI" required type="number" min="1" title="La cantidad no puede ser mayor al stock" class="form-control" ng-model="cantidad"></td>
+                        </tr>
                     </tbody>
                 </table>
-                <div class="text-center">
+                <form style="padding-top:15px;text-align:center" id="pedidoI" ng-submit="solicitar(cantidad)">
                     <button data-ripple type="submit" class="btn btn-info">Guardar</button>
                     <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
-                </div>
+                </form>        
             </div>
         </div>
     </div>

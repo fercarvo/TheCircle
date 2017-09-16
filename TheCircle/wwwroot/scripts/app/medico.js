@@ -132,19 +132,21 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 templateUrl: 'views/medico/pedidos.interno.html',
                 controller: 'pedidos.interno'
             });
-        $compileProvider.debugInfoEnabled(true); //false en modo de produccion
+        $compileProvider.debugInfoEnabled(false); //false en modo de produccion
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('logout');
-                }
-            })
-        }, 1000 * 60 * 20)
+        refresh.goTime(() => {
+            $http.get("login")
+                .then(() => {
+                    console.log("Session valida");
+                }, (response) => {
+                    if (response.status === 401) {
+                        alert("Su sesion ha caducado");
+                        document.location.replace('logout');
+                    }
+                })
+        }, 1000*60*20) //cada 20 minutos
 
         var name = $cookies.get('session_name')
         var email = $cookies.get('session_email')
@@ -156,7 +158,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         if (email) { $rootScope.session_email = email }
         if (photo) { $rootScope.session_photo = photo }
 
-        $state.go("atencion");
+        $state.go("atencion.registro");
     }])
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -304,7 +306,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $scope.foto = "/api/apadrinado/" + codigo + "/foto";
                 $scope.apadrinado = res.data;
 
-            }, function error(err) {
+            }, function error() {
 
                 $scope.foto = "/images/ci.png";
                 $scope.status = true
@@ -421,6 +423,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.ItemRecetaNuevo = {};
         $scope.editarItem = true;
         $scope.diagnosticos = atencionFactory.diagnosticos;
+        $scope.ItemRecetaNuevo.diagnostico = $scope.diagnosticos[0];
         var actualizar = refresh.go(cargar);
 
 
@@ -496,7 +499,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('anulaciones', ["$scope", "$state", "$http", "atencionFactory",  "dataFactory", "refresh", function ($scope, $state, $http, atencionFactory,  dataFactory, refresh) {
+    .controller('anulaciones', ["$scope", "$state", "$http", "dataFactory", function ($scope, $state, $http,  dataFactory) {
 
         $scope.recetas = dataFactory.recetas;
         $scope.receta = null;
@@ -539,7 +542,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
 
 
     }])
-    .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('estadisticas', ["$state", function ($state) {
         $state.go('estadisticas.enfermedades');
 
     }])
@@ -721,6 +724,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.seleccionar = function (item) {
             $scope.item = item;
             $('#modal_transferencia').modal('show');
+            $scope.cantidad = null;
         }
 
         $scope.solicitar = function (cantidad) {
@@ -737,9 +741,9 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 notify("Transferencia creada exitosamente", "success");
                 actualizar = refresh.goTime(cargar, 30000);
                 cantidad = 1;
-            }, function error(e) {
+            }, function error(err) {
                 NProgress.done();
-                console.log("No se pudo crear la transferencia", e);
+                console.log("No se pudo crear la transferencia", err);
                 notify("No se pudo crear la transferencia", "danger");
                 $('#modal_transferencia').modal('hide');
                 actualizar = refresh.goTime(cargar, 30000);
@@ -769,6 +773,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.seleccionar = function (item) {
             $scope.item = item;
             $('#despachar').modal('show');
+            $scope.cantidad = null;
         }
 
         $scope.solicitar = function (cantidad) {
