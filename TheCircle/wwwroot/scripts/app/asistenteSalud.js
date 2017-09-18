@@ -3,6 +3,80 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
+
+//retorna la fecha en un formato especifico
+function date(date) {
+    var format = new Date(date);
+    var day = format.getDate();
+    var month = format.getMonth() + 1;
+    var year = format.getFullYear();
+
+    return day + '/' + month + '/' + year;
+}
+
+//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
+var refresh = {
+    go: function (fn) {
+        fn();
+        return setInterval(fn, 10000);
+    },
+    stop: function (repeater) {
+        clearInterval(repeater);
+    },
+    goTime: function (fn, time) {
+        fn();
+        console.log("Go refresh by ", time);
+        return setInterval(fn, time);
+    }
+}
+
+//Notificaciones bootstrap
+function notify(mensaje, tipo) {
+
+    var icono = "";
+
+    if (tipo === "success") {
+        icono = "glyphicon glyphicon-saved";
+    } else if (tipo === "danger") {
+        icono = "glyphicon glyphicon-ban-circle"
+    }
+
+    return $.notify(
+        {
+            icon: icono,
+            message: mensaje,
+            url: '#',
+            target: '_blank'
+        }, {
+            element: 'body',
+            position: null,
+            showProgressbar: false,
+            type: tipo,
+            allow_dismiss: true,
+            newest_on_top: false,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            offset: { x: 20, y: 70 },
+            spacing: 10,
+            z_index: 1031,
+            delay: 1000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: "pause",
+            animate: {
+                enter: 'animated bounceIn',
+                exit: 'animated bounceOut'
+            },
+            onShow: null,
+            onShown: null,
+            onClose: null,
+            onClosed: null,
+            icon_type: 'class'
+        })
+}
+
 angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -56,7 +130,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             });
         //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
 
         refresh.goTime(function () {
             $http.get("login").then(function () {
@@ -90,64 +164,6 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
         })()
 
         $state.go("despachar");
-    }])
-    .factory('notify', [function () {
-        return function (mensaje, tipo) {
-            var icono = "";
-
-            if (tipo === "success") {
-                icono = "glyphicon glyphicon-saved";
-            } else if (tipo === "danger") {
-                icono = "glyphicon glyphicon-ban-circle"
-            }
-
-            return $.notify(
-                {
-                    icon: icono,
-                    //title: titulo,
-                    message: mensaje,
-                    url: '#',
-                    target: '_blank'
-                },
-                {
-                    element: 'body',
-                    position: null,
-                    showProgressbar: false,
-                    type: tipo,
-                    allow_dismiss: true,
-                    newest_on_top: false,
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: { x: 20, y: 70 },
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 1000,
-                    timer: 1000,
-                    url_target: '_blank',
-                    mouse_over: "pause",
-                    animate: {
-                        enter: 'animated bounceIn',
-                        exit: 'animated bounceOut'
-                    },
-                    onShow: null,
-                    onShown: null,
-                    onClose: null,
-                    onClosed: null,
-                    icon_type: 'class'
-                });
-        };
-    }])
-    .factory('date', [function () {
-        return function (date) {
-            var format = new Date(date);
-            var day = format.getDate();
-            var month = format.getMonth() + 1;
-            var year = format.getFullYear();
-
-            return day + '/' + month + '/' + year;
-        }
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -254,35 +270,10 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
 
         }
     }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
-
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 20000);
-        }
-
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
-        }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
-        }
-    }])
     .controller('despachar', ["$state", function ($state) {
         $state.go("despachar.receta");
     }])
-    .controller('despachar.receta', ["$scope", "$state", "$http", "dataFac", "notify", "crearDespacho", "refresh", function ($scope, $state, $http, dataFac, notify, crearDespacho, refresh) {
+    .controller('despachar.receta', ["$scope", "$state", "$http", "dataFac", "crearDespacho", function ($scope, $state, $http, dataFac, crearDespacho) {
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
@@ -351,11 +342,11 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             }
         }
     }])
-    .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+    .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         
 
     }])
-    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.transferencias = dataFac.transferencias;
         $scope.transferencia = null;
 
@@ -407,7 +398,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .controller('historial', ["$state", function ($state) {
         $state.go("historial.recetas")
     }])
-    .controller('historial.recetas', ["$scope", "$state", "$http", "dataFac", "refresh", function ($scope, $state, $http, dataFac, refresh) {
+    .controller('historial.recetas', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.despachos = dataFac.despachos;
         $scope.receta = null;
         var actualizar = refresh.go(cargar, 30000);
@@ -433,13 +424,13 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             actualizar = refresh.go(cargar, 30000); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
-    .controller('historial.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+    .controller('historial.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
 
     }])
-    .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+    .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
 
     }])
-    .controller('stock', ["$scope", "$state", "dataFac", "refresh", function ($scope, $state, dataFac, refresh) {
+    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock;
         var actualizar = refresh.go(cargar, 30000);
 
@@ -458,7 +449,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .controller('ingresar', ["$state", function ($state) {
         $state.go("ingresar.items")        
     }])
-    .controller('ingresar.items', ["$scope", "$state", "$http", "dataFac", "notify", "date",  function ($scope, $state, $http, dataFac, notify,date) {
+    .controller('ingresar.items', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.compuestos = dataFac.compuestos;
         $scope.items = null;
 
@@ -489,7 +480,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             })
         }
     }])
-    .controller('ingresar.transferencias', ["$scope", "$state", "$http", "dataFac", "notify", "refresh", function ($scope, $state, $http, dataFac, notify, refresh) {
+    .controller('ingresar.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.transferencias = dataFac.transferenciasPorIngresar;
         $scope.transferencia = null;
 

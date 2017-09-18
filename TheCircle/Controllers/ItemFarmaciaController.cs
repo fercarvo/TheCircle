@@ -17,7 +17,7 @@ namespace TheCircle.Controllers
 
         [HttpGet("itemfarmacia")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
-        [APIauth("medico", "asistenteSalud")]
+        [APIauth("medico", "asistenteSalud", "bodeguero")]
         public IActionResult GetItems(Token token)
         {
             ItemFarmacia[] stock = ItemFarmacia.ReportLocalidad(token.data.localidad, _context);

@@ -10,13 +10,10 @@
     @Html.Partial("Partials/Styles")
 
 </head>
-<body class="page-dashboard" ng-app="appBodeguero">
-    <!-- TOP NAVIGATION STARTS -->
+<body class="page-dashboard" ng-app="bodeguero">
     @Html.Partial("Partials/TopBar")
-    <!-- TOP NAVIGATION ENDS -->
-    <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+
     <div class="content-wrapper">
-        <!-- SIDEBAR STARTS -->
         <style>
             .sidebar .sidebar-nav > li > a {
                 color: #901f61;
@@ -73,42 +70,40 @@
         </style>
         <div class="sidebar" id="sidebar_menu">
             <ul class="sidebar-nav">
-                <!--add class dropdown for subitems in lists-->
                 <li data-ripple class=" open" ui-sref="despachar" ui-sref-active="active">
                     <a>
-
                         <span>Despachar</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
                 <li data-ripple class=" open" ui-sref="historial" ui-sref-active="active">
                     <a>
-
                         <span>Historial</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
+                <li data-ripple class="open" ui-sref="stock" ui-sref-active="active">
+                    <a>
+                        <span>Existencia bodega</span>
+                    </a>
+                </li>
                 <li data-ripple class=" open" ui-sref="ingresar" ui-sref-active="active">
                     <a>
-
                         <span>Ingresar Ítems</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
                 <li data-ripple class=" open" ui-sref="compuesto" ui-sref-active="active">
                     <a>
-
                         <span>Ingresar Compuestos</span>
                     </a>
-                </li><!-- ITEM SIDEBAR END 1 -->
+                </li>
             </ul>
         </div>
 
         <div style="overflow-y:auto;max-height:94vh">
             <ui-view></ui-view>
         </div>
-
     </div>
 
     @Html.Partial("Partials/Scripts")
     <script src="~/scripts/app/bodeguero.js"></script>
-
 </body>
 </html>

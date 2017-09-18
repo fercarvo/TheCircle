@@ -10,17 +10,16 @@ function date(date) {
 
 //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
 var refresh = {
-    go: function (fn) {
+    go: function (fn, time) {
         fn();
+        if (time) {
+            console.log("Go refresh by ", time)
+            return setInterval(fn, time)
+        }
         return setInterval(fn, 10000);
     },
     stop: function (repeater) {
         clearInterval(repeater);
-    },
-    goTime: function (fn, time) {
-        fn();
-        console.log("Go refresh by ", time);
-        return setInterval(fn, time);
     }
 }
 
@@ -71,7 +70,7 @@ function notify(mensaje, tipo) {
         })
 }
 
-angular.module('appBodeguero', ['ui.router', 'ngCookies'])
+angular.module('bodeguero', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -82,6 +81,10 @@ angular.module('appBodeguero', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/bodeguero/historial.html',
                 controller: 'historial'
             })
+            .state('stock', {
+                templateUrl: 'views/bodeguero/stock.html',
+                controller: 'stock'
+            })
             .state('ingresar', {
                 templateUrl: 'views/bodeguero/ingresar.html',
                 controller: 'ingresar'
@@ -90,21 +93,20 @@ angular.module('appBodeguero', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/bodeguero/compuesto.html',
                 controller: 'compuesto'
             });
-        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
+        $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
 
-        refresh.goTime(() => {
-            $http.get("login")
-                .then(() => {
-                    console.log("Session valida");
-                }, (response) => {
-                    if (response.status == 401) {
-                        alert("Su sesion ha caducado");
-                        document.location.replace('logout');
-                    }
-                })
-        }, 1000 * 60 * 20) //cada 20 minutos
+        refresh.go(function (){
+            $http.get("login").then( ()=>{
+                console.log("Session valida");
+            }, (response)=>{
+                if (response.status == 401) {
+                    alert("Su sesion ha caducado");
+                    document.location.replace('logout');
+                }
+            })
+        }, 1000*60*20) //cada 20 minutos
 
         var name = $cookies.get('session_name')
         var email = $cookies.get('session_email')
@@ -128,6 +130,17 @@ angular.module('appBodeguero', ['ui.router', 'ngCookies'])
             categorias: null,
             unidades: null,
             getData: data,
+            getStock: getStock
+        }
+
+        function getStock() {
+            $http.get("/api/itemfarmacia/").then(function success(res) {
+                console.log("Stock de bodega", res.data);
+                dataFac.stock = res.data;
+                $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
+            }, function error(err) {
+                console.log("error cargar stock");
+            })
         }
 
         function data() {
@@ -150,8 +163,24 @@ angular.module('appBodeguero', ['ui.router', 'ngCookies'])
 
 
     }])
-    .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $scope.casa = "dasdasdasd"
+    }])
+    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.stock = dataFac.stock;
+        var actualizar = refresh.go(cargar, 30000);
+
+        $scope.$on('dataFac.stock', function () {
+            $scope.stock = dataFac.stock;
+        })
+
+        function cargar() {
+            if ($state.includes('stock')) {
+                dataFac.getStock();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
     }])
     .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
         console.log("En controller ingresar");

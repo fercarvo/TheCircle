@@ -68,6 +68,7 @@
     <Content Include="wwwroot\views\bodeguero\despachar.html" />
     <Content Include="wwwroot\views\bodeguero\historial.html" />
     <Content Include="wwwroot\views\bodeguero\ingresar.html" />
+    <Content Include="wwwroot\views\bodeguero\stock.html" />
     <Content Include="wwwroot\views\contralor\historial.html" />
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
