@@ -19,20 +19,18 @@
                 Ingreso en bodega
             </div>
         </div>
-
         <div class="panel-body" style="padding:25px 20px 10px 20px;">
-
-            <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+            <div class="panel panel-default-light border-default col-sm-6" style="padding:0px">
                 <form class="form-horizontal" id="form-crearItem" ng-submit="crear(form)" style="margin-top:10px;">
                     <div class="form-group">
                         <label class="control-label col-sm-2">Nombre del Compuesto<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
+                        <div class="col-sm-8" style="padding-left:initial">
                             <input required ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="control-label col-sm-2">Categoría<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
+                        <div class="col-sm-8" style="padding-left:initial">
                             <select required class="form-control myselect" ng-model="form.categoria" ng-options="categoria.id as categoria.nombre for categoria in categorias">
                                 <option style="display:none;" selected disabled value="">Digite y Seleccione la categoría del Compuesto</option>
                             </select>
@@ -41,7 +39,7 @@
 
                     <div class="form-group">
                         <label class="control-label col-sm-2">Unidad de Medida<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
+                        <div class="col-sm-8" style="padding-left:initial">
                             <select required class="form-control myselect" ng-model="form.unidad" ng-options="unidad.nombre as unidad.nombre for unidad in unidades">
                                 <option style="display:none;" selected disabled value="">Digite y Seleccione la unidad de Medida</option>
                             </select>
@@ -55,9 +53,38 @@
                         <button data-ripple type="reset" class="btn btn-default" ng-click="reset()">Cancelar</button>
                     </div>
                 </form>
-
                 <script type="text/javascript"> $(".myselect").select2() </script>
             </div>
+
+            <div class="panel panel-default-light border-default col-sm-6" style="padding:0px">
+                <div class="panel-heading">
+                    <div style="text-align:right">
+                        <input class="form-control" type="text" ng-model="buscar.nombre" placeholder="buscar compuestos por nombre">
+                    </div>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre compuesto</th>
+                                <th>U. Medida</th>
+                                <th>Categoria</th>  
+                                <th>Grupo</th>  
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="c in compuestos | orderBy:'nombre' | filter:buscar">
+                                <td>{{c.nombre}}</td>
+                                <td>{{c.unidadMedida}}</td>  
+                                <td>{{c.categoriaNombre}}</td>
+                                <td>{{c.grupo}}</td>  
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
         </div>
     </div>
 </div>

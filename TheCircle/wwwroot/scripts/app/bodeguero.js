@@ -130,7 +130,8 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
             categorias: null,
             unidades: null,
             getData: data,
-            getStock: getStock
+            getStock: getStock,
+            getCompuestos: getCompuestos
         }
 
         function getStock() {
@@ -139,7 +140,7 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
                 dataFac.stock = res.data;
                 $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
             }, function error(err) {
-                console.log("error cargar stock");
+                console.log("error cargar stock", err);
             })
         }
 
@@ -148,11 +149,19 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
                 dataFac.compuestos = res.data.compuestos;
                 dataFac.categorias = res.data.categorias;
                 dataFac.unidades = res.data.unidades;
-
                 $rootScope.$broadcast('compuesto-categoria-unidades');
 
             }, (error)=>{
-                console.log("Error cargar data", err);
+                console.log("Error cargar data", error);
+            })
+        }
+
+        function getCompuestos() {
+            $http.get("/api/compuesto").then((res) => {
+                dataFac.compuestos = res.data;
+                $rootScope.$broadcast('dataFac.compuestos');
+            }, (error) => {
+                console.log("Error cargar compuestos", error);
             })
         }
 
@@ -215,14 +224,21 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
 
         $scope.categorias = dataFac.categorias;
         $scope.unidades = dataFac.unidades;
+        $scope.compuestos = dataFac.compuestos;
 
-        if ($scope.categorias === null) { dataFac.getCategorias() }
-        if ($scope.unidades === null) { dataFac.getUnidades() }
+        /*
+        if ($scope.categorias === null || $scope.unidades === null) { dataFac.getData() }
+        if ($scope.compuestos === null) { dataFac.getCompuestos() }
+        */
+        dataFac.getData()
 
         $scope.$on('compuesto-categoria-unidades', ()=>{
             $scope.categorias = dataFac.categorias
             $scope.unidades = dataFac.unidades
+            $scope.compuestos = dataFac.compuestos
         })
+
+        //$scope.$on('dataFac.compuestos', ()=>{ $scope.compuestos = dataFac.compuestos })
 
         $scope.crear =  (form)=>{
             var data = {
