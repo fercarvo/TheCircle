@@ -1,4 +1,77 @@
-﻿angular.module('appBodeguero', ['ui.router', 'ngCookies'])
+﻿//retorna la fecha en un formato especifico
+function date(date) {
+    var format = new Date(date);
+    var day = format.getDate();
+    var month = format.getMonth() + 1;
+    var year = format.getFullYear();
+
+    return day + '/' + month + '/' + year;
+}
+
+//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
+var refresh = {
+    go: function (fn) {
+        fn();
+        return setInterval(fn, 10000);
+    },
+    stop: function (repeater) {
+        clearInterval(repeater);
+    },
+    goTime: function (fn, time) {
+        fn();
+        console.log("Go refresh by ", time);
+        return setInterval(fn, time);
+    }
+}
+
+//Notificaciones bootstrap
+function notify(mensaje, tipo) {
+
+    var icono = "";
+
+    if (tipo === "success") {
+        icono = "glyphicon glyphicon-saved";
+    } else if (tipo === "danger") {
+        icono = "glyphicon glyphicon-ban-circle"
+    }
+
+    return $.notify(
+        {
+            icon: icono,
+            message: mensaje,
+            url: '#',
+            target: '_blank'
+        }, {
+            element: 'body',
+            position: null,
+            showProgressbar: false,
+            type: tipo,
+            allow_dismiss: true,
+            newest_on_top: false,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            offset: { x: 20, y: 70 },
+            spacing: 10,
+            z_index: 1031,
+            delay: 1000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: "pause",
+            animate: {
+                enter: 'animated bounceIn',
+                exit: 'animated bounceOut'
+            },
+            onShow: null,
+            onShown: null,
+            onClose: null,
+            onClosed: null,
+            icon_type: 'class'
+        })
+}
+
+angular.module('appBodeguero', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -19,142 +92,58 @@
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('logout');
-                }
-            })
-        }, 1000 * 60 * 20)
+        refresh.goTime(() => {
+            $http.get("login")
+                .then(() => {
+                    console.log("Session valida");
+                }, (response) => {
+                    if (response.status == 401) {
+                        alert("Su sesion ha caducado");
+                        document.location.replace('logout');
+                    }
+                })
+        }, 1000 * 60 * 20) //cada 20 minutos
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })()
+        var name = $cookies.get('session_name')
+        var email = $cookies.get('session_email')
+        var photo = $cookies.get('session_photo')
 
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
+        $rootScope.session_photo = "#"
 
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        if (name) { $rootScope.session_name = name }
+        if (email) { $rootScope.session_email = email }
+        if (photo) { $rootScope.session_photo = photo }
 
-        $state.go("despachar");
-    }])
-    .factory('notify', [function () {
-        return function (mensaje, tipo) {
-            var icono = "";
+        dataFac.getData()
 
-            if (tipo === "success") {
-                icono = "glyphicon glyphicon-saved";
-            } else if (tipo === "danger") {
-                icono = "glyphicon glyphicon-ban-circle"
-            }
-
-            return $.notify(
-                {
-                    icon: icono,
-                    //title: titulo,
-                    message: mensaje,
-                    url: '#',
-                    target: '_blank'
-                },
-                {
-                    element: 'body',
-                    position: null,
-                    showProgressbar: false,
-                    type: tipo,
-                    allow_dismiss: true,
-                    newest_on_top: false,
-                    placement: {
-                        from: "top",
-                        align: "right"
-                    },
-                    offset: { x: 20, y: 70 },
-                    spacing: 10,
-                    z_index: 1031,
-                    delay: 1000,
-                    timer: 1000,
-                    url_target: '_blank',
-                    mouse_over: "pause",
-                    animate: {
-                        enter: 'animated bounceIn',
-                        exit: 'animated bounceOut'
-                    },
-                    onShow: null,
-                    onShown: null,
-                    onClose: null,
-                    onClosed: null,
-                    icon_type: 'class'
-                });
-        };
-    }])
-    .factory('date', [function () {
-        return function (date) {
-            var format = new Date(date);
-            var day = format.getDate();
-            var month = format.getMonth() + 1;
-            var year = format.getFullYear();
-
-            return day + '/' + month + '/' + year;
-        }
+        $state.go("despachar")
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var dataFac = {
             stock: null,
             compuestos: null,
-            getCompuestos: getCompuestos
+            categorias: null,
+            unidades: null,
+            getData: data,
         }
 
-        function getCompuestos() {
-            $http.get("/api/compuesto").then(function success(res) {
-                dataFac.compuestos = res.data;
-                $rootScope.$broadcast('dataFac.compuestos');
-            }, function error(err) {
-                console.log("Error cargar compuestos", err);
+        function data() {
+            $http.get("/api/compuesto-categoria-unidades").then( (res)=>{
+                dataFac.compuestos = res.data.compuestos;
+                dataFac.categorias = res.data.categorias;
+                dataFac.unidades = res.data.unidades;
+
+                $rootScope.$broadcast('compuesto-categoria-unidades');
+
+            }, (error)=>{
+                console.log("Error cargar data", err);
             })
         }
 
         return dataFac;
-    }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
-
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 10000);
-        }
-
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
-        }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
-        }
     }])
     .controller('despachar', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $scope.casa = "dasdasdasd"
@@ -164,15 +153,13 @@
     .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
         $scope.casa = "dasdasdasd"
     }])
-    .controller('ingresar', ["$state", "$scope", "$http", "dataFac", "notify", "date", function ($state, $scope, $http, dataFac, notify, date) {
+    .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
         console.log("En controller ingresar");
-        $scope.compuestos = dataFac.compuestos;
+        $scope.compuestos = dataFac.getData();
 
-        if ($scope.compuestos === null) {
-            dataFac.getCompuestos();
-        }
+        if ($scope.compuestos === null) { dataFac.getCompuestos() }
 
-        $scope.$on('dataFac.compuestos', function () {
+        $scope.$on('compuesto-categoria-unidades', ()=>{ 
             $scope.compuestos = dataFac.compuestos;
         })
 
@@ -194,4 +181,37 @@
                 notify("No se ha podido guardar el ingreso", "danger");
             })
         }
+    }])
+    .controller('compuesto', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
+
+        $scope.categorias = dataFac.categorias;
+        $scope.unidades = dataFac.unidades;
+
+        if ($scope.categorias === null) { dataFac.getCategorias() }
+        if ($scope.unidades === null) { dataFac.getUnidades() }
+
+        $scope.$on('compuesto-categoria-unidades', ()=>{
+            $scope.categorias = dataFac.categorias
+            $scope.unidades = dataFac.unidades
+        })
+
+        $scope.crear =  (form)=>{
+            var data = {
+                nombre: form.nombre,
+                categoria: form.categoria,
+                unidad: form.unidad
+            }
+            console.log(form, data);
+
+            $http.post("api/compuesto", data).then(function sucess(res) {
+                console.log("Ingreso exitoso", res);
+                notify("Ingreso exitoso de compuesto", "success");
+                $state.reload();
+            }, function error(e) {
+                console.log("No se pudo guardar el compuesto", e)
+                notify("No se ha podido guardar el compuesto", "danger");
+            })
+        }
+
+        $scope.reset = ()=>{ $state.reload() }
     }])

@@ -1,64 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
 
 namespace TheCircle.Models
 {
-    /*
-    public class Compuesto
-    {
-        [Key]
-        public string nombre { get; set; }
-        public Item[] items { get; set; }
-
-        public Compuesto() { }
-
-        public Compuesto(string nombre, Item[] items)
-        {
-            this.nombre = nombre;
-            this.items = items;
-        }
-
-        public List<Compuesto> getAllBy_Localidad(Localidad localidad, MyDbContext _context)
-        {
-            string query = $"EXEC dbo.Compuesto_Select_ByLocalidad @localidad='{localidad}'";
-
-            try
-            {
-                var compuestos = new List<Compuesto>();
-                var i = new Item();
-                var data = _context.CompuestoNombre.FromSql(query).ToArray();
-
-                foreach (CompuestoNombre compuesto in data)
-                {
-                    var items = i.getBy_Compuesto(compuesto.nombre, _context);
-
-                    if (items.Count() > 0)
-                        compuestos.Add(new Compuesto(compuesto.nombre, items));
-                }
-
-                return compuestos;
-            }
-            catch (Exception e)
-            {
-                throw new Exception("Error cargar Compuesto at ItemFarmacia.cs Compuesto.getAllBy_Localidad");
-            }
-
-        }
-
-    }*/
-
-    /*
-    public class CompuestoNombre
-    {
-        [Key]
-        public string nombre { get; set; }
-
-        public CompuestoNombre() { }
-    }*/
 
     public class Compuesto
     {
@@ -69,28 +16,29 @@ namespace TheCircle.Models
         public string categoriaCodigo { get; set; }
         public string grupo { get; set; }
 
-        public Compuesto(Data data, MyDbContext _context) {
+        public Compuesto() { }
+
+
+        public Compuesto(string nombre, int categoria, string unidad) {
             try {
-                string q = $"EXEC Compuesto_Insert @nombre='{data.nombre}', @categoria='{data.categoria}', @unidad='{data.unidad}'";
-                _context.Database.ExecuteSqlCommand(q);
+                string q = $"EXEC Compuesto_Insert @nombre='{nombre}', @categoria={categoria}, @unidad='{unidad}'";
+                new MyDbContext().Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {
-                throw new Exception("No se pudo crear el compuesto");
+                throw new Exception("No se pudo crear el compuesto", e);
             }            
         }
 
-        public Compuesto() { }
-
-        public static Compuesto[] Report(MyDbContext _context) 
+        public static Compuesto[] Report() 
         {
-            var data = _context.Compuesto.FromSql("EXEC dbo.Compuesto_Report").ToArray();
+            var data = new MyDbContext().Compuesto.FromSql("EXEC Compuesto_Report").ToArray();
             return data;
         }
 
         public class Data
         {
             public string nombre { get; set; }
-            public string categoria { get; set; }
+            public int categoria { get; set; }
             public string unidad { get; set; }
         }
     }
