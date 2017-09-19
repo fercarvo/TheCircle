@@ -56,10 +56,10 @@ namespace TheCircle.Models
             return _c.PedidoInterno.FromSql(q).ToArray();
         }
 
-        public static void Despachar(int idPedido, Data req, MyDbContext _c)
+        public static void Despachar(int idPedido, int personal, int cantidad, string comentario)
         {
-            string q = $"EXEC PedidoInterno_Despachar @id={idPedido} @personal={req.personal}, @cantidad={req.cantidad}, @comentario='{req.comentario}'";
-            _c.Database.ExecuteSqlCommand(q);
+            string q = $"EXEC PedidoInterno_Despachar @id={idPedido}, @personal={personal}, @cantidad={cantidad}, @comentario='{comentario}'";
+            new MyDbContext().Database.ExecuteSqlCommand(q);
         }
 
         public static void Recepcion(int idPedido, string comentario, int personal, MyDbContext _c)
@@ -70,7 +70,6 @@ namespace TheCircle.Models
 
         public class Data
         {
-            public int personal { get; set; }
             public int cantidad { get; set; }
             public string comentario { get; set; } = null;
         }

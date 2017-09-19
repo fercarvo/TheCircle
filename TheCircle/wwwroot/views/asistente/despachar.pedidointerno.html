@@ -1,5 +1,5 @@
 ﻿<style>
-    #despachar_pedidointerno_panel, #despachar_pedidointerno_form, #despachar_pedidointerno_table {
+    #despachar_pedidointerno_panel, #despachar_pedidointerno_table {
         padding: 0px 0px 0px 0px;
     }
 </style>
@@ -11,56 +11,30 @@
                     <tr>
                         <th>N&uacute;mero</th>
                         <th>Fecha</th>
-                        <th>Nombre</th>
-                        <th>Compuesto</th>
-                        <th>Cantidad</th>
+                        <th>Solicitante</th>
+                        <th>Nombre item</th>
                         <th>Ver informacion</th>
                     </tr>
                 </thead>
 
                 <tbody>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                    </tr>
-                    <tr>
-                        <td>12312</td>
-                        <td>1/1/2018</td>
-                        <td>Paracetamol</td>
-                        <td>No se</td>
-                        <td>321</td>
-                        <td width="10%"><button data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    <tr ng-repeat="p in pedidoInterno">
+                        <td>{{("00000000"+ p.id).slice(-9)}}</td>
+                        <td>{{p.fechaPedido}}</td>
+                        <td>{{("000000000"+ p.solicitante).slice(-10)}}</td>
+                        <td>{{p.nombre}}</td>
+                        <td width="10%"><button ng-click="ver(p)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_pedido"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
             </table>
         </div>
     </div>
 
-    <div id="myModal" class="modal fade">
+    <div id="ver_pedido" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Datos de la transferencia</h5>
+                    <h5 class="modal-title">Datos del pedido</h5>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
                     <table class="table table-striped" style="text-align:center;">
@@ -68,44 +42,40 @@
                         <tbody style="text-align:left;">
                             <tr>
                                 <td>Numero: </td>
-                                <td>1083334</td>
+                                <td>{{("00000000"+ pedido.id).slice(-9)}}</td>
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>Paracetamol forte maximizado</td>
+                                <td>{{pedido.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>Paracetamol 0.5</td>
+                                <td>{{pedido.compuesto}}</td>
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
-                                <td> <label style="width:20%">123</label> <button title="Cambiar cantidad a despachar" style="background-color:inherit;border:none;" onclick="foo()"><span class="glyphicon glyphicon-pencil"></span></button> <input id="input2" style="float:right" type="number" min="1" disabled /></td>
+                                <td> <label style="width:20%">{{pedido.cantidad}}</label> </td>
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input type="text" maxlength="100" style="width:100%;" /></td>
+                                <td><input form="pedidointernoForm" ng-model="comentario" type="text" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>0998843766</td>
+                                <td>{{("000000000"+ pedido.solicitante).slice(-10)}}</td>
                             </tr>
                             <tr>
-                                <td>Fecha: </td>
-                                <td>DD/MM/YYYY</td>
-                            </tr>
-                            <tr>
-                                <td>Destino: </td>
-                                <td>CC5</td>
+                                <td>Fecha solicitud: </td>
+                                <td>{{pedido.fechaPedido}}</td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
-                <div class="text-center" style="margin-bottom: 5px;">
+                <form id="pedidointernoForm" ng-submit="guardarEgreso(pedido.cantidad, comentario)" class="text-center" style="margin-bottom: 5px;">
                     <button data-ripple type="submit" class="btn btn-info">Despachar</button>
                     <button data-ripple type="button" class="btn btn-default">Cancelar</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

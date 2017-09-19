@@ -4,6 +4,7 @@
  Children International
 */
 
+
 //retorna la fecha en un formato especifico
 function date(date) {
     var format = new Date(date);
@@ -16,41 +17,43 @@ function date(date) {
 
 //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
 var refresh = {
-    go: function (fn) {
+    go: function (fn, time) {
         fn();
-        return setInterval(fn, 10000);
+        if (time) {
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time*1000);
+        } return setInterval(fn, 1000*5);
     },
     stop: function (repeater) {
         clearInterval(repeater);
-    },
-    goTime: function (fn, time) {
-        fn();
-        console.log("Go refresh by ", time);
-        return setInterval(fn, time);
     }
 }
 
 //Notificaciones bootstrap
-function notify(mensaje, tipo) {
-
-    var icono = "";
-
-    if (tipo === "success") {
-        icono = "glyphicon glyphicon-saved";
-    } else if (tipo === "danger") {
-        icono = "glyphicon glyphicon-ban-circle"
-    }
-
+function notify(mensaje, tipo, progress) {
     return $.notify(
         {
-            icon: icono,
+            icon: (() => {
+                switch (tipo) {
+                    case "success":
+                        return "glyphicon glyphicon-saved"
+                    case "danger":
+                        return "glyphicon glyphicon-ban-circle"
+                    default:
+                        return ""
+                }
+            })(),
             message: mensaje,
             url: '#',
             target: '_blank'
         }, {
             element: 'body',
             position: null,
-            showProgressbar: false,
+            showProgressbar: (() => {
+                if (progress) {
+                    return progress
+                } return false
+            })(),
             type: tipo,
             allow_dismiss: true,
             newest_on_top: false,
@@ -128,42 +131,46 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/asistente/ingresar.transferencias.html',
                 controller: 'ingresar.transferencias'
             });
-        //$compileProvider.debugInfoEnabled(false); //Activar en modo produccion
-    }])
-    .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
+    }])
+    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
+
+        refresh.go(function () {
+            $http.get("login").then(() => { console.log("Session valida") }, (response) => {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    //document.location.replace('logout');
+                    document.location.replace('logout');
                 }
             })
-        }, 1000 * 60 * 20)
+        }, 20) //cada 20 minutos
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })()
 
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
+        NProgress.start();
+        var despachar = $http.get('views/asistente/despachar.html', { cache: $templateCache })
+        $http.get('views/asistente/despachar.receta.html', { cache: $templateCache }).then(function () {
+            despachar.then(function () {
+                $state.go("despachar")
+                NProgress.done();
+            }, (error) => { console.log("Error: ", error) })           
+        }, function () {
+            NProgress.done();
+            alert("Error al cargar página");
+            document.location.reload();
+        })
 
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        /*Se cargan todos los templates*/
+        for (i = 3; i < $state.get().length ; i++) {
+            $http.get($state.get()[i].templateUrl, { cache: $templateCache }).then(function () { }, (error) => { console.log("Error: ", error) })
+        }
 
-        $state.go("despachar");
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')
+
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -174,12 +181,21 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             despachos: null,
             transferencias: null,
             transferenciasPorIngresar: null,
+            pedidoInterno: null,
             getTransferenciasPorIngresar: getTransferenciasPorIngresar,
             getTransferenciasPendientes: getTransferenciasPendientes,
             getStock: getStock,
             getRecetas: getRecetas,
             getDespachos: getDespachos,
-            getCompuestos: getCompuestos
+            getCompuestos: getCompuestos,
+            getPedidoInterno: getPedidoInterno
+        }
+
+        function getPedidoInterno() {
+            $http.get("/api/pedidointerno/pendientes").then(function success(res) {
+                dataFac.pedidoInterno = res.data;
+                $rootScope.$broadcast('dataFac.pedidoInterno');
+            }, (error) => { console.log("Error: ", error) })
         }
 
         function getTransferenciasPorIngresar() {
@@ -277,14 +293,14 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
-        var actualizar = refresh.go(cargar);
+        var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFac.recetas', function () {
             $scope.recetas = dataFac.recetas;
         })
 
         function cargar() {
-            if ($state.includes('despachar')) {
+            if ($state.includes('despachar.receta')) {
                 dataFac.getRecetas();
             } else {
                 refresh.stop(actualizar);
@@ -326,46 +342,81 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
                     notify("Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
                     //recetas.splice(index, 1);
-                    actualizar = refresh.go(cargar);
+                    actualizar = refresh.go(cargar, 30);
 
                 }, function error(e) {
                     console.log("Error despacho", e);
                     $('#myModal').modal('hide');
                     notify("No se ha podido despachar", "danger");
-                    actualizar = refresh.go(cargar);
+                    actualizar = refresh.go(cargar, 30);
                 })
 
             } else {
-                actualizar = refresh.go(cargar);
+                actualizar = refresh.go(cargar, 30);
                 console.log("No se han despachado todos los items", total);
                 notify("No se han despachado todos los items", "danger");
             }
         }
     }])
     .controller('despachar.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
-        
+        $scope.pedidoInterno = dataFac.pedidoInterno;
+        $scope.pedido = null;
+
+        var actualizar = refresh.go(cargar, 30);
+
+        function cargar() {
+            if ($state.includes('despachar.pedidointerno')) {
+                dataFac.getPedidoInterno();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.$on('dataFac.pedidoInterno', ()=>{ $scope.pedidoInterno = dataFac.pedidoInterno })
+
+        $scope.ver = function (pedido) {
+            $scope.pedido = pedido
+            $scope.comentario = null
+        }
+
+        $scope.guardarEgreso = function (cantidad, comentario) {
+            var data = {
+                cantidad: cantidad,
+                comentario: comentario
+            }
+
+            NProgress.start();
+            $http.put("api/pedidointerno/" + $scope.pedido.id + "/despachar", data).then(function success() {
+                $('#ver_pedido').modal('hide');
+                actualizar = refresh.go(cargar, 30);
+                notify("Pedido despachado exitosamente", "success");
+                NProgress.done();
+            }, function error(e) {
+                $('#ver_pedido').modal('hide');
+                console.log("No se despacho", e)
+                notify("No se pudo despachar", "danger")
+                NProgress.done();
+            })
+        }   
 
     }])
     .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.transferencias = dataFac.transferencias;
         $scope.transferencia = null;
 
-        var actualizar = refresh.go(cargar);
+        var actualizar = refresh.go(cargar, 30);
 
         function cargar() {
             if ($state.includes('despachar.transferencias')) {
-                dataFac.getTransferenciasPendientes();
-            } else {
-                refresh.stop(actualizar);
-            }
+                return dataFac.getTransferenciasPendientes()
+            } refresh.stop(actualizar)
         }        
 
-        $scope.$on('dataFac.transferencias', function () {
-            $scope.transferencias = dataFac.transferencias;
-        })
+        $scope.$on('dataFac.transferencias', ()=> { $scope.transferencias = dataFac.transferencias })
 
         $scope.ver = function (transferencia) {
-            $scope.transferencia = transferencia;
+            $scope.transferencia = transferencia
+            $scope.comentario = null
         }
 
         $scope.guardarEgreso = function (nuevaCantidad, comentario) {
@@ -376,21 +427,24 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
                         return nuevaCantidad
                     } return $scope.transferencia.cantidad
                 })(),
-                comentario: (function () {
+                comentario: (()=>{
                     if (comentario) {
                         return comentario
                     } return ""
                 })()
             }
 
+            NProgress.start();
             $http.put("api/transferencia", data).then(function success() {
                 $('#ver_transferencia').modal('hide');
-                actualizar = refresh.go(cargar);
+                actualizar = refresh.go(cargar, 30);
                 notify("Transferencia despachada exitosamente", "success");
+                NProgress.done()
             }, function error(e) {
                 $('#ver_transferencia').modal('hide');
                 console.log("No se despacho la transferencia", e)
                 notify("No se pudo despachar la transferencia", "danger")
+                NProgress.done()
             })
         }
 
@@ -401,7 +455,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .controller('historial.recetas', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.despachos = dataFac.despachos;
         $scope.receta = null;
-        var actualizar = refresh.go(cargar, 30000);
+        var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFac.despachos', function () {
             $scope.despachos = dataFac.despachos;
@@ -421,7 +475,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
         }
 
         $scope.close = function () {
-            actualizar = refresh.go(cargar, 30000); //Se reanuda la carga de despachos al cerrar modal
+            actualizar = refresh.go(cargar, 30); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
     .controller('historial.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
@@ -432,7 +486,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
     }])
     .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock;
-        var actualizar = refresh.go(cargar, 30000);
+        var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFac.stock', function () {
             $scope.stock = dataFac.stock;
@@ -484,7 +538,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
         $scope.transferencias = dataFac.transferenciasPorIngresar;
         $scope.transferencia = null;
 
-        var actualizar = refresh.go(cargar);
+        var actualizar = refresh.go(cargar, 30);
 
         function cargar() {
             if ($state.includes('ingresar.transferencias')) {
@@ -515,7 +569,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             NProgress.start();
             $http.post("/api/itemfarmacia/transferencia", data).then(function success(res) {
                 $('#ver_transferencia').modal('hide');
-                actualizar = refresh.go(cargar);
+                actualizar = refresh.go(cargar, 30);
                 notify("Transferencia ingresada exitosamente", "success");
                 NProgress.done();
             }, function error(err) {

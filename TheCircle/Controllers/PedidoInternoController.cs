@@ -50,7 +50,7 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult Despachar(Token token, int id, [FromBody] PedidoInterno.Data req)
         {
-            PedidoInterno.Despachar(id, req, _c);
+            PedidoInterno.Despachar(id, token.data.cedula, req.cantidad, req.comentario);
             return Ok();
         }
 

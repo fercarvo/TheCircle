@@ -15,6 +15,10 @@ var refresh = {
     stop: (repeater)=>{ clearInterval(repeater) }
 }
 
+function error(e) {
+    console.log("Error: ", e)
+}
+
 /**
     * @name notify
     * @kind function
@@ -95,9 +99,13 @@ angular.module('sistema', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/sistema/cambiarclave.html',
                 controller: 'cambiarclave'
             });
-        $compileProvider.debugInfoEnabled(true); //False en modo de produccion
+
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, root, $cookies, $http, $templateCache) {
 
         refresh.go(function () {
             $http.get("login").then(() => { console.log("Session valida") }, (response) => {
@@ -106,27 +114,25 @@ angular.module('sistema', ['ui.router', 'ngCookies'])
                     document.location.replace('logout');
                 }
             })
-        }, 1000 * 6) //cada 20 minutos
+        }, 1000 * 60 * 20) //cada 20 minutos
 
         NProgress.start();
-        $http.get('/views/sistema/activarusuario.html', { cache: $templateCache }).then(() => {
+        $http.get('/views/sistema/activarusuario.html', { cache: $templateCache }).then(function sucess() {
             $state.go("activarusuario")
             NProgress.done();
+        }, function error() {
+            NProgress.done();
+            alert("Error al cargar página");
+            document.location.reload();
         })
 
-        $http.get('/views/sistema/desactivarusuario.html', { cache: $templateCache });
-        $http.get('/views/sistema/cambiarclave.html', { cache: $templateCache });
+        $http.get('/views/sistema/desactivarusuario.html', { cache: $templateCache }).then(() => { }, error)
+        $http.get('/views/sistema/cambiarclave.html', { cache: $templateCache }).then(() => { }, error)
 
 
-        var name = $cookies.get('session_name')
-        var email = $cookies.get('session_email')
-        var photo = $cookies.get('session_photo')
-
-        $rootScope.session_photo = "#"
-
-        if (name) { $rootScope.session_name = name }
-        if (email) { $rootScope.session_email = email }
-        if (photo) { $rootScope.session_photo = photo }
+        root.session_name = $cookies.get('session_name')
+        root.session_email = $cookies.get('session_email')
+        root.session_photo = $cookies.get('session_photo')
     }])
     .factory('usuarios', ['$http', '$rootScope', function ($http, $rootScope) {
 

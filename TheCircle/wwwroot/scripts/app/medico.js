@@ -4,6 +4,7 @@
  Children International
 */
 
+
 //retorna la fecha en un formato especifico
 function date(date) {
     var format = new Date(date);
@@ -16,17 +17,15 @@ function date(date) {
 
 //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
 var refresh = {
-    go: function (fn) {
+    go: function (fn, time) {
         fn();
-        return setInterval(fn, 10000);
+        if (time) {
+            console.log("Go refresh by ", time);
+            return setInterval(fn, time*1000);
+        } return setInterval(fn, 1000 * 5);
     },
     stop: function (repeater) {
         clearInterval(repeater);
-    },
-    goTime: function (fn, time) {
-        fn();
-        console.log("Go refresh by ", time);
-        return setInterval(fn, time);
     }
 }
 
@@ -132,33 +131,46 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 templateUrl: 'views/medico/pedidos.interno.html',
                 controller: 'pedidos.interno'
             });
-        $compileProvider.debugInfoEnabled(false); //false en modo de produccion
+
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
-        refresh.goTime(() => {
-            $http.get("login")
-                .then(() => {
-                    console.log("Session valida");
-                }, (response) => {
-                    if (response.status === 401) {
-                        alert("Su sesion ha caducado");
-                        document.location.replace('logout');
-                    }
-                })
-        }, 1000*60*20) //cada 20 minutos
+        refresh.go(function () {
+            $http.get("login").then(() => { console.log("Session valida") }, (response) => {
+                if (response.status === 401) {
+                    alert("Su sesion ha caducado");
+                    document.location.replace('logout');
+                }
+            })
+        }, 20) //cada 20 minutos
 
-        var name = $cookies.get('session_name')
-        var email = $cookies.get('session_email')
-        var photo = $cookies.get('session_photo')
+        console.log($state.get());
 
-        $rootScope.session_photo = "#"
+        NProgress.start();
+        var despachar = $http.get('views/medico/atencion.html', { cache: $templateCache })
+        $http.get('views/medico/atencion.registro.html', { cache: $templateCache }).then(function () {
+            despachar.then(function () {
+                $state.go("atencion")
+                NProgress.done();
+            }, (error) => { console.log("Error: ", error) })
+        }, function () {
+            NProgress.done();
+            alert("Error al cargar página")
+            document.location.reload()
+        })
 
-        if (name) { $rootScope.session_name = name }
-        if (email) { $rootScope.session_email = email }
-        if (photo) { $rootScope.session_photo = photo }
+        /*Se cargan todos los templates*/
+        for (i = 3; i < $state.get().length; i++) {
+            $http.get($state.get()[i].templateUrl, { cache: $templateCache }).then( ()=> { }, (error)=> { console.log("Error: ", error) })
+        }
 
-        $state.go("atencion.registro");
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')        
     }])
     .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -707,7 +719,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
-        var actualizar = refresh.goTime(cargar, 30000);
+        var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFactory.stockChildren', function () {
             $scope.stock = dataFactory.stockChildren;
@@ -739,14 +751,14 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $('#modal_transferencia').modal('hide');
                 console.log("Se creo la transferencia", res.data);
                 notify("Transferencia creada exitosamente", "success");
-                actualizar = refresh.goTime(cargar, 30000);
+                actualizar = refresh.go(cargar, 30);
                 cantidad = 1;
             }, function error(err) {
                 NProgress.done();
                 console.log("No se pudo crear la transferencia", err);
                 notify("No se pudo crear la transferencia", "danger");
                 $('#modal_transferencia').modal('hide');
-                actualizar = refresh.goTime(cargar, 30000);
+                actualizar = refresh.go(cargar, 30);
                 cantidad = 1;
             })
         }
@@ -756,7 +768,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.stock = dataFactory.stockInsumos;
         $scope.item = null;
 
-        var actualizar = refresh.goTime(cargar, 30000);
+        var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFactory.stockInsumos', function () {
             $scope.stock = dataFactory.stockInsumos;
@@ -788,14 +800,14 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 $('#despachar').modal('hide');
                 console.log("Se creo el pedido interno", res);
                 notify("El pedido interno se creo exitosamente", "success");
-                actualizar = refresh.goTime(cargar, 30000);
+                actualizar = refresh.go(cargar, 30);
                 cantidad = 1;
             }, function error(e) {
                 NProgress.done();
                 console.log("No se pudo crear el pedido interno", e);
                 notify("No se pudo crear el pedido interno", "danger");
                 $('#despachar').modal('hide');
-                actualizar = refresh.goTime(cargar, 30000);
+                actualizar = refresh.go(cargar, 30);
                 cantidad = 1;
             })
         }

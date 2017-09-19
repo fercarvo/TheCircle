@@ -74,28 +74,24 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
-                if (token.data.cargo == "medico")
-                    return Redirect("/medico");
-
-                if (token.data.cargo == "asistenteSalud")
-                    return Redirect("/asistente");
-
-                if (token.data.cargo == "sistema")
-                    return Redirect("/sistema");
-
-                if (token.data.cargo == "bodeguero")
-                    return Redirect("/bodeguero");
-
-                if (token.data.cargo == "coordinador")
-                    return Redirect("/coordiandor");
-
-                if (token.data.cargo == "contralor")
-                    return Redirect("/contralor");
-
-                if (token.data.cargo == "coordinadorCC")
-                    return Redirect("/coordinadorCC");
-
-                return Redirect("logout");
+                switch (token.data.cargo) {
+                    case "medico":
+                        return Redirect("/medico");
+                    case "asistenteSalud":
+                        return Redirect("/asistente");
+                    case "sistema":
+                        return Redirect("/sistema");
+                    case "bodeguero":
+                        return Redirect("/bodeguero");
+                    case "coordinador":
+                        return Redirect("/coordiandor");
+                    case "contralor":
+                        return Redirect("/contralor");
+                    case "coordinadorCC":
+                        return Redirect("/coordinadorcc");
+                    default:
+                        return Redirect("logout");
+                }
 
             } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
                 parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
