@@ -14,10 +14,10 @@
         </div><!-- /.panel-heading -->
         <div class="panel-body" style="padding:25px 20px 10px 20px;">
 
-            <div class="panel panel-default-light border-default" style="padding:0px">
+            <div style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" placeholder="buscar por cedula" ng-model="buscar.cedula" class="form-control">
+                        <input type="text" placeholder="Filtrar personal por nombre, cedula, email" ng-model="buscar" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
@@ -34,9 +34,9 @@
 
                         <tbody>
                             <tr ng-repeat="u in usuarios | filter:buscar | orderBy:'cargo'">
-                                <td>{{u.cedula}}</td>
+                                <td>{{("000000000"+ u.cedula).slice(-10)}}</td>
                                 <td>{{u.nombre}} {{u.apellido}}</td>
-                                <td>{{u.email}}</td>
+                                <td><a href="mailto:{{u.email}}">{{u.email}}</a></td>
                                 <td>{{u.cargo}}</td>
                                 <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="seleccionar(u)" data-toggle="modal" data-target="#modal_activar"><span class="glyphicon glyphicon-ok"></span></button></td>
                             </tr>

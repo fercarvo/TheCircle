@@ -53,7 +53,7 @@ namespace TheCircle.Controllers
 
             try
             {
-                Usuario usuario = Usuario.Get(request, _context);
+                Usuario usuario = Usuario.Get(request);
                 Token token = new Token(usuario, request.localidad);
                 string token_string = JsonConvert.SerializeObject(token);
 

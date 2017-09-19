@@ -17,7 +17,7 @@ namespace TheCircle.Models
         public int cedula { get; set; }
         public string clave_hash { get; set; }
         public string salt { get; set; }
-        public Boolean? activo { get; set; }
+        public Boolean activo { get; set; }
 
         public Usuario () {}
 
@@ -27,7 +27,7 @@ namespace TheCircle.Models
                 string hash = dic["hash"];
                 string salt = dic["salt"];
 
-                string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+                string q = $"EXEC User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
                 _context.Database.ExecuteSqlCommand(q);
 
             } catch (Exception e) {
@@ -35,23 +35,27 @@ namespace TheCircle.Models
             }            
         }
 
-        public static Usuario Get(LoginRequest req, MyDbContext _context)
+        public static Usuario Get(LoginRequest req)
         {
-            var data = _context.Usuario.FromSql($"EXEC dbo.User_select @cedula={req.cedula}").First();
-            Signature.CheckHashing(req.clave, data.clave_hash, data.salt);
+            Usuario usuario = new MyDbContext().Usuario.FromSql($"EXEC User_select @cedula={req.cedula}").First();
 
-            return data;
+            if (usuario.activo is false)
+                throw new Exception("Usuario inactivo");
+
+            Signature.CheckHashing(req.clave, usuario.clave_hash, usuario.salt);
+
+            return usuario;
         }
 
 
         static void _checkClave(string cedula, string clave, MyDbContext _context) 
         {
-            string query = $"EXEC dbo.User_Select @cedula={cedula}";
+            string query = $"EXEC User_Select @cedula={cedula}";
 
-            var user = _context.Usuario.FromSql(query).First();
+            Usuario user = _context.Usuario.FromSql(query).First();
 
-            var hash = user.clave_hash;
-            var salt = user.salt;
+            string hash = user.clave_hash;
+            string salt = user.salt;
 
             Signature.CheckHashing(clave, hash, salt);
         }
@@ -70,14 +74,14 @@ namespace TheCircle.Models
 
         public static void Activar(int cedula, MyDbContext _context)
         {
-            string q = $"EXEC dbo.User_Update_activar @cedula={cedula}";
+            string q = $"EXEC User_Update_activar @cedula={cedula}";
             _context.Database.ExecuteSqlCommand(q);
         }
 
 
         public static void Desactivar(int cedula, MyDbContext _context)
         {
-            string q = $"EXEC dbo.User_Update_desactivar @cedula={cedula}";
+            string q = $"EXEC User_Update_desactivar @cedula={cedula}";
             _context.Database.ExecuteSqlCommand(q);
         }
 
@@ -122,27 +126,27 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
-        public static UserSafe[] GetAll(MyDbContext _context)
+        public static UserSafe[] GetAll()
         {
             string query = $"EXEC dbo.UserSafe_Report_All";
 
-            var user = _context.UserSafe.FromSql(query).ToArray();
+            var user = new MyDbContext().UserSafe.FromSql(query).ToArray();
             return user;
         }
 
-        public static UserSafe[] GetActivos(MyDbContext _context)
+        public static UserSafe[] GetActivos()
         {
             string query = $"EXEC dbo.UserSafe_Report_Activos";
 
-            var user = _context.UserSafe.FromSql(query).ToArray();
+            var user = new MyDbContext().UserSafe.FromSql(query).ToArray();
             return user;
         }
 
-        public static UserSafe[] GetInactivos(MyDbContext _context)
+        public static UserSafe[] GetInactivos()
         {
             string query = $"EXEC dbo.UserSafe_Report_Inactivos";
 
-            var user = _context.UserSafe.FromSql(query).ToArray();
+            var user = new MyDbContext().UserSafe.FromSql(query).ToArray();
             return user;
         }
     }
