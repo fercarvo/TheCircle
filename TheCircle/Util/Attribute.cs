@@ -21,7 +21,7 @@ namespace TheCircle.Util
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido se setea null
-                //aec.Result = new LocalRedirectResult("/");
+                aec.Result = new LocalRedirectResult("/");
                 base.OnActionExecuting(aec);
             }
         }
