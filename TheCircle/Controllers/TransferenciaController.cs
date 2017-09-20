@@ -16,10 +16,10 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("transferencia")]
-        [APIauth("asistenteSalud")]
+        [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult GetPendientes(Token token)
         {
-            Transferencia[] data = Transferencia.GetPendientes(token.data.localidad, _context);
+            Transferencia[] data = Transferencia.GetPendientes(token.data.localidad);
             return Ok(data);
         }
 
@@ -43,14 +43,14 @@ namespace TheCircle.Controllers
         }
 
 
-        [HttpPut("transferencia")]
+        [HttpPut("transferencia/{id}/despachar")]
         [APIauth("asistenteSalud", "bodeguero")]
-        public IActionResult Despachar(Token token, [FromBody]Transferencia.Data req)
+        public IActionResult Despachar(Token token, int id, [FromBody]Transferencia.Data req)
         {
             if (req is null)
                 return BadRequest();
 
-            Transferencia.Despachar(token.data.cedula, req, _context);
+            Transferencia.Despachar(token.data.cedula, req);
             return Ok();
         }
     }

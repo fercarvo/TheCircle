@@ -25,7 +25,7 @@ namespace TheCircle.Controllers
             var atencion = new Atencion(request, token.data.cedula, token.data.localidad, _context);
             var diagnosticos = Diagnostico.ReportByAtencion(atencion.id, _context);
 
-            return Ok(new {atencion = atencion, diagnosticos = diagnosticos});
+            return Ok(new {atencion, diagnosticos});
         }
 
 

@@ -74,6 +74,10 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
+
+                if (Token.CheckLocalidad(token) != null)
+                    return Token.CheckLocalidad(token);
+
                 switch (token.data.cargo) {
                     case "medico":
                         return Redirect("/medico");

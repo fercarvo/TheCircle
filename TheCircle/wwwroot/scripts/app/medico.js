@@ -20,11 +20,14 @@ var refresh = {
     go: function (fn, time) {
         fn();
         if (time) {
-            console.log("Go refresh by ", time);
+            console.log("Go refresh in ", fn.name, "by", time, "sec");
             return setInterval(fn, time*1000);
-        } return setInterval(fn, 1000 * 5);
+        }
+        console.log("Go refresh in", fn.name, "by", 1000*5, "sec");
+        return setInterval(fn, 1000 * 5);
     },
     stop: function (repeater) {
+        console.log("stop repeater")
         clearInterval(repeater);
     }
 }
@@ -140,15 +143,13 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
         refresh.go(function () {
-            $http.get("login").then(() => { console.log("Session valida") }, (response) => {
+            $http.get("login").then(function() { console.log("Session valida") }, function(response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
                     document.location.replace('logout');
                 }
             })
-        }, 20) //cada 20 minutos
-
-        console.log($state.get());
+        }, 60*20) //segundos
 
         NProgress.start();
         var despachar = $http.get('views/medico/atencion.html', { cache: $templateCache })
@@ -156,7 +157,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             despachar.then(function () {
                 $state.go("atencion")
                 NProgress.done();
-            }, (error) => { console.log("Error: ", error) })
+            }, function(error) { console.log("Error: ", error) })
         }, function () {
             NProgress.done();
             alert("Error al cargar página")
@@ -164,15 +165,20 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         })
 
         /*Se cargan todos los templates*/
-        for (i = 3; i < $state.get().length; i++) {
-            $http.get($state.get()[i].templateUrl, { cache: $templateCache }).then( ()=> { }, (error)=> { console.log("Error: ", error) })
+        var states = $state.get();
+
+        for (i = 3; i < states.length; i++) {
+            $http.get(states[i].templateUrl, { cache: $templateCache })
+                .then(function () { }, function (error) {
+                    console.log("Error: ", error)
+                })
         }
 
         $rootScope.session_name = $cookies.get('session_name')
         $rootScope.session_email = $cookies.get('session_email')
         $rootScope.session_photo = $cookies.get('session_photo')        
     }])
-    .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
+    .factory('dataFactory', ['$http', '$state', '$rootScope', function ($http, $state, $rootScope) {
 
         var dataFactory = {
             enfermedades: null,
@@ -189,7 +195,8 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             getStock: getStock,
             getStockInsumos: getStockInsumos,
             getRecetas: getRecetas,
-            getApadrinado: getApadrinado
+            getApadrinado: getApadrinado,
+            postRemision: postRemision
         }
 
         function getStockChildren() {
@@ -211,7 +218,12 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
         function getInstituciones() {
-            return $http.get("/api/institucion", {cache: true});
+            return $http.get("/api/institucion", { cache: true }).then(function (res) {
+                dataFactory.instituciones = res.data;
+                $rootScope.$broadcast('dataFactory.instituciones');
+            }, function (error) {
+                console.log("Error cargar instituciones", error);
+            })
         }
 
         function getEnfermedades() {
@@ -247,6 +259,23 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }, function(err){
                 console.log("No existe apadrinado", err);
                 NProgress.done();
+            })
+
+            return promise;
+        }
+
+        function postRemision(remision) {
+            NProgress.start();
+            var promise = $http.post("/api/remision", remision)
+
+            promise.then(function (res) {
+                NProgress.done()
+                console.log("se creo remision", res.data)
+                notify("Se creo la remision exitosamente", "success")
+            }, function (err) {
+                NProgress.done();
+                console.log("error crear remision", err);
+                notify("No se pudo generar la remision, por favor verifique los datos", "danger");
             })
 
             return promise;
@@ -310,11 +339,16 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.buscarApadrinado = function (codigo) {
             dfac.getApadrinado(codigo).then(function success(res) {
 
-                if (res.data.status === "D" || res.data.status === "E") {
-                    $scope.status = false;
-                } else {
-                    $scope.status = true;
+                switch (res.data.status) {
+                    case "D":
+                    case "E":
+                        $scope.status = false;
+                        break;
+                    default:
+                        $scope.status = true;
+                        break;
                 }
+
                 $scope.foto = "/api/apadrinado/" + codigo + "/foto";
                 $scope.apadrinado = res.data;
 
@@ -354,7 +388,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         });
 
         $scope.send = function () {
-            var AtencionNueva = {
+            var data = {
                 apadrinado: atencionFactory.codigo,
                 tipo: atencionFactory.atencion.tipo,
                 diagnosticos: [atencionFactory.atencion.diagp,
@@ -365,7 +399,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
             }
 
             NProgress.start();
-            $http.post("/api/atencion", AtencionNueva).then(function success(res){
+            $http.post("/api/atencion", data).then(function success(res){
 
                 NProgress.done();
                 console.log("Se creo atencion", res.data);
@@ -385,7 +419,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         }
 
     }])
-    .controller('atencion.remision', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
+    .controller('atencion.remision', ["$scope", "$state", "disable", "dataFactory", "atencionFactory", function ($scope, $state, disable, dataFactory, atencionFactory) {
 
         $scope.disable = disable.remision;
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
@@ -393,37 +427,25 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.diagnosticos = atencionFactory.diagnosticos
 
         if (dataFactory.instituciones === null) {
-            dataFactory.getInstituciones().then(function success(res) {
-                dataFactory.instituciones = res.data;
-                $scope.instituciones = dataFactory.instituciones;
-            }, function error(err) {
-                console.log("error cargar instituciones", err);
-            })
+            dataFactory.getInstituciones()
         }
 
+        $scope.$on('dataFactory.instituciones', function() { $scope.instituciones = dataFactory.instituciones })
+
         $scope.send = function (remision) {
-            var RemisionRequest = {
+            var data = {
                 atencionM: atencionFactory.atencion.id,
                 institucion: remision.institucion,
                 monto: remision.monto,
                 sintomas: remision.sintomas
             }
 
-            NProgress.start();
-            $http.post("/api/remision", RemisionRequest).then(function success(res) {
-
-                NProgress.done();
-                console.log("se creo remision", res.data);
-                disable.remision = true;
-                atencionFactory.remision = $scope.remision; //Se guarda la remision en la factory
-                $scope.disable = disable.remision; //Se desactiva atencion.remision.html
-                notify("Se creo la remision exitosamente", "success");
-
-            }, function (err) {
-                NProgress.done();
-                console.log("error crear remision", err);
-                notify("No se pudo generar la remision, por favor verifique los datos", "danger");
-            });
+            dataFactory.postRemision(data)
+                .then(function (res) {
+                    disable.remision = true;
+                    atencionFactory.remision = $scope.remision; //Se guarda la remision en la factory
+                    $scope.disable = disable.remision; //Se desactiva atencion.remision.html
+                }, function() { })
         }
 
     }])
@@ -771,7 +793,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         var actualizar = refresh.go(cargar, 30);
 
         $scope.$on('dataFactory.stockInsumos', function () {
-            $scope.stock = dataFactory.stockInsumos;
+            $scope.stock = dataFactory.stockInsumos
         })
 
         function cargar() {
@@ -794,21 +816,21 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
                 cantidad: cantidad
             }
 
-            NProgress.start();
-            $http.post("/api/pedidointerno", data).then(function success(res) {
-                NProgress.done();
-                $('#despachar').modal('hide');
+            refresh.stop(actualizar)
+            NProgress.start()
+
+            $http.post("/api/pedidointerno", data).then(function (res) {                    
                 console.log("Se creo el pedido interno", res);
                 notify("El pedido interno se creo exitosamente", "success");
-                actualizar = refresh.go(cargar, 30);
-                cantidad = 1;
-            }, function error(e) {
-                NProgress.done();
+            }, function (e) {
                 console.log("No se pudo crear el pedido interno", e);
-                notify("No se pudo crear el pedido interno", "danger");
+                notify("No se pudo crear el pedido interno", "danger");                    
+            })
+            .finally(function () {
+                NProgress.done();
                 $('#despachar').modal('hide');
-                actualizar = refresh.go(cargar, 30);
                 cantidad = 1;
+                actualizar = refresh.go(cargar, 30)
             })
         }
     }])

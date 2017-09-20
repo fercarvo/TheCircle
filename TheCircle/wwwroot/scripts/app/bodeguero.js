@@ -10,13 +10,14 @@ function date(date) {
 
 //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
 var refresh = {
-    go: function (fn, time) {
+    go: function (fn, time) { //time, minutos
         fn();
         if (time) {
-            console.log("Go refresh by ", time)
-            return setInterval(fn, time)
+            console.log("Go refresh for", fn.name, "by", time, "min");
+            return setInterval(fn, time * 1000 * 60);
         }
-        return setInterval(fn, 10000);
+        console.log("Go refresh for", fn.name);
+        return setInterval(fn, 1000 * 30);
     },
     stop: function (repeater) {
         clearInterval(repeater);
@@ -24,26 +25,30 @@ var refresh = {
 }
 
 //Notificaciones bootstrap
-function notify(mensaje, tipo) {
-
-    var icono = "";
-
-    if (tipo === "success") {
-        icono = "glyphicon glyphicon-saved";
-    } else if (tipo === "danger") {
-        icono = "glyphicon glyphicon-ban-circle"
-    }
-
+function notify(mensaje, tipo, progress) {
     return $.notify(
         {
-            icon: icono,
+            icon: (function () {
+                switch (tipo) {
+                    case "success":
+                        return "glyphicon glyphicon-saved"
+                    case "danger":
+                        return "glyphicon glyphicon-ban-circle"
+                    default:
+                        return ""
+                }
+            })(),
             message: mensaje,
             url: '#',
             target: '_blank'
         }, {
             element: 'body',
             position: null,
-            showProgressbar: false,
+            showProgressbar: (function () {
+                if (progress) {
+                    return progress
+                } return false
+            })(),
             type: tipo,
             allow_dismiss: true,
             newest_on_top: false,
@@ -98,25 +103,18 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
     .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
 
         refresh.go(function (){
-            $http.get("login").then( ()=>{
-                console.log("Session valida");
-            }, (response)=>{
+            $http.get("login").then( function(){
+            }, function(response) {
                 if (response.status == 401) {
                     alert("Su sesion ha caducado");
                     document.location.replace('logout');
                 }
             })
-        }, 1000*60*20) //cada 20 minutos
+        }, 20) //cada 20 minutos
 
-        var name = $cookies.get('session_name')
-        var email = $cookies.get('session_email')
-        var photo = $cookies.get('session_photo')
-
-        $rootScope.session_photo = "#"
-
-        if (name) { $rootScope.session_name = name }
-        if (email) { $rootScope.session_email = email }
-        if (photo) { $rootScope.session_photo = photo }
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')
 
         dataFac.getData()
 
@@ -128,10 +126,22 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
             stock: null,
             compuestos: null,
             categorias: null,
+            transferencias: null,
             unidades: null,
             getData: data,
             getStock: getStock,
-            getCompuestos: getCompuestos
+            getCompuestos: getCompuestos,
+            getTransferencias: getTransferencias
+        }
+
+        function getTransferencias() {
+            $http.get("/api/transferencia").then(function (res) {
+                console.log("Transferencias a despachar", res.data);
+                dataFac.transferencias = res.data;
+                $rootScope.$broadcast('dataFac.transferencias');
+            }, function (err) {
+                console.log("error cargar stock", err);
+            })
         }
 
         function getStock() {
@@ -167,8 +177,58 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
 
         return dataFac;
     }])
-    .controller('despachar', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.casa = "dasdasdasd"
+    .controller('despachar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+        $scope.transferencias = dataFac.transferencias;
+        $scope.transferencia = null;
+
+        var actualizar = refresh.go(cargar, 1);
+
+        function cargar() {
+            if ($state.includes('despachar')) {
+                dataFac.getTransferencias();
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.$on('dataFac.transferencias', function () {
+            $scope.transferencias = dataFac.transferencias
+        })
+
+        $scope.ver = function (transferencia) {
+            $scope.transferencia = transferencia
+            $scope.comentario = null;
+        }
+
+        $scope.guardarEgreso = function (id, cantidad, comentario) {
+            var data = {
+                idTransferencia: id,
+                cantidad: cantidad,
+                comentario: (function () {
+                    if (comentario) {
+                        return comentario
+                    } return ""
+                })()
+            }
+
+            refresh.stop(actualizar)
+            NProgress.start()
+
+            $http.put("/api/transferencia/" + id + "/despachar", data).then(function (res) {
+                console.log("Se despacho la transferencia", res.data);
+                notify("Transferencia ingresada exitosamente", "success");
+
+            }, function (err) {
+                console.log("Error ingresar transferencia", err);
+                notify("No se pudo ingresar la transferencia", "danger");
+
+            }).finally(function () {
+                NProgress.done();
+                $('#ver_transferencia').modal('hide');
+                actualizar = refresh.go(cargar, 1)
+            })
+        }
+     
 
 
     }])
@@ -177,7 +237,7 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
     }])
     .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock;
-        var actualizar = refresh.go(cargar, 30000);
+        var actualizar = refresh.go(cargar, 1);
 
         $scope.$on('dataFac.stock', function () {
             $scope.stock = dataFac.stock;

@@ -19,7 +19,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="t in transferencias">
+                    <tr ng-repeat="t in transferencias | orderBy:'fecha'">
                         <td>{{t.id}}</td>
                         <td>{{t.fecha}}</td>
                         <td>{{t.nombre}}</td>
@@ -60,7 +60,7 @@
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input ng-model="comentario" type="text" maxlength="100" style="width:100%;" /></td>
+                                <td><input ng-model="comentario" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>

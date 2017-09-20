@@ -36,10 +36,10 @@ namespace TheCircle.Models
             }             
         }
 
-        public static Transferencia[] GetPendientes(Localidad localidad, MyDbContext _context)
+        public static Transferencia[] GetPendientes(Localidad localidad)
         {
             string q = $"EXEC Transferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
-            return _context.Transferencia.FromSql(q).ToArray();
+            return new MyDbContext().Transferencia.FromSql(q).ToArray();
         }
 
         internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
@@ -48,10 +48,10 @@ namespace TheCircle.Models
             return _context.Transferencia.FromSql(q).ToArray();
         }
 
-        public static void Despachar(int personal, Data req, MyDbContext _context)
+        public static void Despachar(int personal, Data req)
         {
             var q = $"EXEC Transferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";
-            _context.Database.ExecuteSqlCommand(q);   
+            new MyDbContext().Database.ExecuteSqlCommand(q);   
         }
 
         public class Data

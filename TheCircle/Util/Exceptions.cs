@@ -11,6 +11,15 @@ namespace TheCircle.Util
 
         public TokenException(string message, Exception innerException) : base(message, innerException) { }
     }
+
+    internal class LocalidadErroneaExc : Exception
+    {
+        public LocalidadErroneaExc() { }
+
+        public LocalidadErroneaExc(string message) : base(message) { }
+
+        public LocalidadErroneaExc(string message, Exception innerException) : base(message, innerException) { }
+    }
 }
 
 

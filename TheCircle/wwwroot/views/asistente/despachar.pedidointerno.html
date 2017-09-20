@@ -18,7 +18,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="p in pedidoInterno">
+                    <tr ng-repeat="p in pedidoInterno | orderBy:'fechaPedido'">
                         <td>{{("00000000"+ p.id).slice(-9)}}</td>
                         <td>{{p.fechaPedido}}</td>
                         <td>{{("000000000"+ p.solicitante).slice(-10)}}</td>
@@ -58,7 +58,7 @@
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input form="pedidointernoForm" ng-model="comentario" type="text" style="width:100%;" /></td>
+                                <td><input form="pedidointernoForm" ng-model="comentario" title="Comentario de maximo 50 caracteres" pattern=".{0,50}" type="text" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
@@ -79,16 +79,4 @@
             </div>
         </div>
     </div>
-
-    <script type="text/javascript">
-        function foo() {
-            var a = document.getElementById("input2");
-            if (a.disabled === true) {
-                a.disabled = false;
-            } else {
-                a.disabled = true;
-            }
-        }
-    </script>
-
 </div>

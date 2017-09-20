@@ -17,12 +17,14 @@ function date(date) {
 
 //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
 var refresh = {
-    go: function (fn, time) {
+    go: function (fn, time) { //time, minutos
         fn();
         if (time) {
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time*1000);
-        } return setInterval(fn, 1000*5);
+            console.log("Go refresh for", fn.name, "by", time, "min");
+            return setInterval(fn, time * 1000 * 60); 
+        }
+        console.log("Go refresh for", fn.name);
+        return setInterval(fn, 1000 * 30);
     },
     stop: function (repeater) {
         clearInterval(repeater);
@@ -33,7 +35,7 @@ var refresh = {
 function notify(mensaje, tipo, progress) {
     return $.notify(
         {
-            icon: (() => {
+            icon: (function(){
                 switch (tipo) {
                     case "success":
                         return "glyphicon glyphicon-saved"
@@ -49,7 +51,7 @@ function notify(mensaje, tipo, progress) {
         }, {
             element: 'body',
             position: null,
-            showProgressbar: (() => {
+            showProgressbar: (function() {
                 if (progress) {
                     return progress
                 } return false
@@ -140,8 +142,8 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
     .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
         refresh.go(function () {
-            $http.get("login").then(() => { console.log("Session valida") }, (response) => {
-                if (response.status === 401) {
+            $http.get("login").then(function() { }, function(error) {
+                if (error.status === 401) {
                     alert("Su sesion ha caducado");
                     document.location.replace('logout');
                 }
@@ -155,7 +157,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             despachar.then(function () {
                 $state.go("despachar")
                 NProgress.done();
-            }, (error) => { console.log("Error: ", error) })           
+            }, function(error) { console.log("Error: ", error) })           
         }, function () {
             NProgress.done();
             alert("Error al cargar página");
@@ -164,7 +166,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
 
         /*Se cargan todos los templates*/
         for (i = 3; i < $state.get().length ; i++) {
-            $http.get($state.get()[i].templateUrl, { cache: $templateCache }).then(function () { }, (error) => { console.log("Error: ", error) })
+            $http.get($state.get()[i].templateUrl, { cache: $templateCache }).then(function () { }, function(error) { console.log("Error: ", error) })
         }
 
         $rootScope.session_name = $cookies.get('session_name')
@@ -195,7 +197,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             $http.get("/api/pedidointerno/pendientes").then(function success(res) {
                 dataFac.pedidoInterno = res.data;
                 $rootScope.$broadcast('dataFac.pedidoInterno');
-            }, (error) => { console.log("Error: ", error) })
+            }, function(error) { console.log("Error: ", error) })
         }
 
         function getTransferenciasPorIngresar() {
@@ -372,7 +374,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             }
         }
 
-        $scope.$on('dataFac.pedidoInterno', ()=>{ $scope.pedidoInterno = dataFac.pedidoInterno })
+        $scope.$on('dataFac.pedidoInterno', function() { $scope.pedidoInterno = dataFac.pedidoInterno })
 
         $scope.ver = function (pedido) {
             $scope.pedido = pedido
@@ -412,7 +414,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
             } refresh.stop(actualizar)
         }        
 
-        $scope.$on('dataFac.transferencias', ()=> { $scope.transferencias = dataFac.transferencias })
+        $scope.$on('dataFac.transferencias', function() { $scope.transferencias = dataFac.transferencias })
 
         $scope.ver = function (transferencia) {
             $scope.transferencia = transferencia
@@ -427,7 +429,7 @@ angular.module('appAsistente', ['ui.router', 'ngCookies'])
                         return nuevaCantidad
                     } return $scope.transferencia.cantidad
                 })(),
-                comentario: (()=>{
+                comentario: (function(){
                     if (comentario) {
                         return comentario
                     } return ""
