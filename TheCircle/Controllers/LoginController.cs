@@ -129,7 +129,7 @@ namespace TheCircle.Controllers
                     if (data.localidad is Localidad.OC)
                         throw new LocalidadException();
                     return;
-                case "medico";
+                case "medico":
                     if (data.localidad is Localidad.OC)
                         throw new LocalidadException();
                     return;
