@@ -37,11 +37,5 @@ namespace TheCircle.Controllers
         {
             return StatusCode(500);
         }
-
-        [Route("error/unauth")]
-        public IActionResult Unauth()
-        {
-            return Unauthorized();
-        }
     }
 }

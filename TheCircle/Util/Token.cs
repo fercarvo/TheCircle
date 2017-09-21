@@ -5,9 +5,6 @@ using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
 using TheCircle.Models;
 using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
-using Microsoft.AspNetCore.WebUtilities;
 
 namespace TheCircle.Util
 {
@@ -42,13 +39,12 @@ namespace TheCircle.Util
             if (string.IsNullOrEmpty(cookie))
                 throw new TokenException("No existe cookie/cargo, at Token.check");
 
-            //token = JsonConvert.DeserializeObject<Token>(cookie); //Se parcea el string de cookie a Token.
             token = JsonConvert.DeserializeObject<Token>(Signature.FromBase(cookie)); //Se parcea el string de cookie a Token.
 
             if (token.data.expireAt < DateTime.Now)
                 throw new TokenException("Token expirado, at Token.check");
 
-            if(!cargos.Contains(token.data.cargo))
+            if (!cargos.Contains(token.data.cargo))
                 throw new TokenException("Cargo incorrecto, no autorizado, at Token.check");
 
             string dataToString = JsonConvert.SerializeObject(token.data);
@@ -56,6 +52,38 @@ namespace TheCircle.Util
             Signature.CheckHMAC(dataToString, token.sign);
 
             return token;
+        }
+
+        public static void CheckValid(Token token)
+        {
+            if (token.data.expireAt < DateTime.Now)
+                throw new TokenException("Token expirado, at Token.check");
+
+            string dataToString = JsonConvert.SerializeObject(token.data);
+            Signature.CheckHMAC(dataToString, token.sign);
+        }
+
+        public static void CheckLocalidad(Data data)
+        {
+            switch (data.cargo)
+            {
+                case "asistenteSalud":
+                    if (data.localidad is Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "medico":
+                    if (data.localidad is Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "sistema":
+                    if (data.localidad != Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "bodeguero":
+                    if (data.localidad != Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+            }
         }
     }
 
@@ -97,10 +125,8 @@ namespace TheCircle.Util
         public Localidad localidad { get; set; }
     }
 
-    public class LoginMessage
+    public class Message
     {
-        [BindRequired]
-        public int flag { get; set; }
         [BindRequired]
         [StringLength(120)]
         public string msg { get; set; }

@@ -4,7 +4,8 @@ using System;
 
 namespace TheCircle.Util
 {
-
+    //Estas clases se ejecutan antes de cada route que contenga las mismas
+    //Si la autenticación falla, se retorna un UnauthorizedResult o Redirect respectivamente
     internal class VIEWauthAttribute : ActionFilterAttribute
     {
         private string[] cargos;
@@ -17,7 +18,7 @@ namespace TheCircle.Util
         {
             try
             {
-                Token.Check(aec.HttpContext.Request, cargos);
+                var token = Token.Check(aec.HttpContext.Request, cargos);
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido se setea null

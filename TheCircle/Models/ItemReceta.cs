@@ -47,5 +47,19 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
             public string posologia { get; set; }
         }
+
+        public class Report
+        {
+            [Key]
+            public int id { get; set; }
+            public int idItemFarmacia { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public Int32 diagnostico { get; set; }
+            public int cantidad { get; set; }
+            public string posologia { get; set; }
+            public Boolean? funciono { get; set; }
+        }
     }
 }

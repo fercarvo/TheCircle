@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System;
 using TheCircle.Util;
 
 namespace TheCircle.Controllers.views
@@ -11,11 +10,11 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public ActionResult Index([FromQuery] LoginMessage lm)
+        public ActionResult Index([FromQuery] Message query)
         {
             if (ModelState.IsValid)
-                if (lm.flag == 21)
-                    ViewData["mensaje"] = lm.msg;
+                ViewData["mensaje"] = query.msg;
+
             return View();
         }
 
@@ -69,7 +68,7 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("coordinadorcc")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("cordinadorCC")]
+        [VIEWauth("coordinadorCC")]
         public IActionResult CoordinadorCC()
         {
             return View();

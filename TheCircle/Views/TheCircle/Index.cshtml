@@ -225,11 +225,11 @@
                 type: 'POST',
                 data: $('#form_crearCuenta').serialize(),
                 success: function () {
-                    var query = { flag: "21", msg: "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email" }
+                    var query = { msg: "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email" }
                     window.location.replace('/logout?' + $.param(query))
                 },
                 error: function () {
-                    var query = { flag: "21", msg: "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas" }
+                    var query = { msg: "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas" }
                     window.location.replace('/?' + $.param(query))
                 }
             })
@@ -242,12 +242,12 @@
                 type: 'PUT',
                 data: $('#form_cambiar_clave').serialize(),
                 success: function () {
-                    var query = { flag: "21", msg: "Cambio de contraseña exitoso" }
+                    var query = { msg: "Cambio de contraseña exitoso" }
                     window.location.replace('/logout?' + $.param(query))
                 },
                 error: function () {
-                    var query = { flag: "21", msg: "No se ha podido cambiar la contraseña, verifique los datos" }
-                    window.location.replace('/?'+$.param(query))
+                    var query = { msg: "No se ha podido cambiar la contraseña, verifique los datos" }
+                    window.location.replace('/?'+ $.param(query))
                 }
             })
             return false;

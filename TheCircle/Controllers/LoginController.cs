@@ -21,15 +21,15 @@ namespace TheCircle.Controllers
 
 
         [HttpGet("logout")]
-        public IActionResult Logout([FromQuery] LoginMessage lm)
+        public IActionResult Logout([FromQuery] Message query)
         {
             foreach (var cookie in Request.Cookies.Keys)
                 Response.Cookies.Delete(cookie);
 
             if (ModelState.IsValid) {
-                var parameters = new Dictionary<string, string> { { "flag", $"{lm.flag}" }, { "msg", lm.msg } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
+                var parameters = new Dictionary<string, string> {{ "msg", query.msg }};
+                var url = QueryHelpers.AddQueryString("/", parameters);
+                return Redirect(url);
             }
 
             return Redirect("/");
@@ -38,18 +38,8 @@ namespace TheCircle.Controllers
         [HttpPost("login")]
         public IActionResult login([FromForm] LoginRequest request)
         {
-
-            Dictionary<string, string> parameters;
-            string loginRedirect;
-
-
-            if (!ModelState.IsValid)
-            {
-                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Precaucion, data fuera de rangos" } };
-                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
-            }
-
+            if (ModelState.IsValid is false)
+                return CredentialsRedirect();
 
             try
             {
@@ -74,74 +64,66 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
-                CheckLocalidad(token.data);
+                Token.CheckLocalidad(token.data);
 
-                switch (token.data.cargo) {
-                    case "medico":
-                        return Redirect("/medico");
-                    case "asistenteSalud":
-                        return Redirect("/asistente");
-                    case "sistema":
-                        return Redirect("/sistema");
-                    case "bodeguero":
-                        return Redirect("/bodeguero");
-                    case "coordinador":
-                        return Redirect("/coordiandor");
-                    case "contralor":
-                        return Redirect("/contralor");
-                    case "coordinadorCC":
-                        return Redirect("/coordinadorcc");
-                    default:
-                        return Redirect("logout");
-                }
+                return CargoRedirect(token);
 
-            } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
+            } catch (Exception e) {
                 if (e is LocalidadException)
                     return LocalidadRedirect();
+                if (e is TokenException)
+                    return CredentialsRedirect();
 
                 return CredentialsRedirect();                
             }
         }
 
         [HttpGet("login")]
-        [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
-        public IActionResult loginCheck(Token token)
+        public IActionResult loginCheck()
         {
-            return Ok(token);
+            try {
+                string cookie = Request.Cookies["session"];
+                Token token = JsonConvert.DeserializeObject<Token>(Signature.FromBase(cookie));
+                Token.CheckValid(token);
+
+                return Ok(token);
+            } catch (Exception e) {
+                return Unauthorized();
+            }           
         }
 
         public RedirectResult LocalidadRedirect(){
-            var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
-            var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-            return new RedirectResult(loginRedirect);            
+            var parameters = new Dictionary<string, string> {{ "msg", "Localidad incorrecta" }};
+            var url = QueryHelpers.AddQueryString("/", parameters);
+            return new RedirectResult(url);            
         }
 
         public RedirectResult CredentialsRedirect(){
-            var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
-            var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-            return new RedirectResult(loginRedirect);        
+            var parameters = new Dictionary<string, string> {{ "msg", "Usuario/Clave incorrecto" } };
+            var url = QueryHelpers.AddQueryString("/", parameters);
+            return new RedirectResult(url);        
         }
 
-        public void CheckLocalidad (Data data) 
-        {
-            switch (data.cargo){
-                case "asistenteSalud":
-                    if (data.localidad is Localidad.OC)
-                        throw new LocalidadException();
-                    return;
+        public LocalRedirectResult CargoRedirect(Token token) {
+            switch (token.data.cargo) {
                 case "medico":
-                    if (data.localidad is Localidad.OC)
-                        throw new LocalidadException();
-                    return;
+                    return new LocalRedirectResult("/medico");
+                case "asistenteSalud":
+                    return new LocalRedirectResult("/asistente");
                 case "sistema":
-                    if (data.localidad != Localidad.OC)
-                        throw new LocalidadException();
-                    return;
+                    return new LocalRedirectResult("/sistema");
                 case "bodeguero":
-                    if (data.localidad != Localidad.OC)
-                        throw new LocalidadException();
-                    return;
+                    return new LocalRedirectResult("/bodeguero");
+                case "coordinador":
+                    return new LocalRedirectResult("/coordinador");
+                case "contralor":
+                    return new LocalRedirectResult("/contralor");
+                case "coordinadorCC":
+                    return new LocalRedirectResult("/coordinadorcc");
+                default:
+                    return new LocalRedirectResult("/logout");
             }
         }
+
     }
 }
