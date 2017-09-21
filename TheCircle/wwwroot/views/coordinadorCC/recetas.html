@@ -37,6 +37,11 @@
                 </div><!--acaba el form group de generar por fecha-->
 
                 <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
+                    <div class="panel-heading">
+                        <div style="text-align:right">
+                            <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+                        </div>
+                    </div>
                     <div style="overflow-y:auto;max-height:45vh">
                         <table class="table table-striped">
                             <thead>
@@ -50,45 +55,24 @@
                             </thead>
 
                             <tbody>
-                                <tr>
-                                    <td>numero #1</td>
-                                    <td>05/08/2017</td>
-                                    <td>1083336</td>
-                                    <td>Nombre generico A</td>
-                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                                </tr>
-                                <tr>
-                                    <td>numero #2</td>
-                                    <td>15/07/2017</td>
-                                    <td>1083334</td>
-                                    <td>Nombre generico B</td>
-                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                                </tr>
-                                <tr>
-                                    <td>numero #3</td>
-                                    <td>31/12/2017</td>
-                                    <td>1083335</td>
-                                    <td>Nombre generico C</td>
-                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                                </tr>
-                                <tr>
-                                    <td>numero #4</td>
-                                    <td>28/08/2017</td>
-                                    <td>1083331</td>
-                                    <td>Nombre generico D</td>
-                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <tr ng-repeat="obj in recetas | filter:buscar | orderBy:'receta.fecha'">
+                                    <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
+                                    <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                                    <td>{{obj.receta.idApadrinado}}</td>
+                                    <td>{{obj.receta.nombreApadrinado}} {{obj.receta.apellidoApadrinado}}</td>
+                                    <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                                 </tr>
                             </tbody>
                         </table>
-                    </div><!--la tabla presente-->
-                </div><!--acaba el panel de la tabla con su buscador-->
+                    </div>
+                </div>
 
                 <!--Modal Item receta-->
                 <div id="recetaModal" class="modal fade">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Receta Nro ###</h5>
+                                <h5 class="modal-title">Receta Nro {{("00000000"+ obj.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                             </div>
                             <div class="panel-body" style=" padding-top: 5px;">
                                 <table class="table table-striped">
@@ -101,21 +85,22 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>Nombre 1</td>
-                                            <td>Compuesto 1</td>
-                                            <td>Cantidad pedida</td>
-                                            <td>Posologia escrita</td>
+                                        <tr ng-repeat="item in receta.items">
+                                            <td>{{item.nombre}}</td>
+                                            <td>{{item.compuesto}}</td>
+                                            <td>{{item.cantidad}}</td>
+                                            <td>{{item.posologia}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div><!--acaba el panel body del modal-->
+                            </div>
                             <div class="text-center ">
                                 <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                             </div><!-- /.form-group -->
                         </div>
                     </div>
-                </div><!--Aqui acaba el modal-->
+                </div>
+
 
 
             </div><!--fin del panel body-->

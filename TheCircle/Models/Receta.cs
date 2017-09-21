@@ -55,6 +55,12 @@ namespace TheCircle.Models
             return _context.Recetas.FromSql(query).ToArray();
         }
 
+        public static Receta[] ReportLocalidad(Localidad localidad, DateTime desde, DateTime hasta)
+        {
+            string query = $"EXEC Receta_Report_Localidad @localidad='{localidad}', @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Recetas.FromSql(query).ToArray();
+        }
+
 
         public static Receta[] GetAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
         {

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
 
 namespace TheCircle.Models
 {
@@ -11,5 +12,11 @@ namespace TheCircle.Models
         public string hasta { get; set; }
 
         public Fecha() { }
+    }
+
+    public class Date
+    {
+        public DateTime desde { get; set; }
+        public DateTime hasta { get; set; }
     }
 }

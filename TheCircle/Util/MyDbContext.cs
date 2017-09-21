@@ -8,6 +8,7 @@ namespace TheCircle.Util
         public virtual DbSet<Remision> Remision { get; set; }
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
         public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
+        public virtual DbSet<ItemFarmacia.Egreso> Egreso { get; internal set; }
         public virtual DbSet<Foto> Fotos { get; set; }
         public virtual DbSet<Enfermedad> Enfermedades { get; set; }
         public virtual DbSet<Institucion> Instituciones { get; set; }
@@ -24,9 +25,6 @@ namespace TheCircle.Util
         public virtual DbSet<PedidoInterno> PedidoInterno { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<UnidadMedida> UnidadMedida { get; set; }
-
-
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {

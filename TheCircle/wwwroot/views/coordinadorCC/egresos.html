@@ -16,6 +16,23 @@
         <div class="panel-body" style="padding:25px 20px 10px 20px;">
 
             <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+
+                <div class="form-group" >
+                    <form class="form-horizontal" ng-submit="generar(desde, hasta)">
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <label class="/control-label">Desde<a style="color:red;">(*)</a></label>
+                            <input ng-model="desde" required type="date" class="form-control">
+                        </div>
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                            <input ng-model="hasta" required type="date" class="form-control">
+                        </div>
+                        <div class="col-sm-3" style="padding-bottom:5px;">
+                            <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+                        </div>
+                    </form>
+                </div>
+
                 <div class="panel-heading">
                     <div style="text-align:right">
                         <input class="form-control" type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto">
@@ -29,31 +46,19 @@
                                 <th>Nombre</th>
                                 <th>Compuesto</th>
                                 <th>Categor&iacute;a</th>
-                                <th>Disponible</th>
+                                <th>Grupo</th>
                                 <th>Caducidad</th>
+                                <th>Egreso</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Nombre X</td>
-                                <td>Compuesto Y</td>
-                                <td>Categoria Z</td>
-                                <td>1001</td>
-                                <td>21/12/2017</td>
-                            </tr>
-                            <tr>
-                                <td>Nombre alfa</td>
-                                <td>Compuesto beta</td>
-                                <td>Categoria gamma</td>
-                                <td>3522</td>
-                                <td>01/01/2018</td>
-                            </tr>
-                            <tr>
-                                <td>Nombre 1</td>
-                                <td>Compuesto 2</td>
-                                <td>Categoria 3</td>
-                                <td>4351</td>
-                                <td>06/10/2017</td>
+                            <tr ng-repeat="e in egresos">
+                                <td>{{e.nombre}}</td>
+                                <td>{{e.compuesto}}</td>
+                                <td>{{e.categoria}}</td>
+                                <td>{{e.grupo}}</td>
+                                <td>{{e.fcaducidad}}</td>
+                                <td>{{e.egreso}}</td>
                             </tr>
                         </tbody>
                     </table>

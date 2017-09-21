@@ -3,7 +3,85 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appCoordinadorCC', ['ui.router', 'ngCookies'])
+
+//retorna la fecha en un formato especifico
+function date(date) {
+    var format = new Date(date);
+    var day = format.getDate();
+    var month = format.getMonth() + 1;
+    var year = format.getFullYear();
+
+    return day + '/' + month + '/' + year;
+}
+
+//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
+var refresh = {
+    go: function (fn, time) {
+        fn();
+        if (time) {
+            console.log("Go refresh in ", fn.name, "by", time, "sec");
+            return setInterval(fn, time * 1000);
+        }
+        console.log("Go refresh in", fn.name, "by", 1000 * 5, "sec");
+        return setInterval(fn, 1000 * 5);
+    },
+    stop: function (repeater) {
+        console.log("stop repeater")
+        clearInterval(repeater);
+    }
+}
+
+function notify(mensaje, tipo, progress) {
+    return $.notify(
+        {
+            icon: (() => {
+                switch (tipo) {
+                    case "success":
+                        return "glyphicon glyphicon-saved"
+                    case "danger":
+                        return "glyphicon glyphicon-ban-circle"
+                    default:
+                        return ""
+                }
+            })(),
+            message: mensaje,
+            url: '#',
+            target: '_blank'
+        }, {
+            element: 'body',
+            position: null,
+            showProgressbar: (() => {
+                if (progress) {
+                    return progress
+                } return false
+            })(),
+            type: tipo,
+            allow_dismiss: true,
+            newest_on_top: false,
+            placement: {
+                from: "top",
+                align: "right"
+            },
+            offset: { x: 20, y: 70 },
+            spacing: 10,
+            z_index: 1031,
+            delay: 1000,
+            timer: 1000,
+            url_target: '_blank',
+            mouse_over: "pause",
+            animate: {
+                enter: 'animated bounceIn',
+                exit: 'animated bounceOut'
+            },
+            onShow: null,
+            onShown: null,
+            onClose: null,
+            onClosed: null,
+            icon_type: 'class'
+        })
+}
+
+angular.module('coordinadorCC', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('recetas', {
@@ -14,40 +92,22 @@ angular.module('appCoordinadorCC', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/coordinadorCC/egresos.html',
                 controller: 'egresos'
             });
-        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
+        $compileProvider.debugInfoEnabled(true); //Activar en modo producción
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$rootScope", "$cookies", "$http", function ($state, $rootScope, $cookies, $http) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
+        refresh.go(function () {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 1000 * 60 * 20)
+        }, 60 * 20) //segundos
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })()
-
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
-
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')        
 
         $state.go("recetas");
     }])
@@ -60,36 +120,55 @@ angular.module('appCoordinadorCC', ['ui.router', 'ngCookies'])
 
         return dataFactory;
     }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
+    .controller('recetas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 10000);
-        }
+        $scope.recetas = null;
 
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/receta/localidad/fecha",
+                params: data
+            }).then(function (res) {
+                NProgress.done();
+                console.log(res)
+                $scope.recetas = res.data;
+            }, function (err) {
+                console.log("error cargar recetas")
+                notify("No se pudo cargar recetas", "danger");
+                NProgress.done();
+            })
         }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
-        }
-    }])
-    .controller('recetas', ["$log", "$scope", "$state", "$http", "dataFac", function ($log, $scope, $state, $http, dataFac) {
-        cosole.log("En Recetas");
 
     }])
-    .controller('egresos', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
-        console.log("En Egresos");
+    .controller('egresos', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
+        $scope.egresos = null;
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/itemfarmacia/report/egresos",
+                params: data
+            }).then(function (res) {
+                NProgress.done();
+                console.log(res.data)
+                $scope.egresos = res.data;
+            }, function (err) {
+                console.log("error cargar recetas")
+                notify("No se pudo cargar recetas", "danger");
+                NProgress.done();
+            })
+        }
 
     }])

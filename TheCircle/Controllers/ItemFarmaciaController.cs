@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using TheCircle.Models;
 using TheCircle.Util;
 
@@ -41,7 +42,16 @@ namespace TheCircle.Controllers
             ItemFarmacia[] stock = ItemFarmacia.Report(token.data.localidad);
             return Ok(stock);
         }
-        
+
+        [HttpGet("itemfarmacia/report/egresos")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("coordinadorCC")]
+        public IActionResult GetEgresos(Token token, [FromQuery]Date req)
+        {
+            var stock = ItemFarmacia.Egresos(token.data.localidad, req.desde, req.hasta);
+            return Ok(stock);
+        }
+
 
         [HttpPost("itemfarmacia/transferencia")]
         [APIauth("asistenteSalud", "bodeguero")]

@@ -72,6 +72,12 @@ namespace TheCircle.Models
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
+        public static Egreso[] Egresos(Localidad localidad, DateTime desde, DateTime hasta)
+        {
+            string query = $"EXEC ItemReceta_Report_Items @localidad='{localidad}', @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Egreso.FromSql(query).ToArray();
+        }
+
         public class IngresoTransferencia
         {
             public int idTransferencia { get; set; }
@@ -94,6 +100,20 @@ namespace TheCircle.Models
         {
             public int item { get; set; }
             public int cantidad { get; set; }
+        }
+
+        public class Egreso
+        {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public string categoria { get; set; }
+            public string grupo { get; set; }
+            public int stock { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public string localidad { get; set; }
+            public int egreso { get; set; }
         }
     }
 }

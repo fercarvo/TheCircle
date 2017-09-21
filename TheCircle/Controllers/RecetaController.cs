@@ -3,6 +3,7 @@ using TheCircle.Models;
 using System;
 using TheCircle.Util;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TheCircle.Controllers
 {
@@ -28,6 +29,23 @@ namespace TheCircle.Controllers
 
             var recetas = Receta.ReportByDoctor(fecha, token.data.cedula, _context);
             return Ok(recetas);
+        }
+
+        [HttpGet("receta/localidad/fecha")]
+        //[ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
+        [APIauth("coordinadorCC")]
+        public IActionResult ReportCoordinadorCC(Token token, [FromQuery] Date fecha)
+        {
+            Receta[] recetas = Receta.ReportLocalidad (token.data.localidad, fecha.desde, fecha.hasta);
+            var data = new List<object>();
+
+            foreach (Receta receta in recetas) {
+                var items = ItemReceta.ReportReceta(receta.id, _context);
+                if (items.Count() > 0)
+                    data.Add(new { receta, items });
+            }
+
+            return Ok(data);
         }
 
 
