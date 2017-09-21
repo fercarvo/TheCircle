@@ -57,42 +57,6 @@ namespace TheCircle.Util
 
             return token;
         }
-
-        public static RedirectResult CheckLocalidad (Token token)
-        {
-            /*switch (token.data.cargo)
-            {
-                case "bodeguero":
-                    if (token.data.localidad != Localidad.OC) {
-                        var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
-                        var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                        return new RedirectResult(loginRedirect);
-                    }
-                    break;
-                case "sistema":
-                    var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
-                    var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                    return new RedirectResult(loginRedirect);
-            }*/
-
-
-            if (token.data.cargo is "bodeguero" && token.data.localidad != Localidad.OC)
-            {
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return new RedirectResult(loginRedirect);
-            }
-
-            if (token.data.cargo is "sistema" && token.data.localidad != Localidad.OC)
-            {
-                var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
-                var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return new RedirectResult(loginRedirect);
-            }
-
-            return null;
-        }
-
     }
 
     public class Data

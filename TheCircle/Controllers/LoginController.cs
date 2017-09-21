@@ -74,9 +74,7 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
-
-                if (Token.CheckLocalidad(token) != null)
-                    return Token.CheckLocalidad(token);
+                CheckLocalidad(token.data);
 
                 switch (token.data.cargo) {
                     case "medico":
@@ -98,9 +96,10 @@ namespace TheCircle.Controllers
                 }
 
             } catch (Exception e) { //Si el usuario es invalido o se evidencia algun error
-                parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
-                loginRedirect = QueryHelpers.AddQueryString("/", parameters);
-                return Redirect(loginRedirect);
+                if (e is LocalidadException)
+                    return LocalidadRedirect();
+
+                return CredentialsRedirect();                
             }
         }
 
@@ -109,6 +108,40 @@ namespace TheCircle.Controllers
         public IActionResult loginCheck(Token token)
         {
             return Ok(token);
+        }
+
+        public RedirectResult LocalidadRedirect(){
+            var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Localidad incorrecta" } };
+            var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+            return new RedirectResult(loginRedirect);            
+        }
+
+        public RedirectResult CredentialsRedirect(){
+            var parameters = new Dictionary<string, string> { { "flag", "21" }, { "msg", "Usuario/Clave incorrecto" } };
+            var loginRedirect = QueryHelpers.AddQueryString("/", parameters);
+            return new RedirectResult(loginRedirect);        
+        }
+
+        public void CheckLocalidad (Data data) 
+        {
+            switch (data.cargo){
+                case "asistenteSalud":
+                    if (data.localidad is Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "medico";
+                    if (data.localidad is Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "sistema":
+                    if (data.localidad != Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+                case "bodeguero":
+                    if (data.localidad != Localidad.OC)
+                        throw new LocalidadException();
+                    return;
+            }
         }
     }
 }
