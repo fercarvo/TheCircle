@@ -50,6 +50,12 @@ namespace TheCircle.Models
             return data;
         }
 
+        public static Stadistics[] Report(DateTime desde, DateTime hasta)
+        {
+            string query = $"EXEC Atencion_Report_Total @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Stadistics.FromSql(query).ToArray();
+        }
+
         public class Data
         {
             public int apadrinado { get; set; }
@@ -57,6 +63,12 @@ namespace TheCircle.Models
             public string[] diagnosticos { get; set; }
             public int? peso { get; set; }
             public int? talla { get; set; }
+        }
+
+        public class Stadistics
+        {
+            public string localidad { get; set; }
+            public int cantidad { get; set; }
         }
 
     }    

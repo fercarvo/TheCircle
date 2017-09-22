@@ -41,5 +41,15 @@ namespace TheCircle.Controllers
             Atencion[] atenciones = Atencion.ReportByDoctorDate(request, token.data.cedula, _context);
             return Ok(atenciones);
         }
+
+        //Ruta que retorna las atenciones medicas de un doctor
+        [HttpGet("atencion/report")]
+        //[ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
+        //[APIauth("medico")]
+        public IActionResult GetReport([FromQuery] Date fecha)
+        {
+            var data = Atencion.Report(fecha.desde, fecha.hasta);
+            return Ok(data);
+        }
     }
 }

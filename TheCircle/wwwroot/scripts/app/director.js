@@ -1,5 +1,5 @@
-﻿angular.module('appDirector', ['ui.router', 'ngCookies'])
-    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
+﻿angular.module('director', ['ui.router', 'ngCookies'])
+    .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('estadisticas', {
                 templateUrl: 'views/director/estadisticas.html',
@@ -29,24 +29,51 @@
 
     }])
 
-    .controller('estadisticas', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
-        $log.info("En Estadisticas");
+    .controller('estadisticas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $state.go("estadisticas.atenciones")
 
     }])
-    .controller('estadisticas.atenciones', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
-        $log.info("En Estadisticas de atenciones");
+    .controller('estadisticas.atenciones', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+        $log.info("En Estadisticas de atenciones")
+
+        $scope.atenciones = null;
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: date(desde),
+                hasta: date(hasta)
+            }
+            NProgress.start();
+
+            $http({
+                method: "GET",
+                url: "/api/reporte/enfermedad/date",
+                params: data
+            }).then(function success(res) {
+                $scope.data = [];
+
+                for (i = 0; i < res.data.length; i++) {
+                    $scope.data.push({ key: res.data[i].codigo + ' ' + res.data[i].nombre, y: res.data[i].veces, color: color[i] });
+                }
+                NProgress.done();
+            }, function error(err) {
+                console.log("Error cargar estadisticas", err);
+                notify("No se pudo cargar las enfermedades", "danger");
+                NProgress.done();
+            })
+
+        }
 
     }])
-    .controller('estadisticas.remisiones', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('estadisticas.remisiones', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $log.info("En Estadisticas de remisiones");
 
     }])
-    .controller('estadisticas.recetas', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('estadisticas.recetas', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $log.info("En Estadisticas de recetas");
 
     }])
-    .controller('estadisticas.enfermedades', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('estadisticas.enfermedades', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $log.info("En Estadisticas de enfermedades");
 
     }])
