@@ -10,6 +10,16 @@
             text-align: center;
         }
 
+        #menu {
+            cursor: pointer;
+            height: 50px;
+            width: 50px;
+            color: white; 
+            font-size: 20px;
+            text-align: center;
+            margin-top: 0px;
+        }
+
         #contenedor {
             color: #901F61;
         }
@@ -19,11 +29,11 @@
 
         <div class="navbar-header" >
             <a onClick="document.location.reload();" class="navbar-brand">
-                <span style="color:white">TheCircle</span>
+                <span style="color:white">The Circle</span>
             </a>
-            <button data-ripple type="button" class="sidebar-toggle" style="color:white" onclick="change()">
-                <span id="spanid" class="glyphicon glyphicon-chevron-left"></span>
-            </button>
+            <div data-ripple id="menu" class="sidebar-toggle" onclick="change()">
+                <span id="spanid" class="glyphicon glyphicon-chevron-left" style="padding-top:11px;"></span>
+            </div>
         </div>
 
         <ul class="nav navbar-nav navbar-right">
