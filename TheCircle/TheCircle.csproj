@@ -30,6 +30,7 @@
     <Content Include="wwwroot\scripts\app\contralor.js" />
     <Content Include="wwwroot\scripts\app\coordinadorCC.js" />
     <Content Include="wwwroot\scripts\app\coordinadorSalud.js" />
+    <Content Include="wwwroot\scripts\app\director.js" />
     <Content Include="wwwroot\scripts\app\medico.js" />
     <Content Include="wwwroot\scripts\app\sistema.js" />
     <Content Include="wwwroot\scripts\app\sistema.min.js" />
@@ -77,6 +78,11 @@
     <Content Include="wwwroot\views\coordinadorCC\recetas.html" />
     <Content Include="wwwroot\views\coordinador\historial.html" />
     <Content Include="wwwroot\views\coordinador\validar.html" />
+    <Content Include="wwwroot\views\director\estadisticas.atenciones.html" />
+    <Content Include="wwwroot\views\director\estadisticas.enfermedades.html" />
+    <Content Include="wwwroot\views\director\estadisticas.html" />
+    <Content Include="wwwroot\views\director\estadisticas.recetas.html" />
+    <Content Include="wwwroot\views\director\estadisticas.remisiones.html" />
     <Content Include="wwwroot\views\medico\anulaciones.html" />
     <Content Include="wwwroot\views\medico\atencion.html" />
     <Content Include="wwwroot\views\medico\atencion.receta.html" />

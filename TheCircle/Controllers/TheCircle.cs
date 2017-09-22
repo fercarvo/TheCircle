@@ -73,5 +73,12 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        [HttpGet("director")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Director()
+        {
+            return View();
+        }
     }
 }
