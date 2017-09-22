@@ -4,81 +4,6 @@
  Children International
 */
 
-
-//retorna la fecha en un formato especifico
-function date(date) {
-    var format = new Date(date);
-    var day = format.getDate();
-    var month = format.getMonth() + 1;
-    var year = format.getFullYear();
-
-    return day + '/' + month + '/' + year;
-}
-
-//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
-var refresh = {
-    go: function (fn, time) {
-        fn();
-        if (time) {
-            console.log("Go refresh in ", fn.name, "by", time, "sec");
-            return setInterval(fn, time*1000);
-        }
-        console.log("Go refresh in", fn.name, "by", 1000*5, "sec");
-        return setInterval(fn, 1000 * 5);
-    },
-    stop: function (repeater) {
-        console.log("stop repeater")
-        clearInterval(repeater);
-    }
-}
-
-//Notificaciones bootstrap
-function notify(mensaje, tipo) {
-
-    var icono = "";
-
-    if (tipo === "success") {
-        icono = "glyphicon glyphicon-saved";
-    } else if (tipo === "danger") {
-        icono = "glyphicon glyphicon-ban-circle"
-    }
-
-    return $.notify(
-        {
-            icon: icono,
-            message: mensaje,
-            url: '#',
-            target: '_blank'
-        }, {
-            element: 'body',
-            position: null,
-            showProgressbar: false,
-            type: tipo,
-            allow_dismiss: true,
-            newest_on_top: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: { x: 20, y: 70 },
-            spacing: 10,
-            z_index: 1031,
-            delay: 1000,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: "pause",
-            animate: {
-                enter: 'animated bounceIn',
-                exit: 'animated bounceOut'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class'
-        })
-}
-
 angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -142,37 +67,30 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
-        refresh.go(function () {
-            $http.get("login").then(function() { console.log("Session valida") }, function(response) {
+        refresh.go(function checkSession() {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 60*20) //segundos
+        }, 15) //minutos
 
-        NProgress.start();
-        var despachar = $http.get('views/medico/atencion.html', { cache: $templateCache })
-        $http.get('views/medico/atencion.registro.html', { cache: $templateCache }).then(function () {
-            despachar.then(function () {
-                $state.go("atencion")
-                NProgress.done();
-            }, function(error) { console.log("Error: ", error) })
-        }, function () {
-            NProgress.done();
-            alert("Error al cargar página")
-            document.location.reload()
-        })
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
 
-        /*Se cargan todos los templates*/
-        var states = $state.get();
-
-        for (i = 3; i < states.length; i++) {
-            $http.get(states[i].templateUrl, { cache: $templateCache })
-                .then(function () { }, function (error) {
-                    console.log("Error: ", error)
-                })
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
         }
+
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go("atencion") /////////////////////////
+            })
 
         $rootScope.session_name = $cookies.get('session_name')
         $rootScope.session_email = $cookies.get('session_email')
@@ -457,9 +375,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $scope.ItemRecetaNuevo = {};
         $scope.editarItem = true;
         $scope.diagnosticos = atencionFactory.diagnosticos;
-        $scope.ItemRecetaNuevo.diagnostico = $scope.diagnosticos[0];
         var actualizar = refresh.go(cargar);
-
 
         $scope.$on('dataFactory.stock', function () {
             $scope.stock = dataFactory.stock;

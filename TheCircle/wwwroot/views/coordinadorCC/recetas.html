@@ -39,15 +39,16 @@
                 <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
                     <div class="panel-heading">
                         <div style="text-align:right">
-                            <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+                            <input type="text" ng-model="buscar.receta.$" placeholder="Filtrar recetas por numero/apadrinado/doctor" class="form-control">
                         </div>
                     </div>
-                    <div style="overflow-y:auto;max-height:45vh">
+                    <div style="overflow-y:auto;max-height:56vh">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
                                     <th>N&uacute;mero</th>
                                     <th>Fecha</th>
+                                    <th>Doctor</th>
                                     <th>Codigo</th>
                                     <th>Nombre apadrinado</th>
                                     <th>Ver &iacute;tems</th>
@@ -55,9 +56,10 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="obj in recetas | filter:buscar | orderBy:'receta.fecha'">
+                                <tr ng-repeat="obj in recetas.all | filter:buscar | orderBy:'receta.fecha'">
                                     <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                                     <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                                    <td>{{obj.receta.nombreDoctor}}</td>
                                     <td>{{obj.receta.idApadrinado}}</td>
                                     <td>{{obj.receta.nombreApadrinado}} {{obj.receta.apellidoApadrinado}}</td>
                                     <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
@@ -72,7 +74,7 @@
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Receta Nro {{("00000000"+ obj.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
+                                <h5 class="modal-title">Receta Nro {{("00000000"+ receta.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                             </div>
                             <div class="panel-body" style=" padding-top: 5px;">
                                 <table class="table table-striped">

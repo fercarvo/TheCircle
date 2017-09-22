@@ -9,3 +9,81 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.min.js"></script>
 <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
 <script src="~/scripts/vendor/nprogress.js"></script>
+<script>
+    //retorna la fecha en un formato especifico
+    function date(date) {
+        var format = new Date(date);
+        var day = format.getDate();
+        var month = format.getMonth() + 1;
+        var year = format.getFullYear();
+
+        return day + '/' + month + '/' + year;
+    }
+
+    //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
+    var refresh = {
+        go: function (fn, time) { //time, minutos
+            fn();
+            if (time) {
+                console.log("Go refresh for", fn.name, "by", time, "min");
+                return setInterval(fn, time * 1000 * 60);
+            }
+            console.log("Go refresh for", fn.name);
+            return setInterval(fn, 1000 * 30);
+        },
+        stop: function (repeater) {
+            clearInterval(repeater);
+        }
+    }
+
+    //Notificaciones bootstrap
+    function notify(mensaje, tipo, progress) {
+        return $.notify(
+            {
+                icon: (function () {
+                    switch (tipo) {
+                        case "success":
+                            return "glyphicon glyphicon-saved"
+                        case "danger":
+                            return "glyphicon glyphicon-ban-circle"
+                        default:
+                            return ""
+                    }
+                })(),
+                message: mensaje,
+                url: '#',
+                target: '_blank'
+            }, {
+                element: 'body',
+                position: null,
+                showProgressbar: (function () {
+                    if (progress) {
+                        return progress
+                    } return false
+                })(),
+                type: tipo,
+                allow_dismiss: true,
+                newest_on_top: false,
+                placement: {
+                    from: "top",
+                    align: "right"
+                },
+                offset: { x: 20, y: 70 },
+                spacing: 10,
+                z_index: 1031,
+                delay: 1000,
+                timer: 1000,
+                url_target: '_blank',
+                mouse_over: "pause",
+                animate: {
+                    enter: 'animated bounceIn',
+                    exit: 'animated bounceOut'
+                },
+                onShow: null,
+                onShown: null,
+                onClose: null,
+                onClosed: null,
+                icon_type: 'class'
+            })
+    }
+</script>

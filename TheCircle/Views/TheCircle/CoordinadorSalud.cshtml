@@ -11,66 +11,12 @@
 
 </head>
 <body class="page-dashboard" ng-app="appCoordinador">
-    <!-- TOP NAVIGATION STARTS -->
+    <!-- TopBar -->
     @Html.Partial("Partials/TopBar")
-    <!-- TOP NAVIGATION ENDS -->
-    <!-- CONTENT WRAPPER STARTS ( INCLUDES LEFT SIDEBAR AND CONTENT PART OF THE PAGE ) -->
+    <!-- TopBar -->
     <div class="content-wrapper">
-        <!-- SIDEBAR STARTS -->
-        <style>
-            .sidebar .sidebar-nav > li > a {
-                color: #901f61;
-                font-size: 16px;
-                font-weight: 600;
-            }
 
-            .sidebar .sidebar-nav > .open > a:hover, .sidebar .sidebar-nav > .open > a:focus {
-                background-color: #d7d3d4;
-            }
-
-            .sidebar .sidebar-nav > .active > a {
-                color: #f2f2f2;
-            }
-
-                .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
-                    /*background-color: #706f6f*/
-                    background-color: #344868
-                }
-
-            .btn-info {
-                color: #fff;
-                border-color: #17c092;
-                background-color: #28d1a3;
-            }
-
-            .table > tbody > tr > td {
-                padding: 8px 10px;
-            }
-
-            @@media (max-width: 991px) {
-                .sidebar {
-                    height: 160px;
-                    max-height: 160px;
-                    border-right-color: inherit;
-                }
-            }
-
-            @@media (min-width: 991px) {
-                .sidebar {
-                    border-right-color: #344868;
-                    min-height: 600px;
-                    height: 600px;
-                }
-            }
-
-            #sidebar_menu {
-                min-height: 600px;
-                background-color: #f2f2f2;
-                position: sticky;
-                top: auto;
-                border-right-color: #344868;
-            }
-        </style>
+        @Html.Partial("Partials/SidebarStyles")
 
         <div class="sidebar" id="sidebar_menu">
             <ul class="sidebar-nav">
@@ -86,11 +32,11 @@
                 </li>
             </ul>
         </div>
-        
+
         <div style="overflow-y:auto;max-height:94vh">
             <ui-view></ui-view>
-        </div>   
-        
+        </div>
+
     </div>
 
     @Html.Partial("Partials/Scripts")

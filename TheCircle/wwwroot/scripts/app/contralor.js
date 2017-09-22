@@ -19,38 +19,35 @@ angular.module('appContralor', ['ui.router', 'ngCookies'])
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
+        refresh.go(function () {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 1000 * 60 * 20)
+        }, 20) //minutos
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })()
 
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
 
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
+        }
 
-        $state.go("aprobar");
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go("aprobar") /////////////////////////
+            })
+
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')   
     }])
     .factory('dataFac', ['$http', function ($http) {
         var dataFactory = {};

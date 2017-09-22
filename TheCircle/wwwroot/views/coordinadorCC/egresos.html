@@ -18,14 +18,14 @@
             <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
 
                 <div class="form-group" >
-                    <form class="form-horizontal" ng-submit="generar(desde, hasta)">
+                    <form class="form-horizontal" ng-submit="generar(egresos.desde, egresos.hasta)">
                         <div class="col-sm-3" style="padding-bottom:5px;">
                             <label class="/control-label">Desde<a style="color:red;">(*)</a></label>
-                            <input ng-model="desde" required type="date" class="form-control">
+                            <input ng-model="egresos.desde" required type="date" class="form-control">
                         </div>
                         <div class="col-sm-3" style="padding-bottom:5px;">
                             <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                            <input ng-model="hasta" required type="date" class="form-control">
+                            <input ng-model="egresos.hasta" required type="date" class="form-control">
                         </div>
                         <div class="col-sm-3" style="padding-bottom:5px;">
                             <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
@@ -38,8 +38,7 @@
                         <input class="form-control" type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto">
                     </div>
                 </div>
-                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
-
+                <div style="overflow-y:auto;max-height:56vh">
                     <table class="table table-striped">
                         <thead>
                             <tr>

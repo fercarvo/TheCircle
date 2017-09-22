@@ -4,86 +4,6 @@
     Children International
 */
 
-//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
-var refresh = {
-    go: (fn, time)=>{
-        fn();
-        if (time) {
-            return setInterval(fn, time)
-        } return setInterval(fn, 10000)
-    },
-    stop: (repeater)=>{ clearInterval(repeater) }
-}
-
-function error(e) {
-    console.log("Error: ", e)
-}
-
-/**
-    * @name notify
-    * @kind function
-    * @description
-    * Muestra las notificaciones de success o error en los req HTTP
-    * de la aplicacion
-    *
-    * @param {string} mensaje Mensaje que será mostrado en la notificacion
-    * @param {string} tipo success/danger, success o error respectivamente
-    * @param {boolean} progress true for show progress bar.
-    * @returns {promise} Promise de la notificacion generada
-    * culmine por ejm
-    * var not = notify.close();
-    * not();
-    */
-function notify(mensaje, tipo, progress) {
-    return $.notify(
-        {
-            icon: (() => {
-                switch (tipo) {
-                    case "success":
-                        return "glyphicon glyphicon-saved"
-                    case "danger":
-                        return "glyphicon glyphicon-ban-circle"
-                    default:
-                        return ""
-                }
-            })(),
-            message: mensaje,
-            url: '#',
-            target: '_blank'
-        }, {
-            element: 'body',
-            position: null,
-            showProgressbar: (() => {
-                if (progress) {
-                    return progress
-                } return false
-            })(),
-            type: tipo,
-            allow_dismiss: true,
-            newest_on_top: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: { x: 20, y: 70 },
-            spacing: 10,
-            z_index: 1031,
-            delay: 1000,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: "pause",
-            animate: {
-                enter: 'animated bounceIn',
-                exit: 'animated bounceOut'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class'
-        })
-}
-
 angular.module('sistema', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -108,27 +28,29 @@ angular.module('sistema', ['ui.router', 'ngCookies'])
     .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, root, $cookies, $http, $templateCache) {
 
         refresh.go(function () {
-            $http.get("login").then(() => { console.log("Session valida") }, (response) => {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 1000 * 60 * 20) //cada 20 minutos
+        }, 20) //minutos
 
-        NProgress.start();
-        $http.get('/views/sistema/activarusuario.html', { cache: $templateCache }).then(function sucess() {
-            $state.go("activarusuario")
-            NProgress.done();
-        }, function error() {
-            NProgress.done();
-            alert("Error al cargar página");
-            document.location.reload();
-        })
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
 
-        $http.get('/views/sistema/desactivarusuario.html', { cache: $templateCache }).then(() => { }, error)
-        $http.get('/views/sistema/cambiarclave.html', { cache: $templateCache }).then(() => { }, error)
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
+        }
 
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go("activarusuario") /////////////////////////
+            })
 
         root.session_name = $cookies.get('session_name')
         root.session_email = $cookies.get('session_email')

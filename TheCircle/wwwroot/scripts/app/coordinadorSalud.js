@@ -4,7 +4,7 @@
  Children International
 */
 angular.module('appCoordinador', ['ui.router', 'ngCookies'])
-    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
+    .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('validar', {
                 templateUrl: 'views/coordinador/validar.html',
@@ -17,40 +17,37 @@ angular.module('appCoordinador', ['ui.router', 'ngCookies'])
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
         //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
-        refresh.goTime(function () {
-            $http.get("login").then(function () {
-            }, function (response) {
+        refresh.go(function () {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 1000 * 60 * 20)
+        }, 20) //minutos
 
-        $rootScope.session_name = (function () {
-            var c = $cookies.get('session_name')
-            if (c) {
-                return c
-            } return ""
-        })()
 
-        $rootScope.session_email = (function () {
-            var c = $cookies.get('session_email')
-            if (c) {
-                return c
-            } return ""
-        })()
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
 
-        $rootScope.session_photo = (function () {
-            var c = $cookies.get('session_photo')
-            if (c) {
-                return c
-            } return "/images/ci.png"
-        })()
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
+        }
 
-        $state.go("validar");
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go("validar") /////////////////////////
+            })
+
+        $rootScope.session_name = $cookies.get('session_name')
+        $rootScope.session_email = $cookies.get('session_email')
+        $rootScope.session_photo = $cookies.get('session_photo')   
     }])
     .factory('dataFac', ['$http', function ($http) {
         var dataFactory = {};
@@ -66,36 +63,11 @@ angular.module('appCoordinador', ['ui.router', 'ngCookies'])
 
         return dataFactory;
     }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
-
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 10000);
-        }
-
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
-        }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
-        }
-    }])
-    .controller('validar', ["$log", "$scope", "$state", "$http", "dataFac", function ($log, $scope, $state, $http, dataFac) {
+    .controller('validar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $log.info("En Validar");
 
     }])
-    .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
+    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
         $log.info("En historial");
 
     }])

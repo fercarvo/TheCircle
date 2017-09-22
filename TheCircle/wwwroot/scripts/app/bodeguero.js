@@ -1,80 +1,4 @@
-﻿//retorna la fecha en un formato especifico
-function date(date) {
-    var format = new Date(date);
-    var day = format.getDate();
-    var month = format.getMonth() + 1;
-    var year = format.getFullYear();
-
-    return day + '/' + month + '/' + year;
-}
-
-//Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
-var refresh = {
-    go: function (fn, time) { //time, minutos
-        fn();
-        if (time) {
-            console.log("Go refresh for", fn.name, "by", time, "min");
-            return setInterval(fn, time * 1000 * 60);
-        }
-        console.log("Go refresh for", fn.name);
-        return setInterval(fn, 1000 * 30);
-    },
-    stop: function (repeater) {
-        clearInterval(repeater);
-    }
-}
-
-//Notificaciones bootstrap
-function notify(mensaje, tipo, progress) {
-    return $.notify(
-        {
-            icon: (function () {
-                switch (tipo) {
-                    case "success":
-                        return "glyphicon glyphicon-saved"
-                    case "danger":
-                        return "glyphicon glyphicon-ban-circle"
-                    default:
-                        return ""
-                }
-            })(),
-            message: mensaje,
-            url: '#',
-            target: '_blank'
-        }, {
-            element: 'body',
-            position: null,
-            showProgressbar: (function () {
-                if (progress) {
-                    return progress
-                } return false
-            })(),
-            type: tipo,
-            allow_dismiss: true,
-            newest_on_top: false,
-            placement: {
-                from: "top",
-                align: "right"
-            },
-            offset: { x: 20, y: 70 },
-            spacing: 10,
-            z_index: 1031,
-            delay: 1000,
-            timer: 1000,
-            url_target: '_blank',
-            mouse_over: "pause",
-            animate: {
-                enter: 'animated bounceIn',
-                exit: 'animated bounceOut'
-            },
-            onShow: null,
-            onShown: null,
-            onClose: null,
-            onClosed: null,
-            icon_type: 'class'
-        })
-}
-
+﻿
 angular.module('bodeguero', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -102,23 +26,34 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
 
-        refresh.go(function (){
-            $http.get("login").then( function(){
-            }, function(response) {
-                if (response.status == 401) {
+        refresh.go(function () {
+            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
+                if (response.status === 401) {
                     alert("Su sesion ha caducado");
-                    document.location.replace('logout');
+                    document.location.replace('/login');
                 }
             })
-        }, 20) //cada 20 minutos
+        }, 20) //minutos
+
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
+
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
+        }
+
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go("despachar") /////////////////////////
+            })
 
         $rootScope.session_name = $cookies.get('session_name')
         $rootScope.session_email = $cookies.get('session_email')
         $rootScope.session_photo = $cookies.get('session_photo')
-
-        dataFac.getData()
-
-        $state.go("despachar")
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 

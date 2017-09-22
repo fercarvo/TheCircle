@@ -11,64 +11,15 @@
 
 </head>
 <body class="page-dashboard" ng-app="bodeguero">
+    <!-- TopBar -->
     @Html.Partial("Partials/TopBar")
-
+    <!-- TopBar -->
     <div class="content-wrapper">
-        <style>
-            .sidebar .sidebar-nav > li > a {
-                color: #901f61;
-                font-size: 16px;
-                font-weight: 600;
-            }
 
-            .sidebar .sidebar-nav > .open > a:hover, .sidebar .sidebar-nav > .open > a:focus {
-                background-color: #d7d3d4;
-            }
+        @Html.Partial("Partials/SidebarStyles")
 
-            .sidebar .sidebar-nav > .active > a {
-                color: #f2f2f2;
-            }
-
-                .sidebar .sidebar-nav > .active > a, .sidebar .sidebar-nav > .active > a:hover, .sidebar .sidebar-nav > .active > a:focus {
-                    /*background-color: #706f6f*/
-                    background-color: #344868
-                }
-
-            .btn-info {
-                color: #fff;
-                border-color: #17c092;
-                background-color: #28d1a3;
-            }
-
-            .table > tbody > tr > td {
-                padding: 8px 10px;
-            }
-
-            @@media (max-width: 991px) {
-                .sidebar {
-                    height: 160px;
-                    max-height: 160px;
-                    border-right-color: inherit;
-                }
-            }
-
-            @@media (min-width: 991px) {
-                .sidebar {
-                    border-right-color: #344868;
-                    min-height: 600px;
-                    height: 600px;
-                }
-            }
-
-            #sidebar_menu {
-                min-height: 600px;
-                background-color: #f2f2f2;
-                position: sticky;
-                top: auto;
-                border-right-color: #344868;
-            }
-        </style>
         <div class="sidebar" id="sidebar_menu">
+
             <ul class="sidebar-nav">
                 <li data-ripple class=" open" ui-sref="despachar" ui-sref-active="active">
                     <a>
@@ -98,7 +49,7 @@
             </ul>
         </div>
 
-        <div style="overflow-y:auto;max-height:94vh">
+        <div style="overflow-y:auto;max-height:100vh">
             <ui-view></ui-view>
         </div>
     </div>
