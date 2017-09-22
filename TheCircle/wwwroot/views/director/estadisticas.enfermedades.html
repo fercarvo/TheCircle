@@ -1,0 +1,26 @@
+﻿<style>
+    #est-enfermedades-panel, #est-enfermedades-form, #est-enfermedades-gra {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="est-enfermedades-panel">
+    <div class="form-group" id="est-enfermedades-form">
+        <form class="form-horizontal" ng-submit="generar(enfermedades.desde, enfermedades.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label" style="text-align:left;">Desde<a style="color:red;">(*)</a></label>
+                <input type="date" class="form-control" required ng-model="enfermedades.desde">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label" style="text-align:left;">Hasta<a style="color:red;">(*)</a></label>
+                <input type="date" class="form-control" required ng-model="enfermedades.hasta">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="est-enfermedades-gra">
+        <nvd3 options="options" data="data"></nvd3>
+    </div>
+</div>

@@ -1,0 +1,63 @@
+﻿<style>
+    #estadistica-atenciones-panel, #estadistica-atenciones-form, #estadistica-atenciones-table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="estadistica-atenciones-panel">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(atenciones.desde, atenciones.hasta)">
+            <!--"m-bottom-30" para poner margen vertical de 30px-->
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+
+        </form>
+    </div>
+
+    <div class="panel panel-default-light border-default col-sm-12" id="estadistica-atenciones-table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.idApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
+                <select class="col-sm-6 form-control myselect" ng-model="buscar.tipo" style="width:49%;margin-left:1%;">
+                    <option value="" selected>Todos los tipos de atencion</option>
+                    <option value="curativo">Curativo</option>
+                    <option value="seguimiento">Seguimiento</option>
+                    <option value="control">Control</option>
+                </select>
+            </div>
+        </div>
+        <div style="overflow-y:auto;max-height:44vh;padding-bottom:10px;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha</th>
+                        <th>Codigo apadrinado</th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="atencion in atenciones.all | filter:buscar | orderBy:'fecha'">
+                        <td>{{("00000000"+ atencion.id).slice(-9)}}</td>
+                        <td>{{atencion.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
+                        <td>{{atencion.idApadrinado}}</td>
+                        <td>{{atencion.nombreApadrinado}} {{atencion.apellidoApadrinado}}</td>
+                        <td>{{atencion.tipo}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

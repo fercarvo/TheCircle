@@ -1,0 +1,62 @@
+﻿<style>
+    #estadistica-remisiones-panel, #estadistica-remisiones-form, #estadistica-remisiones-table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="estadistica-remisiones-panel">
+    <div class="form-group" id="estadistica-remisiones-form">
+        <form class="form-horizontal" ng-submit="generar(remisiones.desde, remisiones.hasta)">
+            <!--"m-bottom-30" para poner margen vertical de 30px-->
+            <div class="col-sm-3 form-element" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="remisiones.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3 form-element" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="remisiones.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3 form-element" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="panel panel-default-light border-default col-sm-12" id="estadistica-remisiones-table">
+        <div class="panel-heading">
+            <div style="text-align:right;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.codigoApadrinado" placeholder="buscar por apadrinado" style="width:49%;margin-right:1%;">
+                <input class="col-sm-6 form-control" type="text" ng-model="buscar.institucion" placeholder="buscar por Institucion" style="width:49%;margin-left:1%;">
+            </div>
+
+        </div>
+        <div style="overflow-y:auto;max-height:44vh;padding-bottom:10px;">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha</th>
+                        <th>Apadrinado</th>
+                        <th>Instituci&oacute;n/especialidad</th>
+                        <th>Monto</th>
+                        <th>S&iacute;ntomas</th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="remision in remisiones.all | filter:buscar | orderBy:'fecha'">
+                        <td>{{("00000000"+ remision.id).slice(-9)}}</td>
+                        <td>{{remision.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{remision.codigoApadrinado}}</td>
+                        <td>{{remision.institucion}} - {{remision.especialidad}} </td>
+                        <td>{{remision.monto | currency}}</td>
+                        <td>{{remision.sintomas}}</td>
+
+
+                    </tr>
+                </tbody>
+            </table>
+        </div><!-- Tabla -->
+    </div>
+
+</div>
