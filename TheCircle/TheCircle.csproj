@@ -29,7 +29,7 @@
     <Content Include="wwwroot\scripts\app\bodeguero.js" />
     <Content Include="wwwroot\scripts\app\contralor.js" />
     <Content Include="wwwroot\scripts\app\coordinadorCC.js" />
-    <Content Include="wwwroot\scripts\app\coordinadorSalud.js" />
+    <Content Include="wwwroot\scripts\app\coordinacionSalud.js" />
     <Content Include="wwwroot\scripts\app\director.js" />
     <Content Include="wwwroot\scripts\app\medico.js" />
     <Content Include="wwwroot\scripts\app\sistema.js" />
@@ -74,10 +74,10 @@
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
+    <Content Include="wwwroot\views\coordinacionSalud\historial.html" />
+    <Content Include="wwwroot\views\coordinacionSalud\validar.html" />
     <Content Include="wwwroot\views\coordinadorCC\egresos.html" />
     <Content Include="wwwroot\views\coordinadorCC\recetas.html" />
-    <Content Include="wwwroot\views\coordinador\historial.html" />
-    <Content Include="wwwroot\views\coordinador\validar.html" />
     <Content Include="wwwroot\views\director\estadisticas.atenciones.html" />
     <Content Include="wwwroot\views\director\estadisticas.enfermedades.html" />
     <Content Include="wwwroot\views\director\estadisticas.html" />

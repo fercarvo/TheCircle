@@ -18,12 +18,12 @@ namespace TheCircle.Controllers
         //Crea una remision medica
         [HttpPost ("remision")]
         [APIauth("medico")]
-        public IActionResult PostRemision([FromBody] RemisionRequest request)
+        public IActionResult PostRemision([FromBody] Remision.Request req)
         {
-            if (request is null)
-                return BadRequest("Incorrect Data"); 
+            if (req is null)
+                return BadRequest("Incorrect Data");
 
-            Remision.New(request, _context);
+            new Remision(req.atencionM, req.institucion, req.monto, req.sintomas);
             return Ok();         
         }
 
@@ -37,8 +37,26 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            Remision[] response = Remision.ReportByDoctorDate(request, token.data.cedula, _context);
+            Remision[] response = Remision.ReportByDoctorDate(request, token.data.cedula);
             return Ok(response);
+        }
+
+
+        [HttpGet("remision/aprobada/ap1")]
+        [ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico")]
+        public IActionResult AprobadasAP1()
+        {
+            //Remision[] response = Remision.ReportByDoctorDate(request, token.data.cedula);
+            return Ok();
+        }
+
+        [HttpGet("remision")]
+        [APIauth("contralor", "coordinador")]
+        public IActionResult GetAll()
+        {
+            Remision[] remisiones = Remision.GetPendientes();
+            return Ok(remisiones);
         }
     }
 }

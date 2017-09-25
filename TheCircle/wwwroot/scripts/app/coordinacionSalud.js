@@ -3,15 +3,15 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appCoordinador', ['ui.router', 'ngCookies'])
+angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('validar', {
-                templateUrl: 'views/coordinador/validar.html',
+                templateUrl: 'views/coordinacionSalud/validar.html',
                 controller: 'validar'
             })
             .state('historial', {
-                templateUrl: 'views/coordinador/historial.html',
+                templateUrl: 'views/coordinacionSalud/historial.html',
                 controller: 'historial'
             });
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
@@ -64,10 +64,41 @@ angular.module('appCoordinador', ['ui.router', 'ngCookies'])
         return dataFactory;
     }])
     .controller('validar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
-        $log.info("En Validar");
+        $scope.remisiones = null;
+        $scope.remision = null;
+
+        $http.get("/api/remision").then(function (res) {
+            $scope.remisiones = res.data;
+
+        }, function (error) {
+            console.log(error);
+            notify("Error al cargar remisiones", "danger");
+        })
+
+        $scope.ver = function (remision) {
+            $("#ver_remision").modal("show");
+            $scope.remision = remision;
+        }
+
+        $scope.guardar = function (remision, valor, comentario) {
+
+            var data = {
+                valor: valor,
+                comentario: comentario
+            }
+
+            console.log(data);
+
+            $http.put("/api/remision/" + remision + "aprobar").then(function (res) {
+                console.log(res.data);
+
+            }, function (error) {
+                console.log(error);
+                notify("Error al cargar remisiones", "danger");
+            })
+        }
 
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $log.info("En historial");
 
     }])
