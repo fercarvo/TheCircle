@@ -10,6 +10,17 @@ namespace TheCircle.Util
 {
     public enum Localidad { HEE, CC0, CC2, CC3, CC5, CC6, OC }
 
+    public enum Cargo {
+        medico,
+        asistenteSalud,
+        coordinadorCC,
+        coordinadorSalud,
+        sistema,
+        director,
+        contralor,
+        bodeguero
+    }
+
     public class Token
     {
         public Data data { get; set; }
@@ -52,6 +63,25 @@ namespace TheCircle.Util
             Signature.CheckHMAC(dataToString, token.sign);
 
             return token;
+        }
+
+        public static Token Get(HttpRequest request) {
+            try
+            {
+                string cookie = request.Cookies["session"]; //Se obtiene el string de la cookie
+                Token token = JsonConvert.DeserializeObject<Token>(Signature.FromBase(cookie));
+
+                if (token.data.expireAt < DateTime.Now)
+                    throw new TokenException("Token expirado, at Token.check");
+
+                string dataToString = JsonConvert.SerializeObject(token.data);
+                Signature.CheckHMAC(dataToString, token.sign);
+
+                return token;
+            }
+            catch (Exception e) {
+                return null;
+            }            
         }
 
         public static void CheckValid(Token token)

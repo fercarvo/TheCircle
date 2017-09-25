@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
 
@@ -67,6 +68,7 @@ namespace TheCircle.Models
 
         public class Stadistics
         {
+            [Key]
             public string localidad { get; set; }
             public int cantidad { get; set; }
         }

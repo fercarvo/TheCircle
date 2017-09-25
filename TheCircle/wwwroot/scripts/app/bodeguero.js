@@ -27,7 +27,7 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
     .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
 
         refresh.go(function () {
-            $http.get("login").then(function () { console.log("Session valida") }, function (response) {
+            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
                     document.location.replace('/login');

@@ -14,15 +14,20 @@ namespace TheCircle.Util
             this.cargos = cargos;
         }
 
+        public VIEWauthAttribute()
+        {
+            cargos = new[] { "medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC", "director" };
+        }
+
         public override void OnActionExecuting(ActionExecutingContext aec)
         {
             try
             {
-                var token = Token.Check(aec.HttpContext.Request, cargos);
+                aec.ActionArguments["token"] = Token.Check(aec.HttpContext.Request, cargos);
                 base.OnActionExecuting(aec);
 
             } catch (Exception e) {//Si el token es invalido se setea null
-                aec.Result = new LocalRedirectResult("/");
+                aec.Result = new LocalRedirectResult("/login");
                 base.OnActionExecuting(aec);
             }
         }

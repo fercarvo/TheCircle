@@ -19,7 +19,6 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
-
         [HttpGet("logout")]
         public IActionResult Logout([FromQuery] Message query)
         {
@@ -28,24 +27,26 @@ namespace TheCircle.Controllers
 
             if (ModelState.IsValid) {
                 var parameters = new Dictionary<string, string> {{ "msg", query.msg }};
-                var url = QueryHelpers.AddQueryString("/", parameters);
+                var url = QueryHelpers.AddQueryString("/login", parameters);
                 return Redirect(url);
             }
 
-            return Redirect("/");
+            return Redirect("/login");
         }
 
         [HttpPost("login")]
-        public IActionResult login([FromForm] LoginRequest request)
+        public IActionResult login([FromForm] LoginRequest req)
         {
             if (ModelState.IsValid is false)
                 return CredentialsRedirect();
 
             try
             {
-                Usuario usuario = Usuario.Get(request);
-                Token token = new Token(usuario, request.localidad);
-                string token_string = JsonConvert.SerializeObject(token);
+                Usuario usuario = Usuario.Get(req); //Se obtiene el usuario de la BDD
+                Token token = new Token(usuario, req.localidad); //Se genera el token despues de validar credenciales
+                Token.CheckLocalidad(token.data); //Se comprueba la localidad segun su cargo
+
+                string token_string = JsonConvert.SerializeObject(token);                
 
                 var options = new CookieOptions()
                 {
@@ -64,9 +65,8 @@ namespace TheCircle.Controllers
                 Response.Cookies.Append("session_email", token.data.email, publicOptions);
                 Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
-                Token.CheckLocalidad(token.data);
-
-                return CargoRedirect(token);
+                //return CargoRedirect(token);
+                return LocalRedirect("/");
 
             } catch (Exception e) {
                 if (e is LocalidadException)
@@ -78,7 +78,8 @@ namespace TheCircle.Controllers
             }
         }
 
-        [HttpGet("login")]
+        [HttpGet("session")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult loginCheck()
         {
             try {
@@ -86,7 +87,7 @@ namespace TheCircle.Controllers
                 Token token = JsonConvert.DeserializeObject<Token>(Signature.FromBase(cookie));
                 Token.CheckValid(token);
 
-                return Ok(token);
+                return Ok();
             } catch (Exception e) {
                 return Unauthorized();
             }           
@@ -94,17 +95,17 @@ namespace TheCircle.Controllers
 
         public RedirectResult LocalidadRedirect(){
             var parameters = new Dictionary<string, string> {{ "msg", "Localidad incorrecta" }};
-            var url = QueryHelpers.AddQueryString("/", parameters);
+            var url = QueryHelpers.AddQueryString("/login", parameters);
             return new RedirectResult(url);            
         }
 
         public RedirectResult CredentialsRedirect(){
             var parameters = new Dictionary<string, string> {{ "msg", "Usuario/Clave incorrecto" } };
-            var url = QueryHelpers.AddQueryString("/", parameters);
+            var url = QueryHelpers.AddQueryString("/login", parameters);
             return new RedirectResult(url);        
         }
 
-        public LocalRedirectResult CargoRedirect(Token token) {
+        /*public LocalRedirectResult CargoRedirect(Token token) {
             switch (token.data.cargo) {
                 case "medico":
                     return new LocalRedirectResult("/medico");
@@ -124,6 +125,7 @@ namespace TheCircle.Controllers
                     return new LocalRedirectResult("/logout");
             }
         }
+        */
 
     }
 }

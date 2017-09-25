@@ -8,14 +8,42 @@ namespace TheCircle.Controllers.views
 
         public TheCircle() { }
 
-        [HttpGet ("")]
+        [HttpGet("login")]
         [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public ActionResult Index([FromQuery] Message query)
+        public IActionResult Login([FromQuery] Message query)
         {
             if (ModelState.IsValid)
                 ViewData["mensaje"] = query.msg;
 
-            return View();
+            return View("Login");
+        }
+
+        [HttpGet("")]
+        [VIEWauth()]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Index(Token token)
+        {
+            switch (token.data.cargo)
+            {
+                case "medico":
+                    return View("Medico");
+                case "asistenteSalud":
+                    return View("AsistenteSalud");
+                case "sistema":
+                    return View("Sistema");
+                case "bodeguero":
+                    return View("Bodeguero");
+                case "coordinador":
+                    return View("CoordinadorSalud");
+                case "contralor":
+                    return View("Contralor");
+                case "coordinadorCC":
+                    return View("CoordinadorCC");
+                case "director":
+                    return View("Director");
+                default:
+                    return LocalRedirect("/login");
+            }
         }
 
         [HttpGet ("asistente")]

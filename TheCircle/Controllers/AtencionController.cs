@@ -48,7 +48,7 @@ namespace TheCircle.Controllers
         //[APIauth("medico")]
         public IActionResult GetReport([FromQuery] Date fecha)
         {
-            var data = Atencion.Report(fecha.desde, fecha.hasta);
+            Atencion.Stadistics[] data = Atencion.Report(fecha.desde, fecha.hasta);
             return Ok(data);
         }
     }
