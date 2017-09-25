@@ -104,28 +104,5 @@ namespace TheCircle.Controllers
             var url = QueryHelpers.AddQueryString("/login", parameters);
             return new RedirectResult(url);        
         }
-
-        /*public LocalRedirectResult CargoRedirect(Token token) {
-            switch (token.data.cargo) {
-                case "medico":
-                    return new LocalRedirectResult("/medico");
-                case "asistenteSalud":
-                    return new LocalRedirectResult("/asistente");
-                case "sistema":
-                    return new LocalRedirectResult("/sistema");
-                case "bodeguero":
-                    return new LocalRedirectResult("/bodeguero");
-                case "coordinador":
-                    return new LocalRedirectResult("/coordinador");
-                case "contralor":
-                    return new LocalRedirectResult("/contralor");
-                case "coordinadorCC":
-                    return new LocalRedirectResult("/coordinadorcc");
-                default:
-                    return new LocalRedirectResult("/logout");
-            }
-        }
-        */
-
     }
 }

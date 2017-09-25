@@ -10,17 +10,6 @@ namespace TheCircle.Util
 {
     public enum Localidad { HEE, CC0, CC2, CC3, CC5, CC6, OC }
 
-    public enum Cargo {
-        medico,
-        asistenteSalud,
-        coordinadorCC,
-        coordinadorSalud,
-        sistema,
-        director,
-        contralor,
-        bodeguero
-    }
-
     public class Token
     {
         public Data data { get; set; }
