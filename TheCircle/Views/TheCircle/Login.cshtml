@@ -82,9 +82,18 @@
                                      margin-top: -5px;
                                      padding-bottom: 5px;
                                      color: #c5c5c5;
+                                 }
+                                 #texto_recordar_clave {
+                                     text-decoration: none;
+                                     font-size: 12px;
+                                     float: left;
+                                     margin-top: -5px;
+                                     padding-bottom: 5px;
+                                     color: #c5c5c5;
                                  } 
                              </style>
-                             <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambiar su Contraseña</a>
+                        <a href="#" data-toggle="modal" data-target="#modal-recordar_cuenta" id="texto_recordar_clave">Olvido su contraseña</a>
+                        <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambiar su Contraseña</a>
                        
                         <div class="form-group">
                             <select name="localidad" class="form-control myselect" required style="width: 328px;">
@@ -132,7 +141,6 @@
                 <div  data-ripple id="button_crear_cuenta" class="panel-footer" data-toggle="modal" data-target="#modal_crear_cuenta">
                    <a >Crear una cuenta</a>
                 </div>
-
             </div>
 
         </div>
@@ -207,7 +215,41 @@
                  </div>
             </div>
         </div> 
+        <!--Aqui acaba el modal de cambiar la clave-->
 
+        <!--Empieza el modal de recuperar contraseña-->
+        <div id="modal-recordar_cuenta" class="modal fade" style="margin-top:10%;">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Recuperar Contraseña</h5>
+                    </div>
+                    <div class="panel-body" style=" padding-top: 5px;">
+                        <form id="form_crearCuenta" class="modal_form" onsubmit="return crearCuenta()" action="api/user" method="post" style="text-align:left;">
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    <label class="control-label col-sm-4">Cédula de identidad</label>
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cédula válida" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="browser-default">
+                                    <label class="control-label col-sm-4">Contraseña<span class="glyphicon glyphicon-eye-open show_password"></span></label>
+                                    <input name="clave" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
+                                </div>
+                            </div>
+                            <div class="text-center ">
+                                <button data-ripple type="submit" class="btn btn-info">Enviar</button>
+                                <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                            </div>
+                        </form>
+                    </div><!--  -->
+
+                </div>
+            </div>
+        </div>
+        <!--Aqui Termina el modal para el item de remision-->
+        <!--Acaba el modal de recuperar contraseña-->
 
     </div>
 
