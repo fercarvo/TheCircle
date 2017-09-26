@@ -9,7 +9,7 @@ namespace TheCircle.Controllers.views
         public TheCircle() { }
 
         [HttpGet("login")]
-        [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Login([FromQuery] Message query)
         {
             if (ModelState.IsValid)
@@ -48,7 +48,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("asistente")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("asistenteSalud")]
         public IActionResult AsistenteSalud()
         {
             return View();
@@ -56,7 +55,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet ("medico")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("medico")]
         public IActionResult Medico()
         {
             return View();
@@ -64,7 +62,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("coordinador")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("coordinador")]
         public IActionResult CoordinadorSalud()
         {
             return View();
@@ -72,7 +69,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("contralor")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("contralor")]
         public IActionResult Contralor()
         {
             return View();
@@ -80,7 +76,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("bodeguero")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("bodeguero")]
         public IActionResult Bodeguero()
         {
             return View();
@@ -88,7 +83,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("sistema")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("sistema")]
         public IActionResult Sistema()
         {         
             return View();
@@ -96,7 +90,6 @@ namespace TheCircle.Controllers.views
 
         [HttpGet("coordinadorcc")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        [VIEWauth("coordinadorCC")]
         public IActionResult CoordinadorCC()
         {
             return View();

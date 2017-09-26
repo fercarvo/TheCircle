@@ -24,7 +24,7 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
             });
         $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", function ($state, $rootScope, $cookies, $http, dataFac) {
+    .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", "$templateCache", function ($state, $rootScope, $cookies, $http, dataFac, $templateCache) {
 
         refresh.go(function () {
             $http.get("session").then(function () { console.log("Session valida") }, function (response) {
