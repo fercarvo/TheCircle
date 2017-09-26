@@ -34,6 +34,16 @@ namespace TheCircle.Controllers
             return Redirect("/login");
         }
 
+        [HttpGet("login")]
+        [ResponseCache(Duration = 60*60*120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        public IActionResult Login([FromQuery] Message query)
+        {
+            if (ModelState.IsValid)
+                ViewData["mensaje"] = query.msg;
+
+            return View("Login");
+        }
+
         [HttpPost("login")]
         public IActionResult login([FromForm] LoginRequest req)
         {
