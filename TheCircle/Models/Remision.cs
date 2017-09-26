@@ -6,26 +6,6 @@ using TheCircle.Util;
 
 namespace TheCircle.Models
 {
-    public class Remision2
-    {
-        [Key]
-        public int id { get; set; }
-        public int cedulaDoctor { get; set; }
-        public string nombreDoctor { get; set; }
-        public string apellidoDoctor { get; set; }
-        public int codigoApadrinado { get; set; }
-        public int nombreApadrinado { get; set; }
-        public string institucion { get; set; }
-        public string especialidad { get; set; }
-        public decimal monto { get; set; }        
-        public DateTime fecha { get; set; }
-        public DateTime fCaducidad { get; set; }
-        public string sintomas { get; set; }
-
-        public Remision2() { }
-
-    }
-
     public class Remision
     {
         [Key]
@@ -71,12 +51,6 @@ namespace TheCircle.Models
             return data;
         }
 
-        /*public static AP1[] GetAprobadasAP1
-        {
-            var data = new MyDbContext().Remision.FromSql("EXEC Remision_Report").ToArray();
-            return data;
-        }*/
-
         public class Request
         {
             public int atencionM { get; set; }
@@ -86,27 +60,34 @@ namespace TheCircle.Models
             public string sintomas { get; set; }
         }
 
-        public class AP1 {
+        public class Aprobacion {
             [Key]
-            public int remision { get; set; }
+            public int idRemision { get; set; }
             public decimal monto { get; set; }
-            public DateTime fecha { get; set; }
-            public string comentario { get; set; }
-            public int cedulaPersonal { get; set; }
-            public string nombrePersonal { get; set; }
-            public string emailPersonal { get; set; }
-            public Boolean rechazado { get; set; }
-        }
+            public DateTime fechaAP1 { get; set; }
+            public string comentarioAP1 { get; set; } = null;
+            public int personalAP1 { get; set; }
+            public string comentarioRechazo { get; set; } = null;
+            public int? personalContralor { get; set; }
+            public DateTime? fechaContralor { get; set; }
+            public string comentarioContralor { get; set; } = null;
 
-        public class APContralor
-        {
-            [Key]
-            public int remision { get; set; }
-            public DateTime fecha { get; set; }
-            public string comentario { get; set; }
-            public int cedulaPersonal { get; set; }
-            public string nombrePersonal { get; set; }
-            public string emailPersonal { get; set; }
+            public Aprobacion() { }
+
+            public Aprobacion(int remision, decimal monto, string comentario, int personal) {
+                try {
+                    string q = $"EXEC Remision_Aprobacion1_Insert @idRemision={remision}, @monto='{monto}', @comentario='{comentario}', @personal='{personal}'";
+                    new MyDbContext().Database.ExecuteSqlCommand(q);
+
+                    idRemision = remision;
+                    this.monto = monto;
+                    comentarioAP1 = comentario;
+                    personalAP1 = personal;
+
+                } catch (Exception e) {
+                    throw new Exception("Error al crear Aprobacion 1", e);
+                }
+            }
         }
 
     }

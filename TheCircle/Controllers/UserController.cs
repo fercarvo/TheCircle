@@ -102,14 +102,8 @@ namespace TheCircle.Controllers
             if (cedula <= 10000000)
                 return BadRequest("Incorrect Data");
 
-            try
-            {
-                string clave = Usuario.NuevaClave(cedula, _context);
-                return Ok( new {clave} );
-
-            } catch (Exception e) {
-                return BadRequest("Something broke");
-            }            
+            string clave = Usuario.NuevaClave(cedula, _context);
+            return Ok( new {clave} );       
         }
 
         [HttpPut("user/clave")]

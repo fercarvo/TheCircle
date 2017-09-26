@@ -61,17 +61,6 @@ namespace TheCircle.Models
         }
 
 
-        /*public static void New(string cedula, string clave, MyDbContext _context)
-        {
-            var dic = Signature.HashingSHA256(clave);
-            string hash = dic["hash"];
-            string salt = dic["salt"];
-
-            string q = $"EXEC dbo.User_Insert @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-            _context.Database.ExecuteSqlCommand(q);
-        }*/
-
-
         public static void Activar(int cedula, MyDbContext _context)
         {
             string q = $"EXEC User_Update_activar @cedula={cedula}";
@@ -93,25 +82,28 @@ namespace TheCircle.Models
             var dic = Signature.HashingSHA256(nuevaclave);
             string hash = dic["hash"];
             string salt = dic["salt"];
-            string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-                
-            _context.Database.ExecuteSqlCommand(q);
+            string q = $"EXEC User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+
+            UserSafe user = _context.UserSafe.FromSql(q).First();
+
+            new EmailTC().CambiarClave($"{user.nombre} {user.apellido}", user.email, nuevaclave);
         }
         
 
         public static string NuevaClave(int cedula, MyDbContext _context)
         {
-            //var _mailer = new EmailTC(email);
             string nueva_clave = Signature.Random();
             var dic = Signature.HashingSHA256(nueva_clave);
             string hash = dic["hash"];
             string salt = dic["salt"];
 
-            string q = $"EXEC dbo.User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
-            _context.Database.ExecuteSqlCommand(q);
+            string q = $"EXEC User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+
+            UserSafe user = _context.UserSafe.FromSql(q).First();
+
+            new EmailTC().NuevaClave($"{user.nombre} {user.apellido}", user.email, nueva_clave);
 
             return nueva_clave;
-            //_mailer.send("Reseteo de clave", $"Su nueva clave en TheCircle es {nueva_clave}");
         }
     }
 

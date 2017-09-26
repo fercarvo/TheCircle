@@ -6,6 +6,7 @@ namespace TheCircle.Util
     public class MyDbContext : DbContext
     {
         public virtual DbSet<Remision> Remision { get; set; }
+        public virtual DbSet<Remision.Aprobacion> Aprobacion { get; set; }        
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
         public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
         public virtual DbSet<ItemFarmacia.Egreso> Egreso { get; internal set; }

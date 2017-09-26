@@ -14,8 +14,10 @@ angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
                 templateUrl: 'views/coordinacionSalud/historial.html',
                 controller: 'historial'
             });
-        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
-        //$logProvider.debugEnabled(false); Activar en modo produccion
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
     }])
     .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
 
@@ -49,31 +51,63 @@ angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
         $rootScope.session_email = $cookies.get('session_email')
         $rootScope.session_photo = $cookies.get('session_photo')   
     }])
-    .factory('dataFac', ['$http', function ($http) {
-        var dataFactory = {};
-
-        dataFactory.stock = null;
-        dataFactory.recetas = null;
-        dataFactory.localidad = "CC2";
-
-        dataFactory.getStock = function (localidad) {
-            return $http.get("/api/itemfarmacia/" + localidad);
+    .factory('dataFac', ['$http', "$rootScope", function ($http, $rootScope) {
+        var dataFac = {
+            remisiones: null,
+            getRemisiones: getRemisiones,
+            postAprobacion: postAprobacion
         }
 
+        function postAprobacion(remision, data) {
+            NProgress.start();
 
-        return dataFactory;
+            var promise = $http.post("/api/remision/" + remision + "/aprobacion1", data)
+
+            promise.then(function (res) {
+                console.log("Aprobacion1 creada", res.data);
+                NProgress.done()
+                notify("Remision aprobada exitosamente", "success");
+            }, function (error) {
+                console.log(error);
+                notify("Error al aprobar la remision", "danger");
+                NProgress.done()
+            })
+
+            return promise
+        }
+
+        function getRemisiones() {
+            var promise = $http.get("/api/remision")
+
+            promise.then(function (res) {
+                dataFac.remisiones = res.data;
+                console.log("Remisiones", res.data)
+                $rootScope.$broadcast('dataFac.remisiones');
+
+            }, function (error) {
+                console.log(error);
+                notify("Error al cargar remisiones", "danger")
+            })
+
+            return promise
+        }
+
+        return dataFac
     }])
     .controller('validar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
-        $scope.remisiones = null;
-        $scope.remision = null;
+        $scope.remisiones = dataFac.remisiones
+        $scope.remision = null
+        var actualizar = refresh.go(cargar, 1) //cada 1/2 minuto
 
-        $http.get("/api/remision").then(function (res) {
-            $scope.remisiones = res.data;
+        $scope.$on('dataFac.remisiones', function () { $scope.remisiones = dataFac.remisiones })
 
-        }, function (error) {
-            console.log(error);
-            notify("Error al cargar remisiones", "danger");
-        })
+        function cargar() {
+            if ($state.includes("validar")) {
+                dataFac.getRemisiones()
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
 
         $scope.ver = function (remision) {
             $("#ver_remision").modal("show");
@@ -82,20 +116,17 @@ angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
 
         $scope.guardar = function (remision, valor, comentario) {
 
+            refresh.stop(actualizar)
+
             var data = {
-                valor: valor,
+                monto: valor,
                 comentario: comentario
             }
 
-            console.log(data);
-
-            $http.put("/api/remision/" + remision + "aprobar").then(function (res) {
-                console.log(res.data);
-
-            }, function (error) {
-                console.log(error);
-                notify("Error al cargar remisiones", "danger");
-            })
+            dataFac.postAprobacion(remision, data).then(function () {
+                $("#ver_remision").modal("hide")
+                cargar()
+            }, function () { })
         }
 
     }])

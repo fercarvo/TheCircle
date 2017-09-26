@@ -16,7 +16,7 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+                        <input type="text" ng-model="buscar" placeholder="filtrar remisiones médicas" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
@@ -31,11 +31,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="r in remisiones">
-                                <td>{{r.id}}</td>
+                            <tr ng-repeat="r in remisiones | filter:buscar | orderBy:'id'">
+                                <td>{{("00000000"+ r.id).slice(-9)}}</td>
                                 <td>{{r.institucion}}</td>
                                 <td>{{r.monto}}</td>
-                                <td>{{r.fecha}}</td>
+                                <td>{{r.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td ><button ng-click="ver(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
@@ -54,11 +54,11 @@
 
                                 <tbody style="text-align:left;">
                                     <tr>
-                                        <td>Numero: </td>
-                                        <td>{{remision.id}}</td>
+                                        <td>Número remisión: </td>
+                                        <td>{{("00000000"+ remision.id).slice(-9)}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Institucion: </td>
+                                        <td>Institución: </td>
                                         <td>{{remision.institucion}}</td>
                                     </tr>
                                     <tr>
@@ -66,12 +66,16 @@
                                         <td>{{remision.especialidad}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Codigo apadrinado: </td>
+                                        <td>Código apadrinado: </td>
                                         <td>{{remision.codigoApadrinado}}</td>
                                     </tr>
                                     <tr>
+                                        <td>Fecha de remision: </td>
+                                        <td>{{remision.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                                    </tr>
+                                    <tr>
                                         <td>Monto: </td>
-                                        <td>{{remision.monto}}</td>
+                                        <td>{{remision.monto | currency}}</td>
                                     </tr>
                                     <tr>
                                         <td>Monto a aprobar: </td>
@@ -82,21 +86,24 @@
                                         <td><input form="aprobarForm" ng-model="comentario" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
-                                        <td>Nombre doctor: </td>
-                                        <td>{{remision.nombreDoctor}}</td>
+                                        <td>Nombre médico: </td>
+                                        <td>{{remision.nombreDoctor}} {{remision.apellidoDoctor}}</td>
                                     </tr>
                                     <tr>
                                         <td>Email doctor: </td>
-                                        <td>{{remision.email}}</td>
+                                        <td><a href="mailto:{{remision.email}}?Subject=Remision%20médica">{{remision.email}}</a></td>
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div>
                         <form id="aprobarForm" class="text-center" ng-submit="guardar(remision.id, cantidad, comentario)" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Despachar</button>
-                            <button data-ripple type="button" class="btn btn-default">Cancelar</button>
+                            <button data-ripple type="submit" class="btn btn-info">Aprobar remision médica</button>
+                            <button data-ripple type="reset" onclick="cerrarAprobar()" class="btn btn-default">Cancelar</button>
                         </form>
+                        <script>
+                            function cerrarAprobar() { $("#ver_remision").modal("hide") }
+                        </script>
                     </div>
                 </div>
             </div>

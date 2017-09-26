@@ -96,7 +96,7 @@ angular.module('appMedico', ['ui.router', 'nvd3', 'ngCookies'])
         $rootScope.session_email = $cookies.get('session_email')
         $rootScope.session_photo = $cookies.get('session_photo')        
     }])
-    .factory('dataFactory', ['$http', '$state', '$rootScope', function ($http, $state, $rootScope) {
+    .factory('dataFactory', ['$http', '$rootScope', function ($http, $rootScope) {
 
         var dataFactory = {
             enfermedades: null,
