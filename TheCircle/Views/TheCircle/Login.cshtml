@@ -269,7 +269,7 @@
                 },
                 error: function () {
                     var query = { msg: "Cédula/Email incorrectos" }
-                    window.location.replace('/?' + $.param(query))
+                    window.location.replace('/login?' + $.param(query))
                 }
             })
             return false;
@@ -286,7 +286,7 @@
                 },
                 error: function () {
                     var query = { msg: "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas" }
-                    window.location.replace('/?' + $.param(query))
+                    window.location.replace('/login?' + $.param(query))
                 }
             })
             return false;
@@ -303,7 +303,7 @@
                 },
                 error: function () {
                     var query = { msg: "No se ha podido cambiar la contraseña, verifique los datos" }
-                    window.location.replace('/?'+ $.param(query))
+                    window.location.replace('/login?'+ $.param(query))
                 }
             })
             return false;
