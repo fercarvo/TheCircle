@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using TheCircle.Util;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace TheCircle
 {
@@ -29,6 +31,11 @@ namespace TheCircle
             services.AddDbContext<MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TheCircle")));
 
+            /*services.Configure<MvcOptions>(options =>
+            {
+                options.Filters.Add(new RequireHttpsAttribute());
+            });*/
+
 
             services.AddMvc();
         }
@@ -39,7 +46,11 @@ namespace TheCircle
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            env.EnvironmentName = EnvironmentName.Development;
+            /*var options = new RewriteOptions().AddRedirectToHttps(301, 44375);
+
+            app.UseRewriter(options);*/
+
+            env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
