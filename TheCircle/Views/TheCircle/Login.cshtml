@@ -214,7 +214,9 @@
                  </div>
             </div>
         </div> 
+        <!--Aqui acaba el modal de cambiar la clave-->
 
+        <!--Empieza el modal de recuperar contraseña-->
         <div id="modal-recordar_cuenta" class="modal fade" style="margin-top:10%;">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -222,7 +224,7 @@
                         <h5 class="modal-title">Recuperar Contraseña</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
-                        <form id="form_crearCuenta" class="modal_form" onsubmit="return crearCuenta()" action="api/user" method="post" style="text-align:left;">
+                        <form id="form_recuperarClave" class="modal_form" onsubmit="return recuperarClave()" action="api/user" method="post" style="text-align:left;">
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Cédula de identidad</label>
@@ -237,14 +239,14 @@
                             </div>
                             <div class="text-center ">
                                 <button data-ripple type="submit" class="btn btn-info">Enviar</button>
-                                <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                <button data-ripple type="reset" class="btn btn-default" data-dismiss="modal">Cancelar</button>
                             </div>
                         </form>
                     </div>
-
                 </div>
             </div>
         </div>
+        <!--Aqui Termina el modal para el item de remision-->
 
     </div>
 
@@ -255,6 +257,23 @@
 
     <script>
         $(".myselect").select2();
+
+        function recuperarClave() { 
+            $.ajax({
+                url: '/api/user/recuperarclave',
+                type: 'PUT',
+                data: $('#form_recuperarClave').serialize(),
+                success: function () {
+                    var query = { msg: "Recuperación de clave exitoso, revise su email" }
+                    window.location.replace('/logout?' + $.param(query))
+                },
+                error: function () {
+                    var query = { msg: "Cédula/Email incorrectos" }
+                    window.location.replace('/?' + $.param(query))
+                }
+            })
+            return false;
+        }
 
         function crearCuenta() {
             $.ajax({

@@ -105,6 +105,23 @@ namespace TheCircle.Models
 
             return nueva_clave;
         }
+
+        public static void RecuperarClave(int cedula, string email)
+        {
+            string nueva_clave = Signature.Random();
+            var dic = Signature.HashingSHA256(nueva_clave);
+            string hash = dic["hash"];
+            string salt = dic["salt"];
+
+            string q = $"EXEC User_Update_clave @cedula={cedula}, @clave_hash='{hash}', @salt='{salt}'";
+
+            UserSafe user = new MyDbContext().UserSafe.FromSql(q).First();
+
+            if (user.email != email)
+                throw new Exception("Cedula/email incorrectos at Usuario.RecuperarClave");
+
+            new EmailTC().NuevaClave($"{user.nombre} {user.apellido}", user.email, nueva_clave);
+        }
     }
 
 

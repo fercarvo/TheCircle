@@ -9,7 +9,7 @@ namespace TheCircle.Controllers.views
         public TheCircle() { }
 
         [HttpGet("login")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Login([FromQuery] Message query)
         {
             if (ModelState.IsValid)
