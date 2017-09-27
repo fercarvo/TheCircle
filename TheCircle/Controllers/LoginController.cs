@@ -34,6 +34,16 @@ namespace TheCircle.Controllers
             return Redirect("/login");
         }
 
+        [HttpGet("login")]
+        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        public IActionResult Login([FromQuery] Message query)
+        {
+            if (ModelState.IsValid)
+                ViewData["mensaje"] = query.msg;
+
+            return View("~/Views/TheCircle/Login.cshtml");
+        }
+
         [HttpPost("login")]
         public IActionResult login([FromForm] LoginRequest req)
         {
@@ -54,18 +64,8 @@ namespace TheCircle.Controllers
                     HttpOnly = true
                 };
 
-                var publicOptions = new CookieOptions()
-                {
-                    Expires = token.data.expireAt,
-                    HttpOnly = false
-                };
-
                 Response.Cookies.Append("session", Signature.ToBase(token_string), options);
-                Response.Cookies.Append("session_name", $"{token.data.nombres} {token.data.apellidos}", publicOptions);
-                Response.Cookies.Append("session_email", token.data.email, publicOptions);
-                Response.Cookies.Append("session_photo", $"/api/user/{token.data.cedula}/photo", publicOptions);
 
-                //return CargoRedirect(token);
                 return LocalRedirect("/");
 
             } catch (Exception e) {

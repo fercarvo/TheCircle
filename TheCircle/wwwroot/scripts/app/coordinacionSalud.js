@@ -3,7 +3,7 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
+angular.module('coordinacionSalud', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('validar', {
@@ -19,37 +19,11 @@ angular.module('coordinacionSalud', ['ui.router', 'ngCookies'])
         $compileProvider.commentDirectivesEnabled(true)
         $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, $rootScope, $cookies, $http, $templateCache) {
+    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
-        refresh.go(function () {
-            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('/login');
-                }
-            })
-        }, 20) //minutos
+        checkSession($http);
 
-
-        var promises = []
-        var states = $state.get()
-        NProgress.start()
-
-        for (i = 1; i < states.length; i++) {
-            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
-            promises.push(p)
-            p.then(function () { }, function (error) { console.log("Error template: ", error) })
-        }
-
-        Promise.all(promises)
-            .then(function () { }).catch(function () { }).then(function () {
-                NProgress.done()
-                $state.go("validar") /////////////////////////
-            })
-
-        $rootScope.session_name = $cookies.get('session_name')
-        $rootScope.session_email = $cookies.get('session_email')
-        $rootScope.session_photo = $cookies.get('session_photo')   
+        loadTemplates($state, "validar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', "$rootScope", function ($http, $rootScope) {
         var dataFac = {

@@ -47,11 +47,11 @@
                     <li style="background-color:#e2e1e1; color: black;">
                         <div class="media" style="margin-bottom:1px;">
                             <div class="media-left">
-                                <img ng-src="{{session_photo}}" class="media-object img-circle">
+                                <img src="@ViewData["photo"]" class="media-object img-circle">
                             </div>
                             <div class="media-body">
-                                <h5 class="media-heading">{{session_name}}</h5>
-                                <p>{{session_email}}</p>
+                                <h5 class="media-heading">@ViewData["name"]</h5>
+                                <p>@ViewData["email"]</p>
                             </div>
                         </div>
                     </li>

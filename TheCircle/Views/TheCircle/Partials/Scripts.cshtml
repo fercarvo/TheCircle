@@ -86,4 +86,37 @@
                 icon_type: 'class'
             })
     }
+
+    //Funcion que comprueba si la sessión es valida o no, caso contrario redireccion al login
+    //Es llamada en la seccion .run de las apps de angularJS
+    function checkSession($http) { 
+        refresh.go(function () {
+            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
+                if (response.status === 401) {
+                    alert("Su sesion ha caducado");
+                    document.location.replace('/login');
+                }
+            })
+        }, 20) //minutos
+    }
+
+    //Funcion que precarga todos los templates de la pagina inicial
+    //Es llamada en la seccion .run de las apps de angularJS
+    function loadTemplates($state, goState, $http, $templateCache) { 
+        var promises = []
+        var states = $state.get()
+        NProgress.start()
+
+        for (i = 1; i < states.length; i++) {
+            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
+            promises.push(p)
+            p.then(function () { }, function (error) { console.log("Error template: ", error) })
+        }
+
+        Promise.all(promises)
+            .then(function () { }).catch(function () { }).then(function () {
+                NProgress.done()
+                $state.go(goState) ///////////////////////// State inicial
+            })
+    }
 </script>

@@ -4,7 +4,7 @@
     Children International
 */
 
-angular.module('sistema', ['ui.router', 'ngCookies'])
+angular.module('sistema', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('activarusuario', {
@@ -25,36 +25,12 @@ angular.module('sistema', ['ui.router', 'ngCookies'])
         $compileProvider.commentDirectivesEnabled(true)
         $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "$templateCache", function ($state, root, $cookies, $http, $templateCache) {
+    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
-        refresh.go(function () {
-            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('/login');
-                }
-            })
-        }, 20) //minutos
+        checkSession($http);
 
-        var promises = []
-        var states = $state.get()
-        NProgress.start()
+        loadTemplates($state, "activarusuario", $http, $templateCache);
 
-        for (i = 1; i < states.length; i++) {
-            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
-            promises.push(p)
-            p.then(function () { }, function (error) { console.log("Error template: ", error) })
-        }
-
-        Promise.all(promises)
-            .then(function () { }).catch(function () { }).then(function () {
-                NProgress.done()
-                $state.go("activarusuario") /////////////////////////
-            })
-
-        root.session_name = $cookies.get('session_name')
-        root.session_email = $cookies.get('session_email')
-        root.session_photo = $cookies.get('session_photo')
     }])
     .factory('usuarios', ['$http', '$rootScope', function ($http, $rootScope) {
 

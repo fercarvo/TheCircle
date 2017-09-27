@@ -1,5 +1,5 @@
 ﻿
-angular.module('bodeguero', ['ui.router', 'ngCookies'])
+angular.module('bodeguero', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -24,36 +24,11 @@ angular.module('bodeguero', ['ui.router', 'ngCookies'])
             });
         $compileProvider.debugInfoEnabled(true); //false en modo de produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "dataFac", "$templateCache", function ($state, $rootScope, $cookies, $http, dataFac, $templateCache) {
+    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
-        refresh.go(function () {
-            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('/login');
-                }
-            })
-        }, 20) //minutos
+        checkSession($http);
 
-        var promises = []
-        var states = $state.get()
-        NProgress.start()
-
-        for (i = 1; i < states.length; i++) {
-            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
-            promises.push(p)
-            p.then(function () { }, function (error) { console.log("Error template: ", error) })
-        }
-
-        Promise.all(promises)
-            .then(function () { }).catch(function () { }).then(function () {
-                NProgress.done()
-                $state.go("despachar") /////////////////////////
-            })
-
-        $rootScope.session_name = $cookies.get('session_name')
-        $rootScope.session_email = $cookies.get('session_email')
-        $rootScope.session_photo = $cookies.get('session_photo')
+        loadTemplates($state, "despachar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 

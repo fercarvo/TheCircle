@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
@@ -108,11 +109,10 @@ namespace TheCircle.Models
 
         public static void RecuperarClave(int cedula, string email)
         {
-
             var context = new MyDbContext();
 
             string nueva_clave = Signature.Random();
-            var dic = Signature.HashingSHA256(nueva_clave);
+            Dictionary<string, string> dic = Signature.HashingSHA256(nueva_clave);
             string hash = dic["hash"];
             string salt = dic["salt"];
 

@@ -1,4 +1,4 @@
-﻿angular.module('director', ['ui.router', 'ngCookies', 'nvd3'])
+﻿angular.module('director', ['ui.router', 'nvd3'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('estadisticas', {
@@ -23,8 +23,11 @@
             });
         
     }])
-    .run(["$state", "$rootScope", "$http", function ($state, $rootScope, $http) {
-        $state.go("estadisticas")
+    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
+
+        //checkSession($http);
+
+        loadTemplates($state, "estadisticas", $http, $templateCache);
 
     }])
     .factory("dataFac", ["$http", function ($http) {

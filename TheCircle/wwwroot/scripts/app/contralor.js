@@ -3,7 +3,7 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appContralor', ['ui.router', 'ngCookies'])
+angular.module('appContralor', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
         $stateProvider
             .state('aprobar', {
@@ -17,37 +17,11 @@ angular.module('appContralor', ['ui.router', 'ngCookies'])
         //$compileProvider.debugInfoEnabled(false); Activar en modo producción
         //$logProvider.debugEnabled(false); Activar en modo produccion
     }])
-    .run(["$state", "$rootScope", "$cookies", "$http", "refresh", function ($state, $rootScope, $cookies, $http, refresh) {
+    .run(["$state", "$http", "refresh", function ($state, $http, refresh) {
 
-        refresh.go(function () {
-            $http.get("session").then(function () { console.log("Session valida") }, function (response) {
-                if (response.status === 401) {
-                    alert("Su sesion ha caducado");
-                    document.location.replace('/login');
-                }
-            })
-        }, 20) //minutos
+        checkSession($http);
 
-
-        var promises = []
-        var states = $state.get()
-        NProgress.start()
-
-        for (i = 1; i < states.length; i++) {
-            var p = $http.get(states[i].templateUrl, { cache: $templateCache })
-            promises.push(p)
-            p.then(function () { }, function (error) { console.log("Error template: ", error) })
-        }
-
-        Promise.all(promises)
-            .then(function () { }).catch(function () { }).then(function () {
-                NProgress.done()
-                $state.go("aprobar") /////////////////////////
-            })
-
-        $rootScope.session_name = $cookies.get('session_name')
-        $rootScope.session_email = $cookies.get('session_email')
-        $rootScope.session_photo = $cookies.get('session_photo')   
+        loadTemplates($state, "aprobar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', function ($http) {
         var dataFactory = {};

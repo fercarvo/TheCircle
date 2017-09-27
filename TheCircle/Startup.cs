@@ -50,7 +50,7 @@ namespace TheCircle
 
             app.UseRewriter(options);*/
 
-            env.EnvironmentName = EnvironmentName.Production;
+            env.EnvironmentName = EnvironmentName.Development;
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
