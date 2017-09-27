@@ -95,5 +95,12 @@ namespace TheCircle.Controllers.views
         {
             return View();
         }
+
+        [HttpGet("imprimir")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Imprimir()
+        {
+            return View();
+        }
     }
 }

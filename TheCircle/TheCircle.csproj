@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
+    <Content Include="wwwroot\images\logo-purple.svg" />
     <Content Include="wwwroot\scripts\app\asistenteSalud.js" />
     <Content Include="wwwroot\scripts\app\bodeguero.js" />
     <Content Include="wwwroot\scripts\app\contralor.js" />
