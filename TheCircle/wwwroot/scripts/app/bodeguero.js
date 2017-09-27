@@ -167,7 +167,7 @@ angular.module('bodeguero', ['ui.router'])
 
         if ($scope.compuestos === null) { dataFac.getCompuestos() }
 
-        $scope.$on('compuesto-categoria-unidades', ()=>{ 
+        $scope.$on('compuesto-categoria-unidades', function() { 
             $scope.compuestos = dataFac.compuestos;
         })
 

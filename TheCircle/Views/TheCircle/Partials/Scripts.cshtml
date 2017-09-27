@@ -8,8 +8,18 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.min.js"></script>
 <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
+<script src="~/scripts/vendor/pdfmake.min.js"></script>
+<script src="~/scripts/vendor/vfs_fonts.js"></script>
 <script src="~/scripts/vendor/nprogress.js"></script>
 <script>
+
+    //Comment this for debug
+    /*var console = {
+        log: function () { 
+            return "Production mode, comment this for debug"
+        }        
+    }*/
+
     //retorna la fecha en un formato especifico
     function date(date) {
         var format = new Date(date);
@@ -119,4 +129,102 @@
                 $state.go(goState) ///////////////////////// State inicial
             })
     }
+
+
+    //obj.nombre = nombre del pdf, obj.data = [array de los items de receta con 4 columnas]
+    function PDFexport(obj) {
+        function body(items) {
+            var body = [
+                [
+                    { text: 'Cantidad', style: 'subItem' },
+                    { text: 'Nombre', style: 'subItem' },
+                    { text: 'Compuesto', style: 'subItem' },
+                    { text: 'Posologia', style: 'subItem' }
+                ]
+            ]
+
+            items.forEach(function (item) {
+                body.push(
+                    [
+                        { text: " " + item.cantidad },
+                        { text: " " + item.nombre },
+                        { text: " " + item.compuesto },
+                        { text: " " + item.posologia }
+                    ]
+                )
+            })
+            return body;
+        }
+
+        var pdf = {
+            content: [
+                { text: "Children international", style: 'header' },
+                { text: "Receta de farmacia apadrinado\n\n", style: 'subheader' },
+                {
+                    text: [
+                        {
+                            text: "Fecha: ",
+                            style: 'subItem'
+                        }, {
+                            text: date(new Date()) + "\n"
+                        }, {
+                            text: "Tipo: ",
+                            style: 'subItem'
+                        }, {
+                            text: "tipo" + "\n\n"
+                        }
+                    ]
+                },
+                {
+                    columns: [
+                        { width: '*', text: '' },
+                        {
+                            width: '100%',
+                            table: {
+                                widths: ['auto', '*', '*', '*'],
+                                body: body(obj.data)
+                            }
+                        },
+                        { width: '*', text: '' }
+                    ]
+                }
+            ],
+            styles: {
+                header: {
+                    fontSize: 18,
+                    bold: true,
+                    alignment: 'center',
+                    color: 'blue'
+                },
+                subheader: {
+                    fontSize: 14,
+                    bold: true,
+                    alignment: 'center',
+                    color: 'blue'
+                },
+                subItem: {
+                    bold: true,
+                    color: 'blue'
+                },
+                tableHeader: {
+                    bold: true,
+                    fontSize: 13,
+                    color: 'black'
+                }
+            }
+        }
+
+        pdfMake.createPdf(pdf).download(obj.nombre)
+    }
+
+    var obj = {
+        nombre: "impresion.pdf",
+        data: [
+            { cantidad: 12, nombre: "paracetamol", compuesto: "paracetamol 1g", posologia: "Tomar una cada 12 horas" },
+            { cantidad: 50, nombre: "asdas", compuesto: "paracetaasdasdmol 1g", posologia: "Tomar una cada 13 horas" },
+            { cantidad: 10, nombre: "paracetaasadassdmol", compuesto: "asdas 1g", posologia: "Tomar una cada 14 horas" }
+        ]
+    }
+
+    PDFexport(obj);
 </script>
