@@ -9,6 +9,7 @@ namespace TheCircle.Util
         public virtual DbSet<Remision.Aprobacion> Aprobacion { get; set; }        
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
         public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
+        public virtual DbSet<ItemFarmacia.Nombre> NombresItem { get; set; }
         public virtual DbSet<ItemFarmacia.Egreso> Egreso { get; internal set; }
         public virtual DbSet<Foto> Fotos { get; set; }
         public virtual DbSet<Enfermedad> Enfermedades { get; set; }

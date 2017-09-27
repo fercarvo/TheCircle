@@ -72,6 +72,11 @@ namespace TheCircle.Models
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
+        public static Nombre[] ReportNombres() {
+            string query = $"EXEC ItemFarmacia_Report_Nombre";
+            return new MyDbContext().NombresItem.FromSql(query).ToArray();
+        }
+
         public static Egreso[] Egresos(Localidad localidad, DateTime desde, DateTime hasta)
         {
             string query = $"EXEC ItemReceta_Report_Items @localidad='{localidad}', @desde='{desde}', @hasta='{hasta}'";
@@ -114,6 +119,14 @@ namespace TheCircle.Models
             public DateTime? fcaducidad { get; set; }
             public string localidad { get; set; }
             public int egreso { get; set; }
+        }
+
+        public class Nombre
+        {
+            [Key]
+            public Int64 indice { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
         }
     }
 }

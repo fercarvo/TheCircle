@@ -38,6 +38,7 @@ angular.module('bodeguero', ['ui.router'])
             categorias: null,
             transferencias: null,
             unidades: null,
+            nombres: null,
             getData: data,
             getStock: getStock,
             getCompuestos: getCompuestos,
@@ -164,12 +165,22 @@ angular.module('bodeguero', ['ui.router'])
     .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
         console.log("En controller ingresar");
         $scope.compuestos = dataFac.getData();
+        $scope.nombres = dataFac.nombres;
 
         if ($scope.compuestos === null) { dataFac.getCompuestos() }
 
         $scope.$on('compuesto-categoria-unidades', function() { 
             $scope.compuestos = dataFac.compuestos;
         })
+
+        $scope.seleccionar = function (obj) {
+            $scope.form.nombre = obj
+        }
+
+        $http.get("/api/itemfarmacia/nombre").then(function (res) {
+            dataFac.nombres = res.data
+            $scope.nombres = dataFac.nombres
+        }, function () { })
 
         $scope.crear = function (form) {
             var data = {
