@@ -21,18 +21,12 @@
 
         <div class="panel-body" style="padding:25px 20px 10px 20px;">
 
-            <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+            <div class="panel panel-default-light border-default col-sm-7" style="padding:0px">
                 <form class="form-horizontal" id="form-crearItem" ng-submit="crear(form)" style="margin-top:10px;">
 
                     <div class="form-group">
-                        <label class="control-label col-sm-2">Nombre del Ítem<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
-                            <input required ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
-                        </div>
-                    </div><!-- /.form-group -->
-                    <div class="form-group">
                         <label class="control-label col-sm-2">Compuesto<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
+                        <div class="col-sm-8" style="padding-left:initial">
                             <select required class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.nombre as compuesto.nombre + ', ' + compuesto.unidadMedida for compuesto in compuestos">
                                 <option style="display:none;" selected disabled value="">Compuesto, unidad-medida</option>
                             </select>
@@ -40,16 +34,24 @@
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
+                        <label class="control-label col-sm-2">Nombre del Ítem<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-8" style="padding-left:initial">
+                            <input required ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
+                        </div>
+                    </div><!-- /.form-group -->
+
+
+                    <div class="form-group">
                         <label class="control-label col-sm-2">Fecha de caducidad</label>
-                        <div class="col-sm-6" style="padding-left:initial">
+                        <div class="col-sm-8" style="padding-left:initial">
                             <input ng-model="form.fecha" required type="date" class="form-control">
                         </div>
                     </div><!-- /.form-group -->
 
                     <div class="form-group">
                         <label class="control-label col-sm-2">Cantidad<a style="color:red;">(*)</a></label>
-                        <div class="col-sm-6" style="padding-left:initial">
-                            <input required class="form-control" ng-model="form.cantidad" type="number" placeholder="Ingresar la cantidad" min="1" max="1000">
+                        <div class="col-sm-8" style="padding-left:initial">
+                            <input required class="form-control" ng-model="form.cantidad" type="number" placeholder="Ingresar la cantidad" min="1">
                         </div>
                     </div><!-- /.form-group -->
 
@@ -65,6 +67,23 @@
                 <script type="text/javascript">
                     $(".myselect").select2();
                 </script>
+            </div>
+
+            <div class="panel panel-default-light border-default col-sm-5" style="padding:0px">
+                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre de items registrados</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="cursor: pointer" ng-repeat="obj in nombres | orderBy:'nombre' | filter:form.compuesto">
+                                <td ng-click="seleccionar(obj.nombre)">{{obj.nombre}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>

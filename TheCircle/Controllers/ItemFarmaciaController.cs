@@ -25,6 +25,15 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        [HttpGet("itemfarmacia/nombre")]
+        //[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("asistenteSalud", "bodeguero")]
+        public IActionResult GetNombres()
+        {
+            ItemFarmacia.Nombre[] nombres = ItemFarmacia.ReportNombres();
+            return Ok(nombres);
+        }
+
         [HttpGet("itemfarmacia/insumos")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("medico", "asistenteSalud")]
