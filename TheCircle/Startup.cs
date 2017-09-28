@@ -31,10 +31,11 @@ namespace TheCircle
             services.AddDbContext<MyDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("TheCircle")));
 
-            /*services.Configure<MvcOptions>(options =>
+            //Previene el uso de rutas que no usen HTTPS
+            services.Configure<MvcOptions>(options =>
             {
                 options.Filters.Add(new RequireHttpsAttribute());
-            });*/
+            });
 
 
             services.AddMvc();
@@ -46,9 +47,10 @@ namespace TheCircle
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            /*var options = new RewriteOptions().AddRedirectToHttps(301, 44375);
-
-            app.UseRewriter(options);*/
+            //Redireccion permanente al puerto seguro HTTPS
+            app.UseRewriter(
+                new RewriteOptions().AddRedirectToHttps(301, 4430)
+            );
 
             env.EnvironmentName = EnvironmentName.Development;
             if (env.IsDevelopment()) {
