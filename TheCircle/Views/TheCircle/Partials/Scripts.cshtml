@@ -6,7 +6,7 @@
 <!--<script src="~/scripts/vendor/angular.min.js"></script>-->
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.min.js"></script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.min.js"></script>-->
 <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
 <script src="~/scripts/vendor/pdfmake.min.js"></script>
 <script src="~/scripts/vendor/vfs_fonts.js"></script>
@@ -132,7 +132,7 @@
 
 
     //obj.nombre = nombre del pdf, obj.data = [array de los items de receta con 4 columnas]
-    function PDFexport(obj) {
+    /*function PDFexport(obj) {
         function body(items) {
             var body = [
                 [
@@ -215,16 +215,16 @@
         }
 
         pdfMake.createPdf(pdf).download(obj.nombre)
-    }
+    }*/
 
-    var obj = {
+    /*var obj = {
         nombre: "impresion.pdf",
         data: [
             { cantidad: 12, nombre: "paracetamol", compuesto: "paracetamol 1g", posologia: "Tomar una cada 12 horas" },
             { cantidad: 50, nombre: "asdas", compuesto: "paracetaasdasdmol 1g", posologia: "Tomar una cada 13 horas" },
             { cantidad: 10, nombre: "paracetaasadassdmol", compuesto: "asdas 1g", posologia: "Tomar una cada 14 horas" }
         ]
-    }
+    }*/
 
     //PDFexport(obj);
 </script>

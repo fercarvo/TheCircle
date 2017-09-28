@@ -60,6 +60,13 @@ namespace TheCircle
                 app.UseExceptionHandler("/error");
             }
 
+            app.Use(async (context, next) => {
+                context.Response.Headers.Append("X-Rights", "all rights reserved to Children International");
+                context.Response.Headers.Append("X-Development", "Edgar Carvajal efcarvaj@espol.edu.ec");
+                await next();
+            });
+            
+
             app.UseStaticFiles(
                 new StaticFileOptions() {
                     OnPrepareResponse = ctx =>

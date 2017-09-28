@@ -35,7 +35,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("login")]
-        [ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
         public IActionResult Login([FromQuery] Message query)
         {
             if (ModelState.IsValid)
@@ -48,7 +48,7 @@ namespace TheCircle.Controllers
         public IActionResult login([FromForm] LoginRequest req)
         {
             if (ModelState.IsValid is false)
-                return CredentialsRedirect();
+                return BadRequest();
 
             try
             {
@@ -69,12 +69,12 @@ namespace TheCircle.Controllers
                 return LocalRedirect("/");
 
             } catch (Exception e) {
-                if (e is LocalidadException)
+                /*if (e is LocalidadException)
                     return LocalidadRedirect();
                 if (e is TokenException)
-                    return CredentialsRedirect();
+                    return CredentialsRedirect();*/
 
-                return CredentialsRedirect();                
+                return BadRequest();                
             }
         }
 

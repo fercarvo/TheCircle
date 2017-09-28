@@ -59,11 +59,11 @@
                 </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
 
-                    <form action="/login" method="post" >
+                    <form id="form_login" action="/login" method="post" onsubmit="return login()">
                         <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese un numero de cedula valido" required class="form-control rounded" placeholder="Ingrese la Cédula">
+                                <input name="cedula" type="text" title="Ingrese un numero de cedula valido" required class="form-control rounded" placeholder="Ingrese la Cédula">
                             </div>
                         </div>
 
@@ -90,7 +90,7 @@
                                      color: #c5c5c5;
                                  } 
                              </style>
-                        <a href="#" data-toggle="modal" data-target="#modal-recordar_cuenta" id="texto_recordar_clave">Olvido su contraseña</a>
+                        <a href="#" data-toggle="modal" data-target="#modal-recuperarClave" id="texto_recordar_clave">Olvido su contraseña</a>
                         <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambiar su Contraseña</a>
                        
                         <div class="form-group">
@@ -216,7 +216,7 @@
         <!--Aqui acaba el modal de cambiar la clave-->
 
         <!--Empieza el modal de recuperar contraseña-->
-        <div id="modal-recordar_cuenta" class="modal fade" style="margin-top:10%;">
+        <div id="modal-recuperarClave" class="modal fade" style="margin-top:10%;">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -248,14 +248,25 @@
         <!--Aqui Termina el modal para el item de remision-->
 
     </div>
-
-    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
-    <script src="~/scripts/ripple.js"> </script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
-    <script src="~/scripts/vendor/select2.min.js"></script>
+    @Html.Partial("~/Views/TheCircle/Partials/Scripts.cshtml")
 
     <script>
         $(".myselect").select2();
+
+        function login() {
+            $.ajax({
+                url: '/login',
+                type: 'POST',
+                data: $('#form_login').serialize(),
+                success: function () {
+                    window.location.replace('/')
+                },
+                error: function () {
+                    notify("Error de autenticación, por favor revise sus credenciales o la localidad", "danger")
+                }
+            })
+            return false;
+        }
 
         function recuperarClave() { 
             $.ajax({
@@ -263,12 +274,13 @@
                 type: 'PUT',
                 data: $('#form_recuperarClave').serialize(),
                 success: function () {
-                    var query = { msg: "Recuperación de clave exitoso, revise su email" }
-                    window.location.replace('/logout?' + $.param(query))
+                    $("#modal-recuperarClave").modal("hide")
+                    notify("Recuperación de clave exitoso, revise su email", "success")
+                    logout()                
                 },
                 error: function () {
-                    var query = { msg: "Cédula/Email incorrectos" }
-                    window.location.replace('/login?' + $.param(query))
+                    $("#modal-recuperarClave").modal("hide")
+                    notify("Cédula/Email incorrectos", "danger")
                 }
             })
             return false;
@@ -280,12 +292,13 @@
                 type: 'POST',
                 data: $('#form_crearCuenta').serialize(),
                 success: function () {
-                    var query = { msg: "Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email" }
-                    window.location.replace('/logout?' + $.param(query))
+                    $("#modal_crear_cuenta").modal("hide")
+                    notify("Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email", "success")
+                    logout() 
                 },
                 error: function () {
-                    var query = { msg: "No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas" }
-                    window.location.replace('/login?' + $.param(query))
+                    $("#modal_crear_cuenta").modal("hide")
+                    notify("No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas", "danger")
                 }
             })
             return false;
@@ -297,12 +310,13 @@
                 type: 'PUT',
                 data: $('#form_cambiar_clave').serialize(),
                 success: function () {
-                    var query = { msg: "Cambio de contraseña exitoso" }
-                    window.location.replace('/logout?' + $.param(query))
+                    $("#modal_cambiar_clave").modal("hide")
+                    notify("Cambio de contraseña exitoso, inicie sesión nuevamente", "success")
+                    logout()
                 },
                 error: function () {
-                    var query = { msg: "No se ha podido cambiar la contraseña, verifique los datos" }
-                    window.location.replace('/login?'+ $.param(query))
+                    $("#modal_cambiar_clave").modal("hide")
+                    notify("No se ha podido cambiar la contraseña, verifique los datos", "danger")
                 }
             })
             return false;
@@ -313,6 +327,12 @@
         }).on("mouseleave", function () {
             $(this).parent().next().attr("type", "password");
         });
+
+        function logout() { 
+            setTimeout(function () {
+                window.location.replace('/logout')
+            }, 4000)
+        }
 
     </script>
 </body>
