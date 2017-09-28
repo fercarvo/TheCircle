@@ -23,6 +23,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/atencion.remision.html',
                 controller: 'atencion.remision'
             })
+            .state('atencion.remisionlab', {
+                templateUrl: 'views/medico/atencion.remisionlab.html',
+                controller: 'atencion.remisionlab'
+            })
             .state('anulaciones', {
                 templateUrl: 'views/medico/anulaciones.html',
                 controller: 'anulaciones'
@@ -58,6 +62,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             .state('pedidos.interno', {
                 templateUrl: 'views/medico/pedidos.interno.html',
                 controller: 'pedidos.interno'
+            })
+            .state('pedidos.recibidos', {
+                templateUrl: 'views/medico/pedidos.recibidos.html',
+                controller: 'pedidos.recibidos'
             });
 
         //False en modo de produccion
@@ -340,6 +348,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                     $scope.disable = disable.remision; //Se desactiva atencion.remision.html
                 }, function() { })
         }
+
+    }])
+    .controller('atencion.remision', ["$scope", "$state", "dataFactory", "atencionFactory", function ($scope, $state, dataFactory, atencionFactory) {
 
     }])
     .controller('atencion.receta', ["$scope", "$state", "$http", "disable", "dataFactory", "atencionFactory", function ($scope, $state, $http, disable, dataFactory, atencionFactory) {
@@ -724,4 +735,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 actualizar = refresh.go(cargar, 30)
             })
         }
+    }])
+    .controller('pedidos.recibidos', ["$scope", "$state", "dataFactory", "atencionFactory", function ($scope, $state, dataFactory, atencionFactory) {
+
     }])
