@@ -222,7 +222,7 @@
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Email</label>
-                                    <input name="email" type="email" title="email registrado" required class="form-control rounded" placeholder="Ingrese su email">
+                                    <input id="emailx" name="email" type="email" title="email registrado" required class="form-control rounded" placeholder="Ingrese su email">
                                 </div>
                             </div>
                             <div class="text-center ">
@@ -311,14 +311,15 @@
             return false;
         }
 
-        function recuperarClave() { 
+        function recuperarClave() {
+            var porId = document.getElementById("emailx").value;
             $.ajax({
                 url: '/api/user/recuperarclave',
                 type: 'PUT',
                 data: $('#form_recuperarClave').serialize(),
                 success: function () {
                     $("#modal-recuperarClave").modal("hide")
-                    notify("Recuperación de clave exitoso, revise su email", "success")
+                    notify("Su clave temporal ha sido enviada a " + porId, "success")
                     logout()                
                 },
                 error: function () {
