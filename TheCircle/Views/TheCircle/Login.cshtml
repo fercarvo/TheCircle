@@ -40,23 +40,12 @@
             border-color: #17c092;
         }
 
-        #mensaje_login {
-            background-color: rgba(51, 122, 183, 0.74);
-            text-align: center;
-            color: rgb(255, 255, 255);
-            font-size: 120%;
-        }
     </style>
 </head>
 <body class="page-dashboard">
     <div class="container">
         <div class="login-wrapper">
-
-
             <div class="panel" style="border-radius: 6px;background-color: rgba(0,0, 0, 0.55);">
-                <div id="mensaje_login">
-                    @ViewData["mensaje"]
-                </div>
                 <div class="panel-body" style="border-radius: 6px;background-color: rgba(144, 31, 97, 0.55);">
 
                     <form id="form_login" action="/login" method="post" onsubmit="return login()">
@@ -248,10 +237,64 @@
         <!--Aqui Termina el modal para el item de remision-->
 
     </div>
-    @Html.Partial("~/Views/TheCircle/Partials/Scripts.cshtml")
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="~/scripts/ripple.js"> </script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="~/scripts/vendor/select2.min.js"></script>
+    <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
 
     <script>
         $(".myselect").select2();
+
+        function notify(mensaje, tipo, progress) {
+            return $.notify(
+                {
+                    icon: (function () {
+                        switch (tipo) {
+                            case "success":
+                                return "glyphicon glyphicon-saved"
+                            case "danger":
+                                return "glyphicon glyphicon-ban-circle"
+                            default:
+                                return ""
+                        }
+                    })(),
+                    message: mensaje,
+                    url: '#',
+                    target: '_blank'
+                }, {
+                    element: 'body',
+                    position: null,
+                    showProgressbar: (function () {
+                        if (progress) {
+                            return progress
+                        } return false
+                    })(),
+                    type: tipo,
+                    allow_dismiss: true,
+                    newest_on_top: false,
+                    placement: {
+                        from: "top",
+                        align: "right"
+                    },
+                    offset: { x: 35, y: 40 },
+                    spacing: 10,
+                    z_index: 1031,
+                    delay: 4000,
+                    timer: 1000,
+                    url_target: '_blank',
+                    mouse_over: "pause",
+                    animate: {
+                        enter: 'animated bounceIn',
+                        exit: 'animated bounceOut'
+                    },
+                    onShow: null,
+                    onShown: null,
+                    onClose: null,
+                    onClosed: null,
+                    icon_type: 'class'
+                })
+        }
 
         function login() {
             $.ajax({

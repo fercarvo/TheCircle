@@ -219,6 +219,33 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             cargar();
         }
 
+        $scope.imc = function (peso, talla) {
+
+            if (!peso || !talla) {
+                return ""
+            }
+
+            var imc = peso * 10 / (talla / 100 * talla / 100) / 10;
+
+            if (imc < 18.5) {
+                return "Bajo peso"
+            } else if (imc < 25) {
+                return "Normal"
+            } else if (imc < 30) {
+                return "Sobrepeso"
+            } else if (imc < 35) {
+                return "Obesidad I"
+            } else if (imc < 40) {
+                return "Obesidad II"
+            } else if (imc < 50) {
+                return "Obesidad III"
+            } else if (imc >= 50) {
+                return "Obesidad IV"
+            } else {
+                return ""
+            }
+        }
+
         function cargar() {
             //Se desactiva el codigo de apadrinado y se bloquea la informacion del mismo.
             var unregister1 = $scope.$on('guardar', function () {

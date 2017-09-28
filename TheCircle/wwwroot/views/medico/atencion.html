@@ -65,7 +65,7 @@
                             <td class="tres">Número de Personas:</td>
                             <td class="tres">{{apadrinado.numPer}}</td>
                             <td class="tres">IMC:</td>
-                            <td class="tres">{{apadrinado.peso * 10 / (apadrinado.talla / 100 * apadrinado.talla / 100) / 10 | number:2}}</td>
+                            <td class="tres">{{apadrinado.peso * 10 / (apadrinado.talla / 100 * apadrinado.talla / 100) / 10 | number:2}} {{imc(apadrinado.peso, apadrinado.talla)}}</td>
                         </tr>
                         <tr>
                             <td class="cuatro">Ingreso Mensual:</td>
