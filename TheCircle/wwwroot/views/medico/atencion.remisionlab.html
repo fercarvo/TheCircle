@@ -1,0 +1,83 @@
+﻿<div class="panel-body" style="padding:0px 20px 20px 20px;">
+    <form class="form-horizontal" ng-submit="send(remision)">
+        <div class="form-group">
+            <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Instituci&oacute;n-Especialidad <a style="color:red;">(*)</a></label>
+            <div class="col-sm-9" style="padding-left:initial">
+                <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.institucion" ng-options="i.id as i.nombre + ' - ' + i.especialidad for i in instituciones">
+                    <option style="display:none;" selected disabled value="">Digite y Seleccione por establecimiento o especialidad</option>
+                </select>
+            </div>
+        </div><!-- /.form-group -->
+
+        <div class="form-group" style="padding:0px 0px 0px 0px;">
+            <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">Diagn&oacute;stico probable <a style="color:red;">(*)</a></label>
+            <div class="col-sm-3" style="padding-left:initial">
+                <select required ng-disabled="disable" class="form-control myselect" ng-model="remision.diagnostico" ng-options="d as d.enfermedadCod + ' ' + d.enfermedadNombre for d in diagnosticos">
+                    <option style="display:none;" selected disabled value="">Digite y Seleccione la enfermedad</option>
+                </select>
+            </div>
+            <label class="control-label col-sm-2" style="text-align:right">Monto USD <a style="color:red;">(*)</a></label>
+            <div class="col-sm-2" style="padding-left:initial">
+                <input required ng-disabled="disable" ng-model="remision.monto" type="number" min="0" max="200" title="Solo numeros" class="form-control">
+            </div>
+            <label class="control-label col-sm-2" style="text-align:left">Monto restante $$</label>
+        </div><!-- /.form-group -->
+
+
+        <div class="form-group" style="padding:initial;">
+            <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;">S&iacute;ntomas <a style="color:red;">(*)</a></label>
+            <div class="col-sm-9" style="padding-left:initial">
+                <textarea required ng-disabled="disable" ng-model="remision.sintomas" class="form-control" placeholder="....." rows="2"></textarea>
+            </div>
+        </div><!-- /.form-group -->
+        <div>
+            <a style="color:red;">(*) campo obligatorio.</a>
+        </div>
+        <div class="text-center" style="padding:5px;">
+            <button data-ripple ng-disabled="disable" type="submit" class="btn btn-info">Aceptar</button>
+            <button data-ripple ng-disabled="disable" type="reset" class="btn btn-default">Cancelar</button>
+        </div><!-- /.form-group -->
+        <div class="form-group" style="padding:initial;">
+            <input data-ripple type="button" class="btn btn-info" value="Crear caja de texto" onclick="crear(this)">
+        </div>
+        <div class="form-group" style="padding:initial;">
+        <fieldset id="field">
+            
+        </fieldset>
+        </div>
+    </form>
+    <script type="text/javascript">$(".myselect").select2();</script>
+    <script type="text/javascript">
+
+        icremento = 0;
+        function crear(obj) {
+            icremento++;
+            //crea el div
+            field = document.getElementById('field');
+            contenedor = document.createElement('div');
+            contenedor.id = 'div' + icremento;
+            contenedor.className ='col-sm-7';
+            field.appendChild(contenedor);
+            //crea el label
+            label = document.createElement('label');
+            label.className = 'control-label col-sm-3';
+            label.style = 'text-align:right';
+            label.innerHTML = 'Ingrese otro valor: ';
+            contenedor.appendChild(label);
+            //crea el input text
+            boton = document.createElement('input');
+            boton.type = 'text';
+            boton.className = 'form-control ng-pristine ng-untouched ng-valid';
+            boton.style = 'margin-bottom: 15px;';
+            boton.placeholder='....';
+            boton.name = 'text' + '[ ]';
+            contenedor.appendChild(boton);
+
+
+        }
+        function borrar(obj) {
+            field = document.getElementById('field');
+            field.removeChild(document.getElementById(obj));
+        }
+    </script>
+</div>
