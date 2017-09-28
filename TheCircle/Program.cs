@@ -11,7 +11,7 @@ namespace TheCircle
             var host = new WebHostBuilder()
                 .UseKestrel(options =>
                 {
-                    options.UseHttps("localhost.pfx", "DevelopmentSSLCI"); //cambiar a 192-168-16-60.pfx para probar en otras maquinas
+                    options.UseHttps("Development/localhost.pfx", "DevelopmentSSLCI"); //cambiar a 192-168-16-60.pfx para probar en otras maquinas
                 })
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
