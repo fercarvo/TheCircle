@@ -47,7 +47,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="atencion in atenciones.all | filter:buscar | orderBy:'fecha'">
+                    <tr ng-repeat="atencion in atenciones.all | orderBy:'fecha' | filter:buscar as filtrado">
                         <td>{{("00000000"+ atencion.id).slice(-9)}}</td>
                         <td>{{atencion.fecha | date: 'dd/MM/yyyy - H:mm'}}</td>
                         <td>{{atencion.idApadrinado}}</td>
@@ -57,7 +57,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button data-ripple onclick="fnExcelReport()">Exportar a Excel</button>
+            <!--<button data-ripple onclick="fnExcelReport()">Exportar a Excel</button>-->
+        </div>
+        <div class="form-group col-sm-12">
+            <label class="control-label" style="font-size: large;font-weight: bolder;">Total: </label>
+            <label class="control-label" style="font-size: large;">{{filtrado.length}}</label>
         </div>
     </div>
 
