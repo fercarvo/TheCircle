@@ -1,12 +1,13 @@
-﻿$certificate = New-SelfSignedCertificate `
-    -Subject localhost `
-    -DnsName localhost `
+﻿# Este es para crear el self-signed cert, para root, etc
+$certificate = New-SelfSignedCertificate `
+    -Subject "ROOT name" `
+    -DnsName "ROOT name" `
     -KeyAlgorithm RSA `
     -KeyLength 2048 `
     -NotBefore (Get-Date) `
-    -NotAfter (Get-Date).AddYears(2) `
+    -NotAfter (Get-Date).AddYears(5) `
     -CertStoreLocation "cert:CurrentUser\My" `
-    -FriendlyName "Localhost Certificate for .NET Core" `
+    -FriendlyName "bla bla name" `
     -HashAlgorithm SHA256 `
     -KeyUsage DigitalSignature, KeyEncipherment, DataEncipherment `
     -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.1") 
@@ -20,20 +21,64 @@ New-Item -ItemType Directory -Force -Path $tmpPath
 }
 
 # set certificate password here
-$pfxPassword = ConvertTo-SecureString -String "DevelopmentSSLCI" -Force -AsPlainText
-$pfxFilePath = "c:\tmp\localhost.pfx"
-$cerFilePath = "c:\tmp\localhost.cer"
+$pfxPassword = ConvertTo-SecureString -String "Your strong root password" -Force -AsPlainText
+$pfxFilePath = "c:\tmp\root.pfx"
+$cerFilePath = "c:\tmp\root.cer"
 
 # create pfx certificate
 Export-PfxCertificate -Cert $certificatePath -FilePath $pfxFilePath -Password $pfxPassword
 Export-Certificate -Cert $certificatePath -FilePath $cerFilePath
 
 # import the pfx certificate
-Import-PfxCertificate -FilePath $pfxFilePath Cert:\LocalMachine\My -Password $pfxPassword -Exportable
+Import-PfxCertificate -FilePath "c:\tmp\root.pfx" Cert:\LocalMachine\My -Password $pfxPassword -Exportable
 
 # trust the certificate by importing the pfx certificate into your trusted root
-Import-Certificate -FilePath $cerFilePath -CertStoreLocation Cert:\CurrentUser\Root
+# Import-Certificate -FilePath $cerFilePath -CertStoreLocation Cert:\CurrentUser\Root
 
 # optionally delete the physical certificates (don’t delete the pfx file as you need to copy this to your app directory)
 # Remove-Item $pfxFilePath
-Remove-Item $cerFilePath
+# Remove-Item $cerFilePath
+
+
+
+
+# Este es para crear los certificados derivados de un root
+
+
+$rootcert = ( Get-ChildItem -Path cert:\LocalMachine\My\{huella digital} )
+
+$certificate2 = New-SelfSignedCertificate `
+    -Subject "child cert" `
+    -DnsName "*.child.com", "*.child.cert" `
+    -KeyAlgorithm RSA `
+    -KeyLength 2048 `
+    -NotBefore (Get-Date) `
+    -NotAfter (Get-Date).AddYears(1) `
+    -CertStoreLocation "cert:CurrentUser\My" `
+    -FriendlyName "bla bla child name" `
+    -HashAlgorithm SHA256 `
+    -KeyUsage DigitalSignature, KeyEncipherment, DataEncipherment `
+    -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.1") `
+	-Signer $rootcert
+
+$certificatePath2 = 'Cert:\CurrentUser\My\' + ($certificate2.ThumbPrint) 
+
+# create temporary certificate path
+$tmpPath = "C:\tmp"
+If(!(test-path $tmpPath))
+{
+New-Item -ItemType Directory -Force -Path $tmpPath
+}
+
+# set certificate password here
+$pfxPassword2 = ConvertTo-SecureString -String "Your child name" -Force -AsPlainText
+$pfxFilePath2 = "c:\tmp\child.pfx"
+$cerFilePath2 = "c:\tmp\child.cer"
+
+# create pfx certificate
+Export-PfxCertificate -Cert $certificatePath2 -FilePath $pfxFilePath2 -Password $pfxPassword2
+Export-Certificate -Cert $certificatePath2 -FilePath $cerFilePath2
+
+# import the pfx certificate
+Import-PfxCertificate -FilePath "c:\tmp\child.pfx" Cert:\LocalMachine\My -Password $pfxPassword2 -Exportable
+
