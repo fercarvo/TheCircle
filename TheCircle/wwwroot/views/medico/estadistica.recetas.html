@@ -33,7 +33,7 @@
                     <tr>
                         <th>N&uacute;mero</th>
                         <th>Fecha</th>
-                        <th>Codigo</th>
+                        <th>Código</th>
                         <th>Nombre apadrinado</th>
                         <th>Ver &iacute;tems</th>
                     </tr>
@@ -57,7 +57,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Receta Nro {{("00000000"+ obj.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
+                    <h5 class="modal-title"># receta  {{("00000000"+ obj.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
                     <table class="table table-striped">
@@ -66,7 +66,7 @@
                                 <th>Nombre</th>
                                 <th>Compuesto</th>
                                 <th>Cantidad</th>
-                                <th>Posologia</th>
+                                <th>Posología</th>
                             </tr>
                         </thead>
                         <tbody>

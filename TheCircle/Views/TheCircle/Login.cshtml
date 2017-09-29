@@ -52,13 +52,13 @@
                         <h3 style="margin-bottom: 30px;color:white;text-align:center">Autenticación - TheCircle</h3>
                         <div class="form-group">
                             <div class="browser-default">
-                                <input name="cedula" type="text" title="Ingrese un numero de cedula valido" required class="form-control rounded" placeholder="Ingrese la Cédula">
+                                <input name="cedula" type="text" title="Ingrese un numero de cedula valido" required class="form-control rounded" placeholder="digite su número de cédula">
                             </div>
                         </div>
 
                         <div class="form-group" style="margin-bottom: 10px;">
                             <div class="browser-default">
-                                <input name="clave" type="password" required class="form-control rounded" placeholder="Ingrese la Contraseña">
+                                <input name="clave" type="password" required class="form-control rounded" placeholder="digite su contraseña">
                             </div>
                         </div>
                              <style>
@@ -80,15 +80,15 @@
                                  } 
                              </style>
                         <a href="#" data-toggle="modal" data-target="#modal-recuperarClave" id="texto_recordar_clave">Olvido su contraseña</a>
-                        <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">Cambiar su Contraseña</a>
+                        <a href="#" data-toggle="modal" data-target="#modal_cambiar_clave" id="texto_cambiar_clave">cambie su contraseña</a>
                        
                         <div class="form-group">
                             <select name="localidad" class="form-control myselect" required style="width: 328px;">
-                                <option style="display:none;" selected disabled value="">Seleccione el centro comunitario</option>
+                                <option style="display:none;" selected disabled value="">seleccione su centro comunitario</option>
                                 <option value="OC">Oficina central</option>
                                 <option value="CC0">Centro Comunitario 0 - Durán</option>
                                 <option value="CC2">Centro Comunitario 2 - Phelan</option>
-                                <option value="CC3">Centro Comunitario 3 - BUDS"</option>
+                                <option value="CC3">Centro Comunitario 3 - BUDS</option>
                                 <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
                                 <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
                                 <option value="HEE">Centro Hacia El Empleo</option>
@@ -138,20 +138,20 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Crear una Cuenta</h5>
+                        <h5 class="modal-title">Cree su cuenta</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;">
                         <form id="form_crearCuenta" class="modal_form" onsubmit="return crearCuenta()" action="api/user" method="post" style="text-align:left;">
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Cédula de identidad</label>
-                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cédula válida" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cédula válida" required class="form-control rounded" placeholder="digite su número de cédula">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Contraseña<span class="glyphicon glyphicon-eye-open show_password"></span></label>
-                                    <input name="clave" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="Ingrese su clave de sesion">
+                                    <input name="clave" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="digite su contraseña">
                                 </div>
                             </div>
                             <div class="text-center ">
@@ -171,26 +171,26 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modificar su Contraseña de Usuario</h5>
+                        <h5 class="modal-title">Modifique su contraseña</h5>
                     </div>
                     <div class="panel-body" style=" padding-top: 5px;" >
                         <form id="form_cambiar_clave" class="modal_form" action="api/user/clave" method="put" onsubmit="return cambiarClave()">
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Cedula</label>
-                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cedula valida" required class="form-control rounded" placeholder="Ingrese su cédula de identidad">
+                                    <input name="cedula" type="text" pattern="[0-9]{10}" title="Ingrese una cedula valida" required class="form-control rounded" placeholder="digite su número de cédula">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Contraseña</label>
-                                    <input name="actual" type="password" required class="form-control rounded" placeholder="Ingrese su actual  clave de sesion">
+                                    <input name="actual" type="password" required class="form-control rounded" placeholder="digite su contraseña">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Nueva Contraseña<span class="glyphicon glyphicon-eye-open show_password"></span></label>
-                                    <input id="cambiar_clave_input" name="nueva" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="Ingrese su nueva clave de sesion">
+                                    <input id="cambiar_clave_input" name="nueva" type="password" pattern=".{6,}" title="Al menos 6 caracteres" required class="form-control rounded" placeholder="digite su nueva contraseña">
                                 </div>
                             </div>
                             <div class="text-center ">
