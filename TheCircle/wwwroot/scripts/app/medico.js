@@ -133,8 +133,18 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
         function getStock() {
             $http.get("/api/itemfarmacia").then(function success(res) {
-                console.log("Actualizando Stock by localidad");
-                dataFactory.stock = res.data;
+                console.log("Actualizando Stock by localidad", res.data);
+
+                var filtrado = [];
+
+                res.data.forEach(function (item) {
+                    if (item.grupo === "MED") {
+                        filtrado.push(item)
+                    }
+                })
+
+                dataFactory.stock = filtrado;
+                console.log(dataFactory.stock);
                 $rootScope.$broadcast('dataFactory.stock'); //Se informa a los controladores que cambio stock
             }, function error(err) {
                 console.log("Error cargar Stock de farmacia", err);
