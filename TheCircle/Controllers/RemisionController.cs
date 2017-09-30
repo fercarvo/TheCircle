@@ -41,12 +41,20 @@ namespace TheCircle.Controllers
             return Ok(response);
         }
 
+        [HttpGet("remision/aprobacion1")]
+        [APIauth("contralor")]
+        public IActionResult ReportAP1()
+        {
+            var data = Remision.ReportAprobacion1();
+            return Ok(data);
+        }
+
 
         [HttpPost("remision/{id}/aprobacion1")]
         [APIauth("coordinador")]
         public IActionResult AprobadasAP1(Token token, int id, [FromBody]Aprobacion1 req)
         {
-           var AP1 = new Remision.Aprobacion(id, req.monto, req.comentario, token.data.cedula);
+            var AP1 = new Remision.Aprobacion(id, req.monto, req.comentario, token.data.cedula);
             return Ok(AP1);
         }
 
@@ -61,7 +69,7 @@ namespace TheCircle.Controllers
 
         public class Aprobacion1
         {
-            public decimal monto { get; set; }
+            public Double monto { get; set; }
             public string comentario { get; set; } = null;
         }
     }

@@ -51,6 +51,13 @@ namespace TheCircle.Models
             return data;
         }
 
+        public static Aprobacion[] ReportAprobacion1()
+        {
+            string query = "EXEC Remision_Report_Aprobacion1";
+            return new MyDbContext().Aprobacion.FromSql(query).ToArray();
+        }
+    
+
         public class Request
         {
             public int atencionM { get; set; }
@@ -63,7 +70,12 @@ namespace TheCircle.Models
         public class Aprobacion {
             [Key]
             public int idRemision { get; set; }
-            public decimal monto { get; set; }
+            public Double monto { get; set; }
+            public DateTime fecha { get; set; }
+            public DateTime fCaducidad { get; set; }
+            public string sintomas { get; set; }
+            public string institucion { get; set; }
+            public Double montoAP1 { get; set; }
             public DateTime fechaAP1 { get; set; }
             public string comentarioAP1 { get; set; } = null;
             public int personalAP1 { get; set; }
@@ -74,15 +86,10 @@ namespace TheCircle.Models
 
             public Aprobacion() { }
 
-            public Aprobacion(int remision, decimal monto, string comentario, int personal) {
+            public Aprobacion(int remision, Double monto, string comentario, int personal) {
                 try {
                     string q = $"EXEC Remision_Aprobacion1_Insert @idRemision={remision}, @monto='{monto}', @comentario='{comentario}', @personal='{personal}'";
                     new MyDbContext().Database.ExecuteSqlCommand(q);
-
-                    idRemision = remision;
-                    this.monto = monto;
-                    comentarioAP1 = comentario;
-                    personalAP1 = personal;
 
                 } catch (Exception e) {
                     throw new Exception("Error al crear Aprobacion 1", e);

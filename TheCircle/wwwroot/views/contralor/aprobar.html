@@ -16,49 +16,34 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
+                        <input type="text" ng-model="buscar" placeholder="buscar por apadrinado" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
                     <table class="table table-striped" id="tabla1">
                         <thead>
                             <tr>
-                                <th>C&oacute;digo</th>
+                                <th># Remisión</th>
                                 <th>Fecha Remisi&oacute;n</th>
-                                <th>Apadrinado</th>
-                                <th>PI</th>
-                                <th>Monto</th>
-                                <th>Visualizar</th>
+                                <th>Monto remision</th>
+                                <th>Monto aprobado</th>
+                                <th>Aprobar</th>
+                                <th>Rechazar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>9018716</td>
-                                <td>21/09/2017</td>
-                                <td>Steven Enrique León De La Rosa</td>
-                                <td>01</td>
-                                <td>50</td>
-                                <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                            </tr>
-                            <tr>
-                                <td>9018717</td>
-                                <td>31/12/2017</td>
-                                <td>Mildred Elena Marquez Vite</td>
-                                <td>01</td>
-                                <td>60</td>
-                                <td width="10%"><button style="background-color:inherit;border: none;" data-ripple ng-click="select(obj)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            <tr ng-repeat="ap in aprobaciones1">
+                                <td>{{ap.idRemision}}</td>
+                                <td>{{ap.fecha}}</td>
+                                <td>{{ap.montoAP1}}</td>
+                                <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="aprobar(ap)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="rechazar(ap)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <script type="text/javascript">
-                function unhide() {
-                    var trhiden = document.getElementById("hidden");
-                    trhiden.removeAttribute("hidden")
-                }
-            </script>
             <!--Modal Item receta-->
             <div id="myModal" class="modal fade">
                 <div class="modal-dialog">

@@ -3,8 +3,8 @@
  Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
  Children International
 */
-angular.module('appContralor', ['ui.router'])
-    .config(["$stateProvider", "$compileProvider", "$logProvider", function ($stateProvider, $compileProvider, $logProvider) {
+angular.module('contralor', ['ui.router'])
+    .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('aprobar', {
                 templateUrl: 'views/contralor/aprobar.html',
@@ -14,58 +14,55 @@ angular.module('appContralor', ['ui.router'])
                 templateUrl: 'views/contralor/historial.html',
                 controller: 'historial'
             });
-        //$compileProvider.debugInfoEnabled(false); Activar en modo producción
-        //$logProvider.debugEnabled(false); Activar en modo produccion
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$http", "refresh", function ($state, $http, refresh) {
+    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
-        checkSession($http);
+        checkSession($http)
+        loadTemplates($state, "aprobar", $http, $templateCache)
 
-        loadTemplates($state, "aprobar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', function ($http) {
-        var dataFactory = {};
-
-        dataFactory.stock = null;
-        dataFactory.recetas = null;
-        dataFactory.localidad = "CC2";
-
-        dataFactory.getStock = function (localidad) {
-            return $http.get("/api/itemfarmacia/" + localidad);
+        
+        var dataFac = {
+            aprobaciones1: null,
+            getAprobaciones1: getAprobaciones1
         }
 
-        return dataFactory;
-    }])
-    .factory('refresh', [function () { //Sirve para ejecutar una funcion cada cierto tiempo y detenerla cuando se requiera.
-
-        function go(fn) {
-            fn();
-            console.log("Go refresh");
-            return setInterval(fn, 10000);
+        function getAprobaciones1($scope) {
+            $http.get("/api/remision/aprobacion1").then(function (res) {
+                console.log("Aprobaciones 1", res.data)
+                dataFac.aprobaciones1 = res.data
+                $scope.aprobaciones1 = dataFac.aprobaciones1
+            }, function (error) {
+                console.log("AP! error", e)
+                notify("Error al cargar remisiones", "danger")
+            })
         }
 
-        function goTime(fn, time) {
-            fn();
-            console.log("Go refresh by ", time);
-            return setInterval(fn, time);
-        }
-
-        function stop(repeater) {
-            console.log("Stop refresh");
-            clearInterval(repeater);
-        }
-
-        return {
-            go: go,
-            stop: stop,
-            goTime: goTime
-        }
-    }])
-    .controller('aprobar', ["$log", "$scope", "$state", "$http", "dataFac", function ($log, $scope, $state, $http, dataFac) {
-        $log.info("En aprobar");
+        return dataFac
 
     }])
-    .controller('historial', ["$log", "$scope", "$state", "$http", function ($log, $scope, $state, $http) {
-        $log.info("En historial");
+    .controller('aprobar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+        $scope.aprobaciones1 = dataFac.aprobaciones1
+        $scope.aprobacion = null
+
+        dataFac.getAprobaciones1($scope)
+
+        $scope.aprobar = function (aprobacion) {
+            $scope.aprobacion = aprobacion
+        }
+
+
+
+
+
+
+
+    }])
+    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
     }])
