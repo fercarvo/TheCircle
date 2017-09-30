@@ -41,7 +41,7 @@ namespace TheCircle.Models
             Usuario usuario = new MyDbContext().Usuario.FromSql($"EXEC User_select @cedula={req.cedula}").First();
 
             if (usuario.activo is false && usuario.cedula != 0917322265)
-                throw new Exception("Usuario inactivo");
+                throw new UserInactivoException("Usuario inactivo");
 
             Signature.CheckHashing(req.clave, usuario.clave_hash, usuario.salt);
 

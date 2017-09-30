@@ -20,27 +20,18 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("logout")]
-        public IActionResult Logout([FromQuery] Message query)
+        public IActionResult Logout()
         {
             foreach (var cookie in Request.Cookies.Keys)
                 Response.Cookies.Delete(cookie);
-
-            if (ModelState.IsValid) {
-                var parameters = new Dictionary<string, string> {{ "msg", query.msg }};
-                var url = QueryHelpers.AddQueryString("/login", parameters);
-                return Redirect(url);
-            }
 
             return Redirect("/login");
         }
 
         [HttpGet("login")]
         //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
-        public IActionResult Login([FromQuery] Message query)
+        public IActionResult Login()
         {
-            if (ModelState.IsValid)
-                ViewData["mensaje"] = query.msg;
-
             return View("~/Views/TheCircle/Login.cshtml");
         }
 
@@ -48,7 +39,7 @@ namespace TheCircle.Controllers
         public IActionResult login([FromForm] LoginRequest req)
         {
             if (ModelState.IsValid is false)
-                return BadRequest();
+                return BadRequest("Usuario/Clave incorrectos");
 
             try
             {
@@ -58,23 +49,22 @@ namespace TheCircle.Controllers
 
                 string token_string = JsonConvert.SerializeObject(token);                
 
-                var options = new CookieOptions()
-                {
+                var options = new CookieOptions() {
                     Expires = token.data.expireAt,
                     HttpOnly = true
                 };
 
                 Response.Cookies.Append("session", Signature.ToBase(token_string), options);
 
-                return LocalRedirect("/");
+                return Ok();
 
             } catch (Exception e) {
-                /*if (e is LocalidadException)
-                    return LocalidadRedirect();
-                if (e is TokenException)
-                    return CredentialsRedirect();*/
-
-                return BadRequest();                
+                if (e is LocalidadException)
+                    return BadRequest("localidad incorrecta, por favor verifique su lugar de sesión");
+                else if (e is UserInactivoException)
+                    return BadRequest("Usuario inactivo, por favor contacte a sistemas");
+                else
+                    return BadRequest("Usuario/Clave incorrectos");                
             }
         }
 
@@ -91,18 +81,6 @@ namespace TheCircle.Controllers
             } catch (Exception e) {
                 return Unauthorized();
             }           
-        }
-
-        public RedirectResult LocalidadRedirect(){
-            var parameters = new Dictionary<string, string> {{ "msg", "Localidad incorrecta" }};
-            var url = QueryHelpers.AddQueryString("/login", parameters);
-            return new RedirectResult(url);            
-        }
-
-        public RedirectResult CredentialsRedirect(){
-            var parameters = new Dictionary<string, string> {{ "msg", "Usuario/Clave incorrecto" } };
-            var url = QueryHelpers.AddQueryString("/login", parameters);
-            return new RedirectResult(url);        
         }
     }
 }

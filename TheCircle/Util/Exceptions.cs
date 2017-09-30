@@ -20,6 +20,15 @@ namespace TheCircle.Util
 
         public LocalidadException(string message, Exception innerException) : base(message, innerException) { }
     }
+
+    internal class UserInactivoException : Exception
+    {
+        public UserInactivoException() { }
+
+        public UserInactivoException(string message) : base(message) { }
+
+        public UserInactivoException(string message, Exception innerException) : base(message, innerException) { }
+    }
 }
 
 

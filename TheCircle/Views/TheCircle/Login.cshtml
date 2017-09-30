@@ -222,7 +222,7 @@
                             <div class="form-group">
                                 <div class="browser-default">
                                     <label class="control-label col-sm-4">Email</label>
-                                    <input id="emailx" name="email" type="email" title="email registrado" required class="form-control rounded" placeholder="Ingrese su email">
+                                    <input name="email" type="email" title="email registrado" required class="form-control rounded" placeholder="Ingrese su email">
                                 </div>
                             </div>
                             <div class="text-center ">
@@ -246,7 +246,7 @@
     <script>
         $(".myselect").select2();
 
-        function notify(mensaje, tipo, progress) {
+        function notify(mensaje, tipo) {
             return $.notify(
                 {
                     icon: (function () {
@@ -265,11 +265,7 @@
                 }, {
                     element: 'body',
                     position: null,
-                    showProgressbar: (function () {
-                        if (progress) {
-                            return progress
-                        } return false
-                    })(),
+                    showProgressbar: false,
                     type: tipo,
                     allow_dismiss: true,
                     newest_on_top: false,
@@ -300,33 +296,34 @@
             $.ajax({
                 url: '/login',
                 type: 'POST',
-                data: $('#form_login').serialize(),
-                success: function () {
-                    window.location.replace('/')
-                },
-                error: function () {
-                    notify("Error de autenticación, por favor revise sus credenciales o la localidad", "danger")
-                }
-            })
+                data: $('#form_login').serialize()
+            }).then(() => { window.location.replace('/') }).catch(error)
+
+            function error(e) {
+                if (e.responseText) {
+                    return notify(e.responseText, "danger")
+                } return notify("No se ha podido iniciar sesión", "danger")
+            }
+
             return false;
         }
 
         function recuperarClave() {
-            var porId = document.getElementById("emailx").value;
             $.ajax({
                 url: '/api/user/recuperarclave',
                 type: 'PUT',
-                data: $('#form_recuperarClave').serialize(),
-                success: function () {
-                    $("#modal-recuperarClave").modal("hide")
-                    notify("Su clave temporal ha sido enviada a " + porId, "success")
-                    logout()                
-                },
-                error: function () {
-                    $("#modal-recuperarClave").modal("hide")
-                    notify("Cédula/Email incorrectos", "danger")
-                }
-            })
+                data: $('#form_recuperarClave').serialize()
+            }).then(success).catch(error).always(() => { $("#modal-recuperarClave").modal("hide") })
+
+            function success() { 
+                notify("Recuperación de clave exitoso, por favor revise su email", "success")
+                logout()
+            }
+
+            function error() { 
+                notify("Cédula/Email incorrectos. Si olvidó sus datos por favor contacte a sistemas", "danger")
+            }
+
             return false;
         }
 
@@ -334,17 +331,18 @@
             $.ajax({
                 url: 'api/user',
                 type: 'POST',
-                data: $('#form_crearCuenta').serialize(),
-                success: function () {
-                    $("#modal_crear_cuenta").modal("hide")
-                    notify("Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email", "success")
-                    logout() 
-                },
-                error: function () {
-                    $("#modal_crear_cuenta").modal("hide")
-                    notify("No se ha podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas", "danger")
-                }
-            })
+                data: $('#form_crearCuenta').serialize()
+            }).then(success, error).always(() => { $("#modal_crear_cuenta").modal("hide") })
+
+            function error() {
+                notify("No hemos podido crear su usuario, datos incorrectos o usuario ya existente, si el problema persiste consulte a sistemas", "danger")
+            }
+
+            function success() {
+                notify("Usuario creado exitosamente, a continuación sistemas debera validar sus datos, este atento de su email", "success")
+                logout()
+            }
+
             return false;
         }
 
@@ -355,12 +353,12 @@
                 data: $('#form_cambiar_clave').serialize(),
                 success: function () {
                     $("#modal_cambiar_clave").modal("hide")
-                    notify("Cambio de contraseña exitoso, inicie sesión nuevamente", "success")
+                    notify("Cambio de contraseña exitoso", "success")
                     logout()
                 },
                 error: function () {
                     $("#modal_cambiar_clave").modal("hide")
-                    notify("No se ha podido cambiar la contraseña, verifique los datos", "danger")
+                    notify("No se ha podido cambiar la contraseña, por favor verifique sus datos", "danger")
                 }
             })
             return false;
