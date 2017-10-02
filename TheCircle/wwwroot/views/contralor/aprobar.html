@@ -59,11 +59,11 @@
                                 <tbody style="text-align:left;">
                                     <tr>
                                         <td>Remisión #: </td>
-                                        <td>{{aprobacion.idRemision}}</td>
+                                        <td>{{("00000000"+ aprobacion.idRemision).slice(-9)}}</td>
                                     </tr>
                                     <tr>
                                         <td>Fecha remisíón: </td>
-                                        <td>{{aprobacion.fecha}}</td>
+                                        <td>{{aprobacion.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                     <tr>
                                         <td>Instituci&oacute;n: </td>
@@ -116,11 +116,11 @@
                                 <tbody style="text-align:left;">
                                     <tr>
                                         <td>Remisión #: </td>
-                                        <td>{{aprobacion.idRemision}}</td>
+                                        <td>{{("00000000"+ aprobacion.idRemision).slice(-9)}}</td>
                                     </tr>
                                     <tr>
                                         <td>Fecha remisíón: </td>
-                                        <td>{{aprobacion.fecha}}</td>
+                                        <td>{{aprobacion.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                     <tr>
                                         <td>Instituci&oacute;n: </td>

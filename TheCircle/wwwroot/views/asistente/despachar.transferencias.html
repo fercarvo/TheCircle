@@ -20,8 +20,8 @@
 
                 <tbody>
                     <tr ng-repeat="t in transferencias | orderBy:'fecha'">
-                        <td>{{t.id}}</td>
-                        <td>{{t.fecha}}</td>
+                        <td>{{("00000000"+ t.id).slice(-9)}}</td>
+                        <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{t.nombre}}</td>
                         <td>{{t.compuesto}}</td>
                         <td>{{t.cantidad}}</td>
@@ -44,7 +44,7 @@
                         <tbody style="text-align:left;">
                             <tr>
                                 <td>Número: </td>
-                                <td>{{transferencia.id}}</td>
+                                <td>{{("00000000"+ transferencia.id).slice(-9)}}</td>
                             </tr>
                             <tr>
                                 <td>Nombre: </td>

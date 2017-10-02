@@ -35,7 +35,7 @@
                         <tbody>
                             <tr ng-repeat="t in transferencias | filter:buscar | orderBy:'fecha'">
                                 <td>{{("00000000"+ t.id).slice(-9)}}</td>
-                                <td>{{t.fecha}}</td>
+                                <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{t.destino}}</td>
                                 <td>{{("000000000"+ t.solicitante).slice(-10)}}</td>
                                 <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>

@@ -107,7 +107,7 @@ namespace TheCircle.Models
             return nueva_clave;
         }
 
-        public static void RecuperarClave(int cedula, string email)
+        public static string RecuperarClave(int cedula)
         {
             var context = new MyDbContext();
 
@@ -123,12 +123,14 @@ namespace TheCircle.Models
 
                 UserSafe user = context.UserSafe.FromSql(query).First();
 
-                if (user.email != email)
-                    throw new Exception("Cedula/email incorrectos at Usuario.RecuperarClave");
+                //if (user.email != email)
+                    //throw new Exception("Cedula/email incorrectos at Usuario.RecuperarClave");
 
                 new EmailTC().NuevaClave($"{user.nombre} {user.apellido}", user.email, nueva_clave);
 
                 trans.Commit();
+
+                return $"Su clave temporal ha sido enviada a {user.email}";
 
             } catch (Exception e) {
                 trans.Rollback();

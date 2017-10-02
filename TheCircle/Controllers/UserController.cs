@@ -110,12 +110,14 @@ namespace TheCircle.Controllers
             return Ok( new {clave} );       
         }
 
+        //Ruta para recuperar la clave de un usuario
         [HttpPut("user/recuperarclave")]
         public IActionResult RecuperarClave([FromForm]Data req)
         {
-            Usuario.RecuperarClave(req.cedula, req.email);
-            return Ok();
+            string mensaje = Usuario.RecuperarClave(req.cedula);
+            return Ok(new { mensaje });
         }
+
 
         [HttpPut("user/clave")]
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
@@ -130,7 +132,7 @@ namespace TheCircle.Controllers
 
         public class Data {
             public int cedula { get; set; }
-            public string email { get; set; }
+            //public string email { get; set; }
         }
     }
 }
