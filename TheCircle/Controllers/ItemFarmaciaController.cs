@@ -43,12 +43,23 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        //Obtengo el stock de toda la fundacion menos de la localidad actual
         [HttpGet("itemfarmacia/report")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("medico", "asistenteSalud")]
         public IActionResult GetAll(Token token)
         {
             ItemFarmacia[] stock = ItemFarmacia.Report(token.data.localidad);
+            return Ok(stock);
+        }
+
+        //Obtengo el stock de toda la fundacion
+        [HttpGet("itemfarmacia/report/total")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("coordinador", "bodeguero")]
+        public IActionResult GetStockGeneral(Token token)
+        {
+            ItemFarmacia[] stock = ItemFarmacia.ReportTotal();
             return Ok(stock);
         }
 

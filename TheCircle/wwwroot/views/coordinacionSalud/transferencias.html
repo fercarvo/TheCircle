@@ -78,7 +78,7 @@
                                     <td>{{item.categoria}}</td>
                                     <td>{{item.stock}}</td>
                                     <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
-                                    <td><button ng-click="seleccionar(item)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                    <td><button ng-click="seleccionar(item)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-copy"></span></button></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -105,8 +105,23 @@
                                             <td>{{item.compuesto}}</td>
                                         </tr>
                                         <tr>
-                                            <td>Localidad: </td>
+                                            <td>Localidad origen: </td>
                                             <td>{{item.localidad}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Localidad destino: </td>
+                                            <td>
+                                                <select required title="Destino debe ser diferente al origen" form="transferencia" style="width:100%;" ng-model="destino">
+                                                    <option value="" selected disabled> </option>
+                                                    <option value="OC">Oficina central</option>
+                                                    <option value="CC0">Centro Comunitario 0 - Durán</option>
+                                                    <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                                                    <option value="CC3">Centro Comunitario 3 - BUDS</option>
+                                                    <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                                                    <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
+                                                    <option value="HEE">Centro Hacia El Empleo</option>
+                                                </select>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <td>Stock: </td>
@@ -114,11 +129,11 @@
                                         </tr>
                                         <tr>
                                             <td>Cantidad a solicitar: </td>
-                                            <td><input form="transferencia" required type="number" min="1" title="La cantidad no puede ser mayor al stock" class="form-control" ng-model="cantidad"></td>
+                                            <td><input form="transferencia" required type="number" min="1" max="{{item.stock}}" class="form-control" ng-model="cantidad"></td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <form style="padding-top:15px;text-align:center" id="transferencia" ng-submit="solicitar(cantidad)">
+                                <form style="padding-top:15px;text-align:center" id="transferencia" ng-submit="solicitar(item.id, cantidad, destino)">
                                     <button data-ripple type="submit" class="btn btn-info">Guardar</button>
                                     <button type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
                                 </form>

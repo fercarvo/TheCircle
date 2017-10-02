@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
 using TheCircle.Models;
+using System;
 
 namespace TheCircle.Controllers
 {
@@ -33,13 +34,19 @@ namespace TheCircle.Controllers
 
         //Se crea una transferencia de farmacia
         [HttpPost("transferencia")]
-        [APIauth("medico", "bodeguero")]
+        [APIauth("medico", "bodeguero", "coordinador")]
         public IActionResult New(Token token, [FromBody]ItemFarmacia.Data req)
         {
             if (req is null)
                 return BadRequest();
 
-            new Transferencia(req.item, token.data.localidad, req.cantidad, token.data.cedula);
+            Localidad loc;
+
+            if (Enum.TryParse(req.localidad, out loc))
+                new Transferencia(req.item, loc, req.cantidad, token.data.cedula);
+            else
+                new Transferencia(req.item, token.data.localidad, req.cantidad, token.data.cedula);
+
             return Ok();
         }
 

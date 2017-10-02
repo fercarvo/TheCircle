@@ -68,7 +68,13 @@ namespace TheCircle.Models
 
         public static ItemFarmacia[] Report(Localidad localidad)
         {
-            string query = $"EXEC ItemFarmacia_Report_Total @localidadActual='{localidad}'";
+            string query = $"EXEC ItemFarmacia_Report @localidadActual='{localidad}'";
+            return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
+        }
+
+        public static ItemFarmacia[] ReportTotal()
+        {
+            string query = "EXEC ItemFarmacia_Report_Total";
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
         }
 
@@ -105,6 +111,7 @@ namespace TheCircle.Models
         {
             public int item { get; set; }
             public int cantidad { get; set; }
+            public string localidad { get; set; } = null;
         }
 
         public class Egreso

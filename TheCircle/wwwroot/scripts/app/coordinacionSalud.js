@@ -39,12 +39,24 @@ angular.module('coordinacionSalud', ['ui.router'])
     }])
     .factory('dataFac', ['$http', "$rootScope", function ($http, $rootScope) {
         var dataFac = {
+            stock: null,
             remisiones: null,
             rechazos: null,
+            getStock: getStock,
             getRechazos: getRechazos,
             getRemisiones: getRemisiones,
             postAprobacion: postAprobacion,
             guardarAprobacionRechazada: guardarAprobacionRechazada
+        }
+
+        function getStock($scope) {
+            $http.get("/api/itemfarmacia/report/total").then(function (res) {
+                dataFac.stock = res.data;
+                $scope.stock = dataFac.stock;                
+            }, function (e) {
+                console.log("Error cargar Stock", e);
+                notify("No se pudo carga el stock de items de farmacia", "danger")
+            })
         }
 
         function guardarAprobacionRechazada(remision, comentario, monto, $scope) {
@@ -159,11 +171,62 @@ angular.module('coordinacionSalud', ['ui.router'])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
     }])
-    .controller('stock', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.stock = dataFac.stock
+        var actualizar = refresh.go(cargar, 1);
+
+        function cargar() {
+            if ($state.includes('stock')) {
+                dataFac.getStock($scope)
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
 
     }])
-    .controller('transferencias', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+    .controller('transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+        $scope.stock = dataFac.stock
+        var actualizar = refresh.go(cargar, 1);
 
+        function cargar() {
+            if ($state.includes('transferencias')) {
+                dataFac.getStock($scope)
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.seleccionar = function (item) {
+            $scope.item = item;
+            $('#modal_transferencia').modal('show');
+            $scope.cantidad = null;
+        }
+
+        $scope.solicitar = function (item, cantidad, destino) {
+            data = {
+                item: item,
+                cantidad: cantidad,
+                localidad: destino
+            }
+
+            NProgress.start();
+            $http.post("/api/transferencia", data).then(function success(res) {
+                NProgress.done();
+                $('#modal_transferencia').modal('hide');
+                document.getElementById('transferencia').reset()
+                console.log("Se creo la transferencia", res.data);
+                notify("Transferencia creada exitosamente", "success");
+                actualizar = refresh.go(cargar, 30);
+            }, function error(err) {
+                NProgress.done();
+                console.log("No se pudo crear la transferencia", err);
+                notify("No se pudo crear la transferencia", "danger");
+                $('#modal_transferencia').modal('hide');
+                document.getElementById('transferencia').reset()
+                actualizar = refresh.go(cargar, 30);
+            })
+        }
     }])
     .controller('remisionesRechazadas', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.rechazos = dataFac.rechazos

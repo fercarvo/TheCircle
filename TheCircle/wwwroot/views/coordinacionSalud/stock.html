@@ -1,5 +1,90 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Pedidos
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+        <style>
+            .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus {
+                border-top-color: #901F61;
+                border-right-color: #901F61;
+                border-left-color: #901F61;
+                color: #901F61;
+            }
+
+            .nav-tabs, .nav-tabs > li > a:hover {
+                border-bottom-color: #901F61;
+            }
+        </style>
+        <div class="panel-body" style="padding:25px 20px 10px 20px;">
+            <div class="tab-content">
+                <style>
+                    #filtro {
+                        padding: inherit;
+                    }
+
+                    #tabla {
+                        padding: inherit
+                    }
+                </style>
+                <div class="panel panel-default-light" style="padding:0px">
+                    <div class="panel-heading" id="filtro">
+                        <div style="text-align:right">
+                            <input type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto" class="col-sm-6 form-control" style="width:32%;">
+                            <select class="col-sm-3 form-control" ng-model="buscar.localidad" style="width:32%;margin-left:1%;">
+                                <option value="" selected>Todas las localidades</option>
+                                <option value="OC">Oficina central</option>
+                                <option value="CC0">Centro Comunitario 0 - Durán</option>
+                                <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                                <option value="CC3">Centro Comunitario 3 - BUDS</option>
+                                <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                                <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
+                                <option value="HEE">Centro Hacia El Empleo</option>
+                            </select>
+                            <select class="col-sm-3 form-control" ng-model="buscar.grupo" style="width:32%;margin-left:1%;">
+                                <option value="" selected>Todos los grupos</option>
+                                <option value="IME">Insumos medicos</option>
+                                <option value="IOD">Insumos odontologicos</option>
+                                <option value="MED">Medicinas</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="panel-body" id="tabla" style="overflow-y:auto;max-height:60vh">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Nombre</th>
+                                    <th>Compuesto</th>
+                                    <th>Categor&iacute;a</th>
+                                    <th>Disponible</th>
+                                    <th>Caducidad</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr ng-repeat="item in stock | orderBy:'compuesto' | filter:buscar">
+                                    <td>{{item.nombre}}</td>
+                                    <td>{{item.compuesto}}</td>
+                                    <td>{{item.categoria}}</td>
+                                    <td>{{item.stock}}</td>
+                                    <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+
+        </div><!-- /.tab-pane 3 -->
+
+    </div>
+</div>
