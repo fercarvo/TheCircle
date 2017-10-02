@@ -62,8 +62,9 @@ angular.module('contralor', ['ui.router'])
 
         function rechazarRemision(id, comentario, $scope) {
             NProgress.start()
-            $http.put("/api/remision/aprobacion1/" + id + "/rechazar", comentario).then(function (res) {
+            $http.put("/api/remision/aprobacion1/" + id + "/rechazar", { monto: 0, comentario: comentario }).then(function (res) {
                 console.log("Se rechazo con exito", res)
+                $("#modal_rechazar").modal("hide")
                 getAprobaciones1($scope)
                 NProgress.done()
             }, function (err) {

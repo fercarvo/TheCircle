@@ -27,12 +27,12 @@
                                 <th>Fecha Remisi&oacute;n</th>
                                 <th>Monto remision</th>
                                 <th>Monto aprobado</th>
-                                <th>Aprobar</th>
+                                <th>Visualizar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="ap in aprobaciones1">
+                            <tr ng-repeat="ap in rechazos">
                                 <td>{{ap.idRemision}}</td>
                                 <td>{{ap.fecha}}</td>
                                 <td>{{ap.monto | currency}}</td>
@@ -80,17 +80,13 @@
                                         <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha de aprobación por coordinación: </td>
-                                        <td>{{aprobacion.fechaAP1}}</td>
-                                    </tr>
-                                    <tr>
                                         <td>Monto aprobado por coordinacion: </td>
                                         <td>{{aprobacion.montoAP1 | currency}}</td>
                                     </tr>
                                     <tr>
                                         <td>Nuevo monto de aprobacion: </td>
                                         <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remision" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
-                                    </tr>             
+                                    </tr>
                                     <tr>
                                         <td>Motivo del rechazo: </td>
                                         <td>{{aprobacion.comentarioRechazo}}</td>
@@ -100,14 +96,9 @@
 
                         </div>
                         <form id="aprobarForm" class="text-center" ng-submit="guardarAprobacion(aprobacion.idRemision, comentario, monto)" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Rechazar Remisi&oacute;n</button>
-                            <button data-ripple type="reset" onclick="closeModal_aprobarRechazo()" class="btn btn-default">Cancelar</button>
+                            <button data-ripple type="submit" class="btn btn-info">Aprobar remisión médica</button>
+                            <button data-ripple type="reset" onclick="$('#modal_aprobarRechazo').modal('hide')" class="btn btn-default">Cancelar</button>
                         </form>
-                        <script>
-                            function closeModal_aprobarRechazo() {
-                                $("#modal_aprobarRechazo").modal("hide")
-                            }
-                        </script>
                     </div>
                 </div>
             </div>

@@ -4,7 +4,23 @@
     }
 </style>
 <div class="panel-body" id="historial_recetas_panel" ng-init="activar()">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(atenciones.desde, atenciones.hasta)">
+            <!--"m-bottom-30" para poner margen vertical de 30px-->
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
 
+        </form>
+    </div>
     <div class="panel panel-default-light border-default col-sm-12" id="historial_recetas_table">
         <div class="panel-heading">
             <div style="text-align:right">

@@ -14,6 +14,14 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/historial.html',
                 controller: 'historial'
             })
+            .state('stock', {
+                templateUrl: 'views/coordinacionSalud/stock.html',
+                controller: 'stock'
+            })
+            .state('transferencias', {
+                templateUrl: 'views/coordinacionSalud/transferencias.html',
+                controller: 'transferencias'
+            })
             .state('remisionesRechazadas', {
                 templateUrl: 'views/coordinacionSalud/remisionesRechazadas.html',
                 controller: 'remisionesRechazadas'
@@ -40,7 +48,24 @@ angular.module('coordinacionSalud', ['ui.router'])
         }
 
         function guardarAprobacionRechazada(remision, comentario, monto, $scope) {
-            $http.put()
+            var data = {
+                monto: monto,
+                comentario: comentario
+            }
+
+            NProgress.start();
+            $http.put("/api/remision/aprobacion1/" + remision, data).then(function (res) {
+                $('#modal_aprobarRechazo').modal('hide')
+                console.log("Aprobacion1 re-enviada", res)
+                notify("Se aprobó la remision satisfactoriamente", "success")
+                getRechazos($scope)
+                NProgress.done()
+            }, function (error) {
+                $('#modal_aprobarRechazo').modal('hide')
+                console.log("Error rechazos", error)
+                notify("No se pudo cargar los rechazos de aprobacion1", "danger")
+                NProgress.done()
+            })
 
         }
 
@@ -132,6 +157,12 @@ angular.module('coordinacionSalud', ['ui.router'])
 
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
+    }])
+    .controller('stock', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
+    }])
+    .controller('transferencias', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
     }])
     .controller('remisionesRechazadas', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
