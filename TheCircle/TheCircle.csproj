@@ -77,6 +77,9 @@
     </Content>
     <Content Include="wwwroot\views\coordinacionSalud\historial.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesRechazadas.html" />
+    <Content Include="wwwroot\views\coordinacionSalud\stock.cshtml" />
+    <Content Include="wwwroot\views\coordinacionSalud\stock.html" />
+    <Content Include="wwwroot\views\coordinacionSalud\transferencias.html" />
     <Content Include="wwwroot\views\coordinacionSalud\validar.html" />
     <Content Include="wwwroot\views\coordinadorCC\egresos.html" />
     <Content Include="wwwroot\views\coordinadorCC\recetas.html" />

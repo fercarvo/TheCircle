@@ -14,6 +14,14 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/historial.html',
                 controller: 'historial'
             })
+            .state('stock', {
+                templateUrl: 'views/coordinacionSalud/stock.html',
+                controller: 'stock'
+            })
+            .state('transferencias', {
+                templateUrl: 'views/coordinacionSalud/transferencias.html',
+                controller: 'transferencias'
+            })
             .state('remisionesRechazadas', {
                 templateUrl: 'views/coordinacionSalud/remisionesRechazadas.html',
                 controller: 'remisionesRechazadas'
@@ -132,6 +140,12 @@ angular.module('coordinacionSalud', ['ui.router'])
 
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
+    }])
+    .controller('stock', ["$scope", "$state", "$http", function ($scope, $state, $http) {
+
+    }])
+    .controller('transferencias', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
     }])
     .controller('remisionesRechazadas', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
