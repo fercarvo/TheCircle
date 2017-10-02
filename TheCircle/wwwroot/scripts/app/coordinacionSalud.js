@@ -48,7 +48,24 @@ angular.module('coordinacionSalud', ['ui.router'])
         }
 
         function guardarAprobacionRechazada(remision, comentario, monto, $scope) {
-            $http.put()
+            var data = {
+                monto: monto,
+                comentario: comentario
+            }
+
+            NProgress.start();
+            $http.put("/api/remision/aprobacion1/" + remision, data).then(function (res) {
+                $('#modal_aprobarRechazo').modal('hide')
+                console.log("Aprobacion1 re-enviada", res)
+                notify("Se aprobó la remision satisfactoriamente", "success")
+                getRechazos($scope)
+                NProgress.done()
+            }, function (error) {
+                $('#modal_aprobarRechazo').modal('hide')
+                console.log("Error rechazos", error)
+                notify("No se pudo cargar los rechazos de aprobacion1", "danger")
+                NProgress.done()
+            })
 
         }
 

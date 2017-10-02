@@ -32,19 +32,12 @@
                         </thead>
 
                         <tbody>
-                            <tr>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td>a</td>
-                                <td width="10%"><button style="background-color:inherit;border: none;" data-toggle="modal" data-target="#modal_aprobarRechazo"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
-                            </tr>
-                            <tr ng-repeat="ap in aprobaciones1">
+                            <tr ng-repeat="ap in rechazos">
                                 <td>{{ap.idRemision}}</td>
                                 <td>{{ap.fecha}}</td>
                                 <td>{{ap.monto | currency}}</td>
                                 <td>{{ap.montoAP1 | currency}}</td>
-                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="aprobar(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="select(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,9 +72,21 @@
                                         <td>{{aprobacion.monto | currency}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha de rechazo por coordinación: </td>
-                                        <td>{{aprobacion.fechaAP1}}</td>
-                                    </tr>  
+                                        <td>Comentario de aprobación: </td>
+                                        <td>{{aprobacion.comentarioAP1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nuevo comentario de aprobacion: </td>
+                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monto aprobado por coordinacion: </td>
+                                        <td>{{aprobacion.montoAP1 | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nuevo monto de aprobacion: </td>
+                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remision" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
+                                    </tr>
                                     <tr>
                                         <td>Motivo del rechazo: </td>
                                         <td>{{aprobacion.comentarioRechazo}}</td>
@@ -91,14 +96,9 @@
 
                         </div>
                         <form id="aprobarForm" class="text-center" ng-submit="guardarAprobacion(aprobacion.idRemision, comentario, monto)" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Rechazar Remisi&oacute;n</button>
-                            <button data-ripple type="reset" onclick="closeModal_aprobarRechazo()" class="btn btn-default">Cancelar</button>
+                            <button data-ripple type="submit" class="btn btn-info">Aprobar remisión médica</button>
+                            <button data-ripple type="reset" onclick="$('#modal_aprobarRechazo').modal('hide')" class="btn btn-default">Cancelar</button>
                         </form>
-                        <script>
-                            function closeModal_aprobarRechazo() {
-                                $("#modal_aprobarRechazo").modal("hide")
-                            }
-                        </script>
                     </div>
                 </div>
             </div>

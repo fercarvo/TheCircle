@@ -30,7 +30,23 @@ angular.module('contralor', ['ui.router'])
         var dataFac = {
             aprobaciones1: null,
             getAprobaciones1: getAprobaciones1,
-            rechazarRemision: rechazarRemision
+            rechazarRemision: rechazarRemision,
+            guardarAprobacion: guardarAprobacion
+        }
+
+        function guardarAprobacion(remision, comentario, $scope) {
+            NProgress.start()
+            $http.post("/api/remision/" + remision + "/aprobacioncontralor", comentario).then(function (res) {
+                console.log("AP contralor", res)
+                getAprobaciones1($scope)
+                $('#modal_aprobar').modal('hide')
+                NProgress.done()
+            }, function (err) {
+                NProgress.done()
+                console.log("Error APcontralor", err)
+                $('#modal_aprobar').modal('hide')
+                notify("No se pudo guardar la aprobación", "danger")
+            })
         }
 
         function getAprobaciones1($scope) {
@@ -46,8 +62,9 @@ angular.module('contralor', ['ui.router'])
 
         function rechazarRemision(id, comentario, $scope) {
             NProgress.start()
-            $http.put("/api/remision/aprobacion1/" + id + "/rechazar", comentario).then(function (res) {
+            $http.put("/api/remision/aprobacion1/" + id + "/rechazar", { monto: 0, comentario: comentario }).then(function (res) {
                 console.log("Se rechazo con exito", res)
+                $("#modal_rechazar").modal("hide")
                 getAprobaciones1($scope)
                 NProgress.done()
             }, function (err) {
@@ -60,7 +77,7 @@ angular.module('contralor', ['ui.router'])
         return dataFac
 
     }])
-    .controller('aprobar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('aprobar', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.aprobaciones1 = dataFac.aprobaciones1
         $scope.aprobacion = null
 
@@ -68,6 +85,8 @@ angular.module('contralor', ['ui.router'])
 
         $scope.aprobar = function (aprobacion) {
             $scope.aprobacion = aprobacion
+            $("#modal_aprobar").modal("show")
+            $scope.comentario = null
         }
 
         $scope.rechazar = function (aprobacion) {
@@ -78,6 +97,10 @@ angular.module('contralor', ['ui.router'])
 
         $scope.guardarRechazo = function (remision, comentario) {
             dataFac.rechazarRemision(remision, comentario, $scope)
+        }
+
+        $scope.guardarAprobacion = function (remision, comentario) {
+            dataFac.guardarAprobacion(remision, comentario, $scope)
         }
 
 

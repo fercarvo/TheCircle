@@ -67,6 +67,12 @@ namespace TheCircle.Models
             public string sintomas { get; set; }
         }
 
+        public static void AprobacionContralor(int cedula, int id, string comentario)
+        {
+            string query = $"EXEC Remision_AprobacionContralor @personal={cedula}, @remision={id}, @comentario='{comentario}'";
+            new MyDbContext().Database.ExecuteSqlCommand(query);
+        }
+
         public static Aprobacion[] GetAP1Rechazadas()
         {
             string query = "EXEC Remision_Report_Rechazadas";

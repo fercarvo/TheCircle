@@ -58,6 +58,15 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
+        [HttpPost("remision/{id}/aprobacioncontralor")]
+        [APIauth("contralor")]
+        public IActionResult AprobacionContralor(Token token, int id, [FromBody]string comentario)
+        {
+            Remision.AprobacionContralor(token.data.cedula, id, comentario);
+            return Ok();
+        }
+
+
         [HttpGet("remision")]
         [APIauth("contralor", "coordinador")]
         public IActionResult GetAll()
@@ -67,6 +76,7 @@ namespace TheCircle.Controllers
             return Ok(remisiones);
         }
 
+        //Obtengo todas las aprobaciones1 rechazadas por el contralor
         [HttpGet("remision/aprobacion1/rechazada")]
         [APIauth("coordinador")]
         public IActionResult GetRechazadas()
@@ -78,7 +88,7 @@ namespace TheCircle.Controllers
 
         //Se actualiza la aprobacion1 previamente rechazada
         [HttpPut("remision/aprobacion1/{id}")]
-        [APIauth("contralor")]
+        [APIauth("coordinador")]
         public IActionResult ReAprobarRemision(Token token, int id, [FromBody]Aprobacion1 req)
         {
             Remision.ReAprobarAP1(token.data.cedula, id, req.comentario, req.monto);
@@ -88,9 +98,9 @@ namespace TheCircle.Controllers
         //Se rechaza una remision medica por parte del contralor
         [HttpPut("remision/aprobacion1/{id}/rechazar")]
         [APIauth("contralor")]
-        public IActionResult RechazarAP1(Token token, int id, [FromBody]string comentario)
+        public IActionResult RechazarAP1(Token token, int id, [FromBody]Aprobacion1 data)
         {
-            Remision.RechazarAP1(id, comentario);
+            Remision.RechazarAP1(id, data.comentario);
 
             return Ok();
         }
