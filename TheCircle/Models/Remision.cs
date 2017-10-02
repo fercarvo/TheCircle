@@ -67,6 +67,12 @@ namespace TheCircle.Models
             public string sintomas { get; set; }
         }
 
+        public static Aprobacion[] GetAP1Rechazadas()
+        {
+            string query = "EXEC Remision_Report_Rechazadas";
+            return new MyDbContext().Aprobacion.FromSql(query).ToArray();
+        }
+
         public static void RechazarAP1(int id, string comentario)
         {
             string query = $"EXEC Remision_Aprobacion1_Rechazar @remision={id}, @comentarioRechazo='{comentario}'";

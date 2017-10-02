@@ -79,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <td>Monto a aprobar: </td>
-                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="0" style="width:100%;" /></td>
+                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="0" max="{{remision.monto}}" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Comentario: </td>

@@ -67,6 +67,15 @@ namespace TheCircle.Controllers
             return Ok(remisiones);
         }
 
+        [HttpGet("remision/aprobacion1/rechazada")]
+        [APIauth("coordinador")]
+        public IActionResult GetRechazadas()
+        {
+            var remisiones = Remision.GetAP1Rechazadas();
+
+            return Ok(remisiones);
+        }
+
         //Se actualiza la aprobacion1 previamente rechazada
         [HttpPut("remision/aprobacion1/{id}")]
         [APIauth("contralor")]
