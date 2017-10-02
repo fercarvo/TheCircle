@@ -58,6 +58,15 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
+        [HttpPost("remision/{id}/aprobacioncontralor")]
+        [APIauth("contralor")]
+        public IActionResult AprobacionContralor(Token token, int id, [FromBody]string comentario)
+        {
+            Remision.AprobacionContralor(token.data.cedula, id, comentario);
+            return Ok();
+        }
+
+
         [HttpGet("remision")]
         [APIauth("contralor", "coordinador")]
         public IActionResult GetAll()
@@ -67,6 +76,7 @@ namespace TheCircle.Controllers
             return Ok(remisiones);
         }
 
+        //Obtengo todas las aprobaciones1 rechazadas por el contralor
         [HttpGet("remision/aprobacion1/rechazada")]
         [APIauth("coordinador")]
         public IActionResult GetRechazadas()

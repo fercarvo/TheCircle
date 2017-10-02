@@ -45,7 +45,8 @@
                     </table>
                 </div>
             </div>
-            <!--Modal Item receta-->
+
+            <!--Modal aprobar remision AP1-->
             <div id="modal_aprobar" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -57,42 +58,45 @@
 
                                 <tbody style="text-align:left;">
                                     <tr>
-                                        <td>Apadrinado: </td>
-                                        <td>1083334</td>
+                                        <td>Remisión #: </td>
+                                        <td>{{aprobacion.idRemision}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Doctor: </td>
-                                        <td>MERCEDES MARIA MORAN MANTUANO</td>
+                                        <td>Fecha remisíón: </td>
+                                        <td>{{aprobacion.fecha}}</td>
                                     </tr>
                                     <tr>
                                         <td>Instituci&oacute;n: </td>
-                                        <td>Instituto de Neurociencias - Neumologia</td>
+                                        <td>{{aprobacion.institucion}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Monto: </td>
-                                        <td>100</td>
+                                        <td>Monto remision: </td>
+                                        <td>{{aprobacion.monto | currency}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha de Creaci&oacute;n: </td>
-                                        <td>21/09/2017</td>
+                                        <td>Monto aprobado por coordinacion salud: </td>
+                                        <td>{{aprobacion.montoAP1 | currency}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha de Expiraci&oacute;n: </td>
-                                        <td>26/11/2017</td>
+                                        <td>Fecha de aprobación: </td>
+                                        <td>{{aprobacion.fechaAP1}}</td>
                                     </tr>
-                                    <tr id="hidden" hidden>
-                                        <td>Motivo de Rechazo: </td>
-                                        <td><textarea style="resize:none;" rows="2" cols="20"></textarea></td>
+                                    <tr>
+                                        <td>Comentario de aprobación: </td>
+                                        <td>{{aprobacion.comentarioAP1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Ingresar comentario: </td>
+                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                                     </tr>
                                 </tbody>
                             </table>
 
                         </div><!--  -->
-                        <div class="text-center" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Aprobar Remisi&oacute;n</button>
-                            <button data-ripple type="button" class="btn btn-info" onclick="unhide()">Rechazar Remisi&oacute;n</button>
-                            <button data-ripple type="button" class="btn btn-default">Cancelar</button>
-                        </div><!-- /.form-group -->
+                        <form id="aprobarForm" class="text-center" ng-submit="guardarAprobacion(aprobacion.idRemision, comentario)" style="margin-bottom: 5px;">
+                            <button data-ripple type="submit" class="btn btn-info">Aprobar</button>
+                            <button data-ripple type="reset" onclick=" $('#modal_aprobar').modal('hide')" class="btn btn-default">Cancelar</button>
+                        </form>
                     </div>
                 </div>
             </div>
