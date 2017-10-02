@@ -56,6 +56,12 @@ angular.module('contralor', ['ui.router'])
             $scope.aprobacion = aprobacion
         }
 
+        $scope.rechazar = function (aprobacion) {
+            $scope.aprobacion = aprobacion
+        }
+
+
+
 
 
 

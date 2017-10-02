@@ -54,8 +54,8 @@ namespace TheCircle.Controllers
         [APIauth("coordinador")]
         public IActionResult AprobadasAP1(Token token, int id, [FromBody]Aprobacion1 req)
         {
-            var AP1 = new Remision.Aprobacion(id, req.monto, req.comentario, token.data.cedula);
-            return Ok(AP1);
+            new Remision.Aprobacion(id, req.monto, req.comentario, token.data.cedula);
+            return Ok();
         }
 
         [HttpGet("remision")]
