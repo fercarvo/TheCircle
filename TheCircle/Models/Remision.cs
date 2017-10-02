@@ -67,10 +67,22 @@ namespace TheCircle.Models
             public string sintomas { get; set; }
         }
 
+        public static void RechazarAP1(int id, string comentario)
+        {
+            string query = $"EXEC Remision_Aprobacion1_Rechazar @remision={id}, @comentarioRechazo='{comentario}'";
+            new MyDbContext().Database.ExecuteSqlCommand(query);
+        }
+
+        public static void ReAprobarAP1(int cedula, int id, string comentario, double monto)
+        {
+            string query = $"EXEC Remision_Aprobacion1_Update1 @comentario='{comentario}', @monto='{monto}', @remision={id}, @personal={cedula}";
+            new MyDbContext().Database.ExecuteSqlCommand(query);
+        }
+
         public class Aprobacion {
             [Key]
             public int idRemision { get; set; }
-            public Double monto { get; set; }
+            public Decimal monto { get; set; }
             public DateTime fecha { get; set; }
             public DateTime fCaducidad { get; set; }
             public string sintomas { get; set; }
@@ -80,8 +92,8 @@ namespace TheCircle.Models
             public string comentarioAP1 { get; set; } = null;
             public int personalAP1 { get; set; }
             public string comentarioRechazo { get; set; } = null;
-            public int? personalContralor { get; set; }
-            public DateTime? fechaContralor { get; set; }
+            public int? personalContralor { get; set; } //null
+            public DateTime? fechaContralor { get; set; } //null
             public string comentarioContralor { get; set; } = null;
 
             public Aprobacion() { }

@@ -36,8 +36,8 @@
                             <tr ng-repeat="ap in aprobaciones1">
                                 <td>{{ap.idRemision}}</td>
                                 <td>{{ap.fecha}}</td>
-                                <td>{{ap.monto}}</td>
-                                <td>{{ap.montoAP1}}</td>
+                                <td>{{ap.monto | currency}}</td>
+                                <td>{{ap.montoAP1 | currency}}</td>
                                 <td width="10%"><button style="background-color:inherit;border: none;" ng-click="aprobar(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                                 <td width="10%"><button style="background-color:inherit;border: none;" ng-click="rechazar(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
@@ -124,11 +124,11 @@
                                     </tr>
                                     <tr>
                                         <td>Monto remision: </td>
-                                        <td>{{aprobacion.monto}}</td>
+                                        <td>{{aprobacion.monto | currency}}</td>
                                     </tr>
                                     <tr>
                                         <td>Monto aprobado: </td>
-                                        <td>{{aprobacion.montoAP1}}</td>
+                                        <td>{{aprobacion.montoAP1 | currency}}</td>
                                     </tr>
                                     <tr>
                                         <td>Fecha de aprobación: </td>
@@ -140,7 +140,7 @@
                                     </tr>
                                     <tr>
                                         <td>Motivo del rechazo: </td>
-                                        <td><input form="rechazarForm" ng-model="comentarioRechazo" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                        <td><input form="rechazarForm" required ng-model="comentarioRechazo" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                                     </tr>
                                 </tbody>
                             </table>

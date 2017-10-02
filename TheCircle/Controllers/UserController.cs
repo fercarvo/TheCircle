@@ -31,9 +31,13 @@ namespace TheCircle.Controllers
             if (cedula != token.data.cedula)
                 return BadRequest();
 
+            string cedula_string = $"{cedula}";
+            if (cedula_string.Length == 9)
+                cedula_string = $"0{cedula_string}";
+
             try
             {
-                var image = System.IO.File.OpenRead($"\\\\Guysrv11\\Programs\\G_Fotos\\TheCircle\\{token.data.cedula}.jpg");
+                var image = System.IO.File.OpenRead($"\\\\Guysrv11\\Programs\\G_Fotos\\TheCircle\\{cedula_string}.jpg");
                 return File(image, "image/jpeg");
 
             } catch (Exception e) {

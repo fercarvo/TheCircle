@@ -13,7 +13,11 @@ angular.module('coordinacionSalud', ['ui.router'])
             .state('historial', {
                 templateUrl: 'views/coordinacionSalud/historial.html',
                 controller: 'historial'
-            });
+            })
+            .state('remisionesRechazadas', {
+                templateUrl: 'views/coordinacionSalud/remisionesRechazadas.html',
+                controller: 'remisionesRechazadas'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(true)
         $compileProvider.commentDirectivesEnabled(true)
@@ -28,8 +32,27 @@ angular.module('coordinacionSalud', ['ui.router'])
     .factory('dataFac', ['$http', "$rootScope", function ($http, $rootScope) {
         var dataFac = {
             remisiones: null,
+            rechazos: null,
+            getRechazos: getRechazos,
             getRemisiones: getRemisiones,
-            postAprobacion: postAprobacion
+            postAprobacion: postAprobacion,
+            guardarAprobacionRechazada: guardarAprobacionRechazada
+        }
+
+        function guardarAprobacionRechazada(remision, comentario, monto, $scope) {
+            $http.put()
+
+        }
+
+        function getRechazos($scope) {
+            $http.get("/api/remision/aprobacion1/rechazada").then(function (res) {
+                console.log("Rechazos", res.data)
+                dataFac.rechazos = res.data
+                $scope.rechazos = dataFac.rechazos
+            }, function (error) {
+                console.log("Error rechazos", error)
+                notify("No se pudo cargar los rechazos de aprobacion1", "danger")
+            })
         }
 
         function postAprobacion(remision, data) {
@@ -71,6 +94,8 @@ angular.module('coordinacionSalud', ['ui.router'])
     .controller('validar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.remisiones = dataFac.remisiones
         $scope.remision = null
+        $scope.valor = null;
+        $scope.comentario = null;
         var actualizar = refresh.go(cargar, 1) //cada 1/2 minuto
 
         $scope.$on('dataFac.remisiones', function () { $scope.remisiones = dataFac.remisiones })
@@ -86,14 +111,16 @@ angular.module('coordinacionSalud', ['ui.router'])
         $scope.ver = function (remision) {
             $("#ver_remision").modal("show");
             $scope.remision = remision;
+            $scope.cantidad = null;
+            $scope.comentario = null;
         }
 
-        $scope.guardar = function (remision, valor, comentario) {
+        $scope.guardar = function (remision, cantidad, comentario) {
 
             refresh.stop(actualizar)
 
             var data = {
-                monto: valor,
+                monto: cantidad,
                 comentario: comentario
             }
 
@@ -106,4 +133,21 @@ angular.module('coordinacionSalud', ['ui.router'])
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
+    }])
+    .controller('remisionesRechazadas', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.rechazos = dataFac.rechazos
+        $scope.aprobacion = null
+
+        dataFac.getRechazos($scope)
+
+        $scope.select = function (aprobacion) {
+            $scope.aprobacion = aprobacion
+            $("#modal_aprobarRechazo").modal("show")
+            $scope.comentario = null
+            $scope.monto = null
+        }
+
+        $scope.guardarAprobacion = function (remision, comentario, monto) {
+            dataFac.guardarAprobacionRechazada(remision, comentario, monto, $scope)
+        }
     }])

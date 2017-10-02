@@ -1,0 +1,117 @@
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Aprobar Remisiones M&eacute;dicas Rechazadas
+            </div><!-- /.panel-title -->
+        </div><!-- /.panel-heading -->
+        <div class="panel-body" style="padding:25px 20px 20px 20px;">
+            <div class="panel panel-default-light border-default" style="padding:0px">
+                <div class="panel-heading">
+                    <div style="text-align:right">
+                        <input type="text" ng-model="buscar" placeholder="buscar por apadrinado" class="form-control">
+                    </div>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
+                    <table class="table table-striped" id="tabla1">
+                        <thead>
+                            <tr>
+                                <th># Remisión</th>
+                                <th>Fecha Remisi&oacute;n</th>
+                                <th>Monto remision</th>
+                                <th>Monto aprobado</th>
+                                <th>Aprobar</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr ng-repeat="ap in aprobaciones1">
+                                <td>{{ap.idRemision}}</td>
+                                <td>{{ap.fecha}}</td>
+                                <td>{{ap.monto | currency}}</td>
+                                <td>{{ap.montoAP1 | currency}}</td>
+                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="select(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!--Modal rechazar remision-->
+            <div id="modal_aprobarRechazo" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Datos de la Remisi&oacute;n rechazada</h5>
+                        </div>
+                        <div class="panel-body" style=" padding-top: 5px;">
+                            <table class="table table-striped" style="text-align:center;">
+
+                                <tbody style="text-align:left;">
+                                    <tr>
+                                        <td>Remisión #: </td>
+                                        <td>{{aprobacion.idRemision}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha remisíón: </td>
+                                        <td>{{aprobacion.fecha}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Instituci&oacute;n: </td>
+                                        <td>{{aprobacion.institucion}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monto remision: </td>
+                                        <td>{{aprobacion.monto | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Comentario de aprobación: </td>
+                                        <td>{{aprobacion.comentarioAP1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nuevo comentario de aprobacion: </td>
+                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Fecha de aprobación por coordinación: </td>
+                                        <td>{{aprobacion.fechaAP1}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Monto aprobado por coordinacion: </td>
+                                        <td>{{aprobacion.montoAP1 | currency}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nuevo monto de aprobacion: </td>
+                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remision" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
+                                    </tr>             
+                                    <tr>
+                                        <td>Motivo del rechazo: </td>
+                                        <td>{{aprobacion.comentarioRechazo}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <form id="aprobarForm" class="text-center" ng-submit="guardarAprobacion(aprobacion.idRemision, comentario, monto)" style="margin-bottom: 5px;">
+                            <button data-ripple type="submit" class="btn btn-info">Rechazar Remisi&oacute;n</button>
+                            <button data-ripple type="reset" onclick="closeModal_aprobarRechazo()" class="btn btn-default">Cancelar</button>
+                        </form>
+                        <script>
+                            function closeModal_aprobarRechazo() {
+                                $("#modal_aprobarRechazo").modal("hide")
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+            <!--Aqui Termina el modal para rechazar remision-->
+        </div>
+    </div>
+</div>

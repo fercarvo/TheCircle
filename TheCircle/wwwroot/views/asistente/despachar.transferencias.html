@@ -56,11 +56,15 @@
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
-                                <td> <label style="width:20%">{{transferencia.cantidad}}</label> <button title="Cambiar cantidad a despachar" style="background-color:inherit;border:none;" onclick="foo()"><span class="glyphicon glyphicon-pencil"></span></button> <input id="input2" ng-model="nuevaCantidad" style="float:right" type="number" min="1" disabled /></td>
+                                <td>{{transferencia.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nueva cantidad: </td>
+                                <td><input form="despacharTransferenciaForm" ng-model="nuevaCantidad" title="De necesitarlo, ingrese una nueva cantidad" type="number" min="1" max="{{transferencia.cantidad}}" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input ng-model="comentario" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                <td><input form="despacharTransferenciaForm" ng-model="comentario" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
@@ -78,23 +82,11 @@
                     </table>
 
                 </div>
-                <div class="text-center" style="margin-bottom: 5px;">
-                    <button ng-click="guardarEgreso(nuevaCantidad, comentario)" data-ripple type="submit" class="btn btn-info">Despachar</button>
-                    <button data-ripple type="button" class="btn btn-default">Cancelar</button>
-                </div>
+                <form id="despacharTransferenciaForm" ng-submit="guardarEgreso(transferencia.id, nuevaCantidad, comentario)" class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" class="btn btn-info">Despachar</button>
+                    <button data-ripple type="reset" onclick="$('#ver_transferencia').modal('hide')" class="btn btn-default">Cancelar</button>
+                </form>
             </div>
         </div>
     </div>
-
-    <script type="text/javascript">
-        function foo() {
-            var a = document.getElementById("input2");
-            if (a.disabled === true) {
-                a.disabled = false;
-            } else {
-                a.disabled = true;
-            }            
-        }
-    </script>
-
 </div>

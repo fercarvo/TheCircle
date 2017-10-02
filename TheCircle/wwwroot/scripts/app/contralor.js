@@ -29,7 +29,8 @@ angular.module('contralor', ['ui.router'])
         
         var dataFac = {
             aprobaciones1: null,
-            getAprobaciones1: getAprobaciones1
+            getAprobaciones1: getAprobaciones1,
+            rechazarRemision: rechazarRemision
         }
 
         function getAprobaciones1($scope) {
@@ -38,8 +39,21 @@ angular.module('contralor', ['ui.router'])
                 dataFac.aprobaciones1 = res.data
                 $scope.aprobaciones1 = dataFac.aprobaciones1
             }, function (error) {
-                console.log("AP! error", e)
+                console.log("AP! error", error)
                 notify("Error al cargar remisiones", "danger")
+            })
+        }
+
+        function rechazarRemision(id, comentario, $scope) {
+            NProgress.start()
+            $http.put("/api/remision/aprobacion1/" + id + "/rechazar", comentario).then(function (res) {
+                console.log("Se rechazo con exito", res)
+                getAprobaciones1($scope)
+                NProgress.done()
+            }, function (err) {
+                NProgress.done()
+                console.log("Error en rechazar AP1", err)
+                notify("No se pudo rechazar la remision medica", "danger")
             })
         }
 
@@ -58,8 +72,13 @@ angular.module('contralor', ['ui.router'])
 
         $scope.rechazar = function (aprobacion) {
             $scope.aprobacion = aprobacion
+            $("#modal_rechazar").modal("show")
+            $scope.comentarioRechazo = null
         }
 
+        $scope.guardarRechazo = function (remision, comentario) {
+            dataFac.rechazarRemision(remision, comentario, $scope)
+        }
 
 
 

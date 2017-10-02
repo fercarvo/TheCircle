@@ -31,6 +31,7 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //Se crea una transferencia de farmacia
         [HttpPost("transferencia")]
         [APIauth("medico", "bodeguero")]
         public IActionResult New(Token token, [FromBody]ItemFarmacia.Data req)
@@ -42,7 +43,7 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
-
+        //Se despacha una transferencia solicitada
         [HttpPut("transferencia/{id}/despachar")]
         [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult Despachar(Token token, int id, [FromBody]Transferencia.Data req)
