@@ -16,15 +16,15 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar" placeholder="filtrar remisiones médicas" class="form-control">
+                        <input type="text" ng-model="buscar" placeholder="Filtrar remisiones médicas" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
                     <table class="table table-striped" id="tabla1">
                         <thead>
                             <tr>
-                                <th>Numero</th>
-                                <th>Institucion</th>
+                                <th>N&uacute;mero</th>
+                                <th>Instituci&iacute;n</th>
                                 <th>Monto</th>
                                 <th>Fecha Remisi&oacute;n</th>
                                 <th>Visualizar</th>
@@ -70,7 +70,7 @@
                                         <td>{{remision.codigoApadrinado}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha de remision: </td>
+                                        <td>Fecha de remisi&oacute;n: </td>
                                         <td>{{remision.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                     <tr>
@@ -98,7 +98,7 @@
 
                         </div>
                         <form id="aprobarForm" class="text-center" ng-submit="guardar(remision.id, cantidad, comentario)" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Aprobar remision médica</button>
+                            <button data-ripple type="submit" class="btn btn-info">Aprobar remisi&oacute;n médica</button>
                             <button data-ripple type="reset" onclick="$('#ver_remision').modal('hide')" class="btn btn-default">Cancelar</button>
                         </form>
                     </div>

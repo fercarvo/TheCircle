@@ -25,7 +25,7 @@
                             <tr>
                                 <th># Remisión</th>
                                 <th>Fecha Remisi&oacute;n</th>
-                                <th>Monto remision</th>
+                                <th>Monto remisi&oacute;n</th>
                                 <th>Monto aprobado</th>
                                 <th>Visualizar</th>
                             </tr>
@@ -60,7 +60,7 @@
                                         <td>{{("00000000"+ aprobacion.idRemision).slice(-9)}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha remisíón: </td>
+                                        <td>Fecha remisi&oacute;n: </td>
                                         <td>{{aprobacion.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                     <tr>
@@ -68,7 +68,7 @@
                                         <td>{{aprobacion.institucion}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Monto remision: </td>
+                                        <td>Monto remisi&oacute;n: </td>
                                         <td>{{aprobacion.monto | currency}}</td>
                                     </tr>
                                     <tr>
@@ -76,16 +76,16 @@
                                         <td>{{aprobacion.comentarioAP1}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nuevo comentario de aprobacion: </td>
-                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                        <td>Nuevo comentario de aprobaci&oacute;n: </td>
+                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de máximo 50 caracteres" type="text" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
-                                        <td>Monto aprobado por coordinacion: </td>
+                                        <td>Monto aprobado por coordinaci&oacute;n: </td>
                                         <td>{{aprobacion.montoAP1 | currency}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nuevo monto de aprobacion: </td>
-                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remision" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
+                                        <td>Nuevo monto de aprobaci&oacute;n: </td>
+                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remisión" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Motivo del rechazo: </td>
