@@ -33,6 +33,7 @@ namespace TheCircle.Models
             }            
         }
 
+        //Obtiene todos los Items de una receta
         public static ItemReceta[] ReportReceta( int receta, MyDbContext _context) 
         {
             string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";

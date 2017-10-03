@@ -70,8 +70,23 @@ namespace TheCircle.Controllers
             var data = new List<object>();
 
             foreach (Receta receta in recetas) 
-                data.Add( new { receta = receta, items = ItemReceta.ReportReceta(receta.id, _context) });
+                data.Add( new { receta, items = ItemReceta.ReportReceta(receta.id, _context) });
             
+            return Ok(data);
+        }
+
+        //recetas con inconsistencia
+        [HttpGet("receta/inconsistente")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
+        [APIauth("contralor")]
+        public IActionResult GetInconsistentes()
+        {
+            var recetas = Receta.ReportInconsistente();
+            var data = new List<object>();
+
+            foreach (Receta receta in recetas)
+                data.Add(new { receta, items = ItemDespacho.GetByReceta(receta.id, _context) });
+
             return Ok(data);
         }
 

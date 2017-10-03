@@ -35,13 +35,6 @@ namespace TheCircle.Models
             }            
         }
 
-        /*public static Receta[] ReportLocalidad( Localidad localidad, MyDbContext _context)
-        {
-            string query = $"EXEC Receta_Report_Localidad @localidad='{localidad}'";
-            return _context.Recetas.FromSql(query).ToArray();
-        }*/
-
-
         public static Receta[] ReportAsistente(int asistente, MyDbContext _context)
         {
             string query = $"EXEC Receta_ReportBy_Asistente @asistente={asistente}";
@@ -58,6 +51,11 @@ namespace TheCircle.Models
         public static Receta[] ReportLocalidad(Localidad localidad, DateTime desde, DateTime hasta)
         {
             string query = $"EXEC Receta_Report_Localidad @localidad='{localidad}', @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Recetas.FromSql(query).ToArray();
+        }
+
+        public static Receta[] ReportInconsistente() {
+            string query = "EXEC Receta_Report_Inconsistente";
             return new MyDbContext().Recetas.FromSql(query).ToArray();
         }
 
@@ -116,6 +114,55 @@ namespace TheCircle.Models
             }
 
             return data;
+        }
+
+        public class Item
+        {
+            [Key]
+            public int id { get; set; }
+            public int idItemFarmacia { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public Int32 diagnostico { get; set; }
+            public int cantidad { get; set; }
+            public string posologia { get; set; }
+            public Boolean? funciono { get; set; }
+
+            public Item() { }
+
+            public Item(int receta, Data i, MyDbContext _context)
+            {
+                try
+                {
+                    var q = $"EXEC ItemReceta_Insert @idItemFarmacia={i.itemFarmacia.id}" +
+                    $", @idDiagnostico={i.diagnostico}, @cantidad={i.cantidad}" +
+                    $", @receta={receta}, @posologia='{i.posologia}'";
+
+                    _context.Database.ExecuteSqlCommand(q);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception("Error al insertar ItemReceta", e);
+                }
+            }
+
+            //Obtiene todos los Items de una receta
+            public static Item[] ReportReceta(int receta, MyDbContext _context)
+            {
+                //string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
+                return null;//_context.ItemsReceta.FromSql(q).ToArray();
+            }
+
+            public class Data
+            {
+                [Key]
+                public Item itemFarmacia { get; set; }
+                public string diagnostico { get; set; }
+                public int cantidad { get; set; }
+                public string posologia { get; set; }
+            }
+
         }
     }
 }

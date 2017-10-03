@@ -32,6 +32,15 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //Obtengo todas las transferencias de items que se han despachado con inconsistencia
+        [HttpGet("transferencia/inconsistente")]
+        [APIauth("contralor")]
+        public IActionResult GetInconsistente()
+        {
+            Transferencia[] data = Transferencia.GetInconsistentes();
+            return Ok(data);
+        }
+
         //Se crea una transferencia de farmacia
         [HttpPost("transferencia")]
         [APIauth("medico", "bodeguero", "coordinador")]

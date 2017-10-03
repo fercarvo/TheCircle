@@ -22,6 +22,15 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //Todos los pedidos internos con inconsistencias
+        [HttpGet("pedidointerno/inconsistentes")]
+        [APIauth("contralor")]
+        public IActionResult GetInconsistentes()
+        {
+            var data = PedidoInterno.GetInconsistentes();
+            return Ok(data);
+        }
+
         [HttpGet("pedidointerno/despachadas")]
         [APIauth("asistenteSalud")]
         public IActionResult GetDespachadas(Token token)

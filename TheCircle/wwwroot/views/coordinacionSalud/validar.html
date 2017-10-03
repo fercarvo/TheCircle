@@ -79,7 +79,7 @@
                                     </tr>
                                     <tr>
                                         <td>Monto a aprobar: </td>
-                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="0" max="{{remision.monto}}" style="width:100%;" /></td>
+                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="1" max="{{remision.monto}}" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Comentario: </td>
@@ -99,11 +99,8 @@
                         </div>
                         <form id="aprobarForm" class="text-center" ng-submit="guardar(remision.id, cantidad, comentario)" style="margin-bottom: 5px;">
                             <button data-ripple type="submit" class="btn btn-info">Aprobar remision médica</button>
-                            <button data-ripple type="reset" onclick="cerrarAprobar()" class="btn btn-default">Cancelar</button>
+                            <button data-ripple type="reset" onclick="$('#ver_remision').modal('hide')" class="btn btn-default">Cancelar</button>
                         </form>
-                        <script>
-                            function cerrarAprobar() { $("#ver_remision").modal("hide") }
-                        </script>
                     </div>
                 </div>
             </div>

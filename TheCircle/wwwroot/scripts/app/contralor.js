@@ -13,25 +13,82 @@ angular.module('contralor', ['ui.router'])
             .state('historial', {
                 templateUrl: 'views/contralor/historial.html',
                 controller: 'historial'
-            });
+            })
+            .state('inconsistencias', {
+                templateUrl: 'views/contralor/inconsistencias.html',
+                controller: 'inconsistencias'
+            })
+            .state('inconsistencias.receta', {
+                templateUrl: 'views/contralor/inconsistencias.receta.html',
+                controller: 'inconsistencias.receta'
+            })
+            .state('inconsistencias.pedidointerno', {
+                templateUrl: 'views/contralor/inconsistencias.pedidointerno.html',
+                controller: 'inconsistencias.pedidointerno'
+            })
+            .state('inconsistencias.transferencia', {
+                templateUrl: 'views/contralor/inconsistencias.transferencia.html',
+                controller: 'inconsistencias.transferencia'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(true)
         $compileProvider.commentDirectivesEnabled(true)
         $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
+    .run(["$state", "$http", "$templateCache", "dataFac", function ($state, $http, $templateCache, dataFac) {
 
         checkSession($http)
         loadTemplates($state, "aprobar", $http, $templateCache)
+        dataFac.getRecetas({})
+        dataFac.getTransferencias({})
 
     }])
     .factory('dataFac', ['$http', function ($http) {
         
         var dataFac = {
             aprobaciones1: null,
+            recetas: null,
+            pedidosinternos: null,
+            transferencias: null,
+            getTransferencias: getTransferencias,
+            getRecetas: getRecetas,
+            getPedidos: getPedidos,
             getAprobaciones1: getAprobaciones1,
             rechazarRemision: rechazarRemision,
             guardarAprobacion: guardarAprobacion
+        }
+
+        function getTransferencias($scope) {
+            $http.get("/api/transferencia/inconsistente").then(function (res) {
+                console.log("transferencias", res.data)
+                dataFac.transferencias = res.data
+                $scope.transferencias = dataFac.transferencias
+            }, function (error) {
+                console.log("Error transferencias", error)
+                notify("Ha ocurrido un error al cargar transferencias", "danger")
+            })
+        }
+
+        function getPedidos($scope) {
+            $http.get("/api/pedidointerno/inconsistentes").then(function (res) {
+                console.log("pedidos", res.data)
+                dataFac.pedidosinternos = res.data
+                $scope.pedidos = dataFac.pedidosinternos
+            }, function (error) {
+                console.log("Error pedidos", error)
+                notify("Ha ocurrido un error al cargar pedidos internos", "danger")
+            })
+        }
+
+        function getRecetas($scope) {
+            $http.get("/api/receta/inconsistente").then(function (res) {
+                console.log("recetas", res.data)
+                dataFac.recetas = res.data
+                $scope.recetas = dataFac.recetas
+            }, function (error) {
+                console.log("Error recetas", error)
+                notify("Ha ocurrido un error al cargar recetas", "danger")
+            })
         }
 
         function guardarAprobacion(remision, comentario, $scope) {
@@ -113,4 +170,40 @@ angular.module('contralor', ['ui.router'])
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 
+    }])
+    .controller('inconsistencias', ["$state", function ($state) {
+        $state.go('inconsistencias.receta')
+
+    }])
+    .controller('inconsistencias.receta', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.recetas = dataFac.recetas
+        $scope.receta = null
+
+        dataFac.getRecetas($scope)
+
+        $scope.select = function (receta) {
+            $scope.receta = receta
+        }
+
+    }])
+    .controller('inconsistencias.pedidointerno', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.pedidos = dataFac.pedidosinternos
+        $scope.pedido = null
+
+        dataFac.getPedidos($scope)
+
+        $scope.select = function (pedido) {
+            $scope.pedido = pedido
+        }
+
+    }])
+    .controller('inconsistencias.transferencia', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.transferencias = dataFac.transferencias
+        $scope.transferencia = null
+
+        dataFac.getTransferencias($scope)
+
+        $scope.select = function (transferencia) {
+            $scope.transferencia = transferencia
+        }
     }])

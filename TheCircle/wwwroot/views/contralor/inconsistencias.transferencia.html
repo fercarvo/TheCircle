@@ -1,0 +1,104 @@
+﻿<style>
+    #estadistica-recetas-panel, #estadistica-recetas-form, #estadistica-recetas-table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="estadistica-recetas-panel">
+
+    <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input type="text" ng-model="buscar.id" placeholder="Filtrar por número de transferencia" class="form-control">
+            </div>
+        </div>
+        <div style="overflow-y:auto;max-height:45vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha pedido</th>
+                        <th>Cantidad solicitada</th>
+                        <th>Cantidad despachada</th>
+                        <th>Ver &iacute;tems</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="ped in transferencias | filter:buscar | orderBy:'fechaPedido'">
+                        <td>{{("00000000"+ ped.id).slice(-9)}}</td>
+                        <td>{{ped.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{ped.cantidad}}</td>
+                        <td>{{ped.cantidadDespacho}}</td>
+                        <td width="10%"><button style="background-color:inherit;border: none;" ng-click="select(ped)" data-toggle="modal" data-target="#transferenciaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal pedido-->
+    <div id="transferenciaModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos de la transferencia inconsistente</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-striped" style="text-align:center;">
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>Número transferencia: </td>
+                                <td>{{("00000000"+ transferencia.id).slice(-9)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Localidad origen // Localidad destino: </td>
+                                <td>{{transferencia.origen}} // {{transferencia.destino}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre // compuesto: </td>
+                                <td>{{transferencia.nombre}} // {{transferencia.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Solicitante: </td>
+                                <td>{{transferencia.solicitante}}</td>
+                            </tr>
+                            <tr>
+                                <td>Personal despacho: </td>
+                                <td>{{transferencia.personalDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de pedido: </td>
+                                <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de despacho: </td>
+                                <td>{{transferencia.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad solicitada: </td>
+                                <td>{{transferencia.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad cantidadDespacho: </td>
+                                <td>{{transferencia.cantidadDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Comentario despacho: </td>
+                                <td>{{transferencia.comentarioDespacho}}</td>
+                            </tr>
+                            <!--<tr>
+                                <td>Email doctor: </td>
+                                <td><a href="mailto:{{transferencia.email}}?Subject=Remision%20médica">{{remision.email}}</a></td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="button" data-dismiss="modal" class="btn btn-default">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

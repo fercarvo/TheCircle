@@ -48,6 +48,13 @@ namespace TheCircle.Models
             return _context.Transferencia.FromSql(q).ToArray();
         }
 
+        //Obtengo todas las transferencias inconsistentes
+        internal static Transferencia[] GetInconsistentes()
+        {
+            string q = "EXEC Transferencia_Report_Inconsistente";
+            return new MyDbContext().Transferencia.FromSql(q).ToArray();
+        }
+
         public static void Despachar(int personal, Data req)
         {
             var q = $"EXEC Transferencia_Despachar @itemTransferencia={req.idTransferencia}, @cantidad={req.cantidad}, @personal={personal}, @comentario='{req.comentario}'";

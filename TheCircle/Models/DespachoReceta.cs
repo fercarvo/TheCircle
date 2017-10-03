@@ -30,7 +30,7 @@ namespace TheCircle.Models
             }            
         }
 
-
+        //Obtengo todos los Despachos de esa receta
         public static ItemDespacho[] GetByReceta(int receta, MyDbContext _context)
         {
             string q = $"EXEC DespachoReceta_Report_ByReceta @idReceta={receta}";

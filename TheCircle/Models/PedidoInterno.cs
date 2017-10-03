@@ -34,6 +34,12 @@ namespace TheCircle.Models
             }            
         }
 
+        internal static PedidoInterno[] GetInconsistentes()
+        {
+            string query = $"EXEC PedidoInterno_Report_Inconsistente";
+            return new MyDbContext().PedidoInterno.FromSql(query).ToArray();
+        }
+
         public static PedidoInterno[] GetPendientes(Localidad localidad, MyDbContext _c)
         {
             string q = $"EXEC dbo.PedidoInterno_Report_Pendientes @localidad='{localidad}'";

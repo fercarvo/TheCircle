@@ -1,0 +1,100 @@
+﻿<style>
+	#estadistica-recetas-panel, #estadistica-recetas-form, #estadistica-recetas-table {
+		padding: 0px 0px 0px 0px;
+	}
+</style>
+<div class="panel-body" id="estadistica-recetas-panel">
+
+	<div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
+		<div class="panel-heading">
+			<div style="text-align:right">
+				<input type="text" ng-model="buscar.id" placeholder="Filtrar por número de pedido" class="form-control">
+			</div>
+		</div>
+		<div style="overflow-y:auto;max-height:45vh">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<th>N&uacute;mero</th>
+						<th>Fecha pedido</th>
+                        <th>Cantidad recetada</th>
+						<th>Cantidad despachada</th>                        
+						<th>Ver &iacute;tems</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<tr ng-repeat="ped in pedidos | filter:buscar | orderBy:'fechaPedido'">
+						<td>{{("00000000"+ ped.id).slice(-9)}}</td>
+						<td>{{ped.fechaPedido | date: 'dd/MM/yyyy - HH:mm'}}</td>
+						<td>{{ped.cantidad}}</td>
+						<td>{{ped.cantidadDespacho}}</td>
+						<td width="10%"><button style="background-color:inherit;border: none;" ng-click="select(ped)" data-toggle="modal" data-target="#pedidoModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!--Modal pedido-->
+    <div id="pedidoModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos del pedido inconsistente</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-striped" style="text-align:center;">
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>Número pedido: </td>
+                                <td>{{("00000000"+ pedido.id).slice(-9)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre // compuesto: </td>
+                                <td>{{pedido.nombre}} // {{pedido.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Solicitante: </td>
+                                <td>{{pedido.solicitante}}</td>
+                            </tr>
+                            <tr>
+                                <td>Asistente salud despacho: </td>
+                                <td>{{pedido.personalDespacho}}</td> 
+                            </tr>
+                            <tr>
+                                <td>Fecha de pedido: </td>
+                                <td>{{pedido.fechaPedido | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de despacho: </td>
+                                <td>{{pedido.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad solicitada: </td>
+                                <td>{{pedido.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad cantidadDespacho: </td>
+                                <td>{{pedido.cantidadDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Comentario despacho: </td>
+                                <td>{{pedido.comentarioDespacho}}</td>
+                            </tr>
+                            <!--<tr>
+                                <td>Email doctor: </td>
+                                <td><a href="mailto:{{pedido.email}}?Subject=Remision%20médica">{{remision.email}}</a></td>
+                            </tr>-->
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="button" data-dismiss="modal" class="btn btn-default">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
