@@ -50,4 +50,50 @@ namespace TheCircle.Models
         }
 
     }
+
+    public class ItemReceta2
+    {
+        [Key]
+        public int id { get; set; }
+        public int idItemFarmacia { get; set; }
+        public Int32 diagnostico { get; set; }
+        public int cantidad { get; set; }
+        public string posologia { get; set; }
+        public Boolean? funciono { get; set; }
+
+        public ItemReceta2() { }
+
+        public ItemReceta2(int receta, Data i, MyDbContext _context)
+        {
+            try
+            {
+                var q = $"EXEC ItemReceta_Insert @idItemFarmacia={i.itemFarmacia.id}" +
+                $", @idDiagnostico={i.diagnostico}, @cantidad={i.cantidad}" +
+                $", @receta={receta}, @posologia='{i.posologia}'";
+
+                _context.Database.ExecuteSqlCommand(q);
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Error al insertar ItemReceta", e);
+            }
+        }
+
+        //Obtiene todos los Items de una receta
+        public static ItemReceta2[] ReportReceta(int receta, MyDbContext _context)
+        {
+            string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
+            return _context.ItemsReceta.FromSql(q).ToArray();
+        }
+
+        public class Data
+        {
+            [Key]
+            public ItemFarmacia itemFarmacia { get; set; }
+            public string diagnostico { get; set; }
+            public int cantidad { get; set; }
+            public string posologia { get; set; }
+        }
+
+    }
 }

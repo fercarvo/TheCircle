@@ -142,6 +142,9 @@ namespace TheCircle.Models
 
     public class UserSafe
     {
+        private UserSafe[] usuarios;
+        private int? personalDespacho;
+
         [Key]
         public string id { get; set; }
         public string nombre { get; set; }
@@ -150,7 +153,11 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
-        /*public UserSafe(UserSafe[] usuarios, int cedula) {
+        public UserSafe(UserSafe[] usuarios, int? cedula) {
+
+            if (cedula is null)
+                return;
+
             foreach (UserSafe usuario in usuarios) {
                 if (usuario.cedula == cedula) {
                     id = usuario.id;
@@ -162,7 +169,7 @@ namespace TheCircle.Models
                     break;
                 }
             }
-        }*/
+        }
 
         public static UserSafe[] GetAll()
         {

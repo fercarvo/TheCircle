@@ -51,10 +51,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/pedidos.html',
                 controller: 'pedidos'
             })
-            .state('pedidos.transferencia', {
+            /*.state('pedidos.transferencia', {
                 templateUrl: 'views/medico/pedidos.transferencia.html',
                 controller: 'pedidos.transferencia'
-            })
+            })*/
             .state('pedidos.interno', {
                 templateUrl: 'views/medico/pedidos.interno.html',
                 controller: 'pedidos.interno'
@@ -669,7 +669,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('pedidos', ["$state", function ($state) {
         $state.go('pedidos.interno');
     }])
-    .controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
+    /*.controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
         $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
@@ -716,7 +716,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 cantidad = 1;
             })
         }
-    }])
+    }])*/
     .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', function ($scope, $http, $state, dataFactory) {
 
         $scope.stock = dataFactory.stockInsumos;

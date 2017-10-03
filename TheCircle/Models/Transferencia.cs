@@ -67,6 +67,63 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
             public string comentario { get; set; }
         }
+
+        public class Final
+        {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public UserSafe solicitante { get; set; }
+            public int cantidad { get; set; }
+            public DateTime fecha { get; set; }
+            public string origen { get; set; }
+            public string destino { get; set; }
+            public Boolean cancelado { get; set; }
+            public UserSafe autorizadoPor { get; set; } = null;
+            public DateTime? fechaDespacho { get; set; }
+            public int? cantidadDespacho { get; set; }
+            public UserSafe personalDespacho { get; set; } = null;
+            public string comentarioDespacho { get; set; } = null;
+
+            public Final(BDD BDD) {
+
+                UserSafe[] usuarios = UserSafe.GetAll();
+
+                id = BDD.id;
+                nombre = BDD.nombre;
+                compuesto = BDD.compuesto;
+                solicitante = new UserSafe(usuarios, BDD.solicitante);
+                cantidad = BDD.cantidad;
+                fecha = BDD.fecha;
+                origen = BDD.origen;
+                destino = BDD.destino;
+                cancelado = BDD.cancelado;
+                autorizadoPor = new UserSafe(usuarios, BDD.autorizadoPor);
+                fechaDespacho = BDD.fechaDespacho;
+                cantidadDespacho = BDD.cantidadDespacho;
+                personalDespacho = new UserSafe(usuarios, BDD.personalDespacho);
+                comentarioDespacho = BDD.comentarioDespacho;
+            }
+        }
+
+        public class BDD {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public int solicitante { get; set; }
+            public int cantidad { get; set; }
+            public DateTime fecha { get; set; }
+            public string origen { get; set; }
+            public string destino { get; set; }
+            public Boolean cancelado { get; set; }
+            public int? autorizadoPor { get; set; }
+            public DateTime? fechaDespacho { get; set; }
+            public int? cantidadDespacho { get; set; }
+            public int? personalDespacho { get; set; }
+            public string comentarioDespacho { get; set; } = null;
+        }
     }
 
 }

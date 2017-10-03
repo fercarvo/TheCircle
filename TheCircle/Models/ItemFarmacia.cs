@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
@@ -135,5 +136,59 @@ namespace TheCircle.Models
             public string nombre { get; set; }
             public string compuesto { get; set; }
         }
+    }
+
+    public class ItemFarmacia2
+    {
+        [Key]
+        public int id { get; set; }
+        public string nombre { get; set; }
+        public Compuesto compuesto { get; set; }
+        public int stock { get; set; }
+        public DateTime? fcaducidad { get; set; }
+        public string localidad { get; set; }
+
+        public ItemFarmacia2() { }
+
+        public ItemFarmacia2(BDD BDD) {
+            id = BDD.id;
+            nombre = BDD.nombre;
+            compuesto = Compuesto.Get(BDD.compuesto);
+            stock = BDD.stock;
+            fcaducidad = BDD.fcaducidad;
+            localidad = BDD.localidad;
+        }
+
+        public static ItemFarmacia2[] Populate(IQueryable<BDD> data, MyDbContext _context)
+        {
+            var items = new List<ItemFarmacia2>();
+
+            foreach (var item in data)
+                items.Add(new ItemFarmacia2(item));
+
+            return items.ToArray();
+        }
+
+        public static ItemFarmacia2[] ReportLocalidad(Localidad localidad, MyDbContext _context)
+        {
+            string query = $"EXEC ItemFarmacia_Report_Localidad @localidad='{localidad}'";
+            var data = _context.ItemFarmaciaBDD.FromSql(query);
+
+            return Populate(data, _context);
+        }
+
+        public class BDD
+        {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public int compuesto { get; set; }
+            public int stock { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public string localidad { get; set; }
+
+            public BDD() { }
+        }
+
     }
 }

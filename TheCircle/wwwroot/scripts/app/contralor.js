@@ -138,7 +138,15 @@ angular.module('contralor', ['ui.router'])
         $scope.aprobaciones1 = dataFac.aprobaciones1
         $scope.aprobacion = null
 
-        dataFac.getAprobaciones1($scope)
+        var actualizar = refresh.go(cargar, 0.2)
+
+        function cargar() {
+            if ($state.includes('aprobar')) {
+                dataFac.getAprobaciones1($scope)
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
 
         $scope.aprobar = function (aprobacion) {
             $scope.aprobacion = aprobacion
@@ -159,14 +167,6 @@ angular.module('contralor', ['ui.router'])
         $scope.guardarAprobacion = function (remision, comentario) {
             dataFac.guardarAprobacion(remision, comentario, $scope)
         }
-
-
-
-
-
-
-
-
     }])
     .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
 

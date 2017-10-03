@@ -41,5 +41,10 @@ namespace TheCircle.Models
             public int categoria { get; set; }
             public string unidad { get; set; }
         }
+
+        internal static Compuesto Get(int compuesto)
+        {
+            return new MyDbContext().Compuesto.FromSql($"EXEC Compuesto_Select @id={compuesto}").First();
+        }
     }
 }

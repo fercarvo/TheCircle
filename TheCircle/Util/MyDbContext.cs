@@ -29,6 +29,9 @@ namespace TheCircle.Util
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<UnidadMedida> UnidadMedida { get; set; }
 
+
+        public virtual DbSet<ItemFarmacia2.BDD> ItemFarmaciaBDD { get; set; }
+
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
             builder.UseSqlServer("Data Source=GUYSRV08\\SOAAPPS;Initial Catalog=TheCircle;Integrated Security=False;User ID=thecircle_user;Password=Th3C1rCl3_cI;Connect Timeout=15;Encrypt=False;TrustServerCertificate=True;ApplicationIntent=ReadWrite;MultiSubnetFailover=False");
