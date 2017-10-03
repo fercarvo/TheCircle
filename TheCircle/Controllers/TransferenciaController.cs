@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
 using TheCircle.Models;
 using System;
+using System.Collections.Generic;
 
 namespace TheCircle.Controllers
 {
@@ -38,6 +39,16 @@ namespace TheCircle.Controllers
         public IActionResult GetInconsistente()
         {
             Transferencia[] data = Transferencia.GetInconsistentes();
+            /*UserSafe[] usuarios = UserSafe.GetAll();
+
+            List <object> data2 = new List<object>();
+            List<object> final = new List<object>();
+
+            foreach (Transferencia transferencia in data) {
+                dynamic obj = transferencia;
+                obj.solicitante = "asdasda";
+                obj.personalDespacho = "asdasd";
+            }*/
             return Ok(data);
         }
 

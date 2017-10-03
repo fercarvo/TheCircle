@@ -150,6 +150,20 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
+        /*public UserSafe(UserSafe[] usuarios, int cedula) {
+            foreach (UserSafe usuario in usuarios) {
+                if (usuario.cedula == cedula) {
+                    id = usuario.id;
+                    nombre = usuario.nombre;
+                    apellido = usuario.apellido;
+                    email = usuario.email;
+                    cargo = usuario.cargo;
+                    cedula = usuario.cedula;
+                    break;
+                }
+            }
+        }*/
+
         public static UserSafe[] GetAll()
         {
             string query = $"EXEC dbo.UserSafe_Report_All";
@@ -173,6 +187,7 @@ namespace TheCircle.Models
             var user = new MyDbContext().UserSafe.FromSql(query).ToArray();
             return user;
         }
+
     }
 
     public class Clave
