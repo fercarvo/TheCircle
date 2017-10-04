@@ -16,7 +16,7 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar" placeholder="buscar por apadrinado" class="form-control">
+                        <input type="text" ng-model="buscar.idRemision" placeholder="buscar por número de remisión" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
@@ -24,15 +24,15 @@
                         <thead>
                             <tr>
                                 <th># Remisión</th>
-                                <th>Fecha Remisi&oacute;n</th>
-                                <th>Monto remisi&oacute;n</th>
+                                <th>Fecha Remisión</th>
+                                <th>Monto remisión</th>
                                 <th>Monto aprobado</th>
                                 <th>Visualizar</th>
                             </tr>
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="ap in rechazos">
+                            <tr ng-repeat="ap in rechazos | filter:buscar | orderBy:'idRemision'">
                                 <td>{{("00000000"+ ap.idRemision).slice(-9)}}</td>
                                 <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{ap.monto | currency}}</td>
@@ -84,8 +84,8 @@
                                         <td>{{aprobacion.montoAP1 | currency}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nuevo monto de aprobaci&oacute;n: </td>
-                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remisión" min="0" max="{{aprobacion.monto}}" type="number" style="width:100%;" /></td>
+                                        <td>Nuevo monto de aprobación: </td>
+                                        <td><input form="aprobarForm" required ng-model="monto" title="El monto no puede ser mayor al de la remisión" min="0" type="number" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Motivo del rechazo: </td>
