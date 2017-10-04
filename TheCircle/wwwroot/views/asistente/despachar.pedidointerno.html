@@ -21,8 +21,8 @@
                     <tr ng-repeat="p in pedidoInterno | orderBy:'fechaPedido'">
                         <td>{{("00000000"+ p.id).slice(-9)}}</td>
                         <td>{{p.fechaPedido}}</td>
-                        <td>{{("000000000"+ p.solicitante).slice(-10)}}</td>
-                        <td>{{p.nombre}}</td>
+                        <td>{{p.solicitante.nombre}} {{p.solicitante.apellido}}</td>
+                        <td>{{p.itemFarmacia.nombre}}</td>
                         <td width="10%"><button ng-click="ver(p)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_pedido"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
@@ -46,11 +46,15 @@
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>{{pedido.nombre}}</td>
+                                <td>{{pedido.itemFarmacia.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>{{pedido.compuesto}}</td>
+                                <td>{{pedido.itemFarmacia.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha caducidad: </td>
+                                <td>{{pedido.itemFarmacia.fcaducidad}}</td>
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
@@ -62,7 +66,7 @@
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>{{("000000000"+ pedido.solicitante).slice(-10)}}</td>
+                                <td>{{pedido.solicitante.nombre}} {{pedido.solicitante.apellido}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha solicitud: </td>

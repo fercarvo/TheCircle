@@ -18,7 +18,7 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult GetPendientes(Token token)
         {
-            var data = PedidoInterno.GetPendientes(token.data.localidad, _c);
+            var data = PedidoInterno.GetPendientes(token.data.localidad);
             return Ok(data);
         }
 
@@ -35,8 +35,8 @@ namespace TheCircle.Controllers
         [APIauth("asistenteSalud")]
         public IActionResult GetDespachadas(Token token)
         {
-            PedidoInterno[] data = PedidoInterno.GetDespachadas(token.data.localidad, _c);
-            return Ok(data);
+            //PedidoInterno[] data = PedidoInterno.GetDespachadas(token.data.localidad, _c);
+            return BadRequest("Esto no se usa");
         }
 
         [HttpGet("pedidointerno/receptadas")]

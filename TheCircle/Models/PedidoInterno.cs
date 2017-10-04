@@ -10,12 +10,11 @@ namespace TheCircle.Models
     {
         [Key]
         public int id { get; set; }
-        public string nombre { get; set; }
-        public string compuesto { get; set; }
-        public int solicitante { get; set; }
+        public ItemFarmacia itemFarmacia { get; set; }
+        public UserSafe solicitante { get; set; }
         public int cantidad { get; set; }
         public DateTime fechaPedido { get; set; }
-        public int? personalDespacho { get; set; }
+        public UserSafe personalDespacho { get; set; } = null;
         public int? cantidadDespacho { get; set; }
         public DateTime? fechaDespacho { get; set; }
         public string comentarioDespacho { get; set; } = null;
@@ -37,29 +36,25 @@ namespace TheCircle.Models
         internal static PedidoInterno[] GetInconsistentes()
         {
             string query = $"EXEC PedidoInterno_Report_Inconsistente";
-            return new MyDbContext().PedidoInterno.FromSql(query).ToArray();
+            return new MyDbContext().PedidoInterno.FromSql(query).Populate();
         }
 
-        public static PedidoInterno[] GetPendientes(Localidad localidad, MyDbContext _c)
+        public static PedidoInterno[] GetPendientes(Localidad localidad)
         {
             string q = $"EXEC dbo.PedidoInterno_Report_Pendientes @localidad='{localidad}'";
-
-            var data = _c.PedidoInterno.FromSql(q).ToArray();
-            return data;
+            return new MyDbContext().PedidoInterno.FromSql(q).Populate();
         }
 
-        internal static PedidoInterno[] GetDespachadas(Localidad destino, MyDbContext _c)
+        internal static PedidoInterno[] GetDespachadas()
         {
-            string q = $"EXEC PedidoInterno_Report_Despachadas @destino={destino}";
-
-            return _c.PedidoInterno.FromSql(q).ToArray();
+            string q = "EXEC PedidoInterno_Report_Despachadas";
+            return new MyDbContext().PedidoInterno.FromSql(q).Populate();
         }
 
         internal static PedidoInterno[] GetReceptadas(Localidad destino, MyDbContext _c)
         {
             string q = $"EXEC PedidoInterno_Report_Receptadas @destino={destino}";
-
-            return _c.PedidoInterno.FromSql(q).ToArray();
+            return _c.PedidoInterno.FromSql(q).Populate();
         }
 
         public static void Despachar(int idPedido, int personal, int cantidad, string comentario)
@@ -78,6 +73,22 @@ namespace TheCircle.Models
         {
             public int cantidad { get; set; }
             public string comentario { get; set; } = null;
+        }
+
+        public class BDD
+        {
+            [Key]
+            public int id { get; set; }
+            public int idItemFarmacia { get; set; }
+            public int solicitante { get; set; }
+            public int cantidad { get; set; }
+            public DateTime fechaPedido { get; set; }
+            public int? personalDespacho { get; set; }
+            public int? cantidadDespacho { get; set; }
+            public DateTime? fechaDespacho { get; set; }
+            public string comentarioDespacho { get; set; } = null;
+            public string comentarioRecepcion { get; set; } = null;
+            public Boolean? cancelado { get; set; }
         }
 
     }

@@ -48,6 +48,7 @@
                             <tr>
                                 <th>Nombre</th>
                                 <th>Compuesto</th>
+                                <th>Caducidad</th>
                                 <th>Cantidad Recetada</th>
                                 <th>Cantidad Despachada</th>
                                 <th>Comentario</th>
@@ -57,6 +58,7 @@
                             <tr ng-repeat="item in receta.items">
                                 <td>{{item.nombreItem}}</td>
                                 <td>{{item.compuesto}}</td>
+                                <td>{{item.fecha | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{item.cantidadRecetada}}</td>
                                 <td>{{item.cantidadDespachada}}</td>
                                 <td>{{item.comentario}}</td>

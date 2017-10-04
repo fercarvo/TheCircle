@@ -31,5 +31,30 @@ namespace TheCircle.Util
             }
             return transferencias.ToArray();
         }
+
+        public static PedidoInterno[] Populate(this IQueryable<PedidoInterno.BDD> data)
+        {
+            var pedidos = new List<PedidoInterno>();
+            var usuarios = UserSafe.GetAll();
+
+            foreach (var pedido in data)
+            {
+                pedidos.Add(new PedidoInterno()
+                {
+                    id = pedido.id,
+                    itemFarmacia = ItemFarmacia.Get( pedido.idItemFarmacia ),
+                    solicitante = UserSafe.Get( pedido.solicitante, usuarios ),
+                    cantidad = pedido.cantidad,
+                    fechaPedido = pedido.fechaPedido,
+                    personalDespacho = UserSafe.Get( pedido.personalDespacho, usuarios ),
+                    cantidadDespacho = pedido.cantidadDespacho,
+                    fechaDespacho = pedido.fechaDespacho,
+                    comentarioDespacho = pedido.comentarioDespacho,
+                    comentarioRecepcion = pedido.comentarioRecepcion,
+                    cancelado = pedido.cancelado
+                });
+            }
+            return pedidos.ToArray();
+        }
     }
 }
