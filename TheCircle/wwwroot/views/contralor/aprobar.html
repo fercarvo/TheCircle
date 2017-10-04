@@ -27,6 +27,7 @@
                                 <th>Fecha Remisi&oacute;n</th>
                                 <th>Monto remisi&oacute;n</th>
                                 <th>Monto aprobado</th>
+                                <th>Ver</th>
                                 <th>Aprobar</th>
                                 <th>Rechazar</th>
                             </tr>
@@ -38,8 +39,9 @@
                                 <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{ap.monto | currency}}</td>
                                 <td>{{ap.montoAP1 | currency}}</td>
-                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="aprobar(ap)"><span class="glyphicons glyphicons-ok"></span></button></td>
-                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="rechazar(ap)"><span class="glyphicons glyphicons-remove"></span></button></td>
+                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="ver(ap)"><span class="glyphicon glyphicon-search"></span></button></td>
+                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="guardarAprobacion(ap.idRemision)"><span class="glyphicon glyphicon-ok"></span></button></td>                               
+                                <td width="10%"><button style="background-color:inherit;border: none;" ng-click="rechazar(ap)"><span class="glyphicon glyphicon-remove"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -47,7 +49,7 @@
             </div>
 
             <!--Modal aprobar remision AP1-->
-            <div id="modal_aprobar" class="modal fade">
+            <div id="modal_ver" class="modal fade">
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
@@ -85,18 +87,13 @@
                                         <td>Comentario de aprobación: </td>
                                         <td>{{aprobacion.comentarioAP1}}</td>
                                     </tr>
-                                    <tr>
-                                        <td>Ingresar comentario: </td>
-                                        <td><input form="aprobarForm" required ng-model="comentario" pattern=".{5,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
-                                    </tr>
                                 </tbody>
                             </table>
 
                         </div><!--  -->
-                        <form id="aprobarForm" class="text-center" ng-submit="guardarAprobacion(aprobacion.idRemision, comentario)" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" class="btn btn-info">Aprobar</button>
-                            <button data-ripple type="reset" onclick=" $('#modal_aprobar').modal('hide')" class="btn btn-default">Cancelar</button>
-                        </form>
+                        <div class="text-center" style="margin-bottom: 5px;">
+                            <button data-ripple type="button" data-dismiss="modal" class="btn btn-info">Cerrar</button>
+                        </div>
                     </div>
                 </div>
             </div>

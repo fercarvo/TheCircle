@@ -24,7 +24,7 @@ namespace TheCircle.Util
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UserSafe> UserSafe { get; set; }
         public virtual DbSet<Compuesto> Compuesto { get; set; }
-        public virtual DbSet<Transferencia> Transferencia { get; set; }        
+        public virtual DbSet<Transferencia.BDD> Transferencia { get; set; }        
         public virtual DbSet<PedidoInterno> PedidoInterno { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<UnidadMedida> UnidadMedida { get; set; }

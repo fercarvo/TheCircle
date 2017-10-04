@@ -97,6 +97,7 @@ angular.module('contralor', ['ui.router'])
                 console.log("AP contralor", res)
                 getAprobaciones1($scope)
                 $('#modal_aprobar').modal('hide')
+                notify("La remision ha sido aprobada exitosamente", "success")
                 NProgress.done()
             }, function (err) {
                 NProgress.done()
@@ -123,6 +124,7 @@ angular.module('contralor', ['ui.router'])
                 console.log("Se rechazo con exito", res)
                 $("#modal_rechazar").modal("hide")
                 getAprobaciones1($scope)
+                notify("La remision se ha rechazado exitosamente", "success")
                 NProgress.done()
             }, function (err) {
                 NProgress.done()
@@ -140,10 +142,9 @@ angular.module('contralor', ['ui.router'])
 
         dataFac.getAprobaciones1($scope)
 
-        $scope.aprobar = function (aprobacion) {
+        $scope.ver = function (aprobacion) {
             $scope.aprobacion = aprobacion
-            $("#modal_aprobar").modal("show")
-            $scope.comentario = null
+            $("#modal_ver").modal("show")
         }
 
         $scope.rechazar = function (aprobacion) {
@@ -156,8 +157,8 @@ angular.module('contralor', ['ui.router'])
             dataFac.rechazarRemision(remision, comentario, $scope)
         }
 
-        $scope.guardarAprobacion = function (remision, comentario) {
-            dataFac.guardarAprobacion(remision, comentario, $scope)
+        $scope.guardarAprobacion = function (remision) {
+            dataFac.guardarAprobacion(remision, "", $scope)
         }
 
 

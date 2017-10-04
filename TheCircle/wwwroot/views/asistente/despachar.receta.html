@@ -50,6 +50,7 @@
                                 <th>Despachado</th>
                                 <th>&Iacute;tem</th>
                                 <th>Compuesto</th>
+                                <th>Caducidad</th>
                                 <th>Cantidad</th>
                                 <th>Nueva cantidad</th>
                                 <th>Comentario</th>
@@ -62,6 +63,7 @@
                                 <td style="padding-top: 15px" ng-class="item.class"></td>
                                 <td>{{item.nombre}}</td>
                                 <td>{{item.compuesto}}</td>
+                                <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{item.cantidad}}</td>
                                 <td><input type="number" min="1" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
                                 <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>

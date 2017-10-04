@@ -62,6 +62,9 @@ namespace TheCircle.Controllers
         [APIauth("contralor")]
         public IActionResult AprobacionContralor(Token token, int id, [FromBody]string comentario)
         {
+            if (id <= 0)
+                return BadRequest();
+
             Remision.AprobacionContralor(token.data.cedula, id, comentario);
             return Ok();
         }

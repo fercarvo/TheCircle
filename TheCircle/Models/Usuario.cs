@@ -150,26 +150,30 @@ namespace TheCircle.Models
         public string cargo { get; set; }
         public int cedula { get; set; }
 
-        /*public UserSafe(UserSafe[] usuarios, int cedula) {
-            foreach (UserSafe usuario in usuarios) {
-                if (usuario.cedula == cedula) {
-                    id = usuario.id;
-                    nombre = usuario.nombre;
-                    apellido = usuario.apellido;
-                    email = usuario.email;
-                    cargo = usuario.cargo;
-                    cedula = usuario.cedula;
-                    break;
-                }
+        public static UserSafe Get( int? cedula, UserSafe[] usuarios)
+        {
+            foreach (UserSafe usuario in usuarios)
+            {
+                if (usuario.cedula == cedula)
+                    return usuario;
             }
-        }*/
+            return null;
+        }
+
+        public static UserSafe Get(int cedula, UserSafe[] usuarios)
+        {
+            foreach (UserSafe usuario in usuarios)
+            {
+                if (usuario.cedula == cedula)
+                    return usuario;
+            }
+            return null;
+        }
 
         public static UserSafe[] GetAll()
         {
-            string query = $"EXEC dbo.UserSafe_Report_All";
-
-            var user = new MyDbContext().UserSafe.FromSql(query).ToArray();
-            return user;
+            string query = $"EXEC UserSafe_Report_All";
+            return new MyDbContext().UserSafe.FromSql(query).ToArray();
         }
 
         public static UserSafe[] GetActivos()

@@ -18,7 +18,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("enfermedad")]
-        [ResponseCache(Duration = 3, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60*60*24*30, Location = ResponseCacheLocation.Client)] //30 dias de cache, demasiada información
         [APIauth("medico")]
         public IActionResult GetEnfermedades()
         {

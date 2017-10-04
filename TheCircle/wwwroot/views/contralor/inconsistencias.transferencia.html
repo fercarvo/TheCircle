@@ -52,19 +52,19 @@
                             </tr>
                             <tr>
                                 <td>Localidad origen // Localidad destino: </td>
-                                <td>{{transferencia.origen}} // {{transferencia.destino}}</td>
+                                <td>{{transferencia.itemFarmacia.localidad}} // {{transferencia.destino}}</td>
                             </tr>
                             <tr>
-                                <td>Nombre // compuesto: </td>
-                                <td>{{transferencia.nombre}} // {{transferencia.compuesto}}</td>
+                                <td>Nombre // compuesto - fecha caducidad: </td>
+                                <td>{{transferencia.itemFarmacia.nombre}} // {{transferencia.itemFarmacia.compuesto}} - {{transferencia.itemFarmacia.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>{{transferencia.solicitante}}</td>
+                                <td>{{transferencia.solicitante.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Personal despacho: </td>
-                                <td>{{transferencia.personalDespacho}}</td>
+                                <td>{{transferencia.personalDespacho.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha de pedido: </td>

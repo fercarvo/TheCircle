@@ -51,10 +51,10 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/pedidos.html',
                 controller: 'pedidos'
             })
-            .state('pedidos.transferencia', {
+            /*.state('pedidos.transferencia', {
                 templateUrl: 'views/medico/pedidos.transferencia.html',
                 controller: 'pedidos.transferencia'
-            })
+            })*/
             .state('pedidos.interno', {
                 templateUrl: 'views/medico/pedidos.interno.html',
                 controller: 'pedidos.interno'
@@ -123,8 +123,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             })
         }
 
-        function getEnfermedades() {
-            return $http.get("/api/enfermedad", {cache: true});
+        function getEnfermedades($scope) {
+            $http.get("/api/enfermedad").then(function (res) {
+                //dataFactory.enfermedades = res.data;
+                $scope.enfermedades = res.data;
+            }, function (err) {
+                console.log("Error cargar enfermedades", err);
+            })
         }
 
         function getStock() {
@@ -299,18 +304,20 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('atencion.registro', ["$scope", "$state", "$http", "dataFactory", "atencionFactory", "disable", function ($scope, $state, $http, dataFactory, atencionFactory, disable) {
 
         $scope.disable = disable.atencion;
-        $scope.enfermedades = dataFactory.enfermedades;
+        $scope.enfermedades = null;
         $scope.tipos = dataFactory.tipos;
         $scope.atencion = atencionFactory.atencion;
 
-        if (dataFactory.enfermedades === null) {
+        dataFactory.getEnfermedades($scope);
+
+        /*if (dataFactory.enfermedades === null) {
             dataFactory.getEnfermedades().then(function success(res) {
                 dataFactory.enfermedades = res.data;
                 $scope.enfermedades = dataFactory.enfermedades;
             }, function error(err) {
                 console.log("Error cargar enfermedades", err);
             })
-        }
+        }*/
 
 
         $scope.reset = function () {
@@ -654,7 +661,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 duration: 500,
                 labelThreshold: 0,
                 labelSunbeamLayout: true,
-                legendPosition: "right",
+                legendPosition: "top",
                 legend: {
                     margin: {
                         top: 5,
@@ -669,7 +676,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .controller('pedidos', ["$state", function ($state) {
         $state.go('pedidos.interno');
     }])
-    .controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
+    /*.controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
         $scope.stock = dataFactory.stockChildren;
         $scope.item = null;
 
@@ -716,7 +723,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 cantidad = 1;
             })
         }
-    }])
+    }])*/
     .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', function ($scope, $http, $state, dataFactory) {
 
         $scope.stock = dataFactory.stockInsumos;

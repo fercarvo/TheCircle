@@ -107,6 +107,11 @@ namespace TheCircle.Models
             public Ingreso() { }
         }
 
+        internal static ItemFarmacia Get(int id)
+        {
+            return new MyDbContext().ItemFarmacias.FromSql($"EXEC ItemFarmacia_Select @id={id}").First();
+        }
+
         public class Data
         {
             public int item { get; set; }
