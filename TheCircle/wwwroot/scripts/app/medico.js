@@ -273,8 +273,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             })
         }
 
-
-
         $scope.buscarApadrinado = function (codigo) {
             dfac.getApadrinado(codigo).then(function success(res) {
 
@@ -417,20 +415,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             $scope.receta.items = atencionFactory.receta.items;
         })
 
-        if (atencionFactory.receta.id === null && atencionFactory.codigo !== null) {
-            var apadrinado = atencionFactory.codigo;
-
-            $http.post("/api/receta/apadrinado/" + apadrinado).then(function success(res) {
-                console.log("Se creo receta", res.data);
-                atencionFactory.receta.id = res.data.id;
-                $scope.receta.id = atencionFactory.receta.id;
-            }, function (err) {
-                console.log("No se creo receta", err);
-                notify("No se pudo crear ID de la receta", "danger");
-            })
-
-        }
-
         $scope.addItenReceta = function (item) {
             $('#modal_crearItem').modal('hide'); //Se cierra el modal
             actualizar = refresh.go(cargar); //Se empiezan a actualizar las recetas
@@ -445,29 +429,30 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.select = function (item) {
             refresh.stop(actualizar);
             $scope.ItemRecetaNuevo.itemFarmacia = angular.copy(item);
-            $scope.ItemRecetaNuevo.diagnostico = {};
+            $scope.ItemRecetaNuevo.diagnostico = null;
             $scope.ItemRecetaNuevo.cantidad = 1;
-            $scope.ItemRecetaNuevo.posologia = "";
+            $scope.ItemRecetaNuevo.posologia = null;
         }
 
         $scope.guardarReceta = function () {
-            var idReceta = atencionFactory.receta.id;
             var items = atencionFactory.receta.items;
 
             NProgress.start();
-            $http.post("/api/receta/" + idReceta, JSON.parse(angular.toJson(items))).then(function success(res) {
+            $http.post("/api/receta/apadrinado/" + atencionFactory.codigo, JSON.parse(angular.toJson(items))).then(function (res) {
                 
                 NProgress.done();
-                console.log("Se crearon los items", res.data);
+                console.log("Creo la receta", res.data);
                 notify("Se creo la receta exitosamente", "success");
+                atencionFactory.receta.id = res.data.id;
+                $scope.receta.id = atencionFactory.receta.id;
                 disable.receta = true;
                 $scope.disable = disable.receta; //Se desactiva atencion.receta.html
                 refresh.stop(actualizar); //Se detiene la actualizacion de receta
                 cargar(); //Se carga por ultima vez la data
             }, function err(err){
                 NProgress.done();
-                console.log("No se pudieron crear los items", err);
-                notify("No se pudo crear la receta", "danger");
+                console.log("Error al crear receta", err);
+                notify("No se ha podido crear la receta, por favor verifique los items", "danger");
             })
         }
 

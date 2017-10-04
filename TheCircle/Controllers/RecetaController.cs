@@ -111,7 +111,7 @@ namespace TheCircle.Controllers
 
 
         //Crea una receta de farmacia
-        [HttpPost("receta/apadrinado/{apadrinado}")]
+        /*[HttpPost("receta/apadrinado/{apadrinado}")]
         [APIauth("medico")]
         public IActionResult PostReceta(Token token, int apadrinado)
         {
@@ -120,29 +120,32 @@ namespace TheCircle.Controllers
            
             Receta receta = new Receta(apadrinado, token.data.cedula, _context);
             return Ok(receta);
-        }
+        }*/
 
 
         //Crea una receta de farmacia con sus items
-        [HttpPost("receta/{id}")]
+        [HttpPost("receta/apadrinado/{apadrinado}")]
         [APIauth("medico")]
-        public IActionResult PostItemsReceta(int id, [FromBody]ItemReceta.Data[] items)
+        public IActionResult PostItemsReceta(Token token, int apadrinado, [FromBody]ItemReceta.Data[] items)
         {
-            if (items is null)
+            if (items is null || items.Length==0 || apadrinado <= 1000)
                 return BadRequest();
 
             var tran = _context.Database.BeginTransaction(); //Se inicia transacción en la BDD
+
             try 
             {
+                Receta receta = new Receta(apadrinado, token.data.cedula, _context);
+
                 foreach (ItemReceta.Data item in items)
-                    new ItemReceta(id, item, _context);
+                    new ItemReceta(receta.id, item, _context);
 
                 tran.Commit(); //Si todos los items se ingresan correctamente se hace commit
-                return Ok();
+                return Ok(receta);
 
             } catch (Exception e) {
                 tran.Rollback();
-                return BadRequest("Error al ingresar los itemsReceta");
+                throw new Exception("Error al crear receta con sus items", e);
             }            
         }
 

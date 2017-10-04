@@ -18,7 +18,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("apadrinado/{cod}")]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)] //cache de 1 hora
         [APIauth("medico")]
         public IActionResult GetApadrinado(int cod)
         {

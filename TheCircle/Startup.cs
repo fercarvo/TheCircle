@@ -71,7 +71,8 @@ namespace TheCircle
                 new StaticFileOptions() {
                     OnPrepareResponse = ctx =>
                     {
-                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}");
+                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}"); //Cache development
+                        //ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={60*60*24*7}"); //Cache produccion
                         ctx.Context.Response.Headers.Append("X-TheCircle", "Static Files");
                     }
                 }
