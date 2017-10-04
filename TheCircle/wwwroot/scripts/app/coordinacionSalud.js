@@ -152,6 +152,18 @@ angular.module('coordinacionSalud', ['ui.router'])
             $scope.comentario = null;
         }
 
+        $scope.aprobar = function (remision) {
+            refresh.stop(actualizar)
+            var data = {
+                monto: remision.monto,
+                comentario: " "
+            }
+
+            dataFac.postAprobacion(remision.id, data).then(function () {
+                actualizar = refresh.go(cargar, 1)
+            }, function () { })
+        }
+
         $scope.guardar = function (remision, cantidad, comentario) {
 
             refresh.stop(actualizar)
@@ -163,7 +175,7 @@ angular.module('coordinacionSalud', ['ui.router'])
 
             dataFac.postAprobacion(remision, data).then(function () {
                 $("#ver_remision").modal("hide")
-                cargar()
+                actualizar = refresh.go(cargar, 1)
             }, function () { })
         }
 

@@ -16,7 +16,7 @@
             <div class="panel panel-default-light border-default" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input type="text" ng-model="buscar" placeholder="Filtrar remisiones médicas" class="form-control">
+                        <input type="text" ng-model="buscar.id" placeholder="Buscar por número de remisión médica" class="form-control">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
@@ -27,16 +27,18 @@
                                 <th>Instituci&iacute;n</th>
                                 <th>Monto</th>
                                 <th>Fecha Remisi&oacute;n</th>
-                                <th>Visualizar</th>
+                                <th>Aprobar</th>
+                                <th>Modificar</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="r in remisiones | filter:buscar | orderBy:'id'">
                                 <td>{{("00000000"+ r.id).slice(-9)}}</td>
                                 <td>{{r.institucion}}</td>
-                                <td>{{r.monto}}</td>
+                                <td>{{r.monto | currency}}</td>
                                 <td>{{r.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td ><button ng-click="ver(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td><button ng-click="aprobar(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td><button ng-click="ver(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -79,7 +81,7 @@
                                     </tr>
                                     <tr>
                                         <td>Monto a aprobar: </td>
-                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="1" max="{{remision.monto}}" style="width:100%;" /></td>
+                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="1" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Comentario: </td>
