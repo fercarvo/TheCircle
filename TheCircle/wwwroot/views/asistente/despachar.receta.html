@@ -40,7 +40,7 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Receta Nro {{("00000000"+ receta.receta.id).slice(-9)}} - {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - {{receta.receta.idApadrinado}}</h5>
+                    <h5 class="modal-title">Receta #: {{("00000000"+ receta.receta.id).slice(-9)}} - Fecha: {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}} - Apadrinado: {{receta.receta.idApadrinado}}</h5>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
 
@@ -65,7 +65,7 @@
                                 <td>{{item.compuesto}}</td>
                                 <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{item.cantidad}}</td>
-                                <td><input type="number" min="1" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
+                                <td><input type="number" min="1" max="{{item.cantidad}}" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
                                 <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
                                 <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-pencil" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
                                 <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>

@@ -52,23 +52,23 @@
                             </tr>
                             <tr>
                                 <td>Nombre Item: </td>
-                                <td>{{pedido.nombre}}</td>
+                                <td>{{pedido.itemFarmacia.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>{{pedido.compuesto}}</td>
+                                <td>{{pedido.itemFarmacia.compuesto}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha de caducidad: </td>
-                                <td>{{pedido.compuesto}}</td>
+                                <td>{{pedido.itemFarmacia.fcaducidad}}</td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>{{pedido.solicitante}}</td>
+                                <td>{{pedido.solicitante.nombre}} {{pedido.solicitante.apellido}}</td>
                             </tr>
                             <tr>
-                                <td>Asistente salud despacho: </td>
-                                <td>{{pedido.personalDespacho}}</td> 
+                                <td>Personal despacho: </td>
+                                <td>{{pedido.personalDespacho.nombre}} {{pedido.personalDespacho.apellido}}</td> 
                             </tr>
                             <tr>
                                 <td>Fecha de pedido: </td>

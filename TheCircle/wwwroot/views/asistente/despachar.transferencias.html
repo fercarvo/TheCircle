@@ -22,8 +22,8 @@
                     <tr ng-repeat="t in transferencias | orderBy:'fecha'">
                         <td>{{("00000000"+ t.id).slice(-9)}}</td>
                         <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                        <td>{{t.nombre}}</td>
-                        <td>{{t.compuesto}}</td>
+                        <td>{{t.itemFarmacia.nombre}}</td>
+                        <td>{{t.itemFarmacia.compuesto}}</td>
                         <td>{{t.cantidad}}</td>
                         <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
@@ -48,31 +48,35 @@
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>{{transferencia.nombre}}</td>
+                                <td>{{transferencia.itemFarmacia.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>{{transferencia.compuesto}}</td>
+                                <td>{{transferencia.itemFarmacia.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Caducidad: </td>
+                                <td title="dia/mes/año">{{transferencia.itemFarmacia.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
                                 <td>{{transferencia.cantidad}}</td>
                             </tr>
                             <tr>
-                                <td>Nueva cantidad: </td>
-                                <td><input form="despacharTransferenciaForm" ng-model="nuevaCantidad" title="De necesitarlo, ingrese una nueva cantidad" type="number" min="1" max="{{transferencia.cantidad}}" style="width:100%;" /></td>
+                                <td>Cantidad despacho: </td>
+                                <td><input required form="despacharTransferenciaForm" ng-model="nuevaCantidad" title="Ingrese una cantidad a despachar" type="number" min="1" max="{{transferencia.cantidad}}" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input form="despacharTransferenciaForm" ng-model="comentario" pattern=".{0,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
+                                <td><input required form="despacharTransferenciaForm" ng-model="comentario" pattern=".{3,50}" title="Ingrese un comentario de maximo 50 caracteres" type="text" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Solicitante: </td>
-                                <td>{{transferencia.solicitante}}</td>
+                                <td>{{transferencia.solicitante.nombre}} {{transferencia.solicitante.apellido}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha: </td>
-                                <td>{{transferencia.fecha}}</td>
+                                <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
                             <tr>
                                 <td>Destino: </td>

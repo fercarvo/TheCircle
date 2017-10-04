@@ -120,12 +120,13 @@ angular.module('appAsistente', ['ui.router'])
         }
 
         function getTransferenciasPendientes($scope) {
-            $http.get("/api/transferencia").then(function success(res) {
+            $http.get("/api/transferencia").then(function (res) {
+                console.log("Transferencias pendientes", res.data)
                 dataFac.transferencias = res.data;
                 $scope.transferencias = dataFac.transferencias
-                //$rootScope.$broadcast('dataFac.transferencias');
-            }, function error(err) {
-                console.log("Error cargar transferencias", err);
+            }, function (error) {
+                console.log("Error cargar transferencias", error);
+                notify("No se pudieron cargar las transferencias", "danger")
             })
         }
 
@@ -290,6 +291,7 @@ angular.module('appAsistente', ['ui.router'])
         $scope.ver = function (pedido) {
             $scope.pedido = pedido
             $scope.comentario = null
+            $scope.cantidad = null
         }
 
         $scope.guardarEgreso = function (cantidad, comentario) {
