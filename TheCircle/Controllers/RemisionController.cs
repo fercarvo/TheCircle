@@ -41,6 +41,16 @@ namespace TheCircle.Controllers
             return Ok(response);
         }
 
+        //ruta que retorna las remisiones medicas de un doctor por rango de fechas
+        [HttpGet("remision/gastado")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
+        [APIauth("medico")]
+        public IActionResult ReporteGastado(Token token)
+        {
+            Remision.Monto data = Remision.GetMonto(token.data.cedula);
+            return Ok(data);
+        }
+
         [HttpGet("remision/aprobacion1")]
         [APIauth("contralor")]
         public IActionResult ReportAP1()

@@ -55,8 +55,7 @@ namespace TheCircle.Models
         {
             string query = "EXEC Remision_Report_Aprobacion1";
             return new MyDbContext().Aprobacion.FromSql(query).ToArray();
-        }
-    
+        }    
 
         public class Request
         {
@@ -89,6 +88,21 @@ namespace TheCircle.Models
         {
             string query = $"EXEC Remision_Aprobacion1_Update1 @comentario='{comentario}', @monto='{monto}', @remision={id}, @personal={cedula}";
             new MyDbContext().Database.ExecuteSqlCommand(query);
+        }
+
+        public static Monto GetMonto(int cedula)
+        {
+            DateTime now = DateTime.Now;
+            DateTime desde = new DateTime(now.Year, now.Month, 1, 0, 0, 0);
+            DateTime hasta = desde.AddMonths(1);
+            string query = $"EXEC Remision_Report_MontoByPersonal @doctor={cedula}, @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Monto.FromSql(query).First();
+        }
+
+        public class Monto {
+            [Key]
+            public int cedula { get; set; }
+            public Decimal total { get; set; }
         }
 
         public class Aprobacion {

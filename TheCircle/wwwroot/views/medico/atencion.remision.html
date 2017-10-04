@@ -20,7 +20,7 @@
             <div class="col-sm-2" style="padding-left:initial">
                 <input required ng-disabled="disable" ng-model="remision.monto" type="number" min="0" max="200" title="Solo numeros" class="form-control">
             </div>
-            <label class="control-label col-sm-2" style="text-align:left">Monto disponible $$</label>
+            <label class="control-label col-sm-2" style="text-align:left">Monto consumido {{monto.total | currency}}</label>
         </div><!-- /.form-group -->
 
 

@@ -202,8 +202,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             receta : false
         }
     }])
-    .factory('atencionFactory', [function () { //factory donde se guarda toda la data ingresada
-        return {
+    .factory('atencionFactory', ["$http", function ($http) { //factory donde se guarda toda la data ingresada
+        var atencionFactory = {
             apadrinado : {},
             foto : "/images/ci.png",
             codigo : null,
@@ -214,8 +214,20 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 items: [],
                 id: null
             },
-            status : true
+            status: true,
+            monto: null,
+            getMonto: getMonto
         }
+
+        function getMonto($scope) {
+            $http.get("/api/remision/gastado").then(function (res) {
+                console.log("Monto", res.data)
+                atencionFactory.monto = res.data
+                $scope.monto = atencionFactory.monto
+            }, function () { })
+        }
+
+        return atencionFactory
     }])
     .controller('atencion', ["$scope", "$state", "atencionFactory", "dataFactory", "disable", function ($scope, $state, atencionFactory, dfac, disable) {
 
@@ -364,6 +376,11 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         $scope.remision = atencionFactory.remision; //se guarda todo lo ingresado en remision
         $scope.instituciones = dataFactory.instituciones;
         $scope.diagnosticos = atencionFactory.diagnosticos
+        $scope.monto = atencionFactory.monto
+
+        if ($scope.monto === null) {
+            atencionFactory.getMonto($scope)
+        }
 
         if (dataFactory.instituciones === null) {
             dataFactory.getInstituciones()
