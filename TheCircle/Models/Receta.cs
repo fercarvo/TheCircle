@@ -16,42 +16,100 @@ namespace TheCircle.Models
         public DateTime? fDespacho { get; set; }
         public Boolean? despachada { get; set; }
         public Boolean? eliminada { get; set; }
-        public int idDoctor { get; set; }
-        public string nombreDoctor { get; set; }
-        public string apellidoDoctor { get; set; }
-        public int idApadrinado { get; set; }
-        public string nombreApadrinado { get; set; }
-        public string apellidoApadrinado { get; set; }
+        public UserSafe doctor { get; set; }
+        public Apadrinado apadrinado { get; set; }
+        public Item[] items { get; set;}
 
         public Receta () { }
 
-        public Receta (int apadrinado, int doctor, MyDbContext _context) {
+        public Receta (int apadrinado, int doctor, Item.Data[] items) 
+        {
+            var _context = new MyDbContext();
+            var tran = _context.Database.BeginTransaction(); //Se inicia transacción en la BDD
+
             try {
-                var q = $"EXEC Receta_Insert @doctor={doctor}, @apadrinado={apadrinado}";
-                var data = _context.Recetas.FromSql(q).First();
+                var query = $"EXEC Receta_Insert @doctor={doctor}, @apadrinado={apadrinado}";
+                var data = _context.Recetas.FromSql(query).First();
                 id = data.id;
+
+                foreach (var item in items)
+                    new Item(id, item, _context)
+
+                tran.Commit(); //Si todos los items se ingresan correctamente se hace commit
+
             } catch (Exception e) {
+                tran.Rollback();
                 throw new Exception("No se pudo crear la receta con su ID", e);
             }            
+        }
+
+        /*public Receta (BDD data) {
+            id = data.id
+            fecha = data.fecha;
+            fCaducidad = data.fCaducidad;
+            fDespacho = data.fDespacho;
+            despachada = data.despachada;
+            eliminada = data.eliminada;
+            doctor = UserSafe.Get(data.idDoctor);
+            apadrinado = Apadrinado.Get(data.idApadrinado);
+            items = GetItems(id);
+        }*/
+
+        /*public static Receta Populate (BDD data) {
+            return new Receta() {
+                id = data.id
+                fecha = data.fecha;
+                fCaducidad = data.fCaducidad;
+                fDespacho = data.fDespacho;
+                despachada = data.despachada;
+                eliminada = data.eliminada;
+                doctor = UserSafe.Get(data.idDoctor);
+                apadrinado = Apadrinado.Get(data.idApadrinado);
+                items = GetItems(id);
+            }
+        }*/
+
+        public static Receta[] Populate (this IQueyrable<BDD> data) 
+        {
+
+            
+            var recetas = new List<Receta>();
+            var usuarios = UserSafe.GetAll();
+
+            foreach (var receta in data) {
+                recetas.Add( new Receta() {
+                    id = receta.id
+                    fecha = receta.fecha;
+                    fCaducidad = receta.fCaducidad;
+                    fDespacho = receta.fDespacho;
+                    despachada = receta.despachada;
+                    eliminada = receta.eliminada;
+                    doctor = UserSafe.Get(receta.idDoctor, usuarios);
+                    apadrinado = Apadrinado.Get(receta.idApadrinado);
+                    items = GetItems(id);
+                })
+            }
+
+            return recetas.ToArray();
         }
 
         public static Receta[] ReportAsistente(int asistente, MyDbContext _context)
         {
             string query = $"EXEC Receta_ReportBy_Asistente @asistente={asistente}";
-            return _context.Recetas.FromSql(query).ToArray();
+            return _context.Recetas.FromSql(query).Populate();
         }
 
 
         public static Receta[] ReportLocalidadSinDespachar (Localidad localidad, MyDbContext _context)
         {
             string query = $"EXEC Receta_Report_Localidad_Despachada @localidad='{localidad}', @despachada=0";
-            return _context.Recetas.FromSql(query).ToArray();
+            return _context.Recetas.FromSql(query).Populate();
         }
 
         public static Receta[] ReportLocalidad(Localidad localidad, DateTime desde, DateTime hasta)
         {
             string query = $"EXEC Receta_Report_Localidad @localidad='{localidad}', @desde='{desde}', @hasta='{hasta}'";
-            return new MyDbContext().Recetas.FromSql(query).ToArray();
+            return new MyDbContext().Recetas.FromSql(query).Populate();
         }
 
         public static Receta[] ReportInconsistente() {
@@ -63,7 +121,7 @@ namespace TheCircle.Models
         public static Receta[] GetAllByDoctorByDate(Fecha fecha, int doctor, MyDbContext _context)
         {
             string query = $"EXEC Receta_Report_Doctor @doctor={doctor}, @desde='{fecha.desde}', @hasta='{fecha.hasta}'";
-            return _context.Recetas.FromSql(query).ToArray();
+            return _context.Recetas.FromSql(query).Populate();
         }
 
 
@@ -87,7 +145,7 @@ namespace TheCircle.Models
             _context.Database.ExecuteSqlCommand(q);
         }
 
-        public static List<object> ReportByDoctor(Fecha fecha, int doctor, MyDbContext _context)
+        /*public static Receta[] ReportByDoctor(Fecha fecha, int doctor, MyDbContext _context)
         {
             Receta[] recetas = GetAllByDoctorByDate(fecha, doctor, _context);
             var data = new List<object>();
@@ -100,7 +158,7 @@ namespace TheCircle.Models
             }
 
             return data;
-        }
+        }*/
 
         public static List<object> ReportByDoctorByStatus(int doctor, MyDbContext _context)
         {
@@ -116,14 +174,35 @@ namespace TheCircle.Models
             return data;
         }
 
+        //Obtiene todos los Items de una receta
+        public Item[] GetItems(int receta) 
+        {
+            string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
+            return new MyDbContext().ItemReceta.FromSql(q).ToArray();
+        }
+
+        public class BDD{
+            [Key]
+            public int id { get; set; }
+            public DateTime fecha { get; set; }
+            public DateTime fCaducidad { get; set; }
+            public DateTime? fDespacho { get; set; }
+            public Boolean? despachada { get; set; }
+            public Boolean? eliminada { get; set; }
+            public int idDoctor { get; set; }
+            public int idApadrinado { get; set; }
+        }
+
+        public class Request {
+            public int apadrinado {get; set;}
+            public item.Data[] items {get; set;}
+        }
+
         public class Item
         {
             [Key]
             public int id { get; set; }
-            public int idItemFarmacia { get; set; }
-            public DateTime? fcaducidad { get; set; }
-            public string nombre { get; set; }
-            public string compuesto { get; set; }
+            public itemFarmacia itemFarmacia { get; set; }
             public Int32 diagnostico { get; set; }
             public int cantidad { get; set; }
             public string posologia { get; set; }
@@ -145,13 +224,6 @@ namespace TheCircle.Models
                 {
                     throw new Exception("Error al insertar ItemReceta", e);
                 }
-            }
-
-            //Obtiene todos los Items de una receta
-            public static Item[] ReportReceta(int receta, MyDbContext _context)
-            {
-                //string q = $"EXEC ItemReceta_Report_Receta @receta={receta}";
-                return null;//_context.ItemsReceta.FromSql(q).ToArray();
             }
 
             public class Data

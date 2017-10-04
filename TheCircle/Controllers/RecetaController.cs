@@ -27,7 +27,8 @@ namespace TheCircle.Controllers
             if (!ModelState.IsValid)
                 return BadRequest("Incorrect data");
 
-            var recetas = Receta.ReportByDoctor(fecha, token.data.cedula, _context);
+            //var recetas = Receta.ReportByDoctor(fecha, token.data.cedula, _context);
+            Receta[] recetas = Receta.GetAllByDoctorByDate(fecha, token.data.cedula, _context);
             return Ok(recetas);
         }
 
@@ -37,15 +38,7 @@ namespace TheCircle.Controllers
         public IActionResult ReportCoordinadorCC(Token token, [FromQuery] Date fecha)
         {
             Receta[] recetas = Receta.ReportLocalidad (token.data.localidad, fecha.desde, fecha.hasta);
-            var data = new List<object>();
-
-            foreach (Receta receta in recetas) {
-                var items = ItemReceta.ReportReceta(receta.id, _context);
-                if (items.Count() > 0)
-                    data.Add(new { receta, items });
-            }
-
-            return Ok(data);
+            return Ok(recetas);
         }
 
 
@@ -111,20 +104,18 @@ namespace TheCircle.Controllers
 
 
         //Crea una receta de farmacia
-        [HttpPost("receta/apadrinado/{apadrinado}")]
+        [HttpPost("receta")]
         [APIauth("medico")]
-        public IActionResult PostReceta(Token token, int apadrinado)
+        public IActionResult PostReceta(Token token, [FromBody]Receta.Request data)
         {
-            if (apadrinado <= 10000)
-                return BadRequest("Incorrect Data");
-           
-            Receta receta = new Receta(apadrinado, token.data.cedula, _context);
+    
+            Receta receta = new Receta(data.apadrinado, token.data.cedula, data.items);
             return Ok(receta);
         }
 
 
         //Crea una receta de farmacia con sus items
-        [HttpPost("receta/{id}")]
+        /*[HttpPost("receta/{id}")]
         [APIauth("medico")]
         public IActionResult PostItemsReceta(int id, [FromBody]ItemReceta.Data[] items)
         {
@@ -144,7 +135,7 @@ namespace TheCircle.Controllers
                 tran.Rollback();
                 return BadRequest("Error al ingresar los itemsReceta");
             }            
-        }
+        }*/
 
         //Se actualiza una receta a despachada, asistente de salud
         [HttpPut("receta/{id}")]

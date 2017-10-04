@@ -10,18 +10,17 @@ namespace TheCircle.Models
     {
         [Key]
         public int id { get; set; }
-        public string nombre { get; set; }
-        public string compuesto { get; set; }
-        public int solicitante { get; set; }
+        public itemFarmacia item {get; set; } 
+        public UserSafe solicitante { get; set; }
         public int cantidad { get; set; }
         public DateTime fecha { get; set; }
         public string origen { get; set; }
         public string destino { get; set; }
         public Boolean cancelado { get; set; }
-        public int? autorizadoPor { get; set; }
+        public solicitante autorizadoPor { get; set; } = null;
         public DateTime? fechaDespacho { get; set; }
         public int? cantidadDespacho { get; set; }
-        public int? personalDespacho { get; set; }
+        public UserSafe personalDespacho { get; set; } = null;
         public string comentarioDespacho { get; set; } = null;
 
         public Transferencia() { }
@@ -36,10 +35,36 @@ namespace TheCircle.Models
             }             
         }
 
+        public static Transferencia[] Populate(this IQueyrable<BDD> data) 
+        {
+            var transferencias = new List<Transferencia>();
+            var usuarios = UserSafe.GetAll();
+
+            forEach(var transferencia in data ) {
+                transferencias.Add(new Transferencia(){
+                    id = data.id,
+                    item = itemFarmacia.Get( data.item),
+                    solicitante = UserSafe.Get(usuarios, data.solicitante),
+                    cantidad = data.cantidad,
+                    fecha = data.fecha,
+                    origen = data.origen,
+                    destino = data.destino,
+                    cancelado = data.cancelado,
+                    autorizadoPor = UserSafe.Get(usuarios, data.autorizadoPor),
+                    fechaDespacho = data.fechaDespacho,
+                    cantidadDespacho = data.cantidadDespacho,
+                    personalDespacho = nUserSafe.Get(usuarios, data.personalDespacho),
+                    comentarioDespacho = data.comentarioDespacho
+                })
+            }
+
+            return transferencias.ToArray();
+        }
+
         public static Transferencia[] GetPendientes(Localidad localidad)
         {
             string q = $"EXEC Transferencia_Report @pendientes=1, @cancelado=0, @localidadOrigen={localidad}";
-            return new MyDbContext().Transferencia.FromSql(q).ToArray();
+            return new MyDbContext().Transferencia.FromSql(q).Populate();
         }
 
         internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
@@ -110,8 +135,7 @@ namespace TheCircle.Models
         public class BDD {
             [Key]
             public int id { get; set; }
-            public string nombre { get; set; }
-            public string compuesto { get; set; }
+            public int itemFarmacia { get; set; }
             public int solicitante { get; set; }
             public int cantidad { get; set; }
             public DateTime fecha { get; set; }
