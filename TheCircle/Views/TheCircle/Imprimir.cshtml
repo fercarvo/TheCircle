@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
 
-    @Html.Partial("Partials/Styles")
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto">
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+<style> body { font-family: 'Roboto', sans-serif; max-height: 100%; overflow: hidden } </style>
 
 </head>
 <body class="page-dashboard">
@@ -23,43 +25,37 @@
             </style>
                 <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
                     <div class="panel-title" style="text-align:center;font-size:20px;">
-                        <img src="~/images/logo-purple.svg" alt="Children International" style="height:80px;">    
+                        <img src="https://www.children.org/ci-frontend/dist/images/logo-purple.svg" style="height:80px;">    
                     </div><!-- /.panel-title -->
                 </div><!-- /.panel-heading -->
-                <div class="panel-body" style="padding:0px 20px 0px 20px;" ng-init="activar()">
+                <div class="panel-body" style="padding:0px 20px 0px 20px;" >
 
                         <div class="panel-heading" style="text-align:center;font-size:20px;">
-                            The Circle
+                            Receta Médica
                         </div>
                         <div class="panel-body" style=" padding-top: 5px;">
-                            <form class="form-horizontal">
-                                <table class="table table-striped">
-                                    <tbody>
-                                        <tr>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Fecha:</label></td>
-                                            <td>27/09/2017</td>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">De:</label></td>
-                                            <td>Remision de children</td>
-                                        </tr>
-                                        <tr>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Dispensario:</label></td>
-                                            <td>Dispensario solicitado</td>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Niño:</label></td>
-                                            <td>Edgar Carvajal </td>
-                                        </tr>
-                                        <tr>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Sexo:</label></td>
-                                            <td>M</td>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Edad:</label></td>
-                                            <td>22</td>
-                                        </tr>
-                                        <tr>
-                                            <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Diagnostico</label></td>
-                                            <td></td>
-                                        </tr>
-                                   </tbody>
-                                </table>
-                            </form>
+                            <table class="table table-bordered">
+                                <tbody>
+                                    <tr>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Fecha:</label></td>
+                                        <td>27/09/2017</td>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Doctor solicitante:</label></td>
+                                        <td>Carlos Ruano Robles de Todos Los Santos</td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Dispensario:</label></td>
+                                        <td>CC2</td>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Niño:</label></td>
+                                        <td>Carlos Julio Arosemena Tola </td>
+                                    </tr>
+                                    <tr>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Sexo:</label></td>
+                                        <td>M</td>
+                                        <td><label class="control-label col-sm-6" style="text-align:left;padding-right:0px;">Edad:</label></td>
+                                        <td>22</td>
+                                    </tr>
+                               </tbody>
+                            </table>
                             
 
                             <table class="table table-striped" border="1" rules="colums">
@@ -67,104 +63,39 @@
                                     <tr>
                                         <th>Nombre</th>
                                         <th>Compuesto</th>
-                                        <th>X</th>
-                                        <th>Y</th>
-                                        <th>Z</th>
+                                        <th>Caducidad</th>
+                                        <th>Posologia</th>
                                     </tr>
                                 </thead>
 
                                 <tbody>
                                     <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
+                                        <td>Paracetamol MK</td>
+                                        <td>Paracetamol 1g /para el dolor de cabeza (improve)</td>
+                                        <td>12/12/2019</td>
+                                        <td>Tomar 25 pastillas en una semana procurar no ingerir demasiadas</td>
                                     </tr>
                                     <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                    </tr>
-                                    <tr>
-
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
-                                        <td>x</td>
+                                        <td>Ibuprofeno MK</td>
+                                        <td>Analgan 1000mg / para el dolor de espalda (improve)</td>
+                                        <td>12/12/2019</td>
+                                        <td>Tomar 1 cada 12 horas, por la mañana y por la noche</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
-                    <label class="control-label col-sm-12" style="text-align:left;padding-right:0px;padding-bottom:20px">Firma</label>
-                    <hr style="border-color: black;text-align:left;width:98%;" size="1"/>
+                    <label class="control-label col-sm-12" style="text-align:center;padding-right:0px;padding-bottom:20px">Firma</label>
                 </div><!-- /.tab-pane 3 -->
 
         </div>
     </div>
 
-    @Html.Partial("Partials/Scripts")
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+<script src="~/scripts/ripple.js"> </script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+<script>
+    window.open("https://www.google.com", "Receta medica");
+</script>
 </body>
 </html>
