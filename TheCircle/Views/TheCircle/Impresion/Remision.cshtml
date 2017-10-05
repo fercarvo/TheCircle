@@ -1,0 +1,89 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Remisión médica</title>
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    @{
+        var remision = (TheCircle.Models.Remision)ViewData["Remision"];
+        string localidad = (string)ViewData["Localidad"];
+    }
+
+</head>
+<body class="page-dashboard">
+    <div class="content-wrapper">
+
+        <div class="content" style="background-color: #fff;overflow-y:auto;max-height:100vh;">
+            <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+                <div class="panel-title" style="text-align:center;font-size:20px;">
+                    <img src="~/images/logo_CI.svg" style="height:80px;">
+                </div><!-- /.panel-title -->
+            </div><!-- /.panel-heading -->
+            <div class="panel-body" style="padding:0px 20px 0px 20px;">
+
+                <div class="panel-heading" style="text-align:center;font-size:15px;">
+                    Remision Médica
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-bordered" style="text-align:left;">
+                        <tbody>
+                            <tr>
+                                <td style="font-weight: bold;">Fecha:</td>
+                                <td>@remision.fecha</td>
+                                <td style="font-weight: bold;">Doctor solicitante:</td>
+                                <td>@remision.nombreDoctor @remision.apellidoDoctor</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Apadrinado:</td>
+                                <td>@remision.nombreApadrinado</td>
+                                <td style="font-weight: bold;">Código:</td>
+                                <td>@remision.codigoApadrinado</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Numero de remisión:</td>
+                                <td>@remision.id</td>
+                                <td style="font-weight: bold;">Localidad:</td>
+                                <td>@localidad</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th style="font-weight: bold;">Institucion:</th>
+                                <td>@remision.institucion</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: bold;">Especialidad</th>
+                                <td>@remision.especialidad</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: bold;">Monto a cubrir:</th>
+                                <td>US$ @remision.monto</td>
+                            </tr>
+                            <tr>
+                                <th style="font-weight: bold;">Sintomas: </th>
+                                <td>@remision.sintomas</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="text-align:center;font-weight:bold;padding-top:25px">Firma médico</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha384-xBuQ/xzmlsLoJpyjoggmTEz8OWUFM0/RC5BsqQBDX2v5cMvDHcMakNTNrHIW2I5f" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script>
+    /*setTimeout(function () {
+        window.print()
+    }, 3000)*/
+    </script>
+</body>
+</html>

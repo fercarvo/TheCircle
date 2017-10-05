@@ -401,6 +401,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                     disable.remision = true;
                     atencionFactory.remision = $scope.remision; //Se guarda la remision en la factory
                     $scope.disable = disable.remision; //Se desactiva atencion.remision.html
+                    window.open("/api/remision/" + res.data.id + "/imprimir");
                 }, function() { })
         }
 

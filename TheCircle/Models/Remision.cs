@@ -20,7 +20,7 @@ namespace TheCircle.Models
         public int cedulaDoctor { get; set; }
         public string nombreDoctor { get; set; }
         public string apellidoDoctor { get; set; }
-        public string email { get; set; }
+        public string email { get; set; } = null;
         public string nombreApadrinado { get; set; }
         public DateTime fCaducidad { get; set; }
 
@@ -30,11 +30,19 @@ namespace TheCircle.Models
         {
             try {
                 string q = $"EXEC Remision_insert @atencionM={atencionM}, @institucion={institucion}, @monto='{monto}', @sintomas='{sintomas}'";
-                new MyDbContext().Database.ExecuteSqlCommand(q);
+                var data = new MyDbContext().Remision.FromSql(q).First();
+
+                id = data.id;
 
             } catch (Exception e) {
                 throw new Exception("Error al crear remision medica", e);
             }            
+        }
+
+        public static Remision Get(int id)
+        {
+            string query = $"EXEC Remision_Select @id={id}";
+            return new MyDbContext().Remision.FromSql(query).First();
         }
 
         public static Remision[] GetPendientes()

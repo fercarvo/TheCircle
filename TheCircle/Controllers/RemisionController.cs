@@ -23,8 +23,35 @@ namespace TheCircle.Controllers
             if (req is null)
                 return BadRequest("Incorrect Data");
 
-            new Remision(req.atencionM, req.institucion, req.monto, req.sintomas);
-            return Ok();
+            var remision = new Remision(req.atencionM, req.institucion, req.monto, req.sintomas);
+            return Ok(remision);
+        }
+
+        //Retorna una vista de la remision creada
+        [HttpGet("remision/{id}/imprimir")]
+        [APIauth("medico")]
+        public IActionResult GetRemision(Token token, int id)
+        {
+            if (id <= 0)
+                return BadRequest("Incorrect data");
+
+            try
+            {
+                Remision remision = Remision.Get(id);
+
+                if (remision.cedulaDoctor != token.data.cedula)
+                    return BadRequest("Usuario no autorizado ");
+
+                string localidad = $"{token.data.localidad}";
+
+                ViewData["Remision"] = remision;
+                ViewData["Localidad"] = localidad;
+
+                return View("~/Views/TheCircle/Impresion/Remision.cshtml");
+
+            } catch (Exception e) {
+                throw new Exception("Error al cargar remision", e);
+            }
         }
 
 

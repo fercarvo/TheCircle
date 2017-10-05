@@ -53,7 +53,7 @@
                         </tr>
                         <tr>
                             <td>Cantidad a solicitar: </td>
-                            <td><input form="pedidoI" required type="number" min="1" title="La cantidad no puede ser mayor al stock" class="form-control" ng-model="cantidad"></td>
+                            <td><input form="pedidoI" required type="number" min="1" max="{{item.stock}}" title="La cantidad no puede ser mayor al stock" class="form-control" ng-model="cantidad"></td>
                         </tr>
                     </tbody>
                 </table>
