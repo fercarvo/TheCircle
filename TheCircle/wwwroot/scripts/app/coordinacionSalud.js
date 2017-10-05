@@ -10,10 +10,6 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/validar.html',
                 controller: 'validar'
             })
-            .state('historial', {
-                templateUrl: 'views/coordinacionSalud/historial.html',
-                controller: 'historial'
-            })
             .state('stock', {
                 templateUrl: 'views/coordinacionSalud/stock.html',
                 controller: 'stock'
@@ -25,6 +21,10 @@ angular.module('coordinacionSalud', ['ui.router'])
             .state('remisionesRechazadas', {
                 templateUrl: 'views/coordinacionSalud/remisionesRechazadas.html',
                 controller: 'remisionesRechazadas'
+            })
+            .state('remisionesAprobadas', {
+                templateUrl: 'views/coordinacionSalud/remisionesAprobadas.html',
+                controller: 'remisionesAprobadas'
             })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(true)
@@ -41,12 +41,46 @@ angular.module('coordinacionSalud', ['ui.router'])
         var dataFac = {
             stock: null,
             remisiones: null,
+            remisionesAprobadas: null,
             rechazos: null,
             getStock: getStock,
             getRechazos: getRechazos,
             getRemisiones: getRemisiones,
             postAprobacion: postAprobacion,
-            guardarAprobacionRechazada: guardarAprobacionRechazada
+            guardarAprobacionRechazada: guardarAprobacionRechazada,
+            getRemisionesAprobadas: getRemisionesAprobadas
+        }
+
+        function getRemisionesAprobadas($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/remision/aprobadas",
+                params: data
+            }).then(function success(res) {
+                console.log(res.data)
+
+                res.data.infoAP.forEach(function (aprobacion) {
+                    res.data.infoRemision.every(function (remision, index) {
+                        if (aprobacion.idRemision == remision.id) {
+                            delete aprobacion.idRemision
+                            aprobacion.remision = remision
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
+                })
+
+                dataFac.remisionesAprobadas = res.data.infoAP;
+                $scope.remisiones = dataFac.remisionesAprobadas;
+                console.log(dataFac.remisionesAprobadas)
+                NProgress.done();
+            }, function error(err) {
+                console.log("Error cargar remisiones", error);
+                notify("No se pudo cargar las remisiones", "danger")
+                NProgress.done();
+            })
         }
 
         function getStock($scope) {
@@ -73,7 +107,6 @@ angular.module('coordinacionSalud', ['ui.router'])
                 getRechazos($scope)
                 NProgress.done()
             }, function (error) {
-                $('#modal_aprobarRechazo').modal('hide')
                 console.log("Error rechazos", error)
                 notify("No se pudo cargar los rechazos de aprobacion1", "danger")
                 NProgress.done()
@@ -180,9 +213,6 @@ angular.module('coordinacionSalud', ['ui.router'])
         }
 
     }])
-    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-
-    }])
     .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock
         var actualizar = refresh.go(cargar, 1);
@@ -256,4 +286,24 @@ angular.module('coordinacionSalud', ['ui.router'])
         $scope.guardarAprobacion = function (remision, comentario, monto) {
             dataFac.guardarAprobacionRechazada(remision, comentario, monto, $scope)
         }
+    }])
+    .controller('remisionesAprobadas', ["$scope", "dataFac", function ($scope, dataFac) {
+        $scope.remisiones = dataFac.remisionesAprobadas
+        $scope.aprobacion = null
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getRemisionesAprobadas($scope, data)
+            
+        }
+
+        $scope.select = function (remision) {
+            $scope.aprobacion = remision
+            $("#modal_aprobacion").modal("show")
+        }
+
     }])

@@ -79,7 +79,8 @@
     <Content Include="wwwroot\views\contralor\inconsistencias.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.receta.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.transferencia.html" />
-    <Content Include="wwwroot\views\coordinacionSalud\historial.html" />
+    <Content Include="wwwroot\views\contralor\remisionesAprobadas.html" />
+    <Content Include="wwwroot\views\coordinacionSalud\remisionesAprobadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesRechazadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\stock.html" />
     <Content Include="wwwroot\views\coordinacionSalud\transferencias.html" />

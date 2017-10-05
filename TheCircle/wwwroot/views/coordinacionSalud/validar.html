@@ -37,7 +37,7 @@
                                 <td>{{r.institucion}}</td>
                                 <td>{{r.monto | currency}}</td>
                                 <td>{{r.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td><button ng-click="aprobar(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                                <td><button title="Aprobar sin revisar" ng-click="aprobar(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                                 <td><button ng-click="ver(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
@@ -81,7 +81,7 @@
                                     </tr>
                                     <tr>
                                         <td>Monto a aprobar: </td>
-                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" min="1" style="width:100%;" /></td>
+                                        <td><input form="aprobarForm" required ng-model="cantidad" title="Esta cantidad debe ser menor o igual al monto inicial" type="number" step="0.01" min="1" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
                                         <td>Comentario: </td>

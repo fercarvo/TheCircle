@@ -10,10 +10,6 @@ angular.module('contralor', ['ui.router'])
                 templateUrl: 'views/contralor/aprobar.html',
                 controller: 'aprobar'
             })
-            .state('historial', {
-                templateUrl: 'views/contralor/historial.html',
-                controller: 'historial'
-            })
             .state('inconsistencias', {
                 templateUrl: 'views/contralor/inconsistencias.html',
                 controller: 'inconsistencias'
@@ -29,6 +25,10 @@ angular.module('contralor', ['ui.router'])
             .state('inconsistencias.transferencia', {
                 templateUrl: 'views/contralor/inconsistencias.transferencia.html',
                 controller: 'inconsistencias.transferencia'
+            })
+            .state('remisionesAprobadas', {
+                templateUrl: 'views/contralor/remisionesAprobadas.html',
+                controller: 'remisionesAprobadas'
             })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(true)
@@ -50,12 +50,46 @@ angular.module('contralor', ['ui.router'])
             recetas: null,
             pedidosinternos: null,
             transferencias: null,
+            remisionesAprobadas: null,
             getTransferencias: getTransferencias,
             getRecetas: getRecetas,
             getPedidos: getPedidos,
             getAprobaciones1: getAprobaciones1,
             rechazarRemision: rechazarRemision,
-            guardarAprobacion: guardarAprobacion
+            guardarAprobacion: guardarAprobacion,
+            getRemisionesAprobadas: getRemisionesAprobadas
+        }
+
+        function getRemisionesAprobadas($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/remision/aprobadas",
+                params: data
+            }).then(function success(res) {
+                console.log("Info inicial", res.data)
+
+                res.data.infoAP.forEach(function (aprobacion) {
+                    res.data.infoRemision.every(function (remision, index) {
+                        if (aprobacion.idRemision == remision.id) {
+                            delete aprobacion.idRemision
+                            aprobacion.remision = remision
+                            return false
+                        } else {
+                            return true
+                        }
+                    })
+                })
+
+                dataFac.remisionesAprobadas = res.data.infoAP;
+                $scope.remisiones = dataFac.remisionesAprobadas;
+                console.log("Despues populate", dataFac.remisionesAprobadas)
+                NProgress.done();
+            }, function error(err) {
+                console.log("Error cargar remisiones", error);
+                notify("No se pudo cargar las remisiones", "danger")
+                NProgress.done();
+            })
         }
 
         function getTransferencias($scope) {
@@ -160,17 +194,6 @@ angular.module('contralor', ['ui.router'])
         $scope.guardarAprobacion = function (remision) {
             dataFac.guardarAprobacion(remision, "", $scope)
         }
-
-
-
-
-
-
-
-
-    }])
-    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-
     }])
     .controller('inconsistencias', ["$state", function ($state) {
         $state.go('inconsistencias.receta')
@@ -207,4 +230,24 @@ angular.module('contralor', ['ui.router'])
         $scope.select = function (transferencia) {
             $scope.transferencia = transferencia
         }
+    }])
+    .controller('remisionesAprobadas', ["$scope", "dataFac", function ($scope, dataFac) {
+        $scope.remisiones = dataFac.remisionesAprobadas
+        $scope.aprobacion = null
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getRemisionesAprobadas($scope, data)
+
+        }
+
+        $scope.select = function (remision) {
+            $scope.aprobacion = remision
+            $("#modal_aprobacion").modal("show")
+        }
+
     }])

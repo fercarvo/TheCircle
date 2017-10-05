@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using TheCircle.Util;
@@ -37,6 +38,17 @@ namespace TheCircle.Models
             } catch (Exception e) {
                 throw new Exception("Error al crear remision medica", e);
             }            
+        }
+
+        public static object GetAprobadas(DateTime desde, DateTime hasta)
+        {
+            string query = $"EXEC Remision_Report_Aprobadas_infoRemision @desde='{desde}', @hasta='{hasta}'";
+            Remision[] infoRemision = new MyDbContext().Remision.FromSql(query).ToArray();
+
+            string query2 = $"EXEC Remision_Report_Aprobadas_infoAP @desde='{desde}', @hasta='{hasta}'";
+            Aprobacion[] infoAP = new MyDbContext().Aprobacion.FromSql(query2).ToArray();
+
+            return new { infoRemision, infoAP };
         }
 
         public static Remision Get(int id)

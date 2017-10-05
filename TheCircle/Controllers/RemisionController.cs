@@ -27,6 +27,18 @@ namespace TheCircle.Controllers
             return Ok(remision);
         }
 
+        //Obtengo una lista de todas las remisiones médicas aprobadas por contralor y coordinacion de salud
+        [HttpGet("remision/aprobadas")]
+        [APIauth("contralor", "coordinador")]
+        public IActionResult GetAprobadas([FromQuery]Date fecha)
+        {
+            if (fecha is null)
+                return BadRequest();
+
+            var remisiones = Remision.GetAprobadas(fecha.desde, fecha.hasta);
+            return Ok(remisiones);
+        }
+
         //Retorna una vista de la remision creada
         [HttpGet("remision/{id}/imprimir")]
         [APIauth("medico")]

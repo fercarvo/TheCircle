@@ -55,7 +55,6 @@ namespace TheCircle.Controllers
 
         //Obtengo el stock de toda la fundacion
         [HttpGet("itemfarmacia/report/total")]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("coordinador", "bodeguero")]
         public IActionResult GetStockGeneral(Token token)
         {
