@@ -31,6 +31,30 @@ namespace TheCircle.Controllers
             return Ok(recetas);
         }
 
+        [HttpGet("receta/{id}/imprimir")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        [APIauth("medico")]
+        public IActionResult Imprimir(Token token, int id)
+        {
+            try {
+                var receta = Receta.Get(id);
+
+                if (receta.cedulaDoctor != token.data.cedula)
+                    return BadRequest("Usuario no autorizado ");
+
+                var items = ItemReceta.ReportReceta(id, new MyDbContext());
+                string localidad = $"{token.data.localidad}";
+
+                ViewData["Receta"] = receta;
+                ViewData["Items"] = items;
+                ViewData["Localidad"] = localidad;
+
+                return View("~/Views/TheCircle/Impresion/Receta.cshtml");
+            } catch (Exception e) {
+                throw new Exception("Error al cargar receta", e);
+            }            
+        }
+
         [HttpGet("receta/localidad/fecha")]
         //[ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
         [APIauth("coordinadorCC")]

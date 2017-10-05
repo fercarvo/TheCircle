@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
+using TheCircle.Models;
 
 namespace TheCircle.Controllers.views
 {
@@ -92,13 +93,6 @@ namespace TheCircle.Controllers.views
         [HttpGet("director")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Director()
-        {
-            return View();
-        }
-
-        [HttpGet("imprimir")]
-        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Imprimir()
         {
             return View();
         }

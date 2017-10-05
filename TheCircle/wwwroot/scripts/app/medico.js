@@ -466,6 +466,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.disable = disable.receta; //Se desactiva atencion.receta.html
                 refresh.stop(actualizar); //Se detiene la actualizacion de receta
                 cargar(); //Se carga por ultima vez la data
+
+                window.open("/api/receta/" + res.data.id + "/imprimir");
+
             }, function err(err){
                 NProgress.done();
                 console.log("Error al crear receta", err);
