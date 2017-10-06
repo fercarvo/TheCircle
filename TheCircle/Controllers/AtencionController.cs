@@ -27,7 +27,7 @@ namespace TheCircle.Controllers
 
             try { //Envio de email a operador
                 Apadrinado apadrinado = Apadrinado.Get(request.apadrinado, _context);
-                UserSafe operador = Usuario.GetByCargo("operador");
+                UserSafe operador = UserSafe.GetByCargo("operador");
 
                 var peso = (float)request.peso / (float)apadrinado.peso;
                 var talla = (float)request.talla / (float)apadrinado.talla;
