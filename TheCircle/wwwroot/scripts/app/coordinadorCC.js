@@ -59,26 +59,22 @@ angular.module('coordinadorCC', ['ui.router'])
             return promise;
         }
 
-        function getEgresos(data) {
+        function getEgresos(data, $scope) {
             NProgress.start()
-            var promise = $http({
+            $http({
                 method: "GET",
                 url: "/api/itemfarmacia/report/egresos",
                 params: data
-            })
-
-            promise.then(function (res) {
+            }).then(function (res) {
                 NProgress.done();
                 console.log("Egresos", res.data)
+                $scope.egresos.data = res.data
             }, function (err) {
                 console.log("error cargar egresos", err)
                 notify("No se pudo cargar los egresos", "danger");
                 NProgress.done();
             })
-
-            return promise;
         }
-
 
         return dataFac;
     }])
@@ -108,13 +104,11 @@ angular.module('coordinadorCC', ['ui.router'])
         }
 
     }])
-    .controller('egresos', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('egresos', ["$scope", "dataFac", function ($scope, dataFac) {
 
         $scope.egresos = dataFac.egresos;
 
-        $scope.$watch("egresos", function () {
-            dataFac.egresos = $scope.egresos
-        })
+        $scope.$watch("egresos", function () { dataFac.egresos = $scope.egresos })
 
         $scope.generar = function (desde, hasta) {
             var data = {
@@ -122,9 +116,7 @@ angular.module('coordinadorCC', ['ui.router'])
                 hasta: hasta
             }
 
-            dataFac.getEgresos(data).then(function (res) {
-                $scope.egresos.data = res.data
-            }, function () { })
+            dataFac.getEgresos(data, $scope);
         }
 
     }])

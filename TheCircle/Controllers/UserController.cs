@@ -41,7 +41,7 @@ namespace TheCircle.Controllers
                 return File(image, "image/jpeg");
 
             } catch (Exception e) {
-                return LocalRedirect("/images/ci.png");
+                return LocalRedirect("/images/foto.png");
             }
         }
 

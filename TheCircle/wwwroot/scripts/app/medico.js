@@ -51,10 +51,6 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/pedidos.html',
                 controller: 'pedidos'
             })
-            /*.state('pedidos.transferencia', {
-                templateUrl: 'views/medico/pedidos.transferencia.html',
-                controller: 'pedidos.transferencia'
-            })*/
             .state('pedidos.generar', {
                 templateUrl: 'views/medico/pedidos.generar.html',
                 controller: 'pedidos.generar'
@@ -218,7 +214,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
     .factory('atencionFactory', ["$http", function ($http) { //factory donde se guarda toda la data ingresada
         var atencionFactory = {
             apadrinado : {},
-            foto : "/images/ci.png",
+            foto : "/images/foto.png",
             codigo : null,
             atencion : null,
             diagnosticos : null,
@@ -316,7 +312,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
 
             }, function error() {
 
-                $scope.foto = "/images/ci.png";
+                $scope.foto = "/images/foto.png";
                 $scope.status = true
                 $scope.codigo = null;
                 $scope.apadrinado = {};

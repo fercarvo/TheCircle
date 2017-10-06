@@ -77,5 +77,80 @@ TheCircle, CI"
                 return;
             }            
         }
+
+        public void TransferenciaErronea(string nombre, string email, int transferencia)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(from);
+                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.Subject = "Despacho de transferencia inconsistente";
+
+                message.Body = new TextPart("plain")
+                {
+                    Text = @"The Circle le saluda,
+
+Recientemente se despacho una transferencia con una cantidad inferior al solicitado, el número de la misma es " + $"0000{transferencia}"
+                };
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
+
+        public void RecetaErronea(string nombre, string email, int receta)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(from);
+                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.Subject = "Despacho de receta inconsistente";
+
+                message.Body = new TextPart("plain")
+                {
+                    Text = @"The Circle le saluda,
+
+Recientemente se despacho una receta médica con una cantidad inferior a los items solicitados, el número de la misma es " + $"0000{receta}"
+                };
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
+
+        public void PedidoInternoErroneo(string nombre, string email, int pedido)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(from);
+                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.Subject = "Despacho de receta inconsistente";
+
+                message.Body = new TextPart("plain")
+                {
+                    Text = @"The Circle le saluda,
+
+Recientemente se despacho un pedido interno con una cantidad inferior a la solicitada, el número de la misma es " + $"0000{pedido}"
+                };
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
     }
 }
