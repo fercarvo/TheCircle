@@ -55,13 +55,13 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 templateUrl: 'views/medico/pedidos.transferencia.html',
                 controller: 'pedidos.transferencia'
             })*/
-            .state('pedidos.interno', {
-                templateUrl: 'views/medico/pedidos.interno.html',
-                controller: 'pedidos.interno'
+            .state('pedidos.generar', {
+                templateUrl: 'views/medico/pedidos.generar.html',
+                controller: 'pedidos.generar'
             })
-            .state('pedidos.recibidos', {
-                templateUrl: 'views/medico/pedidos.recibidos.html',
-                controller: 'pedidos.recibidos'
+            .state('pedidos.receptar', {
+                templateUrl: 'views/medico/pedidos.receptar.html',
+                controller: 'pedidos.receptar'
             });
 
         //False en modo de produccion
@@ -85,6 +85,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             stockInsumos: null,
             recetas: null,
             estadisticas: {},
+            pedidosInternos: null,
             tipos: ["curativo", "seguimiento", "control"],
             getStockChildren: getStockChildren,
             getInstituciones: getInstituciones,
@@ -93,7 +94,19 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             getStockInsumos: getStockInsumos,
             getRecetas: getRecetas,
             getApadrinado: getApadrinado,
-            postRemision: postRemision
+            postRemision: postRemision,
+            getPedidosAReceptar: getPedidosAReceptar
+        }
+
+        function getPedidosAReceptar($scope) {
+            $http.get("/api/pedidointerno/despachadas").then(function (res) {
+                console.log("Pedidos internos", res.data)
+                dataFactory.pedidosInternos = res.data;
+                $scope.pedidosInternos = dataFactory.pedidosInternos
+            }, function (error) {
+                console.log("Error pedidos: ", error)
+                notify("No se pudo cargar pedidos internos", "danger")
+            })
         }
 
         function getStockChildren() {
@@ -680,69 +693,21 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         }
     }])
     .controller('pedidos', ["$state", function ($state) {
-        $state.go('pedidos.interno');
+        $state.go('pedidos.generar');
     }])
-    /*.controller('pedidos.transferencia', ['$scope', '$state', '$http', 'dataFactory', function ($scope, $state, $http, dataFactory) {
-        $scope.stock = dataFactory.stockChildren;
-        $scope.item = null;
-
-        var actualizar = refresh.go(cargar, 30);
-
-        $scope.$on('dataFactory.stockChildren', function () {
-            $scope.stock = dataFactory.stockChildren;
-        })
-
-        function cargar() {
-            if ($state.includes('pedidos.transferencia')) {
-                dataFactory.getStockChildren();
-            } else {
-                refresh.stop(actualizar);
-            }
-        }
-
-        $scope.seleccionar = function (item) {
-            $scope.item = item;
-            $('#modal_transferencia').modal('show');
-            $scope.cantidad = null;
-        }
-
-        $scope.solicitar = function (cantidad) {
-            data = {
-                item: $scope.item.id,
-                cantidad: cantidad
-            }
-
-            NProgress.start();
-            $http.post("/api/transferencia", data).then(function success(res) {
-                NProgress.done();
-                $('#modal_transferencia').modal('hide');
-                console.log("Se creo la transferencia", res.data);
-                notify("Transferencia creada exitosamente", "success");
-                actualizar = refresh.go(cargar, 30);
-                cantidad = 1;
-            }, function error(err) {
-                NProgress.done();
-                console.log("No se pudo crear la transferencia", err);
-                notify("No se pudo crear la transferencia", "danger");
-                $('#modal_transferencia').modal('hide');
-                actualizar = refresh.go(cargar, 30);
-                cantidad = 1;
-            })
-        }
-    }])*/
-    .controller('pedidos.interno', ['$scope', '$http', '$state', 'dataFactory', function ($scope, $http, $state, dataFactory) {
-
+    .controller('pedidos.generar', ['$scope', '$http', '$state', 'dataFactory', function ($scope, $http, $state, dataFactory) {
+        console.log("En generar")
         $scope.stock = dataFactory.stockInsumos;
         $scope.item = null;
 
-        var actualizar = refresh.go(cargar, 30);
+        var actualizar = refresh.go(cargar, 1);
 
         $scope.$on('dataFactory.stockInsumos', function () {
             $scope.stock = dataFactory.stockInsumos
         })
 
         function cargar() {
-            if ($state.includes('pedidos.interno')) {
+            if ($state.includes('pedidos.generar')) {
                 dataFactory.getStockInsumos();
             } else {
                 refresh.stop(actualizar);
@@ -779,6 +744,39 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             })
         }
     }])
-    .controller('pedidos.recibidos', ["$scope", "$state", "dataFactory", "atencionFactory", function ($scope, $state, dataFactory, atencionFactory) {
+    .controller('pedidos.receptar', ["$scope", "$state", "dataFactory", "$http", function ($scope, $state, dataFactory, $http) {
+        $scope.pedidosInternos = dataFactory.pedidosInternos;
+        $scope.pedido = null;
 
+        var actualizar = refresh.go(cargar, 1);
+
+        function cargar() {
+            if ($state.includes('pedidos.receptar')) {
+                dataFactory.getPedidosAReceptar($scope);
+            } else {
+                refresh.stop(actualizar);
+            }
+        }
+
+        $scope.ver = function (pedido) {
+            $scope.pedido = pedido
+            $scope.comentario = null
+        }
+
+        $scope.guardarComentario = function (pedido, comentario) {
+            refresh.stop(actualizar);
+            NProgress.start();
+            $http.put("/api/pedidointerno/" + pedido + "/receptar", {comentario: comentario}).then(function () {
+                $('#ver_pedido').modal('hide');
+                actualizar = refresh.go(cargar, 1);
+                notify("Pedido receptado exitosamente", "success");
+                NProgress.done();
+            }, function error(e) {
+                $('#ver_pedido').modal('hide');
+                actualizar = refresh.go(cargar, 1);
+                console.log("No se recepto", e)
+                notify("No se pudo receptar el pedido", "danger")
+                NProgress.done();
+            })
+        }   
     }])

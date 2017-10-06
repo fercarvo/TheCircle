@@ -6,7 +6,6 @@
 <div class="panel-body" id="estadistica-recetas-panel">
     <div class="form-group" id="estadistica-recetas-form">
         <form class="form-horizontal" ng-submit="generar(recetas.desde, recetas.hasta)">
-            <!--"m-bottom-30" para poner margen vertical de 30px-->
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
                 <input ng-model="recetas.desde" required type="date" class="form-control">
@@ -23,12 +22,12 @@
 
     <div class="panel panel-default-light border-default col-sm-12" id="estadistica-recetas-table">
         <div class="panel-heading">
-            <div style="text-align:right">
+            <div style="font-weight:bold;text-align:right">
                 <input type="text" ng-model="buscar.receta.idApadrinado" placeholder="buscar por apadrinado" class="form-control">
             </div>
         </div>
         <div style="overflow-y:auto;max-height:45vh">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>N&uacute;mero</th>
@@ -57,10 +56,10 @@
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"># receta  {{("00000000"+ obj.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
+                    <h5 class="modal-title">Receta #:  {{("00000000"+ receta.receta.id).slice(-9)}}  - Fecha: {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;">
-                    <table class="table table-striped">
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nombre</th>
@@ -80,11 +79,9 @@
                     </table>
                 </div>
                 <div class="text-center ">
-                    <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-                </div><!-- /.form-group -->
+                    <button data-ripple type="button" class="btn btn-info" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>
-
-
 </div>

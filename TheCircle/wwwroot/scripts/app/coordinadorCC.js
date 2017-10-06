@@ -123,7 +123,7 @@ angular.module('coordinadorCC', ['ui.router'])
             }
 
             dataFac.getEgresos(data).then(function (res) {
-                $scope.egresos = res.data
+                $scope.egresos.data = res.data
             }, function () { })
         }
 

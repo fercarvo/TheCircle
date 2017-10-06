@@ -105,7 +105,6 @@
     <Content Include="wwwroot\views\medico\estadistica.remisiones.html" />
     <Content Include="wwwroot\views\medico\pedidos.html" />
     <Content Include="wwwroot\views\medico\pedidos.interno.html" />
-    <Content Include="wwwroot\views\medico\pedidos.recibidos.html" />
     <Content Include="wwwroot\views\medico\pedidos.transferencia.html" />
     <Content Include="wwwroot\views\sistema\desactivarusuario.html" />
     <Content Include="wwwroot\views\sistema\cambiarclave.html" />

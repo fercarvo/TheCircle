@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using TheCircle.Util;
 using TheCircle.Models;
+using System;
 
 namespace TheCircle.Controllers
 {
@@ -31,20 +32,21 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //Son los pedido interno que han sido despachados por el asistente pero falta la recepción del médico
         [HttpGet("pedidointerno/despachadas")]
-        [APIauth("asistenteSalud")]
+        [APIauth("medico")]
         public IActionResult GetDespachadas(Token token)
         {
-            //PedidoInterno[] data = PedidoInterno.GetDespachadas(token.data.localidad, _c);
-            return BadRequest("Esto no se usa");
+            PedidoInterno[] data = PedidoInterno.GetPendientesRecepcion(token.data.cedula);
+            return Ok(data);
         }
 
         [HttpGet("pedidointerno/receptadas")]
         [APIauth("asistenteSalud")]
         public IActionResult GetReceptadas(Token token)
         {
-            PedidoInterno[] data = PedidoInterno.GetReceptadas(token.data.localidad, _c);
-            return Ok(data);
+            //PedidoInterno[] data = PedidoInterno.GetReceptadas(token.data.localidad, _c);
+            return Ok();
         }
 
         [HttpPost("pedidointerno")]
@@ -64,11 +66,15 @@ namespace TheCircle.Controllers
         }
 
         [HttpPut("pedidointerno/{id}/receptar")]
-        [APIauth("asistenteSalud")]
-        public IActionResult Receptar(Token token, int id, [FromBody] string comentario)
+        [APIauth("medico")]
+        public IActionResult Receptar(Token token, int id, [FromBody] Comentario req)
         {
-            PedidoInterno.Recepcion(id, comentario, token.data.cedula, _c);
+            PedidoInterno.Recepcion(id, req.comentario, token.data.cedula);
             return Ok();
+        }
+
+        public class Comentario {
+            public String comentario { get; set; }
         }
     }
 }

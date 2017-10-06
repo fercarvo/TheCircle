@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using TheCircle.Util;
 
 namespace TheCircle.Models
@@ -45,9 +44,9 @@ namespace TheCircle.Models
             return new MyDbContext().PedidoInterno.FromSql(q).Populate();
         }
 
-        internal static PedidoInterno[] GetDespachadas()
+        internal static PedidoInterno[] GetPendientesRecepcion(int personal)
         {
-            string q = "EXEC PedidoInterno_Report_Despachadas";
+            string q = $"EXEC PedidoInterno_Report_PendientesRecepcion @solicitante={personal}";
             return new MyDbContext().PedidoInterno.FromSql(q).Populate();
         }
 
@@ -63,10 +62,10 @@ namespace TheCircle.Models
             new MyDbContext().Database.ExecuteSqlCommand(q);
         }
 
-        public static void Recepcion(int idPedido, string comentario, int personal, MyDbContext _c)
+        public static void Recepcion(int idPedido, string comentario, int personal)
         {
             string q = $"EXEC PedidoInterno_Recepcion @id={idPedido}, @comentario='{comentario}', @solicitante={personal}";
-            _c.Database.ExecuteSqlCommand(q);
+            new MyDbContext().Database.ExecuteSqlCommand(q);
         }
 
         public class Data

@@ -1,0 +1,90 @@
+﻿<style>
+    #despachar_pedidointerno_panel, #despachar_pedidointerno_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="despachar_pedidointerno_panel">
+    <div class="panel panel-default-light border-default" id="despachar_pedidointerno_table">
+        <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha</th>
+                        <th>Solicitante</th>
+                        <th>Nombre item</th>
+                        <th>Ver información</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="p in pedidosInternos | orderBy:'fechaPedido'">
+                        <td>{{("00000000"+ p.id).slice(-9)}}</td>
+                        <td>{{p.fechaPedido}}</td>
+                        <td>{{p.solicitante.nombre}} {{p.solicitante.apellido}}</td>
+                        <td>{{p.itemFarmacia.nombre}}</td>
+                        <td width="10%"><button ng-click="ver(p)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_pedido"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="ver_pedido" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos del pedido</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-striped" style="text-align:center;">
+
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>Número: </td>
+                                <td>{{("00000000"+ pedido.id).slice(-9)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre: </td>
+                                <td>{{pedido.itemFarmacia.nombre}}</td>
+                            </tr>
+                            <tr>
+                                <td>Compuesto: </td>
+                                <td>{{pedido.itemFarmacia.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha caducidad: </td>
+                                <td>{{pedido.itemFarmacia.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad solicitada: </td>
+                                <td>{{pedido.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad a recibir: </td>
+                                <td>{{pedido.cantidadDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Comentario recepción: </td>
+                                <td><input form="pedidointernoForm" required ng-model="comentario" title="Comentario de maximo 50 caracteres" pattern=".{3,50}" type="text" style="width:100%;" /></td>
+                            </tr>
+                            <tr>
+                                <td>Personal despacho: </td>
+                                <td>{{pedido.personalDespacho.nombre}} {{pedido.personalDespacho.apellido}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha solicitud: </td>
+                                <td>{{pedido.fechaPedido | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <form id="pedidointernoForm" ng-submit="guardarComentario(pedido.id, comentario)" class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" class="btn btn-info">Receptar pedido</button>
+                    <button data-ripple type="reset" data-dismiss="modal" class="btn btn-default">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
