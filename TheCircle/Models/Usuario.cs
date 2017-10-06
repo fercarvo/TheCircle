@@ -36,6 +36,12 @@ namespace TheCircle.Models
             }            
         }
 
+        public static UserSafe GetByCargo(string cargo) {
+            string query = $"EXEC UserSafe_Select_Cargo @cargo={cargo}";
+
+            return new MyDbContext().UserSafe.FromSql(query).First();
+        }
+
         public static Usuario Get(LoginRequest req)
         {
             Usuario usuario = new MyDbContext().Usuario.FromSql($"EXEC User_select @cedula={req.cedula}").First();
@@ -148,7 +154,7 @@ namespace TheCircle.Models
         public string apellido { get; set; }
         public string email { get; set; } = null;
         public string cargo { get; set; }
-        public int cedula { get; set; }
+        public int? cedula { get; set; }
 
         public static UserSafe Get( int? cedula, UserSafe[] usuarios)
         {

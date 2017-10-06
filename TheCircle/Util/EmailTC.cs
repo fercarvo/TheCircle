@@ -152,5 +152,32 @@ Recientemente se despacho un pedido interno con una cantidad inferior a la solic
                 return;
             }
         }
+
+        public void AlertaPesoTalla(string nombre, string email, int codigo, int? peso, int? talla, string doctor)
+        {
+            try
+            {
+                var message = new MimeMessage();
+                message.From.Add(from);
+                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.Subject = "Alerta de peso y talla";
+
+                message.Body = new TextPart("plain")
+                {
+                    Text = @"The Circle le saluda,
+
+Por favor considerar el siguiente valor de peso y talla para su revisión en la base de datos Aptify
+
+El doctor " + doctor + @", ha registrado " + $"PESO: {peso}kg, TALLA: {talla}cm, para el código: {codigo}, gracias." 
+                };
+
+                client.Send(message);
+                client.Disconnect(true);
+            }
+            catch (Exception e)
+            {
+                return;
+            }
+        }
     }
 }

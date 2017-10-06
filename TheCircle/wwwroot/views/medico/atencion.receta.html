@@ -15,7 +15,8 @@
                     <tr>
                         <th >Existencia</th>
                         <th >Nombre</th>
-                        <th >Compuesto</th>
+                        <th>Compuesto</th>
+                        <th> Caducidad</th>
                     </tr>
                 </thead>
 
@@ -24,6 +25,7 @@
                         <td>{{item.stock}}</td>
                         <td>{{item.nombre}}</td>
                         <td>{{item.compuesto}}</td>
+                        <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                     </tr>
                 </tbody>
             </table>
