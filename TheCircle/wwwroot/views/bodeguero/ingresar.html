@@ -27,7 +27,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2">Compuesto<a style="color:red;">(*)</a></label>
                         <div class="col-sm-8" style="padding-left:initial">
-                            <select required class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.nombre as compuesto.nombre + ', ' + compuesto.unidadMedida for compuesto in compuestos">
+                            <select required class="form-control myselect" ng-model="form.compuesto" ng-options="compuesto.id as compuesto.nombre + ', ' + compuesto.unidadMedida for compuesto in compuestos">
                                 <option style="display:none;" selected disabled value="">Compuesto, unidad-medida</option>
                             </select>
                         </div>

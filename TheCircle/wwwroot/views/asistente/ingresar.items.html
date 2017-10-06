@@ -6,12 +6,12 @@
 <div class="panel-body" id="ingresar-items-panel">
 
     <div class="panel panel-default-light border-default col-sm-12" id="ingresar-items-table">
-        <form class="form-horizontal" ng-submit="crear(compuesto.nombre, item, fecha, cantidad)" style="margin-top:10px;">
+        <form class="form-horizontal" ng-submit="crear(compuesto, item, fecha, cantidad)" style="margin-top:10px;">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
             <div class="form-group">
                 <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Compuesto<a style="color:red;">(*)</a></label>
                 <div class="col-sm-6" style="padding-left:initial">
-                    <select class="form-control myselect" ng-model="compuesto" ng-options="compuesto as compuesto.nombre + '; ' + compuesto.unidadMedida for compuesto in compuestos">
+                    <select class="form-control myselect" ng-model="compuesto" ng-options="compuesto.id as compuesto.nombre + '; ' + compuesto.unidadMedida for compuesto in compuestos">
                         <option style="display:none;" selected disabled value="">Digíte y Seleccione el tipo de compuesto</option>
                     </select>
                 </div>

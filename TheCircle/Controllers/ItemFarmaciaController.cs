@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System;
 using TheCircle.Models;
 using TheCircle.Util;
 
@@ -93,7 +92,6 @@ namespace TheCircle.Controllers
                 return BadRequest();
 
             var data = new ItemFarmacia(item, token.data.localidad, token.data.cedula);
-            //ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
             return Ok(data);
         }
     }    

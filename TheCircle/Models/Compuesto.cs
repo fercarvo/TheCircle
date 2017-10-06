@@ -10,6 +10,7 @@ namespace TheCircle.Models
     public class Compuesto
     {
         [Key]
+        public int id { get; set; }
         public string nombre { get; set; }
         public string unidadMedida { get; set; }
         public string categoriaNombre { get; set; }

@@ -130,10 +130,11 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getCompuestos() {
+        function getCompuestos($scope) {
             $http.get("/api/compuesto").then(function success(res) {
                 dataFac.compuestos = res.data;
-                $rootScope.$broadcast('dataFac.compuestos'); //Se informa a los controladores que cambio
+                $scope.compuestos = dataFac.compuestos
+                //$rootScope.$broadcast('dataFac.compuestos'); //Se informa a los controladores que cambio
             }, function error(err) {
                 console.log("Error cargar nombre items farmacia", err);
             })
@@ -414,12 +415,10 @@ angular.module('appAsistente', ['ui.router'])
         $scope.items = null;
 
         if ($scope.compuestos === null) {
-            dataFac.getCompuestos();
+            dataFac.getCompuestos($scope);
         }
 
-        $scope.$on('dataFac.compuestos', function () {
-            $scope.compuestos = dataFac.compuestos;
-        })
+        //$scope.$on('dataFac.compuestos', function () { $scope.compuestos = dataFac.compuestos })
 
         $scope.crear = function (compuesto, item, fecha, cantidad) {
             var data = {

@@ -23,17 +23,13 @@ namespace TheCircle.Models
         public ItemFarmacia(Ingreso item, Localidad localidad, int personal) {
             try {
                 string query = $"EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
-                    $"@compuesto='{item.compuesto}', " +
+                    $"@compuesto={item.compuesto}, " +
                     $"@fcaducidad='{item.fcaducidad}', " +
                     $"@cantidad={item.cantidad}, " +
                     $"@localidad='{localidad}', " +
                     $"@personal={personal}";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
-
-                nombre = item.nombre;
-                compuesto = item.compuesto;
-                stock = item.cantidad;
 
             } catch (Exception e) {
                 throw new Exception("No se pudo crear el itemFarmacia", e);
@@ -100,7 +96,7 @@ namespace TheCircle.Models
         public class Ingreso
         {
             public string nombre { get; set; }
-            public string compuesto { get; set; }
+            public int compuesto { get; set; }
             public string fcaducidad { get; set; }
             public int cantidad { get; set; }
 
@@ -138,7 +134,7 @@ namespace TheCircle.Models
             [Key]
             public Int64 indice { get; set; }
             public string nombre { get; set; }
-            public string compuesto { get; set; }
+            public int compuesto { get; set; }
         }
     }
 }

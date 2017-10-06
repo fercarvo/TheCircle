@@ -163,8 +163,8 @@ angular.module('bodeguero', ['ui.router'])
         }
     }])
     .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
-        console.log("En controller ingresar");
-        $scope.compuestos = dataFac.getData();
+        dataFac.getData();
+        $scope.compuestos = dataFac.compuestos;
         $scope.nombres = dataFac.nombres;
 
         if ($scope.compuestos === null) { dataFac.getCompuestos() }
@@ -207,10 +207,6 @@ angular.module('bodeguero', ['ui.router'])
         $scope.unidades = dataFac.unidades;
         $scope.compuestos = dataFac.compuestos;
 
-        /*
-        if ($scope.categorias === null || $scope.unidades === null) { dataFac.getData() }
-        if ($scope.compuestos === null) { dataFac.getCompuestos() }
-        */
         dataFac.getData()
 
         $scope.$on('compuesto-categoria-unidades', ()=>{
@@ -229,7 +225,7 @@ angular.module('bodeguero', ['ui.router'])
             }
             console.log(form, data);
 
-            $http.post("api/compuesto", data).then(function sucess(res) {
+            $http.post("/api/compuesto", data).then(function sucess(res) {
                 console.log("Ingreso exitoso", res);
                 notify("Ingreso exitoso de compuesto", "success");
                 $state.reload();
