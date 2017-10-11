@@ -103,6 +103,12 @@ namespace TheCircle.Models
             public Ingreso() { }
         }
 
+        public static void Editar(int idItem, int personal, int nuevaCantidad)
+        {
+            string query = $"EXEC ItemFarmacia_Alterar_Stock @idItem={idItem}, @nuevaCantidad={nuevaCantidad}, @personal={personal}";
+            new MyDbContext().Database.ExecuteSqlCommand(query);
+        }
+
         internal static ItemFarmacia Get(int id)
         {
             return new MyDbContext().ItemFarmacias.FromSql($"EXEC ItemFarmacia_Select @id={id}").First();

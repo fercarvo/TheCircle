@@ -54,7 +54,7 @@ namespace TheCircle.Controllers
 
         //Obtengo el stock de toda la fundacion
         [HttpGet("itemfarmacia/report/total")]
-        [APIauth("coordinador", "bodeguero")]
+        [APIauth("coordinador", "bodeguero", "contralor")]
         public IActionResult GetStockGeneral(Token token)
         {
             ItemFarmacia[] stock = ItemFarmacia.ReportTotal();
@@ -93,6 +93,14 @@ namespace TheCircle.Controllers
 
             var data = new ItemFarmacia(item, token.data.localidad, token.data.cedula);
             return Ok(data);
+        }
+
+        [HttpPut("itemfarmacia/{id}")]
+        [APIauth("contralor")]
+        public IActionResult AlterarItem(Token token, int id, [FromQuery]int cantidad)
+        {
+            ItemFarmacia.Editar(id, token.data.cedula, cantidad);
+            return Ok();
         }
     }    
 }

@@ -22,7 +22,7 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/remisionesRechazadas.html',
                 controller: 'remisionesRechazadas'
             })
-            .state('remisionesAprobadas', {
+            .state('remisionesAprobadas', { 
                 templateUrl: 'views/coordinacionSalud/remisionesAprobadas.html',
                 controller: 'remisionesAprobadas'
             })
@@ -213,12 +213,12 @@ angular.module('coordinacionSalud', ['ui.router'])
         }
 
     }])
-    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+    .controller('editarStock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock
         var actualizar = refresh.go(cargar, 1);
 
         function cargar() {
-            if ($state.includes('stock')) {
+            if ($state.includes('editarStock')) {
                 dataFac.getStock($scope)
             } else {
                 refresh.stop(actualizar);

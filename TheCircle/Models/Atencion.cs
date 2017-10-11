@@ -3,6 +3,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using TheCircle.Util;
 
 namespace TheCircle.Models
@@ -55,6 +57,23 @@ namespace TheCircle.Models
         {
             string query = $"EXEC Atencion_Report_Total @desde='{desde}', @hasta='{hasta}'";
             return new MyDbContext().Stadistics.FromSql(query).ToArray();
+        }
+
+        public static void AlertaPesoTalla(Data request, Token token) {
+            try {
+                Apadrinado apadrinado = Apadrinado.Get(request.apadrinado, new MyDbContext());
+                UserSafe operador = UserSafe.GetByCargo("operador");
+
+                var peso = (float)request.peso / (float)apadrinado.peso;
+                var talla = (float)request.talla / (float)apadrinado.talla;
+
+                if (peso < 0.8 || peso > 1.2)
+                    new EmailTC().AlertaPesoTalla(operador.nombre, operador.email, request.apadrinado, request.peso, request.talla, $"{token.data.nombres} {token.data.apellidos}");
+                else if (talla < 0.8 || talla > 1.2)
+                    new EmailTC().AlertaPesoTalla(operador.nombre, operador.email, request.apadrinado, request.peso, request.talla, $"{token.data.nombres} {token.data.apellidos}");
+                
+            } catch (Exception e) {
+            }           
         }
 
         public class Data

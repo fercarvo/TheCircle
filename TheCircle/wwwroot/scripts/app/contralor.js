@@ -30,6 +30,10 @@ angular.module('contralor', ['ui.router'])
                 templateUrl: 'views/contralor/remisionesAprobadas.html',
                 controller: 'remisionesAprobadas'
             })
+            .state('editarStock', {
+                templateUrl: 'views/contralor/editarStock.html',
+                controller: 'editarStock'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(true)
         $compileProvider.commentDirectivesEnabled(true)
@@ -51,13 +55,46 @@ angular.module('contralor', ['ui.router'])
             pedidosinternos: null,
             transferencias: null,
             remisionesAprobadas: null,
+            stock: null,
+            getStock: getStock,
             getTransferencias: getTransferencias,
             getRecetas: getRecetas,
             getPedidos: getPedidos,
             getAprobaciones1: getAprobaciones1,
             rechazarRemision: rechazarRemision,
             guardarAprobacion: guardarAprobacion,
-            getRemisionesAprobadas: getRemisionesAprobadas
+            getRemisionesAprobadas: getRemisionesAprobadas,
+            postCambio: postCambio
+        }
+
+        function postCambio(id, cantidad, $scope) {
+            NProgress.start()
+            $http({
+                method: "PUT",
+                url: "/api/itemfarmacia/" + id,
+                params: {cantidad: cantidad}
+            }).then(function (res) {
+                getStock($scope);
+                console.log("Se actualizo con exito", res.data)
+                NProgress.done();
+                notify("El item se actualizo correctamente", "success")
+                $('#modal_alterar').modal('hide')
+            }, function (error) {
+                console.log("Error cambiar stock", error);
+                notify("No se pudo alterar el stock", "danger")
+                NProgress.done();
+                $('#modal_alterar').modal('hide')
+            })
+        }
+
+        function getStock($scope) {
+            $http.get("/api/itemfarmacia/report/total").then(function (res) {
+                dataFac.stock = res.data;
+                $scope.stock = dataFac.stock;
+            }, function (e) {
+                console.log("Error cargar Stock", e);
+                notify("No se pudo carga el stock de items de farmacia", "danger")
+            })
         }
 
         function getRemisionesAprobadas($scope, data) {
@@ -250,4 +287,20 @@ angular.module('contralor', ['ui.router'])
             $("#modal_aprobacion").modal("show")
         }
 
+    }])
+    .controller('editarStock', ['$scope', 'dataFac', function ($scope, dataFac) {
+        $scope.stock = dataFac.stock
+        $scope.item = null;
+
+        dataFac.getStock($scope)
+
+        $scope.select = function (item) {
+            $scope.item = item
+            $("#modal_alterar").modal("show")
+            $scope.cantidad = null;
+        }
+
+        $scope.guardarUpdate = function (idItem, cantidad) {
+            dataFac.postCambio(idItem, cantidad, $scope);
+        }
     }])
