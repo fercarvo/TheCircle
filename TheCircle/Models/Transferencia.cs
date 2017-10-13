@@ -43,6 +43,12 @@ namespace TheCircle.Models
             return new MyDbContext().Transferencia.FromSql(q).Populate();
         }
 
+        public static Transferencia[] GetDespachadasByPersonal(int personal, DateTime desde, DateTime hasta) 
+        {
+            string q = $"EXEC Transferencia_Report_Personal @personal={personal}, @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Transferencia.FromSql(q).Populate();
+        }   
+
         internal static Transferencia[] GetDespachadas(Localidad destino, MyDbContext _context)
         {
             string q = $"EXEC Transferencia_Report_Despachadas @destino={destino}";

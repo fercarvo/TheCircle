@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using System;
 using TheCircle.Models;
 using TheCircle.Util;
 
@@ -31,6 +32,14 @@ namespace TheCircle.Controllers
         {
             ItemFarmacia.Nombre[] nombres = ItemFarmacia.ReportNombres();
             return Ok(nombres);
+        }
+
+        [HttpGet("itemfarmacia/registro")]
+        [APIauth("asistenteSalud", "contralor", "bodeguero")]
+        public IActionResult GetRegistros(Token token, [FromQuery]Date fecha)
+        {
+            ItemFarmacia.Registro[] items = ItemFarmacia.ReportRegistro(token.data.cedula, fecha.desde, fecha.hasta);
+            return Ok(items);
         }
 
         [HttpGet("itemfarmacia/insumos")]
@@ -86,7 +95,7 @@ namespace TheCircle.Controllers
 
         [HttpPost("itemfarmacia")]
         [APIauth("asistenteSalud", "bodeguero")]
-        public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.Ingreso item)
+        public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.IngresoRequest item)
         {
             if (!ModelState.IsValid)
                 return BadRequest();

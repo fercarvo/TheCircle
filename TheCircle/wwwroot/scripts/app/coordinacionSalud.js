@@ -213,12 +213,12 @@ angular.module('coordinacionSalud', ['ui.router'])
         }
 
     }])
-    .controller('editarStock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock
         var actualizar = refresh.go(cargar, 1);
 
         function cargar() {
-            if ($state.includes('editarStock')) {
+            if ($state.includes('stock')) {
                 dataFac.getStock($scope)
             } else {
                 refresh.stop(actualizar);

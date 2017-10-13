@@ -37,7 +37,7 @@
                                 <td>{{("00000000"+ t.id).slice(-9)}}</td>
                                 <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{t.destino}}</td>
-                                <td>{{("000000000"+ t.solicitante).slice(-10)}}</td>
+                                <td>{{t.solicitante.nombre}} {{t.solicitante.apellido}}</td>
                                 <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                             </tr>
                         </tbody>
@@ -61,11 +61,11 @@
                                     </tr>
                                     <tr>
                                         <td>Nombre: </td>
-                                        <td>{{transferencia.nombre}}</td>
+                                        <td>{{transferencia.itemFarmacia.nombre}}</td>
                                     </tr>
                                     <tr>
                                         <td>Compuesto: </td>
-                                        <td>{{transferencia.compuesto}}</td>
+                                        <td>{{transferencia.itemFarmacia.compuesto}}</td>
                                     </tr>
                                     <tr>
                                         <td>Cantidad: </td>
@@ -77,7 +77,7 @@
                                     </tr>
                                     <tr>
                                         <td>Solicitante: </td>
-                                        <td>{{("000000000"+ transferencia.solicitante).slice(-10)}}</td>
+                                        <td>{{transferencia.solicitante.nombre}} {{transferencia.solicitante.apellido}}</td>
                                     </tr>
                                     <tr>
                                         <td>Destino: </td>
@@ -85,7 +85,7 @@
                                     </tr>
                                     <tr>
                                         <td>Fecha solicitud: </td>
-                                        <td>{{transferencia.fecha}}</td>
+                                        <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                 </tbody>
                             </table>

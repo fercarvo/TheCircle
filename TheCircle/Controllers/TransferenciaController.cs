@@ -33,6 +33,14 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        [HttpGet("transferencia/despachada/personal")]
+        [APIauth("asistenteSalud", "bodeguero")]
+        public IActionResult GetDespachadasByPersonal(Token token, [FromQuery]Date fecha)
+        {
+            Transferencia[] data = Transferencia.GetDespachadasByPersonal(token.data.cedula, fecha.desde, fecha.hasta);
+            return Ok(data);
+        }
+
         //Obtengo todas las transferencias de items que se han despachado con inconsistencia
         [HttpGet("transferencia/inconsistente")]
         [APIauth("contralor")]

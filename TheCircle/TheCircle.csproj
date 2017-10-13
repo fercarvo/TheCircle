@@ -24,6 +24,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot/scripts\vendor\pdfmake.min.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="wwwroot\favicon.ico" />
     <Content Include="wwwroot\images\foto.png" />
     <Content Include="wwwroot\images\login_background.jpg" />
@@ -43,7 +47,6 @@
     <Content Include="wwwroot\scripts\vendor\bootstrap-notify.min.js" />
     <Content Include="wwwroot\scripts\vendor\d3.min.js" />
     <Content Include="wwwroot\scripts\vendor\nv.d3.min.js" />
-    <Content Include="wwwroot\scripts\vendor\require.js" />
     <Content Include="wwwroot\scripts\vendor\select2.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\admin.min.js" />
     <Content Include="wwwroot\scripts\vendor\wiseboard\jquery.min.js" />
@@ -71,6 +74,8 @@
     <Content Include="wwwroot\views\bodeguero\compuesto.html" />
     <Content Include="wwwroot\views\bodeguero\despachar.html" />
     <Content Include="wwwroot\views\bodeguero\historial.html" />
+    <Content Include="wwwroot\views\bodeguero\historial.ingresoItems.html" />
+    <Content Include="wwwroot\views\bodeguero\historial.transferencias.html" />
     <Content Include="wwwroot\views\bodeguero\ingresar.html" />
     <Content Include="wwwroot\views\bodeguero\stock.html" />
     <Content Include="wwwroot\views\contralor\aprobar.html">
@@ -130,10 +135,6 @@
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="wwwroot\views\eng\" />
-    <Folder Include="wwwroot\views\esp\" />
   </ItemGroup>
 
 </Project>

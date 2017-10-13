@@ -10,6 +10,14 @@ angular.module('bodeguero', ['ui.router'])
                 templateUrl: 'views/bodeguero/historial.html',
                 controller: 'historial'
             })
+            .state('historial.transferencias', {
+                templateUrl: 'views/bodeguero/historial.transferencias.html',
+                controller: 'historial.transferencias'
+            })
+            .state('historial.ingresoItems', {
+                templateUrl: 'views/bodeguero/historial.ingresoItems.html',
+                controller: 'historial.ingresoItems'
+            })
             .state('stock', {
                 templateUrl: 'views/bodeguero/stock.html',
                 controller: 'stock'
@@ -39,10 +47,53 @@ angular.module('bodeguero', ['ui.router'])
             transferencias: null,
             unidades: null,
             nombres: null,
+            transferenciasDespachadas: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
+            itemsRegistrados: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
+            getTransferenciasDespachadas: getTransferenciasDespachadas,
             getData: data,
             getStock: getStock,
             getCompuestos: getCompuestos,
             getTransferencias: getTransferencias
+        }
+
+        function getItemsRegistrados($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/itemfarmacia/registro",
+                params: data
+            }).then(function (res) {
+                NProgress.done();
+                $scope.items.data = res.data;
+            }, function (err) {
+                console.log("error getItemsRegistrados", err)
+                notify("No se pudo cargar los items", "danger");
+                NProgress.done();
+            })
+        }
+
+        function getTransferenciasDespachadas($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/transferencia/despachada/personal",
+                params: data
+            }).then(function (res) {
+                NProgress.done();
+                $scope.transferencias.data = res.data;
+            }, function (err) {
+                console.log("error getTransferenciasDespachadas", err)
+                notify("No se pudo cargar las trasnferencias despachadas", "danger");
+                NProgress.done();
+            })
         }
 
         function getTransferencias() {
@@ -72,7 +123,7 @@ angular.module('bodeguero', ['ui.router'])
                 dataFac.unidades = res.data.unidades;
                 $rootScope.$broadcast('compuesto-categoria-unidades');
 
-            }, (error)=>{
+            }, function(error){
                 console.log("Error cargar data", error);
             })
         }
@@ -81,7 +132,7 @@ angular.module('bodeguero', ['ui.router'])
             $http.get("/api/compuesto").then((res) => {
                 dataFac.compuestos = res.data;
                 $rootScope.$broadcast('dataFac.compuestos');
-            }, (error) => {
+            }, function(error) {
                 console.log("Error cargar compuestos", error);
             })
         }
@@ -143,8 +194,52 @@ angular.module('bodeguero', ['ui.router'])
 
 
     }])
-    .controller('historial', ["$scope", "$state", "$http", function ($scope, $state, $http) {
-        $scope.casa = "dasdasdasd"
+    .controller('historial', ["$state", function ($state) {
+        $state.go("historial.transferencias")
+    }])
+    .controller('historial.transferencias', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.transferencias = dataFac.transferenciasDespachadas
+        $scope.transferencia = null;
+
+        $scope.$watch("transferencias", function () {
+            dataFac.transferenciasDespachadas = $scope.transferencias
+        })
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getTransferenciasDespachadas($scope, data)
+        }
+
+        $scope.ver = function (transferencia) {
+            $scope.transferencia = transferencia
+        }        
+
+    }])
+    .controller('historial.ingresoItems', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.items = dataFac.itemsRegistrados
+        $scope.item = null;
+
+        $scope.$watch("items", function () {
+            dataFac.itemsRegistrados = $scope.items
+        })
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getItemsRegistrados($scope, data)
+        }
+
+        $scope.ver = function (item) {
+            $scope.item = item
+        }
+
     }])
     .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock;

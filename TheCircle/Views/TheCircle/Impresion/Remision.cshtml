@@ -9,6 +9,7 @@
 
     @{
         var remision = (TheCircle.Models.Remision)ViewData["Remision"];
+        int monto = (int)remision.monto;
         string localidad = (string)ViewData["Localidad"];
     }
 
@@ -44,7 +45,7 @@
                             </tr>
                             <tr>
                                 <td style="font-weight: bold;">Numero de remisión:</td>
-                                <td>@remision.id</td>
+                                <td>@{ var remisionId = $"000000{remision.id}"; }  @remisionId</td>
                                 <td style="font-weight: bold;">Localidad:</td>
                                 <td>@localidad</td>
                             </tr>
@@ -64,7 +65,7 @@
                             </tr>
                             <tr>
                                 <th style="font-weight: bold;">Monto a cubrir:</th>
-                                <td>US$ @remision.monto</td>
+                                <td>US$ @monto</td>
                             </tr>
                             <tr>
                                 <th style="font-weight: bold;">Sintomas: </th>

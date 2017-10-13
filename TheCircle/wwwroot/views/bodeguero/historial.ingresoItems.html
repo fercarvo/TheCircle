@@ -5,14 +5,14 @@
 </style>
 <div class="panel-body" id="historial_transferencias_panel">
     <div class="form-group" id="estadistica-atenciones-form">
-        <form class="form-horizontal" ng-submit="generar(transferencias.desde, transferencias.hasta)">
+        <form class="form-horizontal" ng-submit="generar(items.desde, items.hasta)">
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                <input ng-model="transferencias.desde" required type="date" class="form-control">
+                <input ng-model="items.desde" required type="date" class="form-control">
             </div>
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                <input ng-model="transferencias.hasta" required type="date" class="form-control">
+                <input ng-model="items.hasta" required type="date" class="form-control">
             </div>
             <div class="col-sm-3" style="padding-bottom:5px;">
                 <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
@@ -38,7 +38,7 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="t in transferencias.data | filter:buscar | orderBy:'fecha'">
+                    <tr ng-repeat="t in items.data | filter:buscar | orderBy:'fecha'">
                         <td>{{("00000000"+ t.id).slice(-9)}}</td>
                         <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{t.destino}}</td>
@@ -63,46 +63,42 @@
                         <tbody style="text-align:left;">
                             <tr>
                                 <td>Número: </td>
-                                <td>{{("00000000"+ transferencia.id).slice(-9)}}</td>
+                                <td>{{("00000000"+ item.id).slice(-9)}}</td>
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>{{transferencia.itemFarmacia.nombre}}</td>
+                                <td>{{item.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>{{transferencia.itemFarmacia.compuesto}}</td>
+                                <td>{{item.compuesto}}</td>
                             </tr>
                             <tr>
-                                <td>Cantidad solicitada: </td>
-                                <td>{{transferencia.cantidad}}</td>
+                                <td>Categoria: </td>
+                                <td>{{item.categoria}}</td>
                             </tr>
                             <tr>
-                                <td>Cantidad despachada: </td>
-                                <td>{{transferencia.cantidadDespacho}}</td>
+                                <td>Grupo: </td>
+                                <td>{{item.grupo}}</td>
                             </tr>
                             <tr>
-                                <td>Comentario: </td>
-                                <td>{{transferencia.comentarioDespacho}}</td>
+                                <td>Fecha de caducidad: </td>
+                                <td>{{item.fcaducidad | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
                             <tr>
-                                <td>Solicitante: </td>
-                                <td>{{transferencia.solicitante.nombre}}</td>
+                                <td>Cantidad ingresada: </td>
+                                <td>{{item.cantidad}}</td>
                             </tr>
                             <tr>
-                                <td>Destino: </td>
-                                <td>{{transferencia.destino}}</td>
-                            </tr>
-                            <tr>
-                                <td>Fecha solicitud: </td>
-                                <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                                <td>Fecha ingreso: </td>
+                                <td>{{item.fechaRegistro | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
                 <div class="text-center" style="margin-bottom: 5px;">
-                    <button data-ripple type="submit" data-dismiss="modal" class="btn btn-info">Cerrar</button>
+                    <button data-ripple type="button" data-dismiss="modal" class="btn btn-info">Cerrar</button>
                 </div>
             </div>
         </div>

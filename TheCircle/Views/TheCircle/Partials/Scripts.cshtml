@@ -8,8 +8,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/angular-ui-router/1.0.0-rc.1/angular-ui-router.min.js" integrity="sha512-6LN8tj8yCgkkD/Qx8RIxP4ms6CFFZV5oNYVSNBus204HIZPE8hvauawqiePFw6g5Oes7mzIzkwncONo2yX4UDg==" crossorigin="anonymous"></script>
 <!--<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular-cookies.min.js" integrity="sha384-zoGJ6ldirItV+3dBoFKCK7PIIjTKNBrhc9ersyF8+8tm5v3w9JXE3mXQH3f+uJXw" crossorigin="anonymous"></script>-->
 <script src="~/scripts/vendor/bootstrap-notify.min.js"></script>
-<!--<script src="~/scripts/vendor/pdfmake.min.js"></script>-->
-<!--<script src="~/scripts/vendor/vfs_fonts.js"></script>-->
 <script src="~/scripts/vendor/nprogress.js"></script>
 <script>
 
@@ -107,10 +105,10 @@
                     document.location.replace('/login');
                 }
             })
-        }, 20) //minutos
+        }, 20) //Se ejecuta cada 20 minutos
     }
 
-    //Funcion que precarga todos los templates de la pagina inicial
+    //Funcion que pre-carga todos los templates de la pagina inicial
     //Es llamada en la seccion .run de las apps de angularJS
     function loadTemplates($state, goState, $http, $templateCache) { 
         var promises = []
@@ -129,102 +127,4 @@
                 $state.go(goState) ///////////////////////// State inicial
             })
     }
-
-
-    //obj.nombre = nombre del pdf, obj.data = [array de los items de receta con 4 columnas]
-    /*function PDFexport(obj) {
-        function body(items) {
-            var body = [
-                [
-                    { text: 'Cantidad', style: 'subItem' },
-                    { text: 'Nombre', style: 'subItem' },
-                    { text: 'Compuesto', style: 'subItem' },
-                    { text: 'Posologia', style: 'subItem' }
-                ]
-            ]
-
-            items.forEach(function (item) {
-                body.push(
-                    [
-                        { text: " " + item.cantidad },
-                        { text: " " + item.nombre },
-                        { text: " " + item.compuesto },
-                        { text: " " + item.posologia }
-                    ]
-                )
-            })
-            return body;
-        }
-
-        var pdf = {
-            content: [
-                { text: "Children international", style: 'header' },
-                { text: "Receta de farmacia apadrinado\n\n", style: 'subheader' },
-                {
-                    text: [
-                        {
-                            text: "Fecha: ",
-                            style: 'subItem'
-                        }, {
-                            text: date(new Date()) + "\n"
-                        }, {
-                            text: "Tipo: ",
-                            style: 'subItem'
-                        }, {
-                            text: "tipo" + "\n\n"
-                        }
-                    ]
-                },
-                {
-                    columns: [
-                        { width: '*', text: '' },
-                        {
-                            width: '100%',
-                            table: {
-                                widths: ['auto', '*', '*', '*'],
-                                body: body(obj.data)
-                            }
-                        },
-                        { width: '*', text: '' }
-                    ]
-                }
-            ],
-            styles: {
-                header: {
-                    fontSize: 18,
-                    bold: true,
-                    alignment: 'center',
-                    color: 'blue'
-                },
-                subheader: {
-                    fontSize: 14,
-                    bold: true,
-                    alignment: 'center',
-                    color: 'blue'
-                },
-                subItem: {
-                    bold: true,
-                    color: 'blue'
-                },
-                tableHeader: {
-                    bold: true,
-                    fontSize: 13,
-                    color: 'black'
-                }
-            }
-        }
-
-        pdfMake.createPdf(pdf).download(obj.nombre)
-    }*/
-
-    /*var obj = {
-        nombre: "impresion.pdf",
-        data: [
-            { cantidad: 12, nombre: "paracetamol", compuesto: "paracetamol 1g", posologia: "Tomar una cada 12 horas" },
-            { cantidad: 50, nombre: "asdas", compuesto: "paracetaasdasdmol 1g", posologia: "Tomar una cada 13 horas" },
-            { cantidad: 10, nombre: "paracetaasadassdmol", compuesto: "asdas 1g", posologia: "Tomar una cada 14 horas" }
-        ]
-    }*/
-
-    //PDFexport(obj);
 </script>

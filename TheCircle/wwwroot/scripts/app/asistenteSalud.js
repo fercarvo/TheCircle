@@ -78,6 +78,12 @@ angular.module('appAsistente', ['ui.router'])
             transferencias: null,
             transferenciasPorIngresar: null,
             pedidoInterno: null,
+            transferenciasDespachadas: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
+            getTransferenciasDespachadas: getTransferenciasDespachadas,
             getTransferenciasPorIngresar: getTransferenciasPorIngresar,
             getTransferenciasPendientes: getTransferenciasPendientes,
             getStock: getStock,
@@ -86,6 +92,22 @@ angular.module('appAsistente', ['ui.router'])
             getCompuestos: getCompuestos,
             getPedidoInterno: getPedidoInterno,
             despacharTransferencia: despacharTransferencia
+        }
+
+        function getTransferenciasDespachadas($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/transferencia/despachada/personal",
+                params: data
+            }).then(function (res) {
+                NProgress.done();
+                $scope.transferencias.data = res.data;
+            }, function (err) {
+                console.log("error getTransferenciasDespachadas", err)
+                notify("No se pudo cargar las trasnferencias despachadas", "danger");
+                NProgress.done();
+            })
         }
 
         function despacharTransferencia(data, $scope) {
@@ -385,7 +407,26 @@ angular.module('appAsistente', ['ui.router'])
             actualizar = refresh.go(cargar, 30); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
-    .controller('historial.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('historial.transferencias', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.transferencias = dataFac.transferenciasDespachadas
+        $scope.transferencia = null;
+
+        $scope.$watch("transferencias", function () {
+            dataFac.transferenciasDespachadas = $scope.transferencias
+        })
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getTransferenciasDespachadas($scope, data)
+        }
+
+        $scope.ver = function (transferencia) {
+            $scope.transferencia = transferencia
+        }
 
     }])
     .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {

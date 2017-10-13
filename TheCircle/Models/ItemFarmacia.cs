@@ -20,7 +20,7 @@ namespace TheCircle.Models
 
         public ItemFarmacia() { }
 
-        public ItemFarmacia(Ingreso item, Localidad localidad, int personal) {
+        public ItemFarmacia(IngresoRequest item, Localidad localidad, int personal) {
             try {
                 string query = $"EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
                     $"@compuesto={item.compuesto}, " +
@@ -85,6 +85,30 @@ namespace TheCircle.Models
             return new MyDbContext().Egreso.FromSql(query).ToArray();
         }
 
+        public static Registro[] ReportRegistro(int personal, DateTime desde, DateTime hasta)
+        {
+            string query = $"EXEC ItemFarmacia_Report_Registro @personal={personal}, @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().RegistroItem.FromSql(query).ToArray();
+        }
+
+        public class Registro
+        {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public string categoria { get; set; }
+            public string grupo { get; set; }
+            public int cantidad { get; set; }
+            public string localidad { get; set; }
+            public DateTime fechaRegistro { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public int cedulaPersonal { get; set; }
+            public string nombrePersonal { get; set; }
+            public int? transferencia { get; set; }
+            public string emailPersonal { get; set; } = null;
+        }
+
         public class IngresoTransferencia
         {
             public int idTransferencia { get; set; }
@@ -93,14 +117,14 @@ namespace TheCircle.Models
             public IngresoTransferencia() { }
         }
 
-        public class Ingreso
+        public class IngresoRequest
         {
             public string nombre { get; set; }
             public int compuesto { get; set; }
             public string fcaducidad { get; set; }
             public int cantidad { get; set; }
 
-            public Ingreso() { }
+            public IngresoRequest() { }
         }
 
         public static void Editar(int idItem, int personal, int nuevaCantidad)
