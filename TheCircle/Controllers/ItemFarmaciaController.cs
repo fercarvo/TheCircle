@@ -70,6 +70,15 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        [HttpGet("itemfarmacia/report/cambios")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [APIauth("contralor")]
+        public IActionResult GetAlteraciones(Token token, [FromQuery]Date fecha)
+        {
+            var data = ItemFarmacia.ReportAlteraciones(token.data.cedula, fecha.desde, fecha.hasta);
+            return Ok(data);
+        }
+
         [HttpGet("itemfarmacia/report/egresos")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("coordinadorCC")]

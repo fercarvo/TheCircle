@@ -27,7 +27,7 @@ namespace TheCircle.Models
                     $"@fcaducidad='{item.fcaducidad}', " +
                     $"@cantidad={item.cantidad}, " +
                     $"@localidad='{localidad}', " +
-                    $"@personal={personal}";
+                    $"@personal={personal}, @item_id OUTPUT";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
 
@@ -89,6 +89,27 @@ namespace TheCircle.Models
         {
             string query = $"EXEC ItemFarmacia_Report_Registro @personal={personal}, @desde='{desde}', @hasta='{hasta}'";
             return new MyDbContext().RegistroItem.FromSql(query).ToArray();
+        }
+
+        public static Update[] ReportAlteraciones(int personal, DateTime desde, DateTime hasta) {
+            string query = $"EXEC ItemFarmacia_Report_Alteraciones @personal={personal}, @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Alteraciones.FromSql(query).ToArray();
+        }
+
+        public class Update
+        {
+            [Key]
+            public int id { get; set; }
+            public string nombre { get; set; }
+            public string compuesto { get; set; }
+            public string categoria { get; set; }
+            public string grupo { get; set; }
+            public int cantidad { get; set; }
+            public string localidad { get; set; }
+            public DateTime fechaRegistro { get; set; }
+            public DateTime? fcaducidad { get; set; }
+            public int cedulaPersonal { get; set; }
+            public int antiguaCantidad { get; set; }
         }
 
         public class Registro

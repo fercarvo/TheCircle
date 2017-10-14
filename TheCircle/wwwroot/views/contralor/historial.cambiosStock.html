@@ -1,0 +1,122 @@
+﻿<style>
+    #historial_transferencias_panel, #historial_transferencias_form, #historial_transferencias_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_transferencias_panel">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(cambios.desde, cambios.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="cambios.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="cambios.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_transferencias_table">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input class="form-control" ng-model="buscar" type="text" placeholder="buscar por c&oacute;digo">
+            </div>
+        </div>
+        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>N&uacute;mero</th>
+                        <th>Fecha despacho</th>
+                        <th>Destino</th>
+                        <th>Solicitante</th>
+                        <th>Ver info</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="t in cambios.data | filter:buscar | orderBy:'fecha'">
+                        <td>{{("00000000"+ t.id).slice(-9)}}</td>
+                        <td>{{t.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{t.destino}}</td>
+                        <td>{{t.solicitante.nombre}}</td>
+                        <td width="10%"><button ng-click="ver(t)" style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal Item receta-->
+    <div id="ver_transferencia" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Información del pedido</h5>
+                </div>
+                <div class="panel-body" style="padding-top: 5px;">
+                    <table class="table table-striped">
+
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>Número: </td>
+                                <td>{{("00000000"+ item.id).slice(-9)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre: </td>
+                                <td>{{item.nombre}}</td>
+                            </tr>
+                            <tr>
+                                <td>Compuesto: </td>
+                                <td>{{item.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: </td>
+                                <td>{{item.categoria}}</td>
+                            </tr>
+                            <tr>
+                                <td>Grupo: </td>
+                                <td>{{item.grupo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad solicitada: </td>
+                                <td>{{item.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad despachada: </td>
+                                <td>{{item.cantidadDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Comentario: </td>
+                                <td>{{item.comentarioDespacho}}</td>
+                            </tr>
+                            <tr>
+                                <td>Solicitante: </td>
+                                <td>{{item.solicitante.nombre}}</td>
+                            </tr>
+                            <tr>
+                                <td>Destino: </td>
+                                <td>{{item.destino}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha solicitud: </td>
+                                <td>{{item.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Despacho: </td>
+                                <td>{{item.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" data-dismiss="modal" class="btn btn-info">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

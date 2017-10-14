@@ -26,9 +26,17 @@ angular.module('contralor', ['ui.router'])
                 templateUrl: 'views/contralor/inconsistencias.transferencia.html',
                 controller: 'inconsistencias.transferencia'
             })
-            .state('remisionesAprobadas', {
-                templateUrl: 'views/contralor/remisionesAprobadas.html',
-                controller: 'remisionesAprobadas'
+            .state('historial', {
+                templateUrl: 'views/contralor/historial.html',
+                controller: 'historial'
+            })
+            .state('historial.cambiosStock', {
+                templateUrl: 'views/contralor/historial.cambiosStock.html',
+                controller: 'historial.cambiosStock'
+            })
+            .state('historial.remisiones', {
+                templateUrl: 'views/contralor/historial.remisiones.html',
+                controller: 'historial.remisiones'
             })
             .state('editarStock', {
                 templateUrl: 'views/contralor/editarStock.html',
@@ -59,7 +67,13 @@ angular.module('contralor', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            cambiosStock: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             stock: null,
+            getCambiosStock: getCambiosStock,
             getStock: getStock,
             getTransferencias: getTransferencias,
             getRecetas: getRecetas,
@@ -69,6 +83,23 @@ angular.module('contralor', ['ui.router'])
             guardarAprobacion: guardarAprobacion,
             getRemisionesAprobadas: getRemisionesAprobadas,
             postCambio: postCambio
+        }
+
+        function getCambiosStock($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/itemfarmacia/report/cambios",
+                params: data
+            }).then(function (res) {
+                console.log("getCambiosStock", res.data)
+                $scope.cambios.data = res.data
+                NProgress.done();
+            }, function (error) {
+                console.log("Error getCambiosStock", error);
+                notify("No se pudo cargar la información", "danger")
+                NProgress.done();
+            })
         }
 
         function postCambio(id, cantidad, $scope) {
@@ -271,7 +302,30 @@ angular.module('contralor', ['ui.router'])
             $scope.transferencia = transferencia
         }
     }])
-    .controller('remisionesAprobadas', ["$scope", "dataFac", function ($scope, dataFac) {
+    .controller('historial', ['$state', function ($state) {
+        $state.go("historial.cambiosStock")
+    }])
+    .controller('historial.cambiosStock', ['$scope', 'dataFac', function ($scope, dataFac) {
+        $scope.cambios = dataFac.cambiosStock
+        $scope.item = null;
+
+        $scope.$watch("cambios", function () {
+            dataFac.cambiosStock = $scope.cambios
+        })
+
+        $scope.ver = function (item) {
+            $scope.item = item
+        }
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+            dataFac.getCambiosStock($scope, data)
+        }
+    }])
+    .controller('historial.remisiones', ["$scope", "dataFac", function ($scope, dataFac) {
         $scope.remisiones = dataFac.remisionesAprobadas
         $scope.aprobacion = null
 

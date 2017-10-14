@@ -28,7 +28,7 @@
                         <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                         <td>{{("00000000"+ obj.items[0].idPersonal).slice(-9)}}</td><!--aqui no creo que va la codificacion-->
-                        <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                        <td width="10%"><button style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
             </table>

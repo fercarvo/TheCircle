@@ -83,12 +83,14 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
     <Content Include="wwwroot\views\contralor\editarStock.html" />
+    <Content Include="wwwroot\views\contralor\historial.cambiosStock.html" />
+    <Content Include="wwwroot\views\contralor\historial.html" />
+    <Content Include="wwwroot\views\contralor\historial.remisiones.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.pedidointerno.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.receta.html" />
     <Content Include="wwwroot\views\contralor\inconsistencias.transferencia.html" />
     <Content Include="wwwroot\views\contralor\remisionesAprobadas.html" />
-    <Content Include="wwwroot\views\contralor\stock.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesAprobadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesRechazadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\stock.html" />
