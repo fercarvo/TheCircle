@@ -57,6 +57,7 @@ angular.module('bodeguero', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            getItemsRegistrados: getItemsRegistrados,
             getTransferenciasDespachadas: getTransferenciasDespachadas,
             getData: getData,
             getStock: getStock,
@@ -71,6 +72,7 @@ angular.module('bodeguero', ['ui.router'])
                 url: "/api/itemfarmacia/registro",
                 params: data
             }).then(function (res) {
+                console.log("Items registrados", res.data)
                 NProgress.done();
                 $scope.items.data = res.data;
             }, function (err) {
@@ -242,12 +244,10 @@ angular.module('bodeguero', ['ui.router'])
         $scope.stock = dataFac.stock;
         var actualizar = refresh.go(cargarStock, 1);
 
+        $scope.$on("$destroy", function () { refresh.stop(actualizar) });
+
         function cargarStock() {
-            if ($state.includes('stock')) {
-                dataFac.getStock($scope)
-            } else {
-                refresh.stop(actualizar)
-            }
+            dataFac.getStock($scope)
         }
     }])
     .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {

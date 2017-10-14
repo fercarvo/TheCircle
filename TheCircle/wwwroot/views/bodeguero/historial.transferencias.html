@@ -30,7 +30,7 @@
                 <thead>
                     <tr>
                         <th>N&uacute;mero</th>
-                        <th>Fecha</th>
+                        <th>Fecha despacho</th>
                         <th>Destino</th>
                         <th>Solicitante</th>
                         <th>Ver info</th>
@@ -40,7 +40,7 @@
                 <tbody>
                     <tr ng-repeat="t in transferencias.data | filter:buscar | orderBy:'fecha'">
                         <td>{{("00000000"+ t.id).slice(-9)}}</td>
-                        <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{t.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{t.destino}}</td>
                         <td>{{t.solicitante.nombre}}</td>
                         <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
@@ -74,6 +74,14 @@
                                 <td>{{transferencia.itemFarmacia.compuesto}}</td>
                             </tr>
                             <tr>
+                                <td>Categoria: </td>
+                                <td>{{transferencia.itemFarmacia.categoria}}</td>
+                            </tr>
+                            <tr>
+                                <td>Grupo: </td>
+                                <td>{{transferencia.itemFarmacia.grupo}}</td>
+                            </tr>
+                            <tr>
                                 <td>Cantidad solicitada: </td>
                                 <td>{{transferencia.cantidad}}</td>
                             </tr>
@@ -96,6 +104,10 @@
                             <tr>
                                 <td>Fecha solicitud: </td>
                                 <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha Despacho: </td>
+                                <td>{{transferencia.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
                         </tbody>
                     </table>

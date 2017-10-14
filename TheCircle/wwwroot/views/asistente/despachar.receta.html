@@ -27,7 +27,7 @@
                         <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                         <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{obj.receta.idApadrinado}}</td>
-                        <td>{{obj.receta.idDoctor}}</td>
+                        <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                         <td width="10%"><button data-ripple style="background-color:inherit;border:none;" ng-click="select(obj, $index)" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
@@ -47,7 +47,6 @@
                     <table class="table table-striped" style="text-align:center;">
                         <thead>
                             <tr>
-                                <th>Despachado</th>
                                 <th>&Iacute;tem</th>
                                 <th>Compuesto</th>
                                 <th>Caducidad</th>
@@ -60,24 +59,23 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="item in receta.items">
-                                <td style="padding-top: 15px" ng-class="item.class"></td>
                                 <td>{{item.nombre}}</td>
                                 <td>{{item.compuesto}}</td>
                                 <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                 <td>{{item.cantidad}}</td>
-                                <td><input type="number" min="1" max="{{item.cantidad}}" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
-                                <td><textarea class="form-control" ng-disabled="item.cambio || item.disable" ng-model="item.comentario" rows="1" cols="10" maxlength="100" style="resize: none;"></textarea></td>
+                                <td><input class="form-control" form="despacharForm" required type="number" min="1" max="{{item.cantidad}}" ng-disabled="item.cambio || item.disable" ng-model="item.nuevaCantidad" style="width:100px;" class="form-control" /></td>
+                                <td><input class="form-control" form="despacharForm" required ng-disabled="item.cambio || item.disable" ng-model="item.comentario" ></td>
                                 <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-pencil" ng-disabled="item.disable" ng-click="cambiar(item)"></button></td>
-                                <td><button data-ripple style="border:none;background-color:inherit;" class="glyphicon glyphicon-ok" ng-disabled="item.disable" ng-click="despachar(item)"></button></td>
+                                <td><input form="despacharForm" required type="checkbox" ng-click="despachar(item)" ng-disabled="item.disable" value="despachar" title="Despachar {{item.nombre}}"><br></td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div><!--  -->
-                <div class="text-center ">
-                    <button data-ripple type="submit" ng-click="guardarEgreso(receta, recetas, index)" class="btn btn-info">Guardar Egreso de Farmacia</button>
+                <form id="despacharForm" ng-submit="guardarEgreso(receta, recetas, index)" class="text-center ">
+                    <button data-ripple type="submit" class="btn btn-info">Guardar Egreso de Farmacia</button>
                     <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                </div><!-- /.form-group -->
+                </form><!-- /.form-group -->
             </div>
         </div>
     </div> 

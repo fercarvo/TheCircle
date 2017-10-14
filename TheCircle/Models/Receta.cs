@@ -50,9 +50,9 @@ namespace TheCircle.Models
             } catch (Exception e) { }            
         }
 
-        public static Receta[] ReportAsistente(int asistente, MyDbContext _context)
+        public static Receta[] ReportAsistente(int asistente, DateTime desde, DateTime hasta, MyDbContext _context)
         {
-            string query = $"EXEC Receta_ReportBy_Asistente @asistente={asistente}";
+            string query = $"EXEC Receta_ReportBy_Asistente @asistente={asistente}, @desde='{desde}' , @hasta='{hasta}'";
             return _context.Recetas.FromSql(query).ToArray();
         }
 

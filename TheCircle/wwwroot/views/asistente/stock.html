@@ -18,7 +18,7 @@
             <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
                 <div class="panel-heading">
                     <div style="text-align:right">
-                        <input class="form-control" type="text" ng-model="buscar.compuesto" placeholder="buscar por compuesto">
+                        <input class="form-control" type="text" ng-model="buscar" placeholder="Filtrar items por ID/nombre/compuesto/...">
                     </div>
                 </div>
                 <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
@@ -26,18 +26,22 @@
                     <table class="table table-striped">
                         <thead>
                             <tr>
+                                <th>ID</th>
                                 <th>Nombre</th>
                                 <th>Compuesto</th>
-                                <th>Categor&iacute;a</th>
+                                <th>Categoria</th>
+                                <th>Grupo</th>
                                 <th>Disponible</th>
                                 <th>Caducidad</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="item in stock | orderBy:'fcaducidad' | filter:buscar">
+                            <tr ng-repeat="item in stock | orderBy:['grupo', 'compuesto', 'fcaducidad', 'nombre'] | filter:buscar">
+                                <td>{{("0"+ item.id).slice(-2)}}</td>
                                 <td>{{item.nombre}}</td>
                                 <td>{{item.compuesto}}</td>
                                 <td>{{item.categoria}}</td>
+                                <td>{{item.grupo}}</td>
                                 <td>{{item.stock}}</td>
                                 <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                             </tr>

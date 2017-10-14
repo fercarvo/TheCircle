@@ -64,6 +64,7 @@
     <Content Include="wwwroot\views\asistente\despachar.receta.html" />
     <Content Include="wwwroot\views\asistente\despachar.transferencias.html" />
     <Content Include="wwwroot\views\asistente\historial.html" />
+    <Content Include="wwwroot\views\asistente\historial.ingresoItems.html" />
     <Content Include="wwwroot\views\asistente\historial.pedidointerno.html" />
     <Content Include="wwwroot\views\asistente\historial.recetas.html" />
     <Content Include="wwwroot\views\asistente\historial.transferencias.html" />

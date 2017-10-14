@@ -39,6 +39,10 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/historial.pedidointerno.html',
                 controller: 'historial.pedidointerno'
             })
+            .state('historial.ingresoItems', {
+                templateUrl: 'views/asistente/historial.ingresoItems.html',
+                controller: 'historial.ingresoItems'
+            })
             .state('stock', {
                 templateUrl: 'views/asistente/stock.html',
                 controller: 'stock'
@@ -74,7 +78,11 @@ angular.module('appAsistente', ['ui.router'])
             stock: null,
             compuestos: null,
             recetas: null,
-            despachos: null,
+            recetasDespachadas: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             transferencias: null,
             transferenciasPorIngresar: null,
             pedidoInterno: null,
@@ -83,6 +91,12 @@ angular.module('appAsistente', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            itemsRegistrados: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
+            getItemsRegistrados: getItemsRegistrados,
             getTransferenciasDespachadas: getTransferenciasDespachadas,
             getTransferenciasPorIngresar: getTransferenciasPorIngresar,
             getTransferenciasPendientes: getTransferenciasPendientes,
@@ -94,6 +108,23 @@ angular.module('appAsistente', ['ui.router'])
             despacharTransferencia: despacharTransferencia
         }
 
+        function getItemsRegistrados($scope, data) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/itemfarmacia/registro",
+                params: data
+            }).then(function (res) {
+                console.log("Items registrados", res.data)
+                NProgress.done();
+                $scope.items.data = res.data;
+            }, function (err) {
+                console.log("error getItemsRegistrados", err)
+                notify("No se pudo cargar los items", "danger");
+                NProgress.done();
+            })
+        }
+
         function getTransferenciasDespachadas($scope, data) {
             NProgress.start()
             $http({
@@ -101,6 +132,7 @@ angular.module('appAsistente', ['ui.router'])
                 url: "/api/transferencia/despachada/personal",
                 params: data
             }).then(function (res) {
+                console.log("Transferencias despachadas", res.data)
                 NProgress.done();
                 $scope.transferencias.data = res.data;
             }, function (err) {
@@ -114,6 +146,7 @@ angular.module('appAsistente', ['ui.router'])
             NProgress.start();
             $http.put("/api/transferencia/" + data.idTransferencia + "/despachar", data).then(function (res) {
                 $('#ver_transferencia').modal('hide');
+                console.log("Transferencia despachada", res.data)
                 getTransferenciasPendientes($scope)
                 notify("Transferencia despachada exitosamente", "success");
                 NProgress.done()
@@ -132,12 +165,13 @@ angular.module('appAsistente', ['ui.router'])
             }, function(error) { console.log("Error: ", error) })
         }
 
-        function getTransferenciasPorIngresar() {
-            $http.get("/api/transferencia/despachada").then(function success(res) {
+        function getTransferenciasPorIngresar($scope) {
+            $http.get("/api/transferencia/despachada").then(function (res) {
+                console.log("getTransferenciasPorIngresar", res.data)
                 dataFac.transferenciasPorIngresar = res.data;
-                $rootScope.$broadcast('dataFac.transferenciasPorIngresar');
-            }, function error(err) {
-                console.log("Error cargar transferencias", err);
+                $scope.transferencias = dataFac.transferenciasPorIngresar
+            }, function (error) {
+                console.log("Error getTransferenciasPorIngresar", error);
             })
         }
 
@@ -162,13 +196,13 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getStock() { //Se obtiene el stock completo de esa localidad
+        function getStock($scope) { //Se obtiene el stock completo de esa localidad
             $http.get("/api/itemfarmacia/").then(function success(res) {
                 console.log("Stock de farmacia", res.data);
                 dataFac.stock = res.data;
-                $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
-            }, function error(err) {
-                console.log("error cargar stock");
+                $scope.stock = dataFac.stock
+            }, function (error) {
+                console.log("error getStock", error);
             })
         }
 
@@ -182,13 +216,20 @@ angular.module('appAsistente', ['ui.router'])
             })
         }
 
-        function getDespachos() { //Se obtienen todos los despachos de la BDD
-            $http.get("api/receta/asistente").then(function success(res) {
-                console.log("Despachos del personal", res.data);
-                dataFac.despachos = res.data;
-                $rootScope.$broadcast('dataFac.despachos'); //Se informa a los controladores que cambio despachos
-            }, function error(err) {
-                console.log("Error al cargar despachos", err);
+        function getDespachos($scope, data) { //Se obtienen todos los despachos de la BDD
+            NProgress.start();
+            $http({
+                method: "GET",
+                url: "/api/receta/asistente",
+                params: data
+            }).then(function (res) {
+                console.log("getDespachos", res.data);
+                $scope.despachos.data = res.data
+                NProgress.done();
+            }, function (error) {
+                console.log("error getDespachos", error)
+                notify("Error al cargar la informacion", "danger");
+                NProgress.done();
             })
         }
 
@@ -338,19 +379,16 @@ angular.module('appAsistente', ['ui.router'])
         }   
 
     }])
-    .controller('despachar.transferencias', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    .controller('despachar.transferencias', ["$scope", "dataFac", function ($scope, dataFac) {
         $scope.transferencias = dataFac.transferencias;
         $scope.transferencia = null;
 
-        var actualizar = refresh.go(cargar, 30);
+        var actualizar = refresh.go(cargarTransferencias, 1);
+        $scope.$on("$destroy", function () { refresh.stop(actualizar) });
 
-        function cargar() {
-            if ($state.includes('despachar.transferencias')) {
-                return dataFac.getTransferenciasPendientes($scope)
-            } refresh.stop(actualizar)
+        function cargarTransferencias() {
+            dataFac.getTransferenciasPendientes($scope)
         }        
-
-        //$scope.$on('dataFac.transferencias', function() { $scope.transferencias = dataFac.transferencias })
 
         $scope.ver = function (transferencia) {
             $scope.transferencia = transferencia
@@ -382,29 +420,23 @@ angular.module('appAsistente', ['ui.router'])
         $state.go("historial.recetas")
     }])
     .controller('historial.recetas', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
-        $scope.despachos = dataFac.despachos;
+        $scope.despachos = dataFac.recetasDespachadas;
         $scope.receta = null;
-        var actualizar = refresh.go(cargar, 30);
 
-        $scope.$on('dataFac.despachos', function () {
-            $scope.despachos = dataFac.despachos;
+        $scope.$watch("despachos", function () {
+            dataFac.recetasDespachadas = $scope.despachos
         })
 
-        function cargar() {
-            if ($state.includes('historial')) {
-                dataFac.getDespachos(dataFac.personal);
-            } else {
-                refresh.stop(actualizar);
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
             }
+            dataFac.getDespachos($scope, data); 
         }
 
         $scope.select = function (receta) {
-            refresh.stop(actualizar); //Se detiene la carga de despachos cuando se abre el modal
             $scope.receta = receta;
-        }
-
-        $scope.close = function () {
-            actualizar = refresh.go(cargar, 30); //Se reanuda la carga de despachos al cerrar modal
         }
     }])
     .controller('historial.transferencias', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
@@ -432,20 +464,36 @@ angular.module('appAsistente', ['ui.router'])
     .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
 
     }])
-    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
-        $scope.stock = dataFac.stock;
-        var actualizar = refresh.go(cargar, 30);
+    .controller('historial.ingresoItems', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.items = dataFac.itemsRegistrados
+        $scope.item = null;
 
-        $scope.$on('dataFac.stock', function () {
-            $scope.stock = dataFac.stock;
+        $scope.$watch("items", function () {
+            dataFac.itemsRegistrados = $scope.items
         })
 
-        function cargar() {
-            if ($state.includes('stock')) {
-                dataFac.getStock();
-            } else {
-                refresh.stop(actualizar);
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
             }
+
+            dataFac.getItemsRegistrados($scope, data)
+        }
+
+        $scope.ver = function (item) {
+            $scope.item = item
+        }
+
+    }])
+    .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
+        $scope.stock = dataFac.stock;
+
+        var actualizar = refresh.go(cargarStock, 1);
+        $scope.$on("$destroy", function () { refresh.stop(actualizar) });
+
+        function cargarStock() {
+            dataFac.getStock($scope);
         }
     }])
     .controller('ingresar', ["$state", function ($state) {
@@ -484,25 +532,19 @@ angular.module('appAsistente', ['ui.router'])
         $scope.transferencias = dataFac.transferenciasPorIngresar;
         $scope.transferencia = null;
 
-        var actualizar = refresh.go(cargar, 30);
+        var actualizar = refresh.go(cargarTransferencias, 1);
+        $scope.$on("$destroy", function () { refresh.stop(actualizar) });
 
-        function cargar() {
-            if ($state.includes('ingresar.transferencias')) {
-                dataFac.getTransferenciasPorIngresar();
-            } else {
-                refresh.stop(actualizar);
-            }
+        function cargarTransferencias() {
+            dataFac.getTransferenciasPorIngresar($scope);
         }
-
-        $scope.$on('dataFac.transferenciasPorIngresar', function () {
-            $scope.transferencias = dataFac.transferenciasPorIngresar;
-        })
 
         $scope.ver = function (transferencia) {
             $scope.transferencia = transferencia;
         }
 
         $scope.guardarIngreso = function (comentario) {
+            refresh.stop(actualizar)
             var data = {
                 idTransferencia: $scope.transferencia.id,
                 comentario: (function () {
@@ -515,10 +557,11 @@ angular.module('appAsistente', ['ui.router'])
             NProgress.start();
             $http.post("/api/itemfarmacia/transferencia", data).then(function success(res) {
                 $('#ver_transferencia').modal('hide');
-                actualizar = refresh.go(cargar, 30);
+                actualizar = refresh.go(cargarTransferencias, 1);
                 notify("Transferencia ingresada exitosamente", "success");
                 NProgress.done();
             }, function error(err) {
+                refresh.go(cargarTransferencias, 1);
                 console.log("Error ingresar transferencia", err);
                 notify("No se pudo ingresar la transferencia", "danger");
                 NProgress.done();

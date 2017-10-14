@@ -10,7 +10,7 @@
                 <thead>
                     <tr>
                         <th>N&uacute;mero</th>
-                        <th>Fecha</th>
+                        <th>Fecha Solicitud</th>
                         <th>Nombre</th>
                         <th>Compuesto</th>
                         <th>Cantidad</th>
@@ -22,8 +22,8 @@
                     <tr ng-repeat="t in transferencias">
                         <td>{{("00000000"+ t.id).slice(-9)}}</td>
                         <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                        <td>{{t.nombre}}</td>
-                        <td>{{t.compuesto}}</td>
+                        <td>{{t.itemFarmacia.nombre}}</td>
+                        <td>{{t.itemFarmacia.compuesto}}</td>
                         <td>{{t.cantidad}}</td>
                         <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
@@ -48,11 +48,23 @@
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
-                                <td>{{transferencia.nombre}}</td>
+                                <td>{{transferencia.itemFarmacia.nombre}}</td>
                             </tr>
                             <tr>
                                 <td>Compuesto: </td>
-                                <td>{{transferencia.compuesto}}</td>
+                                <td>{{transferencia.itemFarmacia.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: </td>
+                                <td>{{transferencia.itemFarmacia.categoria}}</td>
+                            </tr>
+                            <tr>
+                                <td>Grupo: </td>
+                                <td>{{transferencia.itemFarmacia.grupo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Caducidad: </td>
+                                <td>{{transferencia.itemFarmacia.fcaducidad}}</td>
                             </tr>
                             <tr>
                                 <td>Cantidad: </td>
@@ -64,11 +76,11 @@
                             </tr>
                             <tr>
                                 <td>Fecha de pedido: </td>
-                                <td>{{transferencia.fecha}}</td>
+                                <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
                             <tr>
                                 <td>Origen de pedido: </td>
-                                <td>{{transferencia.origen}}</td>
+                                <td>{{transferencia.itemFarmacia.localidad}}</td>
                             </tr>
                         </tbody>
                     </table>

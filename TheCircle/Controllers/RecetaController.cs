@@ -120,32 +120,16 @@ namespace TheCircle.Controllers
         [HttpGet("receta/asistente")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
         [APIauth("asistenteSalud")]
-        public IActionResult getRecetasDespachadas(Token token)
+        public IActionResult getRecetasDespachadas(Token token, [FromQuery]Date fecha)
         {
-            Receta[] recetas = Receta.ReportAsistente(token.data.cedula, _context);
+            Receta[] recetas = Receta.ReportAsistente(token.data.cedula, fecha.desde, fecha.hasta, _context);
             List<object> data = new List<object>();
 
             foreach (Receta receta in recetas) 
-                data.Add( new {
-                    receta = receta,
-                    items = ItemDespacho.GetByReceta(receta.id, _context)
-                });
+                data.Add( new { receta, items = ItemDespacho.GetByReceta(receta.id, _context) });
             
             return Ok(data); 
         }
-
-
-        //Crea una receta de farmacia
-        /*[HttpPost("receta/apadrinado/{apadrinado}")]
-        [APIauth("medico")]
-        public IActionResult PostReceta(Token token, int apadrinado)
-        {
-            if (apadrinado <= 10000)
-                return BadRequest("Incorrect Data");
-           
-            Receta receta = new Receta(apadrinado, token.data.cedula, _context);
-            return Ok(receta);
-        }*/
 
 
         //Crea una receta de farmacia con sus items

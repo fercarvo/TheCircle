@@ -56,8 +56,12 @@
 
                                 <tbody style="text-align:left;">
                                     <tr>
-                                        <td>Número: </td>
+                                        <td>Número de transferencia: </td>
                                         <td>{{("00000000"+ transferencia.id).slice(-9)}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ID Ítem: </td>
+                                        <td>{{("0"+ transferencia.itemFarmacia.id).slice(-2)}}</td>
                                     </tr>
                                     <tr>
                                         <td>Nombre: </td>
@@ -66,6 +70,18 @@
                                     <tr>
                                         <td>Compuesto: </td>
                                         <td>{{transferencia.itemFarmacia.compuesto}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Categoria: </td>
+                                        <td>{{transferencia.itemFarmacia.categoria}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Grupo: </td>
+                                        <td>{{transferencia.itemFarmacia.grupo}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Caducidad: </td>
+                                        <td>{{transferencia.itemFarmacia.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                     </tr>
                                     <tr>
                                         <td>Cantidad: </td>
