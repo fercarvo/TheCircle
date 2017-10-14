@@ -4,6 +4,7 @@ using System;
 using TheCircle.Util;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace TheCircle.Controllers
 {
@@ -187,10 +188,10 @@ namespace TheCircle.Controllers
                     new ItemDespacho(item, token.data.cedula, _context);
 
                 Receta.UpdateDespachada(id, _context);
+                tran.Commit();
 
                 Task.Run( ()=> Receta.AlertaDespacho(id) );
 
-                tran.Commit();
                 return Ok();
 
             } catch (Exception e) {

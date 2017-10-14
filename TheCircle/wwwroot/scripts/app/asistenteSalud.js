@@ -230,7 +230,7 @@ angular.module('appAsistente', ['ui.router'])
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
-        var actualizar = refresh.go(cargar, 30);
+        var actualizar = refresh.go(cargar, 1);
 
         $scope.$on('dataFac.recetas', function () {
             $scope.recetas = dataFac.recetas;
@@ -279,17 +279,17 @@ angular.module('appAsistente', ['ui.router'])
                     notify("Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
                     //recetas.splice(index, 1);
-                    actualizar = refresh.go(cargar, 30);
+                    actualizar = refresh.go(cargar, 1);
 
                 }, function error(e) {
                     console.log("Error despacho", e);
                     $('#myModal').modal('hide');
                     notify("No se ha podido despachar", "danger");
-                    actualizar = refresh.go(cargar, 30);
+                    actualizar = refresh.go(cargar, 1);
                 })
 
             } else {
-                actualizar = refresh.go(cargar, 30);
+                actualizar = refresh.go(cargar, 1);
                 console.log("No se han despachado todos los items", total);
                 notify("No se han despachado todos los items", "danger");
             }

@@ -37,15 +37,17 @@ namespace TheCircle.Models
 
         //En caso de un mal despacho se notifica al contralor
         public static void AlertaDespacho(int idReceta) {
-            var despachos = ItemDespacho.GetByReceta(idReceta, new MyDbContext());
-            var contralor = UserSafe.GetByCargo("contralor");
+            try {
+                var despachos = ItemDespacho.GetByReceta(idReceta, new MyDbContext());
+                var contralor = UserSafe.GetByCargo("contralor");
 
-            foreach (var item in despachos){
-                if (item.cantidadDespachada != item.cantidadRecetada) {
-                    new EmailTC().RecetaErronea($"{contralor.nombre} {contralor.apellido}", contralor.email, idReceta)
-                    break;
+                foreach (var item in despachos) {
+                    if (item.cantidadDespachada != item.cantidadRecetada) {
+                        new EmailTC().RecetaErronea($"{contralor.nombre} {contralor.apellido}", contralor.email, idReceta);
+                        break;
+                    }
                 }
-            }
+            } catch (Exception e) { }            
         }
 
         public static Receta[] ReportAsistente(int asistente, MyDbContext _context)
