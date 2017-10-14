@@ -14,18 +14,17 @@
         </div><!-- /.panel-heading -->
         <div class="panel-body" style="padding:25px 20px 20px 20px;">
             <div class="form-group" id="estadistica-atenciones-form">
-                <form class="form-horizontal" ng-submit="generar(desde, hasta)">
-                    <!--"m-bottom-30" para poner margen vertical de 30px-->
+                <form class="form-horizontal" ng-submit="generar(remisiones.desde, remisiones.hasta)">
                     <div class="col-sm-3" style="padding-bottom:5px;">
                         <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                        <input ng-model="desde" required type="date" class="form-control">
+                        <input ng-model="remisiones.desde" required type="date" class="form-control">
                     </div>
                     <div class="col-sm-3" style="padding-bottom:5px;">
                         <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                        <input ng-model="hasta" required type="date" class="form-control">
+                        <input ng-model="remisiones.hasta" required type="date" class="form-control">
                     </div>
                     <div class="col-sm-3" style="padding-bottom:5px;">
-                        <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+                        <button data-ripple type="submit" class="btn btn-info" title="Obtener remisiones por fecha de creación" style="margin-top:26px;">Generar</button>
                     </div>
 
                 </form>
@@ -49,7 +48,7 @@
                         </thead>
 
                         <tbody>
-                            <tr ng-repeat="ap in remisiones | filter:buscar | orderBy:'remision.id'">
+                            <tr ng-repeat="ap in remisiones.data | filter:buscar | orderBy:'remision.id'">
                                 <td>{{("00000000"+ ap.remision.id).slice(-9)}}</td>
                                 <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                 <td>{{ap.monto | currency}}</td>

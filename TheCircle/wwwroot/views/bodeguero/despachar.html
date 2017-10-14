@@ -20,8 +20,8 @@
                         <input type="text" placeholder="filtrar por destino" ng-model="buscar.destino" class="form-control">
                     </div>
                 </div>
-                <div class="panel-body" style=" padding-top:5px;overflow-y:auto;max-height:60vh">
-                    <table class="table table-striped">
+                <div class="panel-body" style=" padding:5px;overflow-y:auto;max-height:60vh">
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>N&uacute;mero</th>
@@ -49,58 +49,58 @@
                 <div class="modal-dialog">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">Información del pedido</h5>
+                            <h5 class="modal-title" style="font-weight:bold">Información del pedido</h5>
                         </div>
-                        <div class="panel-body" style="padding-top: 5px;">
-                            <table class="table table-striped">
+                        <div class="panel-body" style="padding: 5px;">
+                            <table class="table table-bordered table-striped">
 
                                 <tbody style="text-align:left;">
                                     <tr>
-                                        <td>Número de transferencia: </td>
+                                        <td style="font-weight:bold">Número de transferencia: </td>
                                         <td>{{("00000000"+ transferencia.id).slice(-9)}}</td>
                                     </tr>
                                     <tr>
-                                        <td>ID Ítem: </td>
+                                        <td style="font-weight:bold">ID Ítem: </tdstyle="font-weight:bold">
                                         <td>{{("0"+ transferencia.itemFarmacia.id).slice(-2)}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Nombre: </td>
+                                        <td style="font-weight:bold">Nombre: </tdstyle="font-weight:bold">
                                         <td>{{transferencia.itemFarmacia.nombre}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Compuesto: </td>
+                                        <td style="font-weight:bold">Compuesto: </tdstyle="font-weight:bold">
                                         <td>{{transferencia.itemFarmacia.compuesto}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Categoria: </td>
+                                        <td style="font-weight:bold">Categoria: </td>
                                         <td>{{transferencia.itemFarmacia.categoria}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Grupo: </td>
+                                        <td style="font-weight:bold">Grupo: </td>
                                         <td>{{transferencia.itemFarmacia.grupo}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Caducidad: </td>
+                                        <td style="font-weight:bold">Caducidad: </td>
                                         <td>{{transferencia.itemFarmacia.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Cantidad: </td>
+                                        <td style="font-weight:bold">Cantidad: </td>
                                         <td> <label style="width:20%">{{transferencia.cantidad}}</label> </td>
                                     </tr>
                                     <tr>
-                                        <td>Comentario: </td>
-                                        <td><input form="transferenciaForm" ng-model="comentario" title="Comentario de maximo 50 caracteres" pattern=".{0,50}" type="text" style="width:100%;" /></td>
+                                        <td style="font-weight:bold">Comentario: </td>
+                                        <td><input form="transferenciaForm" ng-model="comentario" title="Ingrese un comentario" pattern=".{1,50}" type="text" style="width:100%;" /></td>
                                     </tr>
                                     <tr>
-                                        <td>Solicitante: </td>
+                                        <td style="font-weight:bold">Solicitante: </td>
                                         <td>{{transferencia.solicitante.nombre}} {{transferencia.solicitante.apellido}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Destino: </td>
+                                        <td style="font-weight:bold">Destino: </td>
                                         <td>{{transferencia.destino}}</td>
                                     </tr>
                                     <tr>
-                                        <td>Fecha solicitud: </td>
+                                        <td style="font-weight:bold">Fecha solicitud: </td>
                                         <td>{{transferencia.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
                                     </tr>
                                 </tbody>

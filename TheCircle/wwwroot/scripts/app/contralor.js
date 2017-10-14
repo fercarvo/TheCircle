@@ -54,7 +54,11 @@ angular.module('contralor', ['ui.router'])
             recetas: null,
             pedidosinternos: null,
             transferencias: null,
-            remisionesAprobadas: null,
+            remisionesAprobadas: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             stock: null,
             getStock: getStock,
             getTransferencias: getTransferencias,
@@ -118,9 +122,8 @@ angular.module('contralor', ['ui.router'])
                     })
                 })
 
-                dataFac.remisionesAprobadas = res.data.infoAP;
-                $scope.remisiones = dataFac.remisionesAprobadas;
-                console.log("Despues populate", dataFac.remisionesAprobadas)
+                $scope.remisiones.data = res.data.infoAP;
+                console.log("Despues populate", res.data.infoAP)
                 NProgress.done();
             }, function error(err) {
                 console.log("Error cargar remisiones", error);
@@ -271,6 +274,10 @@ angular.module('contralor', ['ui.router'])
     .controller('remisionesAprobadas', ["$scope", "dataFac", function ($scope, dataFac) {
         $scope.remisiones = dataFac.remisionesAprobadas
         $scope.aprobacion = null
+
+        $scope.$watch("remisiones", function () {
+            dataFac.remisionesAprobadas = $scope.remisiones
+        })
 
         $scope.generar = function (desde, hasta) {
             var data = {

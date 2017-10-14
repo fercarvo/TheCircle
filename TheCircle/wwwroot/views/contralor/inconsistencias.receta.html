@@ -11,12 +11,12 @@
             </div>
         </div>
         <div style="overflow-y:auto;max-height:45vh">
-            <table class="table table-striped">
+            <table class="table table-bordered table-striped">
                 <thead>
                     <tr>
                         <th>N&uacute;mero</th>
                         <th>Fecha</th>
-                        <th>Doctor</th>
+                        <th>Doctor solicitante</th>
                         <th>Asistente</th>
                         <th>Ver &iacute;tems</th>
                     </tr>
@@ -26,7 +26,7 @@
                     <tr ng-repeat="obj in recetas | filter:buscar | orderBy:'receta.id'">
                         <td>{{("00000000"+ obj.receta.id).slice(-9)}}</td>
                         <td>{{obj.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                        <td>{{obj.receta.nombreDoctor}}</td>
+                        <td>{{obj.receta.nombreDoctor}} {{obj.receta.apellidoDoctor}}</td>
                         <td>{{("00000000"+ obj.items[0].idPersonal).slice(-9)}}</td><!--aqui no creo que va la codificacion-->
                         <td width="10%"><button data-ripple style="background-color:inherit;border: none;" ng-click="select(obj)" data-toggle="modal" data-target="#recetaModal"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
@@ -42,8 +42,8 @@
                 <div class="modal-header">
                     <h5 class="modal-title"># receta  {{("00000000"+ receta.receta.id).slice(-9)}}  -  {{receta.receta.fecha | date: 'dd/MM/yyyy - HH:mm'}}</h5>
                 </div>
-                <div class="panel-body" style=" padding-top: 5px;">
-                    <table class="table table-striped">
+                <div class="panel-body" style=" padding: 5px;">
+                    <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
                                 <th>Nombre</th>

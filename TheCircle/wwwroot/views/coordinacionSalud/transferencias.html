@@ -90,10 +90,10 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Detalle del &Iacute;tem Seleccionado</h5>
+                                <h5 class="modal-title">Detalle del Ítem Seleccionado</h5>
                             </div>
-                            <div class="modal-body">
-                                <table class="table table-striped" style="text-align:center;">
+                            <div class="panel-body" style="padding: 5px;">
+                                <table class="table table-bordered table-striped" style="text-align:left;">
 
                                     <tbody style="text-align:left;">
                                         <tr>
@@ -105,6 +105,18 @@
                                             <td>{{item.compuesto}}</td>
                                         </tr>
                                         <tr>
+                                            <td>Categoria: </td>
+                                            <td>{{item.categoria}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Grupo: </td>
+                                            <td>{{item.grupo}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Fecha de caducidad: </td>
+                                            <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                                        </tr>
+                                        <tr>
                                             <td>Localidad origen: </td>
                                             <td>{{item.localidad}}</td>
                                         </tr>
@@ -113,7 +125,6 @@
                                             <td>
                                                 <select required title="Destino debe ser diferente al origen" form="transferencia" style="width:100%;" ng-model="destino">
                                                     <option value="" selected disabled> </option>
-                                                    <option value="OC">Oficina central</option>
                                                     <option value="CC0">Centro Comunitario 0 - Durán</option>
                                                     <option value="CC2">Centro Comunitario 2 - Phelan</option>
                                                     <option value="CC3">Centro Comunitario 3 - BUDS</option>

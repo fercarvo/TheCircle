@@ -19,8 +19,8 @@
                         <input type="text" ng-model="buscar.id" placeholder="Buscar por número de remisión médica" class="form-control">
                     </div>
                 </div>
-                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
-                    <table class="table table-striped" id="tabla1">
+                <div class="panel-body" style=" padding: 5px;overflow-y:auto;max-height:59vh;">
+                    <table class="table table-bordered table-striped" id="tabla1">
                         <thead>
                             <tr>
                                 <th>N&uacute;mero</th>
@@ -37,8 +37,8 @@
                                 <td>{{r.institucion}}</td>
                                 <td>{{r.monto | currency}}</td>
                                 <td>{{r.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td><button title="Aprobar sin revisar" ng-click="aprobar(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon-glyphicon-ok"></span></button></td>
-                                <td><button ng-click="ver(r)" data-ripple style="background-color:inherit;border:none;"><span class="glyphicon-glyphicon-search"></span></button></td>
+                                <td><button title="Aprobar sin revisar" ng-click="aprobar(r)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-ok"></span></button></td>
+                                <td><button ng-click="ver(r)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-search"></span></button></td>
                             </tr>
                         </tbody>
                     </table>
@@ -51,8 +51,8 @@
                         <div class="modal-header">
                             <h5 class="modal-title">Datos de la remisión</h5>
                         </div>
-                        <div class="panel-body" style=" padding-top: 5px;">
-                            <table class="table table-striped" style="text-align:center;">
+                        <div class="panel-body" style=" padding: 5px;">
+                            <table class="table table-bordered table-striped" style="text-align:center;">
 
                                 <tbody style="text-align:left;">
                                     <tr>

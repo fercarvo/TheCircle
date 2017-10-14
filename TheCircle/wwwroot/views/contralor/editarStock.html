@@ -57,13 +57,15 @@
                             </select>
                         </div>
                     </div>
-                    <div class="panel-body" id="tabla"  style="overflow-y:auto;max-height:66vh;padding-top: 5px;">
-                        <table class="table table-striped">
+                    <div class="panel-body" id="tabla"  style="overflow-y:auto;max-height:66vh;padding: 5px;">
+                        <table class="table  table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Compuesto</th>
-                                    <th>Categor&iacute;a</th>
+                                    <th>Categoría</th>
+                                    <th>Grupo</th>
                                     <th>Disponible</th>
                                     <th>Caducidad</th>
                                     <th>Editar</th>
@@ -71,13 +73,15 @@
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="item in stock | orderBy:'compuesto' | filter:buscar">
-                                    <td>{{item.nombre}}</td>
-                                    <td>{{item.compuesto}}</td>
-                                    <td>{{item.categoria}}</td>
-                                    <td>{{item.stock}}</td>
-                                    <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
-                                    <td > <button style="background-color:inherit;border: none;" ng-click="select(item)"><span class="glyphicon glyphicon-edit"></span></button></td> 
+                                <tr ng-repeat="ite in stock | orderBy:['grupo', 'categoria', 'compuesto', 'id'] | filter:buscar">
+                                    <td>{{("0"+ ite.id).slice(-2)}}</td>
+                                    <td>{{ite.nombre}}</td>
+                                    <td>{{ite.compuesto}}</td>
+                                    <td>{{ite.categoria}}</td>
+                                    <td>{{ite.grupo}}</td>
+                                    <td>{{ite.stock}}</td>
+                                    <td>{{ite.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                                    <td > <button style="background-color:inherit;border: none;" ng-click="select(ite)"><span class="glyphicon glyphicon-edit"></span></button></td> 
 
                                 </tr>
                             </tbody>
@@ -95,15 +99,15 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Datos de la Remisi&oacute;n</h5>
+                        <h5 class="modal-title">Información del Ítem</h5>
                     </div>
-                    <div class="panel-body" style=" padding-top: 5px;">
-                        <table class="table table-striped" style="text-align:center;">
+                    <div class="panel-body" style="padding: 5px;">
+                        <table class="table table-bordered table-striped">
 
                             <tbody style="text-align:left;">
                                 <tr>
-                                    <td>ID Itema: </td>
-                                    <td>{{item.id}}</td>
+                                    <td>ID Item: </td>
+                                    <td>{{("000"+ item.id).slice(-4)}}</td>
                                 </tr>
                                 <tr>
                                     <td>Nombre: </td>
@@ -112,6 +116,10 @@
                                 <tr>
                                     <td>Compuesto: </td>
                                     <td>{{item.compuesto}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Localidad: </td>
+                                    <td>{{item.localidad}}</td>
                                 </tr>
                                 <tr>
                                     <td>Stock: </td>

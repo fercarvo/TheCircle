@@ -57,23 +57,27 @@
                             </select>
                         </div>
                     </div>
-                    <div class="panel-body" id="tabla"  style="overflow-y:auto;max-height:66vh;padding-top: 5px;">
-                        <table class="table table-striped">
+                    <div class="panel-body" id="tabla"  style="overflow-y:auto;max-height:66vh;padding: 5px;">
+                        <table class="table table-bordered table-striped">
                             <thead>
                                 <tr>
+                                    <th>ID</th>
                                     <th>Nombre</th>
                                     <th>Compuesto</th>
-                                    <th>Categor&iacute;a</th>
+                                    <th>Categoría</th>
+                                    <th>Grupo</th>
                                     <th>Disponible</th>
                                     <th>Caducidad</th>
                                 </tr>
                             </thead>
 
                             <tbody>
-                                <tr ng-repeat="item in stock | orderBy:'compuesto' | filter:buscar">
+                                <tr ng-repeat="item in stock | orderBy:['grupo', 'categoria', 'compuesto', 'nombre', 'fcaducidad'] | filter:buscar">
+                                    <td style="cursor: pointer" title="Localidad {{item.localidad}}">{{("0"+ item.id).slice(-2)}}</td>
                                     <td>{{item.nombre}}</td>
                                     <td>{{item.compuesto}}</td>
                                     <td>{{item.categoria}}</td>
+                                    <td>{{item.grupo}}</td>
                                     <td>{{item.stock}}</td>
                                     <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
                                 </tr>
