@@ -141,7 +141,7 @@ Recientemente se despacho una receta médica con una cantidad inferior a los item
                 {
                     Text = @"The Circle le saluda,
 
-Recientemente se despacho un pedido interno con una cantidad inferior a la solicitada, el número de la misma es " + $"0000{pedido}"
+Recientemente se despacho un pedido interno con una cantidad inferior a la solicitada, el número del mismo es " + $"0000{pedido}"
                 };
 
                 client.Send(message);

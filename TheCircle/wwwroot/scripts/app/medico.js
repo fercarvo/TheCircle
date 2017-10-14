@@ -364,7 +364,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 NProgress.done();
                 console.log("Se creo atencion", res.data);
                 disable.atencion = true;
-                atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
+                //atencionFactory.atencion = res.data.atencion; //Se guarda la data ingresada en la factory
                 atencionFactory.diagnosticos = res.data.diagnosticos; //Se guarda la data ingresada en la factory
                 $scope.disable = disable.atencion; //Se desactiva atencion.registro.html
                 $scope.$emit('guardar'); //Guarda y bloquea la atencion medica

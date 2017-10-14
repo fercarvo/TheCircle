@@ -58,7 +58,7 @@ angular.module('bodeguero', ['ui.router'])
                 data: null
             },
             getTransferenciasDespachadas: getTransferenciasDespachadas,
-            getData: data,
+            getData: getData,
             getStock: getStock,
             getCompuestos: getCompuestos,
             getTransferencias: getTransferencias
@@ -106,17 +106,17 @@ angular.module('bodeguero', ['ui.router'])
             })
         }
 
-        function getStock() {
-            $http.get("/api/itemfarmacia/").then(function success(res) {
+        function getStock($scope) {
+            $http.get("/api/itemfarmacia/").then(function (res) {
                 console.log("Stock de bodega", res.data);
                 dataFac.stock = res.data;
-                $rootScope.$broadcast('dataFac.stock'); //Se informa a los controladores que cambio stock
-            }, function error(err) {
-                console.log("error cargar stock", err);
+                $scope.stock = dataFac.stock;
+            }, function (error) {
+                console.log("error getStock", error)
             })
         }
 
-        function data() {
+        function getData() {
             $http.get("/api/compuesto-categoria-unidades").then( (res)=>{
                 dataFac.compuestos = res.data.compuestos;
                 dataFac.categorias = res.data.categorias;
@@ -190,9 +190,6 @@ angular.module('bodeguero', ['ui.router'])
                 actualizar = refresh.go(cargar, 1)
             })
         }
-     
-
-
     }])
     .controller('historial', ["$state", function ($state) {
         $state.go("historial.transferencias")
@@ -243,17 +240,13 @@ angular.module('bodeguero', ['ui.router'])
     }])
     .controller('stock', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.stock = dataFac.stock;
-        var actualizar = refresh.go(cargar, 1);
+        var actualizar = refresh.go(cargarStock, 1);
 
-        $scope.$on('dataFac.stock', function () {
-            $scope.stock = dataFac.stock;
-        })
-
-        function cargar() {
+        function cargarStock() {
             if ($state.includes('stock')) {
-                dataFac.getStock();
+                dataFac.getStock($scope)
             } else {
-                refresh.stop(actualizar);
+                refresh.stop(actualizar)
             }
         }
     }])
@@ -304,15 +297,13 @@ angular.module('bodeguero', ['ui.router'])
 
         dataFac.getData()
 
-        $scope.$on('compuesto-categoria-unidades', ()=>{
+        $scope.$on('compuesto-categoria-unidades', function(){
             $scope.categorias = dataFac.categorias
             $scope.unidades = dataFac.unidades
             $scope.compuestos = dataFac.compuestos
         })
 
-        //$scope.$on('dataFac.compuestos', ()=>{ $scope.compuestos = dataFac.compuestos })
-
-        $scope.crear =  (form)=>{
+        $scope.crear =  function(form){
             var data = {
                 nombre: form.nombre,
                 categoria: form.categoria,
@@ -320,15 +311,15 @@ angular.module('bodeguero', ['ui.router'])
             }
             console.log(form, data);
 
-            $http.post("/api/compuesto", data).then(function sucess(res) {
+            $http.post("/api/compuesto", data).then(function (res) {
                 console.log("Ingreso exitoso", res);
                 notify("Ingreso exitoso de compuesto", "success");
                 $state.reload();
-            }, function error(e) {
-                console.log("No se pudo guardar el compuesto", e)
+            }, function (error) {
+                console.log("No se pudo guardar el compuesto", error)
                 notify("No se ha podido guardar el compuesto", "danger");
             })
         }
 
-        $scope.reset = ()=>{ $state.reload() }
+        $scope.reset = function(){ $state.reload() }
     }])

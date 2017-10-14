@@ -187,12 +187,15 @@ namespace TheCircle.Controllers
                     new ItemDespacho(item, token.data.cedula, _context);
 
                 Receta.UpdateDespachada(id, _context);
+
+                Task.Run( ()=> Receta.AlertaDespacho(id) );
+
                 tran.Commit();
                 return Ok();
 
             } catch (Exception e) {
                 tran.Rollback();
-                return BadRequest("Error al despachar la receta");
+                throw new Exception("Error al despachar la receta", e);
             }
         }
 

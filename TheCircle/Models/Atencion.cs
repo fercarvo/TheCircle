@@ -26,7 +26,7 @@ namespace TheCircle.Models
 
         public Atencion (Data request, int doctor, Localidad localidad, MyDbContext _context) {
             try {
-                string q = $"EXEC dbo.Atencion_Insert @apadrinado={request.apadrinado}" +
+                string q = $"EXEC Atencion_Insert @apadrinado={request.apadrinado}" +
                     $", @doctor={doctor}" +
                     $", @tipo={request.tipo}" +
                     $", @localidad={localidad}" +
@@ -41,7 +41,7 @@ namespace TheCircle.Models
                 this.id = data.id;
 
             } catch (Exception e) {
-                throw new Exception("No se pudo crear la atencion medica");
+                throw new Exception("No se pudo crear la atencion medica", e);
             }
         }
 
