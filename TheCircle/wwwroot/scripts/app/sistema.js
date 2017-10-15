@@ -21,9 +21,9 @@ angular.module('sistema', ['ui.router'])
             });
 
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(true)
-        $compileProvider.commentDirectivesEnabled(true)
-        $compileProvider.cssClassDirectivesEnabled(true)
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
@@ -120,9 +120,9 @@ angular.module('sistema', ['ui.router'])
 
         usuarios.getActivos();
 
-        $scope.$on('usuarios.activos', ()=>{ $scope.usuarios = usuarios.activos })
-        $scope.$watch('usuarios', ()=>{ usuarios.activos = $scope.usuarios })
-        $scope.seleccionar = (usuario)=>{ $scope.usuario = usuario }
+        $scope.$on('usuarios.activos', function(){ $scope.usuarios = usuarios.activos })
+        $scope.$watch('usuarios', function(){ usuarios.activos = $scope.usuarios })
+        $scope.seleccionar = function(usuario){ $scope.usuario = usuario }
 
         $scope.aceptar = function () {
             $('#modal_desactivar').modal('hide');
@@ -146,7 +146,7 @@ angular.module('sistema', ['ui.router'])
 
         usuarios.getAll();
 
-        $scope.$on('usuarios.all', ()=>{ $scope.usuarios = usuarios.all })
+        $scope.$on('usuarios.all', function(){ $scope.usuarios = usuarios.all })
 
         $scope.seleccionar = function (usuario) {
             $scope.usuario = usuario;

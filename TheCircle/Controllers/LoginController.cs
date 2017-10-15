@@ -20,6 +20,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("logout")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Logout()
         {
             foreach (var cookie in Request.Cookies.Keys)
@@ -29,7 +30,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("login")]
-        //[ResponseCache(Duration = 60 * 60 * 120, Location = ResponseCacheLocation.Client)] //cache de 60*60*60 segundos = 120 horas
+        [ResponseCache(Duration = 60 * 60 * 24 * 3, Location = ResponseCacheLocation.Client)]
         public IActionResult Login()
         {
             return View("~/Views/TheCircle/Login.cshtml");

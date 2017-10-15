@@ -1,4 +1,8 @@
-﻿
+﻿/*
+    bodeguero v1.0 
+    Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+    Children International
+*/
 angular.module('bodeguero', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
@@ -29,8 +33,12 @@ angular.module('bodeguero', ['ui.router'])
             .state('compuesto', {
                 templateUrl: 'views/bodeguero/compuesto.html',
                 controller: 'compuesto'
-            });
-        $compileProvider.debugInfoEnabled(true); //false en modo de produccion
+            })
+            
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
@@ -119,7 +127,7 @@ angular.module('bodeguero', ['ui.router'])
         }
 
         function getData() {
-            $http.get("/api/compuesto-categoria-unidades").then( (res)=>{
+            $http.get("/api/compuesto-categoria-unidades").then( function(res){
                 dataFac.compuestos = res.data.compuestos;
                 dataFac.categorias = res.data.categorias;
                 dataFac.unidades = res.data.unidades;
@@ -131,7 +139,7 @@ angular.module('bodeguero', ['ui.router'])
         }
 
         function getCompuestos() {
-            $http.get("/api/compuesto").then((res) => {
+            $http.get("/api/compuesto").then(function(res) {
                 dataFac.compuestos = res.data;
                 $rootScope.$broadcast('dataFac.compuestos');
             }, function(error) {

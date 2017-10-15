@@ -1,7 +1,7 @@
 ﻿/*
- appContralor v1.0
- Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
- Children International
+    contralor v1.0 
+    Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+    Children International
 */
 angular.module('contralor', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
@@ -43,9 +43,9 @@ angular.module('contralor', ['ui.router'])
                 controller: 'editarStock'
             })
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(true)
-        $compileProvider.commentDirectivesEnabled(true)
-        $compileProvider.cssClassDirectivesEnabled(true)
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", "dataFac", function ($state, $http, $templateCache, dataFac) {
 

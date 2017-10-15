@@ -16,6 +16,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("compuesto")]
+        [ResponseCache(Duration = 20, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "bodeguero")]
         public IActionResult GetAll()
         {
@@ -24,6 +25,7 @@ namespace TheCircle.Controllers
         }
 
         [HttpGet("compuesto-categoria-unidades")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
         [APIauth("bodeguero")]
         public IActionResult Get()
         {

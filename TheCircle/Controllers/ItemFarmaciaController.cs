@@ -16,8 +16,9 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
+        //Obtengo todos los items de farmacia que existen en cierta localidad
         [HttpGet("itemfarmacia")]
-        //[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "bodeguero")]
         public IActionResult GetItems(Token token)
         {
@@ -25,8 +26,9 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        //Nombre de todos los items de farmacia registrados
         [HttpGet("itemfarmacia/nombre")]
-        //[ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
         [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult GetNombres()
         {
@@ -34,6 +36,7 @@ namespace TheCircle.Controllers
             return Ok(nombres);
         }
 
+        //Retorna todos los items de farmacia que ha registrado un personal en específico, por rango de fecha
         [HttpGet("itemfarmacia/registro")]
         [APIauth("asistenteSalud", "contralor", "bodeguero")]
         public IActionResult GetRegistros(Token token, [FromQuery]Date fecha)
@@ -42,8 +45,9 @@ namespace TheCircle.Controllers
             return Ok(items);
         }
 
+        //Se obtiene todos los insumos medicos y odontológicos disponibles en cierta localidad
         [HttpGet("itemfarmacia/insumos")]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("medico", "asistenteSalud")]
         public IActionResult GetItemsByTipo(Token token)
         {
@@ -52,6 +56,7 @@ namespace TheCircle.Controllers
         }
 
         //Obtengo el stock de toda la fundacion menos de la localidad actual
+        //SIN USO
         [HttpGet("itemfarmacia/report")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("medico", "asistenteSalud")]
@@ -70,6 +75,7 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
+        //Obtengo un reporte de todos los itemsFarmacia que han sido alterados por el contralor
         [HttpGet("itemfarmacia/report/cambios")]
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
         [APIauth("contralor")]
@@ -79,9 +85,9 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
         
-
+        //Lista de todos los egresos por Receta médica que se han dato en cierta localidad, por rango de fecha
         [HttpGet("itemfarmacia/report/egresos")]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)] //cache de 10 segundos
         [APIauth("coordinadorCC")]
         public IActionResult GetEgresos(Token token, [FromQuery]Date req)
         {
@@ -89,7 +95,7 @@ namespace TheCircle.Controllers
             return Ok(stock);
         }
 
-
+        //Se crea un itemFarmacia desde una transferencia
         [HttpPost("itemfarmacia/transferencia")]
         [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.IngresoTransferencia item)
@@ -98,11 +104,10 @@ namespace TheCircle.Controllers
                 return BadRequest();
 
             new ItemFarmacia(item.idTransferencia, item.comentario, token.data.localidad, token.data.cedula);
-            //ItemFarmacia.New(item, token.data.localidad, token.data.cedula, _context);
             return Ok();
         }
 
-
+        //Se crea un nuevo item farmacia para cierta localidad
         [HttpPost("itemfarmacia")]
         [APIauth("asistenteSalud", "bodeguero")]
         public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.IngresoRequest item)
@@ -114,6 +119,7 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //Se altera un item de farmacia, es decir su valor actual del stock
         [HttpPut("itemfarmacia/{id}")]
         [APIauth("contralor")]
         public IActionResult AlterarItem(Token token, int id, [FromQuery]int cantidad)

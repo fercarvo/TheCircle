@@ -1,10 +1,10 @@
 /*
- appAsistente v1.0
- Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
- Children International
+    asistenteSalud v1.0 
+    Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+    Children International
 */
 
-angular.module('appAsistente', ['ui.router'])
+angular.module('asistenteSalud', ['ui.router'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('despachar', {
@@ -35,10 +35,10 @@ angular.module('appAsistente', ['ui.router'])
                 templateUrl: 'views/asistente/historial.transferencias.html',
                 controller: 'historial.transferencias'
             })
-            .state('historial.pedidointerno', {
+            /*.state('historial.pedidointerno', { //NOT IMPLEMENTED
                 templateUrl: 'views/asistente/historial.pedidointerno.html',
                 controller: 'historial.pedidointerno'
-            })
+            })*/
             .state('historial.ingresoItems', {
                 templateUrl: 'views/asistente/historial.ingresoItems.html',
                 controller: 'historial.ingresoItems'
@@ -61,9 +61,9 @@ angular.module('appAsistente', ['ui.router'])
             });
 
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(true)
-        $compileProvider.commentDirectivesEnabled(true)
-        $compileProvider.cssClassDirectivesEnabled(true)
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
@@ -461,9 +461,9 @@ angular.module('appAsistente', ['ui.router'])
         }
 
     }])
-    .controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
+    /*.controller('historial.pedidointerno', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
 
-    }])
+    }])*/
     .controller('historial.ingresoItems', ["$scope", "$state", "dataFac", function ($scope, $state, dataFac) {
         $scope.items = dataFac.itemsRegistrados
         $scope.item = null;
@@ -506,8 +506,6 @@ angular.module('appAsistente', ['ui.router'])
         if ($scope.compuestos === null) {
             dataFac.getCompuestos($scope);
         }
-
-        //$scope.$on('dataFac.compuestos', function () { $scope.compuestos = dataFac.compuestos })
 
         $scope.crear = function (compuesto, item, fecha, cantidad) {
             var data = {

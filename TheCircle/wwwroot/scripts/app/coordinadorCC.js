@@ -1,7 +1,7 @@
 ﻿/*
- appCoordinador v1.0
- Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
- Children International
+    coordinadorCC v1.0 
+    Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+    Children International
 */
 
 angular.module('coordinadorCC', ['ui.router'])
@@ -15,7 +15,10 @@ angular.module('coordinadorCC', ['ui.router'])
                 templateUrl: 'views/coordinadorCC/egresos.html',
                 controller: 'egresos'
             });
-        $compileProvider.debugInfoEnabled(true); //Activar en modo producción
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 

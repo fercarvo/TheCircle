@@ -29,6 +29,7 @@ namespace TheCircle.Controllers
 
         //Obtengo una lista de todas las remisiones médicas aprobadas por contralor y coordinacion de salud
         [HttpGet("remision/aprobadas")]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         [APIauth("contralor", "coordinador")]
         public IActionResult GetAprobadas([FromQuery]Date fecha)
         {
@@ -69,7 +70,7 @@ namespace TheCircle.Controllers
 
         //ruta que retorna las remisiones medicas de un doctor por rango de fechas
         [HttpGet("reporte/remision/date")]
-        [ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60 * 5, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]
         public IActionResult Get_ReporteRemision_Date_Doctor(Token token, [FromQuery] Fecha request)
         {
@@ -90,6 +91,7 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
+        //reporte de todas las remisiones medicas que tienen la aprobacion 1 de coordinacion de salud
         [HttpGet("remision/aprobacion1")]
         [APIauth("contralor")]
         public IActionResult ReportAP1()
@@ -98,7 +100,7 @@ namespace TheCircle.Controllers
             return Ok(data);
         }
 
-
+        //Se crea la aprobación 1 para cierta remisión médica
         [HttpPost("remision/{id}/aprobacion1")]
         [APIauth("coordinador")]
         public IActionResult AprobarRemision(Token token, int id, [FromBody]Aprobacion1 req)
@@ -107,6 +109,7 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
+        //Se crea la aprobación por parte del contralor
         [HttpPost("remision/{id}/aprobacioncontralor")]
         [APIauth("contralor")]
         public IActionResult AprobacionContralor(Token token, int id, [FromBody]string comentario)
@@ -118,7 +121,7 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
-
+        //Obtengo todas las remisiones pendientes de aprobación
         [HttpGet("remision")]
         [APIauth("contralor", "coordinador")]
         public IActionResult GetAll()

@@ -37,7 +37,7 @@ namespace TheCircle.Controllers
 
         //Ruta que retorna las atenciones medicas de un doctor
         [HttpGet("atencion/medico")]
-        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]
         public IActionResult Get_ReporteAtencion(Token token, [FromQuery] Fecha request)
         {
@@ -48,10 +48,9 @@ namespace TheCircle.Controllers
             return Ok(atenciones);
         }
 
-        //Ruta que retorna las atenciones medicas de un doctor
+        //Ruta que retorna un reporte de las atenciones médicas por CC
         [HttpGet("atencion/report")]
-        //[ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
-        //[APIauth("medico")]
+        //[APIauth("director")]
         public IActionResult GetReport([FromQuery] Date fecha)
         {
             Atencion.Stadistics[] data = Atencion.Report(fecha.desde, fecha.hasta);

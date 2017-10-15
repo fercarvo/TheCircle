@@ -61,9 +61,9 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
             });
 
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(true)
-        $compileProvider.commentDirectivesEnabled(true)
-        $compileProvider.cssClassDirectivesEnabled(true)
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 

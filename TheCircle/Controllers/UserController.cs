@@ -23,8 +23,9 @@ namespace TheCircle.Controllers
             return Ok(usuarios);           
         }
 
+        //Se obtiene la foto de un usuario
         [HttpGet("user/{cedula}/photo")]
-        [ResponseCache(Duration = 60*2, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
         [APIauth("medico", "asistenteSalud", "sistema", "bodeguero", "coordinador", "contralor", "coordinadorCC")]
         public IActionResult GetPhoto(Token token, int cedula)
         {
@@ -45,6 +46,7 @@ namespace TheCircle.Controllers
             }
         }
 
+        //Obtengo una lista de todos los usuarios activos
         [HttpGet("user/activos")]
         [APIauth("sistema")]
         public IActionResult GetActivos()
@@ -53,6 +55,7 @@ namespace TheCircle.Controllers
             return Ok(usuarios);          
         }
 
+        //LIsta de todos los usuarios inactivos
         [HttpGet("user/inactivos")]
         [APIauth("sistema")]
         public IActionResult GetInactivos()
@@ -61,6 +64,7 @@ namespace TheCircle.Controllers
             return Ok(usuarios);          
         }
 
+        //Se crea un nuevo usuario con estado de inactivo
         [HttpPost("user")]
         public IActionResult New([FromForm]string cedula, [FromForm]string clave)
         {
@@ -72,7 +76,7 @@ namespace TheCircle.Controllers
             return Ok();
         }
 
-
+        //Se cambia el estado de un usuaio a ACTIVO
         [HttpPut("user/{cedula}/activar")]
         [APIauth("sistema")]
         public IActionResult Activar(int cedula) 
@@ -86,6 +90,7 @@ namespace TheCircle.Controllers
             return Ok(usuarios);
         }
 
+        //Se cambia el estado de un usuario a INACTIVO
         [HttpPut("user/{cedula}/desactivar")]
         [APIauth("sistema")]
         public IActionResult Desactivar(int cedula) 
@@ -99,6 +104,7 @@ namespace TheCircle.Controllers
             return Ok(usuarios);
         }
 
+        //Se setea una clave random a cierto usuario
         [HttpPut("user/{cedula}/clave/set")]
         [APIauth("sistema")]
         public IActionResult User_SetClave(int cedula) 
@@ -118,7 +124,7 @@ namespace TheCircle.Controllers
             return Ok(new { mensaje });
         }
 
-
+        //Un usuario realiza el cambio de clave
         [HttpPut("user/clave")]
         public IActionResult User_CambiarClave([FromForm] Clave req ) 
         {

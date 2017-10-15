@@ -52,7 +52,7 @@ namespace TheCircle
                 new RewriteOptions().AddRedirectToHttps(301, 4430)
             );
 
-            env.EnvironmentName = EnvironmentName.Development;
+            env.EnvironmentName = EnvironmentName.Production;
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
@@ -61,8 +61,8 @@ namespace TheCircle
             }
 
             app.Use(async (context, next) => {
-                context.Response.Headers.Append("X-Rights", "all rights reserved to Children International");
-                context.Response.Headers.Append("X-Development", "Edgar Carvajal efcarvaj@espol.edu.ec");
+                context.Response.Headers.Append("X-Rights", "All rights reserved to Children International");
+                context.Response.Headers.Append("X-Development-By", "Edgar Carvajal efcarvaj@espol.edu.ec");
                 await next();
             });
             
@@ -71,8 +71,8 @@ namespace TheCircle
                 new StaticFileOptions() {
                     OnPrepareResponse = ctx =>
                     {
-                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}"); //Cache development
-                        //ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={60*60*24*7}"); //Cache produccion
+                        //ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}"); //Cache development
+                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={60*60*24*15}"); // 15 dias Cache produccion
                         ctx.Context.Response.Headers.Append("X-TheCircle", "Static Files");
                     }
                 }

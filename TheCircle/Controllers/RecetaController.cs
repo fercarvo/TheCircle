@@ -21,7 +21,7 @@ namespace TheCircle.Controllers
 
         //recetas medicas emitidas por un doctor
         [HttpGet("receta/medico/fecha")]
-        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]
         public IActionResult Get_ReporteReceta_Doctor_Date(Token token, [FromQuery] Fecha fecha)
         {
@@ -32,6 +32,7 @@ namespace TheCircle.Controllers
             return Ok(recetas);
         }
 
+        //View de una receta médica y sus items, lista para impresión
         [HttpGet("receta/{id}/imprimir")]
         [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
         [APIauth("medico")]
@@ -56,8 +57,9 @@ namespace TheCircle.Controllers
             }            
         }
 
+        //Obtengo todas las recetas médicas que se han despachado en un periodo de tiempo
         [HttpGet("receta/localidad/fecha")]
-        //[ResponseCache(Duration = 60 * 60, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Client)]
         [APIauth("coordinadorCC")]
         public IActionResult ReportCoordinadorCC(Token token, [FromQuery] Date fecha)
         {
@@ -76,7 +78,7 @@ namespace TheCircle.Controllers
 
         //recetas medicas no eliminadas y no despachadas de un doctor.
         [HttpGet("receta/medico/activas")]
-        [ResponseCache(Duration = 40, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 5, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]
         public IActionResult GetRecetasByDoctorByStatus(Token token)
         {

@@ -15,6 +15,7 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
+        //Listado de instituciones para remision medica
         [HttpGet("institucion")]
         [ResponseCache(Duration = 60*60*48, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]

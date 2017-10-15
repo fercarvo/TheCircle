@@ -1,4 +1,10 @@
-﻿angular.module('director', ['ui.router', 'nvd3'])
+﻿/*
+    director v1.0 
+    Edgar Fernando Carvajal Ulloa efcarvaj@espol.edu.ec
+    Children International
+*/
+
+angular.module('director', ['ui.router', 'nvd3'])
     .config(["$stateProvider", "$compileProvider", function ($stateProvider, $compileProvider) {
         $stateProvider
             .state('estadisticas', {
@@ -20,13 +26,16 @@
             .state('estadisticas.enfermedades', {
                 templateUrl: 'views/director/estadisticas.enfermedades.html',
                 controller: 'estadisticas.enfermedades'
-            });
+            })
+        //False en modo de produccion
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
         
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
-        //checkSession($http);
-
+        checkSession($http);
         loadTemplates($state, "estadisticas", $http, $templateCache);
 
     }])

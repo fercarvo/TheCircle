@@ -17,6 +17,7 @@ namespace TheCircle.Controllers
             _context = context;
         }
 
+        //Listado de enfermedades registrados en la OMS
         [HttpGet("enfermedad")]
         [ResponseCache(Duration = 60*60*24*30, Location = ResponseCacheLocation.Client)] //30 dias de cache, demasiada información
         [APIauth("medico")]
@@ -28,7 +29,7 @@ namespace TheCircle.Controllers
 
         //Ruta que retorna listade de enfermedades mas comunes por centro comunitario
         [HttpGet("reporte/enfermedad/date")]
-        [ResponseCache(Duration = 3, Location = ResponseCacheLocation.Client)]
+        [ResponseCache(Duration = 60*60, Location = ResponseCacheLocation.Client)]
         [APIauth("medico")]
         public IActionResult Get_ReporteEnfermedades(Token token, [FromQuery] Fecha request)
         {
