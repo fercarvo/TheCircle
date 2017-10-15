@@ -1,126 +1,120 @@
-﻿<div class="content">
-    <style>
-        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
-        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
-        .panel-inverse-light > .panel-heading:after {
-            height: 0px;
-        }
-    </style>
-    <div class="panel panel-default-light border-default">
-        <div class="panel-body" style="padding:25px 20px 20px 20px;">
-            <div class="form-group" id="estadistica-atenciones-form">
-                <form class="form-horizontal" ng-submit="generar(remisiones.desde, remisiones.hasta)">
-                    <div class="col-sm-3" style="padding-bottom:5px;">
-                        <label class="control-label">Desde<a style="color:red;">(*)</a></label>
-                        <input ng-model="remisiones.desde" required type="date" class="form-control">
-                    </div>
-                    <div class="col-sm-3" style="padding-bottom:5px;">
-                        <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
-                        <input ng-model="remisiones.hasta" required type="date" class="form-control">
-                    </div>
-                    <div class="col-sm-3" style="padding-bottom:5px;">
-                        <button data-ripple type="submit" class="btn btn-info" title="Obtener remisiones por fecha de creación" style="margin-top:26px;">Generar</button>
-                    </div>
-
-                </form>
+﻿<style>
+    #panel-remisiones, #estadistica-atenciones-form {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="panel-remisiones">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(remisiones.desde, remisiones.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="remisiones.desde" required type="date" class="form-control">
             </div>
-            <div class="panel panel-default-light border-default" style="padding:0px">
-                <div class="panel-heading">
-                    <div style="text-align:right">
-                        <input type="text" ng-model="buscar.remision.id" placeholder="buscar por número de remisión" class="form-control">
-                    </div>
-                </div>
-                <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:59vh;">
-                    <table class="table table-striped" id="tabla1">
-                        <thead>
-                            <tr>
-                                <th># Remisión</th>
-                                <th>Fecha Remisión</th>
-                                <th>Monto remisión</th>
-                                <th>Monto aprobado</th>
-                                <th>Visualizar</th>
-                            </tr>
-                        </thead>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="remisiones.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" title="Obtener remisiones por fecha de creación" style="margin-top:26px;">Generar</button>
+            </div>
 
-                        <tbody>
-                            <tr ng-repeat="ap in remisiones.data | filter:buscar | orderBy:'remision.id'">
-                                <td>{{("00000000"+ ap.remision.id).slice(-9)}}</td>
-                                <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                <td>{{ap.monto | currency}}</td>
-                                <td>{{ap.montoAP1 | currency}}</td>
-                                <td width="10%"><button style="background-color:inherit;border:none;" ng-click="select(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+        </form>
+    </div>
+    <div class="panel panel-default-light border-default" style="padding:0px">
+        <div class="panel-heading">
+            <div style="text-align:right">
+                <input type="text" ng-model="buscar.remision.id" placeholder="buscar por número de remisión" class="form-control">
+            </div>
+        </div>
+        <div class="panel-body" style=" padding: 5px;overflow-y:auto;max-height:59vh;">
+            <table class="table table-bordered table-striped" id="tabla1">
+                <thead>
+                    <tr>
+                        <th># Remisión</th>
+                        <th>Fecha Remisión</th>
+                        <th>Monto remisión</th>
+                        <th>Monto aprobado</th>
+                        <th>Visualizar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="ap in remisiones.data | filter:buscar | orderBy:'remision.id'">
+                        <td>{{("00000000"+ ap.remision.id).slice(-9)}}</td>
+                        <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{ap.monto | currency}}</td>
+                        <td>{{ap.montoAP1 | currency}}</td>
+                        <td width="10%"><button style="background-color:inherit;border:none;" ng-click="select(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal rechazar remision-->
+    <div id="modal_aprobacion" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Datos de la Remisi&oacute;n aprobada</h5>
+                </div>
+                <div class="panel-body" style=" padding-top: 5px;">
+                    <table class="table table-striped" style="text-align:center;">
+
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td style="font-weight: bold;">Remisión #: </td>
+                                <td>{{("00000000"+ aprobacion.remision.id).slice(-9)}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Fecha remisi&oacute;n: </td>
+                                <td>{{aprobacion.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Doctor: </td>
+                                <td>{{aprobacion.remision.nombreDoctor}} {{aprobacion.remision.apellidoDoctor}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Email: </td>
+                                <td><a href="mailto:{{aprobacion.remision.email}}?Subject=Remision%20médica">{{aprobacion.remision.email}}</a></td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Apadrinado: </td>
+                                <td>{{aprobacion.remision.nombreApadrinado}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Sintomas: </td>
+                                <td>{{aprobacion.remision.sintomas}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Institución: </td>
+                                <td>{{aprobacion.remision.institucion}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Especialidad: </td>
+                                <td>{{aprobacion.remision.especialidad}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Monto remisión: </td>
+                                <td>{{aprobacion.monto | currency}}</td>
+                            </tr>                                    
+                            <tr>
+                                <td style="font-weight: bold;">Monto aprobado por coordinaciónn: </td>
+                                <td>{{aprobacion.montoAP1 | currency}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">Comentario de aprobación: </td>
+                                <td>{{aprobacion.comentarioAP1}}</td>
                             </tr>
                         </tbody>
                     </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" data-dismiss="modal" class="btn btn-info">Cerrar</button>
                 </div>
             </div>
-
-            <!--Modal rechazar remision-->
-            <div id="modal_aprobacion" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Datos de la Remisi&oacute;n aprobada</h5>
-                        </div>
-                        <div class="panel-body" style=" padding-top: 5px;">
-                            <table class="table table-striped" style="text-align:center;">
-
-                                <tbody style="text-align:left;">
-                                    <tr>
-                                        <td style="font-weight: bold;">Remisión #: </td>
-                                        <td>{{("00000000"+ aprobacion.remision.id).slice(-9)}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Fecha remisi&oacute;n: </td>
-                                        <td>{{aprobacion.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Doctor: </td>
-                                        <td>{{aprobacion.remision.nombreDoctor}} {{aprobacion.remision.apellidoDoctor}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Email: </td>
-                                        <td><a href="mailto:{{aprobacion.remision.email}}?Subject=Remision%20médica">{{aprobacion.remision.email}}</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Apadrinado: </td>
-                                        <td>{{aprobacion.remision.nombreApadrinado}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Sintomas: </td>
-                                        <td>{{aprobacion.remision.sintomas}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Institución: </td>
-                                        <td>{{aprobacion.remision.institucion}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Especialidad: </td>
-                                        <td>{{aprobacion.remision.especialidad}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Monto remisión: </td>
-                                        <td>{{aprobacion.monto | currency}}</td>
-                                    </tr>                                    
-                                    <tr>
-                                        <td style="font-weight: bold;">Monto aprobado por coordinaciónn: </td>
-                                        <td>{{aprobacion.montoAP1 | currency}}</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="font-weight: bold;">Comentario de aprobación: </td>
-                                        <td>{{aprobacion.comentarioAP1}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
-                        </div>
-                        <div class="text-center" style="margin-bottom: 5px;">
-                            <button data-ripple type="submit" data-dismiss="modal" class="btn btn-info">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <!--Aqui Termina el modal para rechazar remision-->
         </div>
     </div>
+    <!--Aqui Termina el modal para rechazar remision-->
 </div>

@@ -25,25 +25,27 @@
                 <input class="form-control" ng-model="buscar" type="text" placeholder="buscar por c&oacute;digo">
             </div>
         </div>
-        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+        <div class="panel-body" style=" padding: 5px;overflow-y:auto;max-height:60vh">
             <table class="table table-striped">
                 <thead>
                     <tr>
-                        <th>N&uacute;mero</th>
-                        <th>Fecha despacho</th>
-                        <th>Destino</th>
-                        <th>Solicitante</th>
+                        <th>ID Item</th>
+                        <th>Nombre</th>
+                        <th>Compuesto</th>
+                        <th>Antigua cantidad</th>
+                        <th>Nueva cantidad</th>
                         <th>Ver info</th>
                     </tr>
                 </thead>
 
                 <tbody>
                     <tr ng-repeat="t in cambios.data | filter:buscar | orderBy:'fecha'">
-                        <td>{{("00000000"+ t.id).slice(-9)}}</td>
-                        <td>{{t.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                        <td>{{t.destino}}</td>
-                        <td>{{t.solicitante.nombre}}</td>
-                        <td width="10%"><button ng-click="ver(t)" style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
+                        <td>{{("00"+ t.id).slice(-3)}}</td>
+                        <td>{{t.nombre}}</td>
+                        <td>{{t.compuesto}}</td>
+                        <td>{{t.antiguaCantidad}}</td>
+                        <td>{{t.cantidad}}</td>
+                        <td width="10%"><button ng-click="ver(t)" style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_Item"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>
                 </tbody>
             </table>
@@ -51,19 +53,19 @@
     </div>
 
     <!--Modal Item receta-->
-    <div id="ver_transferencia" class="modal fade">
+    <div id="ver_Item" class="modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Información del pedido</h5>
+                    <h5 class="modal-title">Información del Item</h5>
                 </div>
-                <div class="panel-body" style="padding-top: 5px;">
-                    <table class="table table-striped">
+                <div class="panel-body" style="padding: 5px;">
+                    <table class="table table-bordered table-striped">
 
                         <tbody style="text-align:left;">
                             <tr>
-                                <td>Número: </td>
-                                <td>{{("00000000"+ item.id).slice(-9)}}</td>
+                                <td>Item ID: </td>
+                                <td>{{("00"+ item.id).slice(-3)}}</td>
                             </tr>
                             <tr>
                                 <td>Nombre: </td>
@@ -82,33 +84,22 @@
                                 <td>{{item.grupo}}</td>
                             </tr>
                             <tr>
-                                <td>Cantidad solicitada: </td>
+                                <td>Caducidad: </td>
+                                <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Antigua cantidad: </td>
                                 <td>{{item.cantidad}}</td>
                             </tr>
                             <tr>
-                                <td>Cantidad despachada: </td>
+                                <td>Nueva cantidad
                                 <td>{{item.cantidadDespacho}}</td>
                             </tr>
                             <tr>
-                                <td>Comentario: </td>
-                                <td>{{item.comentarioDespacho}}</td>
+                                <td>Fecha modificacion: </td>
+                                <td>{{item.fechaRegistro | date: 'dd/MM/yyyy - HH:mm'}}</td>
                             </tr>
-                            <tr>
-                                <td>Solicitante: </td>
-                                <td>{{item.solicitante.nombre}}</td>
-                            </tr>
-                            <tr>
-                                <td>Destino: </td>
-                                <td>{{item.destino}}</td>
-                            </tr>
-                            <tr>
-                                <td>Fecha solicitud: </td>
-                                <td>{{item.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                            </tr>
-                            <tr>
-                                <td>Fecha Despacho: </td>
-                                <td>{{item.fechaDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
-                            </tr>
+                            
                         </tbody>
                     </table>
 
