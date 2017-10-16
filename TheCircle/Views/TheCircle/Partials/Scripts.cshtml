@@ -103,6 +103,12 @@
             })
     }
 
+    //Funcion que simula click para abrir tabs y evadir el pop-up blocker
+    function openURL(url) {
+        document.getElementById("SimulateOpenLink").href = url
+        document.getElementById("SimulateOpenLink").click()
+    }
+
     //Funcion que comprueba si la sessión es valida o no, caso contrario redireccion al login
     //Es llamada en la seccion .run de las apps de angularJS
     function checkSession($http) { 

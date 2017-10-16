@@ -410,7 +410,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                     disable.remision = true;
                     atencionFactory.remision = $scope.remision; //Se guarda la remision en la factory
                     $scope.disable = disable.remision; //Se desactiva atencion.remision.html
-                    window.open("/api/remision/" + res.data.id + "/imprimir");
+                    //window.open("/api/remision/" + res.data.id + "/imprimir");
+                    openURL("/api/remision/" + res.data.id + "/imprimir")
                 }, function() { })
         }
 
@@ -476,8 +477,8 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
                 $scope.disable = disable.receta; //Se desactiva atencion.receta.html
                 refresh.stop(actualizar); //Se detiene la actualizacion de receta
                 cargar(); //Se carga por ultima vez la data
-
-                window.open("/api/receta/" + res.data.id + "/imprimir");
+                openURL("/api/receta/" + res.data.id + "/imprimir")
+                //window.open("/api/receta/" + res.data.id + "/imprimir");
 
             }, function err(err){
                 NProgress.done();
