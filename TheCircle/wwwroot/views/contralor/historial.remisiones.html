@@ -32,6 +32,7 @@
                     <tr>
                         <th># Remisión</th>
                         <th>Fecha Remisión</th>
+                        <th>Fecha Aprobación</th>
                         <th>Monto remisión</th>
                         <th>Monto aprobado</th>
                         <th>Visualizar</th>
@@ -39,9 +40,10 @@
                 </thead>
 
                 <tbody>
-                    <tr ng-repeat="ap in remisiones.data | filter:buscar | orderBy:'remision.id'">
+                    <tr ng-repeat="ap in remisiones.data | filter:buscar | orderBy:['fechaContralor', 'remision.id']">
                         <td>{{("00000000"+ ap.remision.id).slice(-9)}}</td>
                         <td>{{ap.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{ap.fechaContralor | date: 'dd/MM/yyyy - HH:mm'}}</td>
                         <td>{{ap.monto | currency}}</td>
                         <td>{{ap.montoAP1 | currency}}</td>
                         <td width="10%"><button style="background-color:inherit;border:none;" ng-click="select(ap)"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
