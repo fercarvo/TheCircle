@@ -1,0 +1,136 @@
+﻿<style>
+    #historial_transferencias_panel, #historial_transferencias_form, #historial_transferencias_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_transferencias_panel">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(atenciones.desde, atenciones.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="atenciones.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_transferencias_table">
+        <div class="panel-heading">
+            <div title="Filtrar por localidad" style="text-align:right">
+                <select ng-model="buscar.localidad" class="form-control">
+                    <option selected value="">Todas las localidades</option>
+                    <option value="CC0">Centro Comunitario 0 - Durán</option>
+                    <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                    <option value="CC3">Centro Comunitario 3 - BUDS</option>
+                    <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                    <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
+                    <option value="HEE">Centro Hacia El Empleo</option>
+                </select>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <div title="Filtrar por tipo" style="text-align:right">
+                <select ng-model="buscar.tipo" class="form-control">
+                    <option selected value="">Todos los tipos de atencion</option>
+                    <option value="curativo">Curativo</option>
+                    <option value="seguimiento">Seguimiento</option>
+                    <option value="control">Control</option>
+                </select>
+            </div>
+        </div>
+        <div class="panel-heading">
+            <div title="Filtrar por doctor" style="text-align:right">
+                <select class="form-control" ng-model="buscar.doctor">
+                    <option selected value="">Todos los doctores</option>
+                    <option ng-repeat="doctor in doctores" value="{{doctor}}">{{doctor}}</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group col-sm-12">
+            <label class="control-label" style="font-size: large;font-weight: bolder;">Total: </label>
+            <label class="control-label" style="font-size: large;">{{filtrado.length}}</label>
+        </div>
+        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>ID</th>
+                        <th>Doctor</th>
+                        <th>Tipo</th>
+                        <th>Localidad</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="t in atenciones.data | orderBy:['doctor', 'tipo'] | filter:buscar as filtrado">
+                        <td>{{$index + 1}}</td>
+                        <td>{{("000000"+ t.id).slice(-7)}}</td>
+                        <td>{{t.doctor}}</td>
+                        <td>{{t.tipo}}</td>
+                        <td>{{t.localidad}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!--Modal Item receta-->
+    <div id="ver_transferencia" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Información del pedido</h5>
+                </div>
+                <div class="panel-body" style="padding-top: 5px;">
+                    <table class="table table-striped">
+
+                        <tbody style="text-align:left;">
+                            <tr>
+                                <td>ID Ítem: </td>
+                                <td>{{("0000"+ item.id).slice(-5)}}</td>
+                            </tr>
+                            <tr>
+                                <td>Nombre: </td>
+                                <td>{{item.nombre}}</td>
+                            </tr>
+                            <tr>
+                                <td>Compuesto: </td>
+                                <td>{{item.compuesto}}</td>
+                            </tr>
+                            <tr>
+                                <td>Categoria: </td>
+                                <td>{{item.categoria}}</td>
+                            </tr>
+                            <tr>
+                                <td>Grupo: </td>
+                                <td>{{item.grupo}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha de caducidad: </td>
+                                <td>{{item.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Cantidad ingresada: </td>
+                                <td>{{item.cantidad}}</td>
+                            </tr>
+                            <tr>
+                                <td>Fecha ingreso: </td>
+                                <td>{{item.fechaRegistro | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="button" data-dismiss="modal" class="btn btn-info">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

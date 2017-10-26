@@ -56,5 +56,14 @@ namespace TheCircle.Controllers
             Atencion.Stadistics[] data = Atencion.Report(fecha.desde, fecha.hasta);
             return Ok(data);
         }
+
+        //Ruta que retorna un reporte de todas las atenciones Médicas de Children
+        [HttpGet("atencion")]
+        [APIauth("coordinador")]
+        public IActionResult GetAll([FromQuery] Date fecha)
+        {
+            Atencion.Reporte[] data = Atencion.getAtenciones(fecha.desde, fecha.hasta);
+            return Ok(data);
+        }
     }
 }

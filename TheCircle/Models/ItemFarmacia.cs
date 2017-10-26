@@ -22,12 +22,12 @@ namespace TheCircle.Models
 
         public ItemFarmacia(IngresoRequest item, Localidad localidad, int personal) {
             try {
-                string query = $"EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
+                string query = $"DECLARE @item_id int EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
                     $"@compuesto={item.compuesto}, " +
                     $"@fcaducidad='{item.fcaducidad}', " +
                     $"@cantidad={item.cantidad}, " +
                     $"@localidad='{localidad}', " +
-                    $"@personal={personal}, @item_id OUTPUT";
+                    $"@personal={personal}, @item_id=@item_id OUTPUT";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
 

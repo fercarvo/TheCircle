@@ -65,7 +65,14 @@ angular.module('asistenteSalud', ['ui.router'])
         $compileProvider.commentDirectivesEnabled(false)
         $compileProvider.cssClassDirectivesEnabled(false)
     }])
-    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
+    .run(["$state", "$http", "$templateCache", "dataFac", "$rootScope", function ($state, $http, $templateCache, dataFac, $rootScope) {
+        $rootScope.notificaciones = {}
+
+        refresh.go(function () {
+            dataFac.getRecetas()
+            dataFac.getTransferenciasPendientes({})
+            dataFac.getPedidoInterno()
+        }, 1)
 
         checkSession($http);
 
@@ -161,6 +168,7 @@ angular.module('asistenteSalud', ['ui.router'])
         function getPedidoInterno() {
             $http.get("/api/pedidointerno/pendientes").then(function success(res) {
                 dataFac.pedidoInterno = res.data;
+                $rootScope.notificaciones.pedidos = dataFac.pedidoInterno.length
                 $rootScope.$broadcast('dataFac.pedidoInterno');
             }, function(error) { console.log("Error: ", error) })
         }
@@ -179,6 +187,7 @@ angular.module('asistenteSalud', ['ui.router'])
             $http.get("/api/transferencia").then(function (res) {
                 console.log("Transferencias pendientes", res.data)
                 dataFac.transferencias = res.data;
+                $rootScope.notificaciones.transferencias = dataFac.transferencias.length
                 $scope.transferencias = dataFac.transferencias
             }, function (error) {
                 console.log("Error cargar transferencias", error);
@@ -210,6 +219,7 @@ angular.module('asistenteSalud', ['ui.router'])
             $http.get("/api/receta/localidad/pordespachar").then(function success(res) {
                 console.log("Recetas a despachar", res.data);
                 dataFac.recetas = res.data;
+                $rootScope.notificaciones.recetas = dataFac.recetas.length
                 $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
             }, function error(err) {
                 console.log("error cargar recetas", err);

@@ -26,6 +26,14 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/remisionesAprobadas.html',
                 controller: 'remisionesAprobadas'
             })
+            .state('reporte', {
+                templateUrl: 'views/coordinacionSalud/reporte.html',
+                controller: 'reporte'
+            })
+            .state('reporte.atenciones', {
+                templateUrl: 'views/coordinacionSalud/reporte.atenciones.html',
+                controller: 'reporte.atenciones'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(false)
         $compileProvider.commentDirectivesEnabled(false)
@@ -43,12 +51,45 @@ angular.module('coordinacionSalud', ['ui.router'])
             remisiones: null,
             remisionesAprobadas: null,
             rechazos: null,
+            atenciones: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             getStock: getStock,
+            getAtenciones: getAtenciones,
             getRechazos: getRechazos,
             getRemisiones: getRemisiones,
             postAprobacion: postAprobacion,
             guardarAprobacionRechazada: guardarAprobacionRechazada,
             getRemisionesAprobadas: getRemisionesAprobadas
+        }
+
+        function getAtenciones(data, $scope) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/atencion/",
+                params: data
+            }).then(function (res) {
+                console.log("Atenciones", res.data)
+                dataFac.atenciones.data = res.data
+                $scope.atenciones = dataFac.atenciones
+                $scope.doctores = []
+
+                for (var atencion of res.data) {
+                    if ($scope.doctores.indexOf(atencion.doctor) > -1) {
+                        //In the array!
+                    } else {
+                        $scope.doctores.push(atencion.doctor)
+                    }
+                }
+                NProgress.done();
+            }, function (error) {
+                console.log("Error cargar atenciones", error);
+                notify("No se pudo cargar las atenciones", "danger")
+                NProgress.done();
+            })
         }
 
         function getRemisionesAprobadas($scope, data) {
@@ -57,7 +98,7 @@ angular.module('coordinacionSalud', ['ui.router'])
                 method: "GET",
                 url: "/api/remision/aprobadas",
                 params: data
-            }).then(function success(res) {
+            }).then(function (res) {
                 console.log(res.data)
 
                 res.data.infoAP.forEach(function (aprobacion) {
@@ -76,7 +117,7 @@ angular.module('coordinacionSalud', ['ui.router'])
                 $scope.remisiones = dataFac.remisionesAprobadas;
                 console.log(dataFac.remisionesAprobadas)
                 NProgress.done();
-            }, function error(err) {
+            }, function (error) {
                 console.log("Error cargar remisiones", error);
                 notify("No se pudo cargar las remisiones", "danger")
                 NProgress.done();
@@ -305,5 +346,26 @@ angular.module('coordinacionSalud', ['ui.router'])
             $scope.aprobacion = remision
             $("#modal_aprobacion").modal("show")
         }
+
+    }])
+    .controller("reporte", ["$state", function ($state) {
+        $state.go("reporte.atenciones")
+    }])
+    .controller("reporte.atenciones", ["$scope", "dataFac", function ($scope, dataFac) {
+        $scope.atenciones = dataFac.atenciones
+
+        $scope.$watch("atenciones", function () {
+            dataFac.atenciones = $scope.atenciones
+        })
+
+        $scope.generar = function (desde, hasta) {
+            var data = {
+                desde: desde,
+                hasta: hasta
+            }
+
+            dataFac.getAtenciones(data, $scope)
+        }
+
 
     }])

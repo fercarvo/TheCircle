@@ -45,6 +45,11 @@ namespace TheCircle.Models
             }
         }
 
+        public static Reporte[] getAtenciones(DateTime desde, DateTime hasta) {
+            string query = $"EXEC Atencion_Report @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().ReporteAtenciones.FromSql(query).ToArray();
+        }
+
         public static Atencion[] ReportByDoctorDate(Fecha req, int doctor, MyDbContext _context)
         {
             string query = $"EXEC Atencion_Report_Doctor @desde='{req.desde}', @hasta='{req.hasta}', @doctor={doctor}";
@@ -92,5 +97,16 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
         }
 
+        public class Reporte
+        {
+            [Key]
+            public int id { get; set; }
+            public Int32 idApadrinado { get; set; }
+            public int idDoctor { get; set; }
+            public string doctor { get; set; }
+            public DateTime fecha { get; set; }
+            public string tipo { get; set; }
+            public string localidad { get; set; }
+        }
     }    
 }

@@ -52,7 +52,7 @@ namespace TheCircle
                 new RewriteOptions().AddRedirectToHttps(301, 4430)
             );
 
-            env.EnvironmentName = EnvironmentName.Production;
+            env.EnvironmentName = EnvironmentName.Development;
             if (env.IsDevelopment()) {
                 app.UseDeveloperExceptionPage();
                 app.UseStatusCodePages();
@@ -71,8 +71,8 @@ namespace TheCircle
                 new StaticFileOptions() {
                     OnPrepareResponse = ctx =>
                     {
-                        //ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}"); //Cache development
-                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={60*60*24*15}"); // 15 dias Cache produccion
+                        ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={5}"); //Cache development
+                        //ctx.Context.Response.Headers.Append("Cache-Control", $"private,max-age={60*60*24*15}"); // 15 dias Cache produccion
                         ctx.Context.Response.Headers.Append("X-TheCircle", "Static Files");
                     }
                 }
