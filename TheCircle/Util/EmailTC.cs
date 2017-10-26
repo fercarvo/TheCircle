@@ -32,7 +32,8 @@ namespace TheCircle.Util
             try {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Recuperacion de contraseña";
 
                 message.Body = new TextPart("plain")
@@ -59,7 +60,8 @@ TheCircle, CI"
             try {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Cambio de contraseña";
 
                 message.Body = new TextPart("plain")
@@ -84,7 +86,8 @@ TheCircle, CI"
             {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Despacho de transferencia inconsistente";
 
                 message.Body = new TextPart("plain")
@@ -109,7 +112,8 @@ Recientemente se despacho una transferencia con una cantidad inferior al solicit
             {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Despacho de receta inconsistente";
 
                 message.Body = new TextPart("plain")
@@ -134,7 +138,8 @@ Recientemente se despacho una receta médica con una cantidad inferior a los item
             {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Despacho de receta inconsistente";
 
                 message.Body = new TextPart("plain")
@@ -159,7 +164,8 @@ Recientemente se despacho un pedido interno con una cantidad inferior a la solic
             {
                 var message = new MimeMessage();
                 message.From.Add(from);
-                message.To.Add(new MailboxAddress(nombre, "ecarvajal@guy.children.org.ec")); //Cambiar por nombre e email
+                message.To.Add(new MailboxAddress(nombre, email)); //Cambiar por nombre e email
+                //message.To.Add(new MailboxAddress(nombre, "correoprueba@bla.com")); //Cambiar por nombre e email
                 message.Subject = "Alerta de peso y talla";
 
                 message.Body = new TextPart("plain")

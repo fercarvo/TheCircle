@@ -9,15 +9,15 @@ namespace TheCircle
         public static void Main(string[] args)
         {
             var host = new WebHostBuilder()
-                .UseKestrel(options =>
+                .UseKestrel(/*options =>
                 {
-                    options.UseHttps("Development/development.pfx", "development");
-                })
+                    options.UseHttps("Production/thecircle.pfx", "P@s5w0rdTh3C1rCl3");
+                }*/)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
                 .UseApplicationInsights()
-                .UseUrls("https://*:4430", "http://*:5000")
+                .UseUrls("http://*:8000")
                 .Build();
 
             host.Run();
