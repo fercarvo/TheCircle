@@ -112,14 +112,14 @@
     //Funcion que comprueba si la sessión es valida o no, caso contrario redireccion al login
     //Es llamada en la seccion .run de las apps de angularJS
     function checkSession($http) { 
-        refresh.go(function () {
+        /*refresh.go(function () {
             $http.get("session").then(function () { console.log("Session valida") }, function (response) {
                 if (response.status === 401) {
                     alert("Su sesion ha caducado");
                     document.location.replace('/login');
                 }
             })
-        }, 20) //Se ejecuta cada 20 minutos
+        }, 20) //Se ejecuta cada 20 minutos*/
     }
 
     //Funcion que pre-carga todos los templates de la pagina inicial

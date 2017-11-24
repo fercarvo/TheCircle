@@ -41,5 +41,61 @@ namespace TheCircle.Controllers.views
                     return LocalRedirect("/login");
             }
         }
+
+        [HttpGet("asistente")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult AsistenteSalud()
+        {
+            return View();
+        }
+
+        [HttpGet("medico")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Medico()
+        {
+            return View();
+        }
+
+        [HttpGet("coordinador")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult CoordinadorSalud()
+        {
+            return View();
+        }
+
+        [HttpGet("contralor")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Contralor()
+        {
+            return View();
+        }
+
+        [HttpGet("bodeguero")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Bodeguero()
+        {
+            return View();
+        }
+
+        [HttpGet("sistema")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Sistema()
+        {         
+            return View();
+        }
+
+        [HttpGet("coordinadorcc")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult CoordinadorCC()
+        {
+            return View();
+        }
+
+        [HttpGet("director")]
+        [ResponseCache(Location = ResponseCacheLocation.None, NoStore = true)]
+        public IActionResult Director()
+        {
+            return View();
+        }
     }
 }
