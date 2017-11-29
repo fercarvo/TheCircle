@@ -16,7 +16,7 @@ namespace TheCircle.Models
         public int cantidadDespachada { get; set; }
         public int cantidadRecetada { get; set; }
         public string comentario { get; set; }
-        public int idPersonal { get; set; }
+        public string idPersonal { get; set; }
 
         public ItemDespacho () {}
 
