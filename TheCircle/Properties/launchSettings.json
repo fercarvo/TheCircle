@@ -11,11 +11,11 @@
     "TheCircle": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:8000",
+      "launchUrl": "http://localhost:8001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:8000"
+      "applicationUrl": "http://localhost:8001"
     }
   }
 }

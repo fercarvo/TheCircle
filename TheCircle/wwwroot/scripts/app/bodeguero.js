@@ -26,6 +26,10 @@ angular.module('bodeguero', ['ui.router'])
                 templateUrl: 'views/bodeguero/stock.html',
                 controller: 'stock'
             })
+            .state('registro_ordenes', {
+                templateUrl: 'views/bodeguero/registro_ordenes.html',
+                controller: 'registro_ordenes'
+            })
             .state('ingresar', {
                 templateUrl: 'views/bodeguero/ingresar.html',
                 controller: 'ingresar'
@@ -36,15 +40,15 @@ angular.module('bodeguero', ['ui.router'])
             })
             
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(false)
-        $compileProvider.commentDirectivesEnabled(false)
-        $compileProvider.cssClassDirectivesEnabled(false)
+        $compileProvider.debugInfoEnabled(true)
+        $compileProvider.commentDirectivesEnabled(true)
+        $compileProvider.cssClassDirectivesEnabled(true)
     }])
     .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
 
         checkSession($http);
 
-        loadTemplates($state, "despachar", $http, $templateCache);
+        loadTemplates($state, "registro_ordenes", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -65,6 +69,7 @@ angular.module('bodeguero', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            tablaOrdenes: [],
             getItemsRegistrados: getItemsRegistrados,
             getTransferenciasDespachadas: getTransferenciasDespachadas,
             getData: getData,
@@ -330,4 +335,72 @@ angular.module('bodeguero', ['ui.router'])
         }
 
         $scope.reset = function(){ $state.reload() }
+    }]) //registro_ordenes
+    .controller('registro_ordenes', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
+
+        $scope.tabla = dataFac.tablaOrdenes
+        $scope.orden = null
+        $scope.compuestos = dataFac.compuestos
+
+        if (!$scope.compuestos)
+            dataFac.getCompuestos()
+
+        $scope.$on("dataFac.compuestos", () => $scope.compuestos = dataFac.compuestos)
+        $scope.$watch("tabla", () => { dataFac.tablaOrdenes = $scope.tabla })
+
+        $scope.generar_tabla = function (data) {
+
+            if (confirm("Generar borrará toda información sin guardar")) {
+                $scope.tabla = []
+
+                var filas = data.split("\n")
+                var tabla = filas.map(fila => fila.split("\t")).slice(0, -1)
+
+                for (fila of tabla) {
+
+                    $scope.tabla.push( {
+                        numero: fila[0],
+                        nombre: fila[1],
+                        unidad_medida: fila[2],
+                        cantidad: parseInt(fila[3]),
+                        proveedor: fila[4],
+                        nombre_TC: "",
+                        compuesto_TC: "",
+                        distribucion: [] //Aqui se encuentran los destinos &scope.registro
+                    } )
+                }
+
+                setTimeout(() => { $(".myselect").select2() },500)
+            }            
+        }
+
+        $scope.distribuir = function (orden) {
+            $("#modal_distribucion").modal("show")
+            $scope.orden = orden
+        }
+
+        $scope.guardarDistribucion = function () {
+            var suma = $scope.orden.distribucion.reduce((total, obj) => total + obj.cantidad, 0)
+
+            if (suma !== $scope.orden.cantidad)
+                return alert("La suma de las cantidades deben ser igual al total de la orden")         
+
+            $("#modal_distribucion").modal("hide")
+        }
+
+        $scope.cancelarDistribucion = function () {
+            $scope.orden.distribucion = []
+            $("#modal_distribucion").modal("hide")
+        }
+
+        $scope.agregar = function () {
+            $scope.orden.distribucion.push({destino: null, cantidad: null})
+        }
+
+        $scope.eliminar = function (array, index) {
+            //alert("En eliminar")
+            console.log("array", array)
+            console.log("index", index)
+            array.splice(index, 1) //Se elimina el item de $scope.orden.distribucion
+        }
     }])

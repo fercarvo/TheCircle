@@ -1,0 +1,112 @@
+﻿<div class="content">
+    <style>
+        .panel-default-light > .panel-heading:after, .panel-primary-light > .panel-heading:after, .panel-success-light > .panel-heading:after,
+        .panel-info-light > .panel-heading:after, .panel-warning-light > .panel-heading:after, .panel-danger-light > .panel-heading:after,
+        .panel-inverse-light > .panel-heading:after {
+            height: 0px;
+        }
+    </style>
+    <div class="panel panel-default-light border-default">
+        <div class="panel-heading" style="border-bottom-color: #901F61;color:#901F61;">
+            <div class="panel-title">
+                Generación de ordenes y distribución a localidades
+            </div>
+        </div>
+
+        <div class="panel-body" style="padding:25px 20px 10px 20px;">
+
+            <div class="panel panel-default-light border-default col-sm-12" style="padding:0px">
+                <form class="panel-heading" ng-submit="generar_tabla(table_data)">
+                    <div class="col-sm-6">
+                        <textarea class="form-control" ng-model="table_data" placeholder="Copiar tabla aqui"></textarea>
+                    </div>
+                    <div class="col-sm-6">
+                        <button data-ripple type="submit" class="btn btn-info" style="margin-top: 9px;">Generar tabla</button>
+                    </div>
+                </form>
+
+                <div class="panel-body" style=" padding: 5px;overflow-y:auto;max-height:60vh">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th># orden</th>
+                                <th>Nombre comercial</th>
+                                <th>Unidad medica</th>
+                                <th>Cantidad</th>
+                                <th>Proveedor</th>
+                                <th>Nombre TheCircle</th>
+                                <th>Compuesto TheCircle</th>
+                                <th>Distribuir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="orden in tabla | orderBy:['grupo', 'compuesto', 'fcaducidad'] ">
+                                <td>{{orden.numero}}</td>
+                                <td>{{orden.nombre}}</td>
+                                <td>{{orden.unidad_medida}}</td>
+                                <td>{{orden.cantidad}}</td>
+                                <td>{{orden.proveedor}}</td>
+                                <td><input form="guardarOrden" required ng-model="orden.nombre_TC" title="Nombre sistema TheCircle" type="text" style="width:100%;" /></td>
+                                <td>
+                                    <select required title="Compuesto sistema TheCircle" form="guardarOrden" style="width:100%;" ng-model="orden.compuesto_TC" class="form-control myselect" ng-options="compuesto.id as compuesto.nombre + ', ' + compuesto.unidadMedida for compuesto in compuestos">
+                                        <option style="display:none;" selected disabled value="">Compuesto, unidad-medida</option>
+                                    </select>
+                                </td>                                
+                                <td><button ng-click="distribuir(orden)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-copy"></span></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <form id="guardarOrden" style="padding-top: 12px;" ng-submit="guardarEgreso(receta, recetas, index)" class="text-center ">
+                        <button data-ripple type="submit" class="btn btn-info">Guardar</button>
+                        <button data-ripple type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </form><!-- /.form-group -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="modal_distribucion" class="modal fade" data-keyboard="false" data-backdrop="static" style="margin-top:5%;">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="align-items: center">
+                <b class="modal-title">Distribuir item a centros comunitarios, total: {{orden.cantidad}}</b>
+            </div>
+            <div class="panel-body" style="padding: 5px;">
+                <table class="table table-bordered table-striped" style="text-align:left;">
+
+                    <thead>
+                        <tr>
+                            <th>Localidad</th>
+                            <th>Cantidad</th>
+                            <th align="center"><button title="Agregar elmento" ng-click="agregar()" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-plus"></span></button></th>
+                        </tr>
+                    </thead>
+
+                    <tbody >
+                        <tr ng-repeat="record in orden.distribucion">
+                            <td>
+                                <select required title="Destino debe ser diferente al origen" form="transferencia" style="width:100%;" ng-model="record.destino">
+                                    <option value="" selected disabled> </option>
+                                    <option value="CC0">Centro Comunitario 0 - Durán</option>
+                                    <option value="CC2">Centro Comunitario 2 - Phelan</option>
+                                    <option value="CC3">Centro Comunitario 3 - BUDS</option>
+                                    <option value="CC5">Centro Comunitario 5 - Flor de Bastión</option>
+                                    <option value="CC6">Centro Comunitario 6 - Estrella de Belén</option>
+                                    <option value="HEE">Centro Hacia El Empleo</option>
+                                </select>
+                            </td>
+                            <td><input form="transferencia" required type="number" min="1" class="form-control" ng-model="record.cantidad"></td>
+                            <td align="center"><button title="Eliminar elemento" ng-click="eliminar(orden.distribucion, $index)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-minus"></span></button></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form style="padding-top:15px;text-align:center" id="transferencia" ng-submit="guardarDistribucion()">
+                    <button data-ripple type="submit" class="btn btn-info" >Guardar</button>
+                    <button type="button" class="btn btn-default" ng-click="cancelarDistribucion()">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

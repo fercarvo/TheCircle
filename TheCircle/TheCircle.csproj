@@ -78,6 +78,7 @@
     <Content Include="wwwroot\views\bodeguero\historial.ingresoItems.html" />
     <Content Include="wwwroot\views\bodeguero\historial.transferencias.html" />
     <Content Include="wwwroot\views\bodeguero\ingresar.html" />
+    <Content Include="wwwroot\views\bodeguero\registro_ordenes.html" />
     <Content Include="wwwroot\views\bodeguero\stock.html" />
     <Content Include="wwwroot\views\contralor\aprobar.html">
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
