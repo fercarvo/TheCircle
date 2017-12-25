@@ -26,10 +26,10 @@ angular.module('bodeguero', ['ui.router'])
                 templateUrl: 'views/bodeguero/stock.html',
                 controller: 'stock'
             })
-            .state('registro_ordenes', {
+            /*.state('registro_ordenes', {
                 templateUrl: 'views/bodeguero/registro_ordenes.html',
                 controller: 'registro_ordenes'
-            })
+            })*/
             .state('ingresar', {
                 templateUrl: 'views/bodeguero/ingresar.html',
                 controller: 'ingresar'
@@ -48,7 +48,7 @@ angular.module('bodeguero', ['ui.router'])
 
         checkSession($http);
 
-        loadTemplates($state, "registro_ordenes", $http, $templateCache);
+        loadTemplates($state, "despachar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -268,7 +268,8 @@ angular.module('bodeguero', ['ui.router'])
         $scope.compuestos = dataFac.compuestos;
         $scope.nombres = dataFac.nombres;
 
-        if ($scope.compuestos === null) { dataFac.getCompuestos() }
+        if ($scope.compuestos === null) 
+            dataFac.getCompuestos()
 
         $scope.$on('compuesto-categoria-unidades', function() { 
             $scope.compuestos = dataFac.compuestos;
@@ -285,10 +286,12 @@ angular.module('bodeguero', ['ui.router'])
 
         $scope.crear = function (form) {
             var data = {
-                nombre: form.nombre,
+                nombre: "",
                 compuesto: form.compuesto,
                 fcaducidad: date(form.fecha),
-                cantidad: form.cantidad
+                cantidad: form.cantidad,
+                orden: form.orden,
+                documento: (form.documento) ? form.documento : null
             }
             console.log("data a enviar", data);
 
@@ -335,8 +338,8 @@ angular.module('bodeguero', ['ui.router'])
         }
 
         $scope.reset = function(){ $state.reload() }
-    }]) //registro_ordenes
-    .controller('registro_ordenes', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
+    }])
+    /*.controller('registro_ordenes', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
 
         $scope.tabla = dataFac.tablaOrdenes
         $scope.orden = null
@@ -398,9 +401,8 @@ angular.module('bodeguero', ['ui.router'])
         }
 
         $scope.eliminar = function (array, index) {
-            //alert("En eliminar")
             console.log("array", array)
             console.log("index", index)
             array.splice(index, 1) //Se elimina el item de $scope.orden.distribucion
         }
-    }])
+    }])*/

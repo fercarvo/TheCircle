@@ -27,6 +27,8 @@ namespace TheCircle.Models
                     $"@fcaducidad='{item.fcaducidad}', " +
                     $"@cantidad={item.cantidad}, " +
                     $"@localidad='{localidad}', " +
+                    $"@localidad='{item.orden}', " +
+                    $"@localidad='{item.documento}', " +
                     $"@personal={personal}, @item_id=@item_id OUTPUT";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
@@ -140,10 +142,12 @@ namespace TheCircle.Models
 
         public class IngresoRequest
         {
-            public string nombre { get; set; }
-            public int compuesto { get; set; }
+            public string nombre { get; set; } //Ya no es requerido, recibe ""
+            public int compuesto { get; set; } //ID del compuesto
             public string fcaducidad { get; set; }
             public int cantidad { get; set; }
+            public string orden { get; set; } //Codigo de orden de compra
+            public string documento { get; set; }  = null; //Codigo de numero de documento
 
             public IngresoRequest() { }
         }

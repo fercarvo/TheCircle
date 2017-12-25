@@ -33,13 +33,28 @@
                         </div>
                     </div><!-- /.form-group -->
 
+                    <!-- Se elimino esta seccion despues de reunion, value=""
                     <div class="form-group">
                         <label class="control-label col-sm-2">Nombre del Ítem<a style="color:red;">(*)</a></label>
                         <div class="col-sm-8" style="padding-left:initial">
                             <input required ng-model="form.nombre" class="form-control" type="text" pattern=".{3,50}" placeholder="Ingresar el nombre">
                         </div>
-                    </div><!-- /.form-group -->
+                    </div>
+                    -->
 
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">`Código de orden<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-8" style="padding-left:initial">
+                            <input required ng-model="form.orden" class="form-control" type="text" pattern=".{1,50}" placeholder="Ingrese el numero o código de orden">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="control-label col-sm-2">Código de documento</label>
+                        <div class="col-sm-8" style="padding-left:initial">
+                            <input ng-model="form.documento" class="form-control" type="text" pattern=".{1,50}" placeholder="Ingrese el documento">
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="control-label col-sm-2">Fecha de caducidad</label>
@@ -64,9 +79,7 @@
                     </div>
                 </form>
 
-                <script type="text/javascript">
-                    $(".myselect").select2();
-                </script>
+                <script> $(".myselect").select2() </script>
             </div>
 
             <div class="panel panel-default-light border-default col-sm-5" style="padding:0px">
