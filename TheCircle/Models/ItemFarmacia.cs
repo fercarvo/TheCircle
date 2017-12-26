@@ -113,6 +113,8 @@ namespace TheCircle.Models
             public DateTime? fcaducidad { get; set; }
             public int cedulaPersonal { get; set; }
             public int antiguaCantidad { get; set; }
+            public int? antiguoItem { get; set; }
+            public string comentario { get; set; } = null;
         }
 
         public class Registro
@@ -160,9 +162,9 @@ namespace TheCircle.Models
             public IngresoRequest() { }
         }
 
-        public static void Editar(int idItem, int personal, int nuevaCantidad)
+        public static void Editar(int idItem, int personal, int nuevaCantidad, string comentario)
         {
-            string query = $"EXEC ItemFarmacia_Alterar_Stock @idItem={idItem}, @nuevaCantidad={nuevaCantidad}, @personal={personal}";
+            string query = $"EXEC ItemFarmacia_Alterar_Stock @idItem={idItem}, @nuevaCantidad={nuevaCantidad}, @personal={personal}, @comentario='{comentario}'";
             new MyDbContext().Database.ExecuteSqlCommand(query);
         }
 

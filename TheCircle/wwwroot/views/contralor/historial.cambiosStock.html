@@ -92,12 +92,20 @@
                                 <td>{{item.antiguaCantidad}}</td>
                             </tr>
                             <tr>
+                                <td>Antiguo ID: </td>
+                                <td>{{("00"+ item.antiguoItem).slice(-3)}}</td>
+                            </tr>
+                            <tr>
                                 <td>Nueva cantidad
                                 <td>{{item.cantidad}}</td>
                             </tr>
                             <tr>
                                 <td>Fecha modificacion: </td>
                                 <td>{{item.fechaRegistro | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td>Comentario: </td>
+                                <td>{{item.comentario}}</td>
                             </tr>
                             
                         </tbody>

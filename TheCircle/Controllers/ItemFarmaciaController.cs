@@ -123,9 +123,9 @@ namespace TheCircle.Controllers
         //Se altera un item de farmacia, es decir su valor actual del stock
         [HttpPut("itemfarmacia/{id}")]
         [APIauth("contralor")]
-        public IActionResult AlterarItem(Token token, int id, [FromQuery]int cantidad)
+        public IActionResult AlterarItem(Token token, int id, [FromQuery]int cantidad, [FromQuery]string comentario)
         {
-            ItemFarmacia.Editar(id, token.data.cedula, cantidad);
+            ItemFarmacia.Editar(id, token.data.cedula, cantidad, comentario);
             return Ok();
         }
     }    

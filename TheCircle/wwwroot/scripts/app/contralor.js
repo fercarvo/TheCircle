@@ -102,12 +102,12 @@ angular.module('contralor', ['ui.router'])
             })
         }
 
-        function postCambio(id, cantidad, $scope) {
+        function postCambio(id, cantidad, comentario, $scope) {
             NProgress.start()
             $http({
                 method: "PUT",
-                url: "/api/itemfarmacia/" + id,
-                params: {cantidad: cantidad}
+                url: `/api/itemfarmacia/${id}`,
+                params: {cantidad, comentario}
             }).then(function (res) {
                 getStock($scope);
                 console.log("Se actualizo con exito", res.data)
@@ -361,7 +361,7 @@ angular.module('contralor', ['ui.router'])
             $scope.cantidad = null;
         }
 
-        $scope.guardarUpdate = function (idItem, cantidad) {
-            dataFac.postCambio(idItem, cantidad, $scope);
+        $scope.guardarUpdate = function (idItem, cantidad, comentario) {
+            dataFac.postCambio(idItem, cantidad, comentario, $scope);
         }
     }])
