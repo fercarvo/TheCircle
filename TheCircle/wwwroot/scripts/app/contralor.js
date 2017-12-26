@@ -42,6 +42,14 @@ angular.module('contralor', ['ui.router'])
                 templateUrl: 'views/contralor/editarStock.html',
                 controller: 'editarStock'
             })
+            .state('reportes', {
+                templateUrl: 'views/contralor/reportes.html',
+                controller: 'reportes'
+            })
+            .state('reportes.egresos', {
+                templateUrl: 'views/contralor/reportes.egresos.html',
+                controller: 'reportes.egresos'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(false)
         $compileProvider.commentDirectivesEnabled(false)
@@ -50,7 +58,7 @@ angular.module('contralor', ['ui.router'])
     .run(["$state", "$http", "$templateCache", "dataFac", function ($state, $http, $templateCache, dataFac) {
 
         checkSession($http)
-        loadTemplates($state, "aprobar", $http, $templateCache)
+        loadTemplates($state, "reportes", $http, $templateCache)
         dataFac.getRecetas({})
         dataFac.getTransferencias({})
 
@@ -72,6 +80,11 @@ angular.module('contralor', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            reporteEgresos: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             stock: null,
             getCambiosStock: getCambiosStock,
             getStock: getStock,
@@ -82,7 +95,25 @@ angular.module('contralor', ['ui.router'])
             rechazarRemision: rechazarRemision,
             guardarAprobacion: guardarAprobacion,
             getRemisionesAprobadas: getRemisionesAprobadas,
-            postCambio: postCambio
+            postCambio: postCambio,
+            getReporteEgresos
+        }
+
+        function getReporteEgresos(desde, hasta, $scope) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: `/api/reporte/egresos/`,
+                params: { desde, hasta }
+            }).then(function (res) {
+                console.log("Egresos", res.data)
+                $scope.reportes.data = res.data.map(r => { r.personal = uppers(r.personal); return r })
+                NProgress.done();
+            }, function (error) {
+                console.log("Error egresos", error);
+                notify("No se pudo obtener los egresos", "danger")
+                NProgress.done();
+            })                      
         }
 
         function getCambiosStock($scope, data) {
@@ -364,4 +395,17 @@ angular.module('contralor', ['ui.router'])
         $scope.guardarUpdate = function (idItem, cantidad, comentario) {
             dataFac.postCambio(idItem, cantidad, comentario, $scope);
         }
+    }])
+    .controller('reportes', ["$state", function ($state) { $state.go('reportes.egresos') } ])
+    .controller('reportes.egresos', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) { //reportes.egresos
+
+        $scope.reportes = dataFac.reportes
+
+        $scope.$watch('reportes', ()=> { dataFac.reportes = $scope.reportes })
+
+        $scope.generar = function (desde, hasta) {
+            dataFac.getReporteEgresos(desde, hasta, $scope)
+        }
+
+
     }])

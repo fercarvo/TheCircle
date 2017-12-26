@@ -36,6 +36,11 @@
         return day + '/' + month + '/' + year;
     }
 
+    //Reporta un string, cada palabra la primera en mayuscula
+    function uppers(str) {
+        return str.toLowerCase().split(' ').map(w => w[0].toUpperCase() + w.slice(1)).join(' ')
+    }
+
     //Ejecuta una funcion cada cierto tiempo y detenerla cuando se requiera.
     var refresh = {
         go: function (fn, time) { //time, minutos

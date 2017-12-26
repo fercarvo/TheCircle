@@ -1,0 +1,67 @@
+﻿<style>
+    #historial_transferencias_panel, #historial_transferencias_form, #historial_transferencias_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_transferencias_panel">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(reportes.desde, reportes.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="reportes.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="reportes.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_transferencias_table">
+        <div class="col-sm-12" style="padding-left:0px">
+            <div class="panel-heading col-sm-5">
+                <div style="text-align:right">
+                    <input class="form-control" ng-model="buscar" type="text" placeholder="Filtrar...">
+                </div>
+            </div>
+            <div class="form-group col-sm-5" style="margin-bottom:0px; margin-top: 11px">
+                <label class="control-label" style="font-size: large;font-weight: bolder;">Total: </label>
+                <label class="control-label" style="font-size: large;">{{filtrado.length}}</label>
+            </div>
+        </div>
+
+        <div class="panel-body" style=" padding: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                        <th>ID Item</th>
+                        <th>Compuesto</th>
+                        <th>Caducidad</th>
+                        <th>Localidad</th>
+                        <th>Tipo</th>
+                        <th>Solicitado</th>
+                        <th>Despachado</th>
+                        <th>Personal</th>
+                        <th>F. Despacho</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="t in reportes.data | orderBy:'tipo' | filter:buscar as filtrado">
+                        <td>{{("00"+ t.idItem).slice(-3)}}</td>
+                        <td>{{t.compuesto}}</td>
+                        <td>{{t.fcaducidad | date: 'dd/MM/yyyy'}}</td>
+                        <td>{{t.localidad}}</td>
+                        <td>{{t.tipo}}</td>
+                        <td>{{t.cantidadSolicitada}}</td>
+                        <td>{{t.cantidadDespachada}}</td>
+                        <td>{{t.personal}}</td> 
+                        <td>{{t.fDespacho | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

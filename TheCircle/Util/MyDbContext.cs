@@ -33,7 +33,9 @@ namespace TheCircle.Util
         public virtual DbSet<PedidoInterno.BDD> PedidoInterno { get; set; }
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<UnidadMedida> UnidadMedida { get; set; }
-        
+        public virtual DbSet<Reporte.Egreso> EgresoTotal { get; set; }
+
+
 
         protected override void OnConfiguring(DbContextOptionsBuilder builder)
         {
