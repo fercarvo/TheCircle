@@ -48,7 +48,7 @@ angular.module('bodeguero', ['ui.router'])
 
         checkSession($http);
 
-        loadTemplates($state, "despachar", $http, $templateCache);
+        loadTemplates($state, "ingresar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
 
@@ -275,10 +275,13 @@ angular.module('bodeguero', ['ui.router'])
             $scope.compuestos = dataFac.compuestos;
         })
 
+        /* Lista de nombres derecha de items
         $scope.seleccionar = function (obj) {
             $scope.form.nombre = obj
         }
+        */
 
+        //Obtengo los nombres de los items
         $http.get("/api/itemfarmacia/nombre").then(function (res) {
             dataFac.nombres = res.data
             $scope.nombres = dataFac.nombres
@@ -286,7 +289,7 @@ angular.module('bodeguero', ['ui.router'])
 
         $scope.crear = function (form) {
             var data = {
-                nombre: "",
+                nombre: form.nombre,
                 compuesto: form.compuesto,
                 fcaducidad: date(form.fecha),
                 cantidad: form.cantidad,

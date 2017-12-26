@@ -90,8 +90,24 @@
                                 <td>{{item.cantidad}}</td>
                             </tr>
                             <tr>
+                                <td style="font-weight:bold;"># Transferencia: </td>
+                                <td>{{item.transferencia}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;"># orden: </td>
+                                <td>{{item.codigoOrden}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;"># documento: </td>
+                                <td>{{item.codigoDocumento}}</td>
+                            </tr>
+                            <tr>
                                 <td style="font-weight:bold;">Fecha ingreso: </td>
                                 <td>{{item.fechaRegistro | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight:bold;">Comentario: </td>
+                                <td>{{item.comentario}}</td>
                             </tr>
                         </tbody>
                     </table>

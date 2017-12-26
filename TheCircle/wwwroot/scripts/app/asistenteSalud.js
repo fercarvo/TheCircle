@@ -91,6 +91,7 @@ angular.module('asistenteSalud', ['ui.router'])
                 data: null
             },
             transferencias: null,
+            nombres: null, //Nombres de los itemsFarmacia registrados
             transferenciasPorIngresar: null,
             pedidoInterno: null,
             transferenciasDespachadas: {
@@ -112,7 +113,15 @@ angular.module('asistenteSalud', ['ui.router'])
             getDespachos: getDespachos,
             getCompuestos: getCompuestos,
             getPedidoInterno: getPedidoInterno,
+            getNombresItems: getNombresItems,
             despacharTransferencia: despacharTransferencia
+        }
+
+        function getNombresItems($scope) {
+            $http.get("/api/itemfarmacia/nombre").then(function (res) {
+                dataFac.nombres = res.data
+                $scope.nombres = dataFac.nombres
+            }, function () { })
         }
 
         function getItemsRegistrados($scope, data) {
@@ -513,16 +522,22 @@ angular.module('asistenteSalud', ['ui.router'])
         $scope.compuestos = dataFac.compuestos;
         $scope.items = null;
 
-        if ($scope.compuestos === null) {
-            dataFac.getCompuestos($scope);
-        }
+        $scope.nombres = dataFac.nombres
 
-        $scope.crear = function (compuesto, item, fecha, cantidad) {
+        if (!$scope.nombres)
+            dataFac.getNombresItems($scope)
+
+        if ($scope.compuestos === null) 
+            dataFac.getCompuestos($scope)
+
+        $scope.crear = function (compuesto, item, fecha, cantidad, orden, documento) {
             var data = {
                 compuesto: compuesto,
-                nombre: item,
-                fcaducidad: date(fecha),
-                cantidad: cantidad
+                nombre: item ? item : "",
+                fcaducidad: (fecha > new Date()) ? date(fecha) : null,
+                cantidad: (cantidad > 0) ? cantidad : null,
+                orden: orden,
+                documento: documento ? documento : null
             }
             console.log("data a enviar", data);
 
@@ -555,11 +570,7 @@ angular.module('asistenteSalud', ['ui.router'])
             refresh.stop(actualizar)
             var data = {
                 idTransferencia: $scope.transferencia.id,
-                comentario: (function () {
-                    if (comentario) {
-                        return comentario
-                    } return ""
-                })()
+                comentario: (comentario) ? comentario : ""
             }
 
             NProgress.start();

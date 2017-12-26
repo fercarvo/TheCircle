@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -22,13 +23,13 @@ namespace TheCircle.Models
 
         public ItemFarmacia(IngresoRequest item, Localidad localidad, int personal) {
             try {
-                string query = $"DECLARE @item_id int EXEC ItemFarmacia_insert @nombre='{item.nombre}', " +
+                string query = $"DECLARE @item_id int EXEC ItemFarmacia_Insert_Docs @nombre='{item.nombre}', " +
                     $"@compuesto={item.compuesto}, " +
                     $"@fcaducidad='{item.fcaducidad}', " +
                     $"@cantidad={item.cantidad}, " +
                     $"@localidad='{localidad}', " +
-                    $"@localidad='{item.orden}', " +
-                    $"@localidad='{item.documento}', " +
+                    $"@orden='{item.orden}', " +
+                    $"@documento='{item.documento}', " +
                     $"@personal={personal}, @item_id=@item_id OUTPUT";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
@@ -130,6 +131,9 @@ namespace TheCircle.Models
             public string nombrePersonal { get; set; }
             public int? transferencia { get; set; }
             public string emailPersonal { get; set; } = null;
+            public string codigoOrden { get; set; } = null;
+            public string codigoDocumento { get; set; } = null;
+            public string comentario { get; set; } = null;
         }
 
         public class IngresoTransferencia
@@ -143,9 +147,13 @@ namespace TheCircle.Models
         public class IngresoRequest
         {
             public string nombre { get; set; } //Ya no es requerido, recibe ""
+            [Required]
             public int compuesto { get; set; } //ID del compuesto
+            [Required]
             public string fcaducidad { get; set; }
+            [Required]
             public int cantidad { get; set; }
+            [Required]
             public string orden { get; set; } //Codigo de orden de compra
             public string documento { get; set; }  = null; //Codigo de numero de documento
 
@@ -187,9 +195,9 @@ namespace TheCircle.Models
         public class Nombre
         {
             [Key]
-            public Int64 indice { get; set; }
+            //public Int64 indice { get; set; }
             public string nombre { get; set; }
-            public int compuesto { get; set; }
+            //public int? compuesto { get; set; }
         }
     }
 }

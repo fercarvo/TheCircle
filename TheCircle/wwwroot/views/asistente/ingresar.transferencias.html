@@ -72,7 +72,7 @@
                             </tr>
                             <tr>
                                 <td>Comentario: </td>
-                                <td><input ng-model="comentario" type="text" pattern=".{50}" style="width:100%;" /></td>
+                                <td><input form="ingresoTransferencia" ng-model="comentario" type="text" required pattern=".{1,50}" style="width:100%;" /></td>
                             </tr>
                             <tr>
                                 <td>Fecha de pedido: </td>
@@ -86,10 +86,10 @@
                     </table>
 
                 </div>
-                <div class="text-center" style="margin-bottom: 5px;">
-                    <button ng-click="guardarIngreso(comentario)" data-ripple type="submit" class="btn btn-info">Guardar ingreso</button>
+                <form id="ingresoTransferecnia" ng-submit="guardarIngreso(comentario)" class="text-center" style="margin-bottom: 5px;">
+                    <button data-ripple type="submit" class="btn btn-info">Guardar ingreso</button>
                     <button data-ripple type="button" class="btn btn-default">Cancelar</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>

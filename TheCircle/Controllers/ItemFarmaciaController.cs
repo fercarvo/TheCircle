@@ -113,7 +113,8 @@ namespace TheCircle.Controllers
         public IActionResult PostItem(Token token, [FromBody]ItemFarmacia.IngresoRequest item)
         {
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(item);
+                //throw new Exception($"Item invalido {item}");
 
             var data = new ItemFarmacia(item, token.data.localidad, token.data.cedula);
             return Ok(data);
