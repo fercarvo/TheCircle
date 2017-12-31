@@ -111,14 +111,12 @@ angular.module('bodeguero', ['ui.router'])
             })
         }
 
-        function getTransferencias() {
+        function getTransferencias($scope) {
             $http.get("/api/transferencia").then(function (res) {
                 console.log("Transferencias a despachar", res.data);
                 dataFac.transferencias = res.data;
-                $rootScope.$broadcast('dataFac.transferencias');
-            }, function (err) {
-                console.log("error cargar stock", err);
-            })
+                $scope.transferencias = dataFac.transferencias
+            }, err => console.log("error cargar stock", err))
         }
 
         function getStock($scope) {
@@ -126,9 +124,7 @@ angular.module('bodeguero', ['ui.router'])
                 console.log("Stock de bodega", res.data);
                 dataFac.stock = res.data;
                 $scope.stock = dataFac.stock;
-            }, function (error) {
-                console.log("error getStock", error)
-            })
+            }, error => console.log("error getStock", error))
         }
 
         function getData() {
@@ -138,9 +134,7 @@ angular.module('bodeguero', ['ui.router'])
                 dataFac.unidades = res.data.unidades;
                 $rootScope.$broadcast('compuesto-categoria-unidades');
 
-            }, function(error){
-                console.log("Error cargar data", error);
-            })
+            }, error => console.log("Error cargar data", error) )
         }
 
         function getCompuestos() {
@@ -157,20 +151,13 @@ angular.module('bodeguero', ['ui.router'])
     .controller('despachar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.transferencias = dataFac.transferencias;
         $scope.transferencia = null;
-
         var actualizar = refresh.go(cargar, 1);
 
-        function cargar() {
-            if ($state.includes('despachar')) {
-                dataFac.getTransferencias();
-            } else {
-                refresh.stop(actualizar);
-            }
-        }
+        $scope.$on("$destroy", ()=> { refresh.stop(actualizar) })
 
-        $scope.$on('dataFac.transferencias', function () {
-            $scope.transferencias = dataFac.transferencias
-        })
+        function cargar() {
+            dataFac.getTransferencias($scope)
+        }
 
         $scope.ver = function (transferencia) {
             $scope.transferencia = transferencia
@@ -181,11 +168,7 @@ angular.module('bodeguero', ['ui.router'])
             var data = {
                 idTransferencia: id,
                 cantidad: cantidad,
-                comentario: (function () {
-                    if (comentario) {
-                        return comentario
-                    } return ""
-                })()
+                comentario: (comentario) ? comentario : ""
             }
 
             refresh.stop(actualizar)
