@@ -1,0 +1,55 @@
+﻿<style>
+    #historial_transferencias_panel, #historial_transferencias_form, #historial_transferencias_table {
+        padding: 0px 0px 0px 0px;
+    }
+</style>
+<div class="panel-body" id="historial_transferencias_panel">
+    <div class="form-group" id="estadistica-atenciones-form">
+        <form class="form-horizontal" ng-submit="generar(transferencias.desde, transferencias.hasta)">
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Desde<a style="color:red;">(*)</a></label>
+                <input ng-model="transferencias.desde" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <label class="control-label">Hasta<a style="color:red;">(*)</a></label>
+                <input ng-model="transferencias.hasta" required type="date" class="form-control">
+            </div>
+            <div class="col-sm-3" style="padding-bottom:5px;">
+                <button data-ripple type="submit" class="btn btn-info" style="margin-top:26px;">Generar</button>
+            </div>
+        </form>
+    </div>
+    <div class="panel panel-default-light border-default col-sm-12" id="historial_transferencias_table">
+
+        <div class="panel-body" style=" padding-top: 5px;overflow-y:auto;max-height:60vh">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Item</th>
+                        <th>Cantidad</th>
+                        <th>Solicitante</th>
+                        <th>Fecha</th>
+                        <th>Destino</th>
+                        <th>Eliminada</th>
+                        <th>Eliminar</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr ng-repeat="t in transferencias.data | orderBy:['fecha']">
+                        <td>{{t.id}}</td>
+                        <td>{{t.itemFarmacia.compuesto}}</td>
+                        <td>{{t.cantidad}}</td>
+                        <td>{{t.solicitante.nombre}} {{t.solicitante.apellido}}</td>
+                        <td>{{t.fecha | date: 'dd/MM/yyyy - HH:mm'}}</td>
+                        <td>{{t.destino}}</td>
+                        <td>{{t.cancelado}}</td>
+                        <td><button ng-click="eliminar(t.id)" style="background-color:inherit;border:none;"><span class="glyphicon glyphicon-erase"></span></button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>

@@ -96,8 +96,22 @@ namespace TheCircle.Models
 
         public static void Delete(int id, MyDbContext _context)
         {
-            string query = $"EXEC Receta_Delete @id={id}";
-            _context.Database.ExecuteSqlCommand(query);
+            var tran = _context.Database.BeginTransaction(); //Se inicia transacción en la BDD
+
+            try
+            {
+                ItemReceta[] items = ItemReceta.ReportReceta(id, _context);
+
+                foreach (var item in items) //Se cambia el estado a cancelado en todos los itemsReceta y se hace rollback al item farmacia
+                    _context.Database.ExecuteSqlCommand($"EXEC ItemReceta_Delete @id={item.id}");
+
+                _context.Database.ExecuteSqlCommand($"EXEC Receta_Delete @id={id}"); //Se cambia el estado a eliminado en la receta
+
+                tran.Commit(); //Si todo sale bien se hace commit
+            } catch (Exception e) {
+                tran.Rollback(); //Rollback
+                throw new Exception("Error al eliminar receta", e);
+            }
         }
 
 
@@ -134,6 +148,12 @@ namespace TheCircle.Models
             }
 
             return data;
+        }
+
+        public class Caducada
+        {
+            [Key]
+            public int id { get; set; }
         }
 
 

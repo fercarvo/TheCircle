@@ -3,6 +3,7 @@ using TheCircle.Util;
 using TheCircle.Models;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
 {
@@ -22,6 +23,14 @@ namespace TheCircle.Controllers
         public IActionResult GetPendientes(Token token)
         {
             Transferencia[] data = Transferencia.GetPendientes(token.data.localidad);
+            return Ok(data);
+        }
+
+        [HttpGet("transferencia/coordinacion")]
+        [APIauth("coordinador")]
+        public IActionResult GetCreadas([FromQuery]DateTime desde, [FromQuery]DateTime hasta)
+        {
+            Transferencia[] data = Transferencia.GetCreadas(desde, hasta);
             return Ok(data);
         }
 
@@ -87,6 +96,20 @@ namespace TheCircle.Controllers
                 return BadRequest();
 
             Transferencia.Despachar(token.data.cedula, req);
+            return Ok();
+        }
+
+
+        //Se despacha una transferencia solicitada
+        [HttpDelete("transferencia/{id}/")]
+        [APIauth("coordinador")]
+        public IActionResult Eliminar(int id)
+        {
+            if (id <= 0)
+                return BadRequest();
+
+            new MyDbContext().Database.ExecuteSqlCommand($"EXEC Transferencia_Delete @id={id}");
+
             return Ok();
         }
     }

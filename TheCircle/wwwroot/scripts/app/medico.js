@@ -164,7 +164,7 @@ angular.module('appMedico', ['ui.router', 'nvd3'])
         function getRecetas() {
             $http.get("api/receta/medico/activas").then(function success(res) {
                 console.log("recetas by status", res.data);
-                dataFactory.recetas = res.data;
+                dataFactory.recetas = res.data.filter(data=> !data.receta.eliminada) //Se muestran solo las no eliminadas
                 $rootScope.$broadcast('dataFactory.recetas'); //Se informa a los controladores que cambio recetas
             }, function error(err) {
                 console.log("error cargar recetas", err);

@@ -55,6 +55,12 @@ namespace TheCircle.Models
             return _context.Transferencia.FromSql(q).Populate();
         }
 
+        public static Transferencia[] GetCreadas(DateTime desde, DateTime hasta)
+        {
+            string q = $"EXEC Transferencia_Report_Fecha @desde='{desde}', @hasta='{hasta}'";
+            return new MyDbContext().Transferencia.FromSql(q).Populate();
+        }
+
         //Obtengo todas las transferencias inconsistentes
         internal static Transferencia[] GetInconsistentes()
         {
@@ -91,7 +97,7 @@ namespace TheCircle.Models
             public int? personalDespacho { get; set; }
             public string comentarioDespacho { get; set; } = null;
         }
-    
+
     }
 }
 

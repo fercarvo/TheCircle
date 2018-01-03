@@ -72,11 +72,19 @@ angular.module('asistenteSalud', ['ui.router'])
             recetas: 0
         }
 
+        dataFac.getRecetas_2()
+
         refresh.go(function () {
-            dataFac.getRecetas()
+            //dataFac.getRecetas()
             dataFac.getTransferenciasPendientes({})
             dataFac.getPedidoInterno()
         }, 1)
+
+        refresh.go(function deleteCaducadas() {
+            $http.delete("/api/receta/caducadas")
+                .then(() => { }, (e)=> console.log("Error caducadas", e))
+
+        }, 60) //cada hora  
 
         checkSession($http);
 
@@ -89,6 +97,7 @@ angular.module('asistenteSalud', ['ui.router'])
             stock: null,
             compuestos: null,
             recetas: null,
+            recetas_refresh: null,
             recetasDespachadas: {
                 desde: null,
                 hasta: null,
@@ -120,7 +129,27 @@ angular.module('asistenteSalud', ['ui.router'])
             getCompuestos: getCompuestos,
             getPedidoInterno: getPedidoInterno,
             getNombresItems: getNombresItems,
-            despacharTransferencia: despacharTransferencia
+            despacharTransferencia: despacharTransferencia,
+            getRecetas_2
+        }
+
+        function getRecetas_2(flag) {
+
+            if (flag === "stop" && dataFac.recetas_refresh)
+                return refresh.stop(dataFac.recetas_refresh)
+
+            refresh.stop(dataFac.recetas_refresh)
+
+            dataFac.recetas_refresh = refresh.go(function cargarRecetas() {
+                $http.get("/api/receta/localidad/pordespachar").then(function (res) {
+                    console.log("Recetas a despachar", res.data);
+                    dataFac.recetas = res.data;
+                    $rootScope.notificaciones.recetas = dataFac.recetas.length
+                    $rootScope.$broadcast('dataFac.recetas'); //Se informa a los controladores que cambio recetas a despachar
+                }, function error(err) {
+                    console.log("error cargar recetas", err);
+                })
+            }, 0.5)            
         }
 
         function getProveedores($scope) {
@@ -303,22 +332,24 @@ angular.module('asistenteSalud', ['ui.router'])
         $scope.recetas = dataFac.recetas;
         $scope.receta = null;
         $scope.index = null;
-        var actualizar = refresh.go(cargar, 1);
+
+        //var actualizar = refresh.go(cargar, 1);
 
         $scope.$on('dataFac.recetas', function () {
             $scope.recetas = dataFac.recetas;
         })
 
-        function cargar() {
+        /*function cargar() {
             if ($state.includes('despachar.receta')) {
                 dataFac.getRecetas();
             } else {
                 refresh.stop(actualizar);
             }
-        }
+        }*/
 
         $scope.select = function (receta, index) {
-            refresh.stop(actualizar);
+            dataFac.getRecetas_2("stop")
+            //refresh.stop(actualizar);
             $scope.receta = angular.copy(receta);
 
             $scope.receta.items.forEach(function (item) {
@@ -352,16 +383,19 @@ angular.module('asistenteSalud', ['ui.router'])
                     notify("Receta despachada exitosamente", "success");
                     $('#myModal').modal('hide'); //Se cierra el modal
                     //recetas.splice(index, 1);
-                    actualizar = refresh.go(cargar, 1);
+                    dataFac.getRecetas_2()
+                    //actualizar = refresh.go(cargar, 1);
 
                 }, function error(e) {
                     console.log("Error despacho", e);
                     $('#myModal').modal('hide');
                     notify("No se ha podido despachar", "danger");
-                    actualizar = refresh.go(cargar, 1);
+                    dataFac.getRecetas_2()
+                    //actualizar = refresh.go(cargar, 1);
                 })
 
             } else {
+                dataFac.getRecetas_2()
                 actualizar = refresh.go(cargar, 1);
                 console.log("No se han despachado todos los items", total);
                 notify("No se han despachado todos los items", "danger");

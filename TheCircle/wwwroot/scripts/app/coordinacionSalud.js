@@ -34,6 +34,10 @@ angular.module('coordinacionSalud', ['ui.router'])
                 templateUrl: 'views/coordinacionSalud/reporte.atenciones.html',
                 controller: 'reporte.atenciones'
             })
+            .state('reporte.transferencias', {
+                templateUrl: 'views/coordinacionSalud/reporte.transferencias.html',
+                controller: 'reporte.transferencias'
+            })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(false)
         $compileProvider.commentDirectivesEnabled(false)
@@ -56,13 +60,45 @@ angular.module('coordinacionSalud', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            transferencias: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             getStock: getStock,
             getAtenciones: getAtenciones,
             getRechazos: getRechazos,
             getRemisiones: getRemisiones,
             postAprobacion: postAprobacion,
             guardarAprobacionRechazada: guardarAprobacionRechazada,
-            getRemisionesAprobadas: getRemisionesAprobadas
+            getRemisionesAprobadas: getRemisionesAprobadas,
+            getTransferencias
+        }
+
+        function getTransferencias(desde, hasta, $scope) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: "/api/transferencia/coordinacion/",
+                params: {desde, hasta}
+            }).then(function (res) {
+                console.log("transferencias", res.data)
+
+                res.data.forEach(t => {
+                    if(t.cancelado)
+                        t.cancelado = "Si"
+                    else
+                        t.cancelado = ""
+                })
+
+                dataFac.transferencias.data = res.data
+                $scope.transferencias = dataFac.transferencias
+                NProgress.done();
+            }, function (error) {
+                console.log("Error cargar transferencias", error);
+                notify("No se pudo cargar las transferencias", "danger")
+                NProgress.done();
+            })
         }
 
         function getAtenciones(data, $scope) {
@@ -366,6 +402,40 @@ angular.module('coordinacionSalud', ['ui.router'])
 
             dataFac.getAtenciones(data, $scope)
         }
+    }])
+    .controller("reporte.transferencias", ["$scope", "dataFac", "$http", function ($scope, dataFac, $http) { //
+        $scope.transferencias = dataFac.transferencias
 
+        $scope.$watch("transferencias", function () {
+            dataFac.transferencias = $scope.transferencias
+        })
 
+        $scope.generar = function (desde, hasta) {
+            dataFac.getTransferencias(desde, hasta, $scope)
+        }
+
+        $scope.eliminar = function (idTran) {
+
+            if (!confirm(`Confirmar eliminación de trasnferencia ${idTran}`))
+                return
+
+            NProgress.start();
+
+            $http.delete(`/api/transferencia/${idTran}`).then(function(res) {
+                console.log("Eliminada Transferencia", res.data)
+                notify("Transferencia eliminada exitosamente", "success")
+                NProgress.done();
+
+                dataFac.getTransferencias($scope.transferencias.desde, $scope.transferencias.hasta, $scope)
+
+            }, function (error) {
+                console.log("error eliminar Transferencia", error)
+                notify("Error eliminar trasnferencia", "danger")
+                NProgress.done();
+
+                dataFac.getTransferencias($scope.transferencias.desde, $scope.transferencias.hasta, $scope)
+
+            })
+
+        }
     }])

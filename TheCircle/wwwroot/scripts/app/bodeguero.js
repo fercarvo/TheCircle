@@ -44,10 +44,15 @@ angular.module('bodeguero', ['ui.router'])
         $compileProvider.commentDirectivesEnabled(true)
         $compileProvider.cssClassDirectivesEnabled(true)
     }])
-    .run(["$state", "$http", "$templateCache", function ($state, $http, $templateCache) {
+    .run(["$state", "$http", "$templateCache", "dataFac", "$rootScope", function ($state, $http, $templateCache, dataFac, $rootScope) {
+
+        $rootScope.notificacion = 0
+
+        refresh.go(function transferencias() {
+            dataFac.getTransferencias()
+        }, 0.5)
 
         checkSession($http);
-
         loadTemplates($state, "ingresar", $http, $templateCache);
     }])
     .factory('dataFac', ['$http', '$rootScope', function ($http, $rootScope) {
@@ -124,10 +129,10 @@ angular.module('bodeguero', ['ui.router'])
             $http.get("/api/transferencia").then(function (res) {
                 console.log("Transferencias a despachar", res.data);
                 dataFac.transferencias = res.data;
-                $rootScope.$broadcast('dataFac.transferencias');
-            }, function (err) {
-                console.log("error cargar stock", err);
-            })
+                $rootScope.notificacion = dataFac.transferencias.length
+                $rootScope.$broadcast('dataFac.transferencias')
+                //$scope.transferencias = dataFac.transferencias
+            }, err => console.log("error cargar tran", err))
         }
 
         function getStock($scope) {
@@ -135,9 +140,7 @@ angular.module('bodeguero', ['ui.router'])
                 console.log("Stock de bodega", res.data);
                 dataFac.stock = res.data;
                 $scope.stock = dataFac.stock;
-            }, function (error) {
-                console.log("error getStock", error)
-            })
+            }, error => console.log("error getStock", error))
         }
 
         function getData() {
@@ -147,9 +150,7 @@ angular.module('bodeguero', ['ui.router'])
                 dataFac.unidades = res.data.unidades;
                 $rootScope.$broadcast('compuesto-categoria-unidades');
 
-            }, function(error){
-                console.log("Error cargar data", error);
-            })
+            }, error => console.log("Error cargar data", error) )
         }
 
         function getCompuestos() {
@@ -166,20 +167,14 @@ angular.module('bodeguero', ['ui.router'])
     .controller('despachar', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) {
         $scope.transferencias = dataFac.transferencias;
         $scope.transferencia = null;
+        //var actualizar = refresh.go(cargar, 1);
 
-        var actualizar = refresh.go(cargar, 1);
+        //$scope.$on("$destroy", ()=> { refresh.stop(actualizar) })
+        $scope.$on('dataFac.transferencias', function () { $scope.transferencias = dataFac.transferencias })
 
-        function cargar() {
-            if ($state.includes('despachar')) {
-                dataFac.getTransferencias();
-            } else {
-                refresh.stop(actualizar);
-            }
-        }
-
-        $scope.$on('dataFac.transferencias', function () {
-            $scope.transferencias = dataFac.transferencias
-        })
+        /*function cargar() {
+            dataFac.getTransferencias($scope)
+        }*/
 
         $scope.ver = function (transferencia) {
             $scope.transferencia = transferencia
@@ -190,14 +185,10 @@ angular.module('bodeguero', ['ui.router'])
             var data = {
                 idTransferencia: id,
                 cantidad: cantidad,
-                comentario: (function () {
-                    if (comentario) {
-                        return comentario
-                    } return ""
-                })()
+                comentario: (comentario) ? comentario : ""
             }
 
-            refresh.stop(actualizar)
+            //refresh.stop(actualizar)
             NProgress.start()
 
             $http.put("/api/transferencia/" + id + "/despachar", data).then(function (res) {
@@ -211,7 +202,7 @@ angular.module('bodeguero', ['ui.router'])
             }).finally(function () {
                 NProgress.done();
                 $('#ver_transferencia').modal('hide');
-                actualizar = refresh.go(cargar, 1)
+                //actualizar = refresh.go(cargar, 1)
             })
         }
     }])

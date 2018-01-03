@@ -97,6 +97,7 @@
     <Content Include="wwwroot\views\coordinacionSalud\remisionesRechazadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\reporte.atenciones.html" />
     <Content Include="wwwroot\views\coordinacionSalud\reporte.html" />
+    <Content Include="wwwroot\views\coordinacionSalud\reporte.transferencias.html" />
     <Content Include="wwwroot\views\coordinacionSalud\stock.html" />
     <Content Include="wwwroot\views\coordinacionSalud\transferencias.html" />
     <Content Include="wwwroot\views\coordinacionSalud\validar.html" />

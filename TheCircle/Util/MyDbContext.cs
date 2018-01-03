@@ -22,6 +22,7 @@ namespace TheCircle.Util
         public virtual DbSet<Atencion.Reporte> ReporteAtenciones { get; set; }
         public virtual DbSet<Atencion.Stadistics> Stadistics { get; set; }
         public virtual DbSet<Receta> Recetas { get; set; }
+        public virtual DbSet<Receta.Caducada> Caducadas { get; set; }
         public virtual DbSet<Receta.Impresion> RecetaImpresion { get; set; }
         public virtual DbSet<ItemReceta> ItemsReceta { get; set; }
         public virtual DbSet<Diagnostico> Diagnosticos { get; set; }

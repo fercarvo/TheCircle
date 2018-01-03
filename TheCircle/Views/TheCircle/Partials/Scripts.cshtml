@@ -19,6 +19,9 @@
 <script src="~/scripts/vendor/nprogress.js"></script>
 
 <script>
+
+    document.body.style.pointerEvents = "none" //Bloquea todo click hasta que se carge la pagina
+
     //Comment this for debug
     /*var console = {
         log: function () { 
@@ -112,6 +115,7 @@
     function openURL(url) {
         document.getElementById("SimulateOpenLink").href = url
         document.getElementById("SimulateOpenLink").click()
+        //document.getElementById("SimulateOpenLink_iframe").src = url
     }
 
     //Funcion que comprueba si la sessión es valida o no, caso contrario redireccion al login
@@ -144,6 +148,7 @@
             .then(function () { }).catch(function () { }).then(function () {
                 NProgress.done()
                 $state.go(goState) ///////////////////////// State inicial
+                document.body.style.pointerEvents = "all"
             })
     }
 </script>

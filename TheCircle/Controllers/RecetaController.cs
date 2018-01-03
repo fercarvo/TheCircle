@@ -5,6 +5,7 @@ using TheCircle.Util;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 
 namespace TheCircle.Controllers
 {
@@ -101,6 +102,21 @@ namespace TheCircle.Controllers
             
             return Ok(data);
         }
+
+        //Elimina todas las recetas caducadas
+        [HttpDelete("receta/caducadas")]
+        [APIauth("asistenteSalud")]
+        public IActionResult EliminarCaducadas()
+        {
+            var _context = new MyDbContext();
+            var caducadas = _context.Caducadas.FromSql("EXEC Receta_Report_Caducadas").ToArray();
+
+            foreach (var receta in caducadas)
+                Receta.Delete(receta.id, _context);
+
+            return Ok();
+        }
+
 
         //recetas con inconsistencia
         [HttpGet("receta/inconsistente")]
