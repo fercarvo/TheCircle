@@ -30,6 +30,7 @@ namespace TheCircle.Models
                     $"@localidad='{localidad}', " +
                     $"@orden='{item.orden}', " +
                     $"@documento='{item.documento}', " +
+                    $"@proveedor='{item.proveedor}', " +
                     $"@personal={personal}, @item_id=@item_id OUTPUT";
 
                 new MyDbContext().Database.ExecuteSqlCommand(query);
@@ -75,6 +76,12 @@ namespace TheCircle.Models
         {
             string query = "EXEC ItemFarmacia_Report_Total";
             return new MyDbContext().ItemFarmacias.FromSql(query).ToArray();
+        }
+
+        public static Proveedor[] ReportProveedor()
+        {
+            string query = $"EXEC ItemFarmacia_Report_Proveedor";
+            return new MyDbContext().Proveedores.FromSql(query).ToArray();
         }
 
         public static Nombre[] ReportNombres() {
@@ -133,6 +140,7 @@ namespace TheCircle.Models
             public string nombrePersonal { get; set; }
             public int? transferencia { get; set; }
             public string emailPersonal { get; set; } = null;
+            public string proveedor { get; set; } = null;
             public string codigoOrden { get; set; } = null;
             public string codigoDocumento { get; set; } = null;
             public string comentario { get; set; } = null;
@@ -157,6 +165,8 @@ namespace TheCircle.Models
             public int cantidad { get; set; }
             [Required]
             public string orden { get; set; } //Codigo de orden de compra
+            [Required]
+            public string proveedor { get; set; } //Nombre del proveedor
             public string documento { get; set; }  = null; //Codigo de numero de documento
 
             public IngresoRequest() { }
@@ -200,6 +210,12 @@ namespace TheCircle.Models
             //public Int64 indice { get; set; }
             public string nombre { get; set; }
             //public int? compuesto { get; set; }
+        }
+
+        public class Proveedor
+        {
+            [Key]
+            public string nombre { get; set; }
         }
     }
 }

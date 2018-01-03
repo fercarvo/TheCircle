@@ -69,13 +69,22 @@ angular.module('bodeguero', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            proveedores: null,
             tablaOrdenes: [],
             getItemsRegistrados: getItemsRegistrados,
             getTransferenciasDespachadas: getTransferenciasDespachadas,
             getData: getData,
             getStock: getStock,
             getCompuestos: getCompuestos,
-            getTransferencias: getTransferencias
+            getTransferencias: getTransferencias,
+            getProveedores
+        }
+
+        function getProveedores($scope) {
+            $http.get("/api/itemfarmacia/proveedor").then(function (res) {
+                dataFac.proveedores = res.data
+                $scope.proveedores = dataFac.proveedores
+            }, function () { })
         }
 
         function getItemsRegistrados($scope, data) {
@@ -266,7 +275,11 @@ angular.module('bodeguero', ['ui.router'])
     .controller('ingresar', ["$state", "$scope", "$http", "dataFac", function ($state, $scope, $http, dataFac) {
         dataFac.getData();
         $scope.compuestos = dataFac.compuestos;
+
         $scope.nombres = dataFac.nombres;
+        $scope.proveedores = dataFac.proveedores
+
+        dataFac.getProveedores($scope)
 
         if ($scope.compuestos === null) 
             dataFac.getCompuestos()
@@ -294,7 +307,8 @@ angular.module('bodeguero', ['ui.router'])
                 fcaducidad: date(form.fecha),
                 cantidad: form.cantidad,
                 orden: form.orden,
-                documento: (form.documento) ? form.documento : null
+                documento: (form.documento) ? form.documento : null,
+                proveedor: form.proveedor ? form.proveedor : null
             }
             console.log("data a enviar", data);
 

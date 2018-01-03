@@ -66,7 +66,11 @@ angular.module('asistenteSalud', ['ui.router'])
         $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", "dataFac", "$rootScope", function ($state, $http, $templateCache, dataFac, $rootScope) {
-        $rootScope.notificaciones = {}
+        $rootScope.notificaciones = {
+            pedidos: 0,
+            transferencias: 0,
+            recetas: 0
+        }
 
         refresh.go(function () {
             dataFac.getRecetas()
@@ -92,6 +96,7 @@ angular.module('asistenteSalud', ['ui.router'])
             },
             transferencias: null,
             nombres: null, //Nombres de los itemsFarmacia registrados
+            proveedores: null, //Nombre de proveedores registrados
             transferenciasPorIngresar: null,
             pedidoInterno: null,
             transferenciasDespachadas: {
@@ -104,6 +109,7 @@ angular.module('asistenteSalud', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            getProveedores,
             getItemsRegistrados: getItemsRegistrados,
             getTransferenciasDespachadas: getTransferenciasDespachadas,
             getTransferenciasPorIngresar: getTransferenciasPorIngresar,
@@ -115,6 +121,13 @@ angular.module('asistenteSalud', ['ui.router'])
             getPedidoInterno: getPedidoInterno,
             getNombresItems: getNombresItems,
             despacharTransferencia: despacharTransferencia
+        }
+
+        function getProveedores($scope) {
+            $http.get("/api/itemfarmacia/proveedor").then(function (res) {
+                dataFac.proveedores = res.data
+                $scope.proveedores = dataFac.proveedores
+            }, function () { })
         }
 
         function getNombresItems($scope) {
@@ -523,6 +536,10 @@ angular.module('asistenteSalud', ['ui.router'])
         $scope.items = null;
 
         $scope.nombres = dataFac.nombres
+        $scope.proveedores = dataFac.proveedores
+
+        if (!$scope.proveedores)
+            dataFac.getProveedores($scope)
 
         if (!$scope.nombres)
             dataFac.getNombresItems($scope)
@@ -530,14 +547,15 @@ angular.module('asistenteSalud', ['ui.router'])
         if ($scope.compuestos === null) 
             dataFac.getCompuestos($scope)
 
-        $scope.crear = function (compuesto, item, fecha, cantidad, orden, documento) {
+        $scope.crear = function (compuesto, item, fecha, cantidad, orden, documento, proveedor) {
             var data = {
                 compuesto: compuesto,
                 nombre: item ? item : "",
                 fcaducidad: (fecha > new Date()) ? date(fecha) : null,
                 cantidad: (cantidad > 0) ? cantidad : null,
                 orden: orden,
-                documento: documento ? documento : null
+                documento: documento ? documento : null,
+                proveedor: proveedor ? proveedor : null
             }
             console.log("data a enviar", data);
 

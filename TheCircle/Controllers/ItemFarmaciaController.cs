@@ -36,6 +36,16 @@ namespace TheCircle.Controllers
             return Ok(nombres);
         }
 
+        //Nombre de todos los proveedores registrados
+        [HttpGet("itemfarmacia/proveedor")]
+        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Client)]
+        [APIauth("asistenteSalud", "bodeguero")]
+        public IActionResult GetProveedores()
+        {
+            ItemFarmacia.Proveedor[] nombres = ItemFarmacia.ReportProveedor();
+            return Ok(nombres);
+        }
+
         //Retorna todos los items de farmacia que ha registrado un personal en específico, por rango de fecha
         [HttpGet("itemfarmacia/registro")]
         [APIauth("asistenteSalud", "contralor", "bodeguero")]

@@ -3,7 +3,7 @@ using TheCircle.Models;
 
 namespace TheCircle.Util
 {
-    public class MyDbContext : DbContext
+    public class MyDbContext : DbContext 
     {
         public virtual DbSet<Remision> Remision { get; set; }
         public virtual DbSet<Remision.Aprobacion> Aprobacion { get; set; }
@@ -11,6 +11,7 @@ namespace TheCircle.Util
         public virtual DbSet<Apadrinado> Apadrinados { get; set; }
         public virtual DbSet<ItemFarmacia> ItemFarmacias { get; set; }
         public virtual DbSet<ItemFarmacia.Nombre> NombresItem { get; set; }
+        public virtual DbSet<ItemFarmacia.Proveedor> Proveedores { get; set; }
         public virtual DbSet<ItemFarmacia.Egreso> Egreso { get; set; }
         public virtual DbSet<ItemFarmacia.Registro> RegistroItem { get; set; }
         public virtual DbSet<ItemFarmacia.Update> Alteraciones { get; set; }

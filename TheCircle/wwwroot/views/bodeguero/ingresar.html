@@ -44,6 +44,16 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="control-label col-sm-2">Proveedor<a style="color:red;">(*)</a></label>
+                        <div class="col-sm-8" style="padding-left:initial">
+                            <input required list="proveedores" ng-model="form.proveedor" class="form-control" type="text" placeholder="Razón Social">
+                            <datalist id="proveedores">
+                                <option ng-repeat="obj in proveedores | orderBy:'nombre'" value="{{obj.nombre}}"></option>
+                            </datalist>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
                         <label class="control-label col-sm-2">Código de orden<a style="color:red;">(*)</a></label>
                         <div class="col-sm-8" style="padding-left:initial">
                             <input required ng-model="form.orden" class="form-control" type="text" pattern=".{1,50}" placeholder="Ingrese número o código de orden de compra">

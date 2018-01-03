@@ -6,23 +6,33 @@
 <div class="panel-body" id="ingresar-items-panel">
 
     <div class="panel panel-default-light border-default col-sm-12" id="ingresar-items-table">
-        <form class="form-horizontal" ng-submit="crear(compuesto, item, fecha, cantidad, orden, documento)" style="margin-top:10px;">
+        <form class="form-horizontal" ng-submit="crear(compuesto, item, fecha, cantidad, orden, documento, proveedor)" style="margin-top:10px;">
             <!--"m-bottom-30" para poner margen vertical de 30px-->
             <div class="form-group">
                 <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Compuesto<a style="color:red;">(*)</a></label>
                 <div class="col-sm-6" style="padding-left:initial">
-                    <select class="form-control myselect" ng-model="compuesto" ng-options="compuesto.id as compuesto.nombre + '; ' + compuesto.unidadMedida for compuesto in compuestos">
+                    <select required class="form-control myselect" ng-model="compuesto" ng-options="compuesto.id as compuesto.nombre + '; ' + compuesto.unidadMedida for compuesto in compuestos">
                         <option style="display:none;" selected disabled value="">Digíte y Seleccione el tipo de compuesto</option>
                     </select>
                 </div>
             </div>
 
             <div class="form-group">
-                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Nombre de item<a style="color:red;">(*)</a></label>
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Nombre de item</label>
                 <div class="col-sm-6" style="padding-left:initial">
                     <input list="nombres" ng-init="item=''" ng-model="item" class="form-control" type="text" placeholder="Nombre del ítem">
                     <datalist id="nombres">
                         <option ng-repeat="obj in nombres | orderBy:'nombre'" value="{{obj.nombre}}"></option>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-sm-2" style="text-align:left;width:20%; padding-right:0px;margin-left:10px;">Proveedor<a style="color:red;">(*)</a></label>
+                <div class="col-sm-6" style="padding-left:initial">
+                    <input required list="proveedores" ng-model="proveedor" class="form-control" type="text" placeholder="Proveedor">
+                    <datalist id="proveedores">
+                        <option ng-repeat="obj in proveedores | orderBy:'nombre'" value="{{obj.nombre}}"></option>
                     </datalist>
                 </div>
             </div>
@@ -58,7 +68,7 @@
             </div>
             <div class="text-center">
                 <button data-ripple type="submit" class="btn btn-info">Aceptar</button>
-                <button data-ripple type="reset" class="btn btn-default">Cancelar</button>
+                <button data-ripple type="reset" class="btn btn-default">Limpiar</button>
             </div><!-- /.form-group -->
         </form>
 
