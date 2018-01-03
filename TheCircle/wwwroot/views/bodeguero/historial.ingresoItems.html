@@ -32,6 +32,7 @@
                         <th>ID</th>
                         <th>Nombre</th>
                         <th>Compuesto</th>
+                        <th>Transferencia #</th>
                         <th>Grupo</th>
                         <th>Ver info</th>
                     </tr>
@@ -42,6 +43,7 @@
                         <td>{{("0"+ t.id).slice(-2)}}</td>
                         <td>{{t.nombre}}</td>
                         <td>{{t.compuesto}}</td>
+                        <td>{{t.transferencia}}</td>
                         <td>{{t.grupo}}</td>
                         <td width="10%"><button ng-click="ver(t)" data-ripple style="background-color:inherit;border:none;" data-toggle="modal" data-target="#ver_transferencia"><span class="glyphicon glyphicon-zoom-in"></span></button></td>
                     </tr>

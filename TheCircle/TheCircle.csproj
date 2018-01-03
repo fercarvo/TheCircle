@@ -93,6 +93,7 @@
     <Content Include="wwwroot\views\contralor\inconsistencias.transferencia.html" />
     <Content Include="wwwroot\views\contralor\reportes.egresos.html" />
     <Content Include="wwwroot\views\contralor\reportes.html" />
+    <Content Include="wwwroot\views\contralor\reportes.ingresos.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesAprobadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\remisionesRechazadas.html" />
     <Content Include="wwwroot\views\coordinacionSalud\reporte.atenciones.html" />

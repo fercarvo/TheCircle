@@ -32,5 +32,18 @@ namespace TheCircle.Controllers
             return Ok(reportes);
         }
 
+        [HttpGet("ingresos")]
+        [APIauth("contralor")]
+        public IActionResult GetIng([FromQuery]DateTime desde, [FromQuery]DateTime hasta)
+        {
+            if (desde == null || hasta == null)
+                return BadRequest(new { desde, hasta });
+
+            string query = $"EXEC Reporte_Ingresos @desde='{desde}', @hasta='{hasta}'";
+            var reportes = new MyDbContext().IngresoTotal.FromSql(query).ToArray();
+
+            return Ok(reportes);
+        }
+
     }
 }

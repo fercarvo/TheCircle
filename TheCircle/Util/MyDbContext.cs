@@ -36,6 +36,7 @@ namespace TheCircle.Util
         public virtual DbSet<Categoria> Categoria { get; set; }
         public virtual DbSet<UnidadMedida> UnidadMedida { get; set; }
         public virtual DbSet<Reporte.Egreso> EgresoTotal { get; set; }
+        public virtual DbSet<Reporte.Ingreso> IngresoTotal { get; set; }
 
 
 

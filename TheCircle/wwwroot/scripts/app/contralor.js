@@ -46,9 +46,13 @@ angular.module('contralor', ['ui.router'])
                 templateUrl: 'views/contralor/reportes.html',
                 controller: 'reportes'
             })
-            .state('reportes.egresos', {
+            .state('reportes.egresos', { //reportes.ingresos
                 templateUrl: 'views/contralor/reportes.egresos.html',
                 controller: 'reportes.egresos'
+            })
+            .state('reportes.ingresos', { //reportes.ingresos
+                templateUrl: 'views/contralor/reportes.ingresos.html',
+                controller: 'reportes.ingresos'
             })
         //False en modo de produccion
         $compileProvider.debugInfoEnabled(false)
@@ -85,6 +89,11 @@ angular.module('contralor', ['ui.router'])
                 hasta: null,
                 data: null
             },
+            reporteIngresos: {
+                desde: null,
+                hasta: null,
+                data: null
+            },
             stock: null,
             getCambiosStock: getCambiosStock,
             getStock: getStock,
@@ -96,7 +105,25 @@ angular.module('contralor', ['ui.router'])
             guardarAprobacion: guardarAprobacion,
             getRemisionesAprobadas: getRemisionesAprobadas,
             postCambio: postCambio,
-            getReporteEgresos
+            getReporteEgresos,
+            getReporteIngresos
+        }
+
+        function getReporteIngresos(desde, hasta, $scope) {
+            NProgress.start()
+            $http({
+                method: "GET",
+                url: `/api/reporte/ingresos/`,
+                params: { desde, hasta }
+            }).then(function (res) {
+                console.log("ingresos", res.data)
+                $scope.ingresos.data = res.data.map(r => { r.personal = uppers(r.personal); return r })
+                NProgress.done();
+            }, function (error) {
+                console.log("Error ingresos", error);
+                notify("No se pudo obtener los ingresos", "danger")
+                NProgress.done();
+            })        
         }
 
         function getReporteEgresos(desde, hasta, $scope) {
@@ -405,6 +432,18 @@ angular.module('contralor', ['ui.router'])
 
         $scope.generar = function (desde, hasta) {
             dataFac.getReporteEgresos(desde, hasta, $scope)
+        }
+
+
+    }])
+    .controller('reportes.ingresos', ["$scope", "$state", "$http", "dataFac", function ($scope, $state, $http, dataFac) { //reportes.egresos
+
+        $scope.ingresos = dataFac.reportIngresos
+
+        $scope.$watch('ingresos', () => { dataFac.reportIngresos = $scope.ingresos })
+
+        $scope.generar = function (desde, hasta) {
+            dataFac.getReporteIngresos(desde, hasta, $scope)
         }
 
 
