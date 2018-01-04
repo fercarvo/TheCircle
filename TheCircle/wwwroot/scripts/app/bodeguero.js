@@ -40,9 +40,9 @@ angular.module('bodeguero', ['ui.router'])
             })
             
         //False en modo de produccion
-        $compileProvider.debugInfoEnabled(true)
-        $compileProvider.commentDirectivesEnabled(true)
-        $compileProvider.cssClassDirectivesEnabled(true)
+        $compileProvider.debugInfoEnabled(false)
+        $compileProvider.commentDirectivesEnabled(false)
+        $compileProvider.cssClassDirectivesEnabled(false)
     }])
     .run(["$state", "$http", "$templateCache", "dataFac", "$rootScope", function ($state, $http, $templateCache, dataFac, $rootScope) {
 
